@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calender;
+package edu.wpi.cs.wpisuitetng.modules.calendar;
 
 /*******************************************************************************
  * Copyright (c) 2013 -- WPI Suite
@@ -30,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
  * A dummy module to demonstrate the Janeway client
  *
  */
-public class Calender implements IJanewayModule {
+public class Calendar implements IJanewayModule {
 	
 	/** The tabs used by this module */
 	private ArrayList<JanewayTabModel> tabs;
@@ -38,23 +38,23 @@ public class Calender implements IJanewayModule {
 	/**
 	 * Construct a new DummyModule for demonstration purposes
 	 */
-	public Calender() {
+	public Calendar() {
 		
 		// Setup button panel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.add(new JButton("Individual Calender"));
-		buttonPanel.add(new JButton("Team Calender"));
+		buttonPanel.add(new JButton("Individual Calendar"));
+		buttonPanel.add(new JButton("Team Calendar"));
 		
 		// Setup the main panel
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(new JLabel("Calender"), BorderLayout.PAGE_START);
+		mainPanel.add(new JLabel("Calendar"), BorderLayout.PAGE_START);
 		mainPanel.add(new JTextField(), BorderLayout.CENTER);
 		mainPanel.add(new JTextField(), BorderLayout.CENTER);
 		
 		tabs = new ArrayList<JanewayTabModel>();
-		JanewayTabModel tab = new JanewayTabModel("Calender", new ImageIcon(), buttonPanel, mainPanel);
+		JanewayTabModel tab = new JanewayTabModel("Calendar", new ImageIcon(), buttonPanel, mainPanel);
 		tabs.add(tab);
 	}
 
@@ -63,7 +63,7 @@ public class Calender implements IJanewayModule {
 	 */
 	@Override
 	public String getName() {
-		return "Calender";
+		return "Calendar";
 	}
 
 	/**

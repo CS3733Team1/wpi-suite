@@ -10,7 +10,7 @@
 
 	<!-- This target should have dependencies such that all projects are depended upon -->
 	<target name="depend.all"
-		depends="depend.Janeway, depend.WPISuite, depend.DefectTracker, depend.PostBoard, depend.RequirementManager">
+		depends="depend.Janeway, depend.WPISuite, depend.DefectTracker, depend.PostBoard, depend.RequirementManager, depend.Calendar">
 	</target>
 
 	<!--
@@ -66,9 +66,9 @@
 			inheritAll="false"/>
 	</target>
 
-	<target name="depend.Calender"
+	<target name="depend.Calendar"
 		depends="depend.Janeway">
-		<ant dir="${dependencies.basedir}/Calender"
+		<ant dir="${dependencies.basedir}/Calendar"
 			target="${dependency.target}"
 			inheritAll="false"/>
 	</target>
