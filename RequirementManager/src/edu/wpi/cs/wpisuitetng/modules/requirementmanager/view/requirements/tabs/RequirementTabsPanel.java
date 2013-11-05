@@ -82,6 +82,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	
 	 * @return boolean * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove() * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove()
 	 */
+	@Override
 	public boolean readyToRemove() {
 		boolean readyToRemove = true;
 		for(RequirementPanelListener listener : listeners)
@@ -96,6 +97,7 @@ public class RequirementTabsPanel extends JTabbedPane implements RequirementPane
 	 * @param b boolean
 	
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireDeleted(boolean) */
+	@Override
 	public void fireDeleted(boolean b)
 	{
 		for(RequirementPanelListener listener : listeners)

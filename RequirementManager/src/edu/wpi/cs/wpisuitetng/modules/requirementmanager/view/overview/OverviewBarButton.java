@@ -8,11 +8,11 @@
  * Contributors: Team Rolling Thunder
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
@@ -21,37 +21,30 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventControlle
  * @author justinhess
  * @version $Revision: 1.0 $
  */
+@SuppressWarnings("serial")
 public class OverviewBarButton extends JPanel {
-	public OverviewBarButton(){
+	public OverviewBarButton() {
 		JButton buttonStatus = new JButton("Status");
-		buttonStatus.addActionListener(new ActionListener(){
+		buttonStatus.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e){
-				
+			public void actionPerformed(ActionEvent e) {
+
 				ViewEventController.getInstance().createBarChart("Status");
-				
-				
-				
-				
+
 			}
 		});
 		JButton buttonIteration = new JButton("Iteration");
-		buttonIteration.addActionListener(new ActionListener(){
+		buttonIteration.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e){
-				
+			public void actionPerformed(ActionEvent e) {
+
 				ViewEventController.getInstance().createBarChart("Iteration");
-				
-				
-				
-				
+
 			}
 		});
-	
-		
-		
+
 		this.add(buttonStatus);
 		this.add(buttonIteration);
-	
+
 	}
 }

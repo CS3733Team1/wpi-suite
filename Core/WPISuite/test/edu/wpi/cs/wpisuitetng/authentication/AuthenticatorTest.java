@@ -12,20 +12,21 @@
 
 package edu.wpi.cs.wpisuitetng.authentication;
 
-import org.junit.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.ManagerLayer;
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.SessionManager;
-import edu.wpi.cs.wpisuitetng.authentication.Authenticator;
-import edu.wpi.cs.wpisuitetng.authentication.BasicAuth;
-import edu.wpi.cs.wpisuitetng.authentication.Sha256Password;
 import edu.wpi.cs.wpisuitetng.database.DataStore;
 import edu.wpi.cs.wpisuitetng.exceptions.AuthenticationException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.UserManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import static org.junit.Assert.*;
 
 /**
  * Testing the abtract class Authentictor. Uses the BasicAuth 

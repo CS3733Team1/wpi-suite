@@ -19,19 +19,19 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 /**
- * This is a model for the post board. It contains all of the messages
- * to be displayed on the board. It extends AbstractListModel so that
- * it can provide the model data to the JList component in the BoardPanel.
+ * This is a model for the post board. It contains all of the messages to be
+ * displayed on the board. It extends AbstractListModel so that it can provide
+ * the model data to the JList component in the BoardPanel.
  * 
  * @author Chris Casola
- *
+ * 
  */
-@SuppressWarnings({"serial"})
-public class PostBoardModel extends AbstractListModel {
-	
+@SuppressWarnings("serial")
+public class PostBoardModel extends AbstractListModel<Object> {
+
 	/** The list of messages on the board */
 	private List<PostBoardMessage> messages;
-	
+
 	/**
 	 * Constructs a new board with no messages.
 	 */
@@ -42,20 +42,22 @@ public class PostBoardModel extends AbstractListModel {
 	/**
 	 * Adds the given message to the board
 	 * 
-	 * @param newMessage the new message to add
+	 * @param newMessage
+	 *            the new message to add
 	 */
 	public void addMessage(PostBoardMessage newMessage) {
 		// Add the message
 		messages.add(newMessage);
-		
+
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
 	}
-	
+
 	/**
 	 * Adds the given array of messages to the board
 	 * 
-	 * @param messages the array of messages to add
+	 * @param messages
+	 *            the array of messages to add
 	 */
 	public void addMessages(PostBoardMessage[] messages) {
 		for (int i = 0; i < messages.length; i++) {
@@ -63,14 +65,13 @@ public class PostBoardModel extends AbstractListModel {
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
-	
+
 	/**
 	 * Removes all messages from this model
 	 * 
-	 * NOTE: One cannot simply construct a new instance of
-	 * the model, because other classes in this module have
-	 * references to it. Hence, we manually remove each message
-	 * from the model.
+	 * NOTE: One cannot simply construct a new instance of the model, because
+	 * other classes in this module have references to it. Hence, we manually
+	 * remove each message from the model.
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
@@ -81,11 +82,11 @@ public class PostBoardModel extends AbstractListModel {
 		}
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
-	
-	/* 
-	 * Returns the message at the given index. This method is called
-	 * internally by the JList in BoardPanel. Note this method returns
-	 * elements in reverse order, so newest messages are returned first.
+
+	/*
+	 * Returns the message at the given index. This method is called internally
+	 * by the JList in BoardPanel. Note this method returns elements in reverse
+	 * order, so newest messages are returned first.
 	 * 
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
@@ -95,8 +96,8 @@ public class PostBoardModel extends AbstractListModel {
 	}
 
 	/*
-	 * Returns the number of messages in the model. Also used internally
-	 * by the JList in BoardPanel.
+	 * Returns the number of messages in the model. Also used internally by the
+	 * JList in BoardPanel.
 	 * 
 	 * @see javax.swing.ListModel#getSize()
 	 */

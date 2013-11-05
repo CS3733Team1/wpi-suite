@@ -31,7 +31,6 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iterationcontroller.UpdateIterationController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
@@ -162,6 +161,7 @@ public class IterationPanel extends JPanel implements KeyListener{
 		buttonPanel.add(errorDisplay);
 		
 		buttonAdd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				updateIteration();
 			}
@@ -176,6 +176,7 @@ public class IterationPanel extends JPanel implements KeyListener{
 		});
 		
 		buttonCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ViewEventController.getInstance().refreshTable();
 				ViewEventController.getInstance().refreshTree();

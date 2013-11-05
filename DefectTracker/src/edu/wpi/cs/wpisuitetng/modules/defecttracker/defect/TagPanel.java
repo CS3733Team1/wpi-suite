@@ -34,14 +34,14 @@ import edu.wpi.cs.wpisuitetng.modules.defecttracker.models.Tag;
 
 /**
  * Panel to manage adding and removing tags
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class TagPanel extends JPanel {
 
 	protected JTextField txtNewTag;
-	protected DefaultListModel lmTags;
-	protected JList lstTags;
+	protected DefaultListModel<String> lmTags;
+	protected JList<String> lstTags;
 	protected JButton btnAddTag;
 	protected JButton btnRemoveTag;
 
@@ -58,7 +58,9 @@ public class TagPanel extends JPanel {
 	/**
 	 * Creates a new TagPanel.
 	 * 
-	 * @param defect	The Defect to use to populate the Tag list and to which the Tag list will be compared.
+	 * @param defect
+	 *            The Defect to use to populate the Tag list and to which the
+	 *            Tag list will be compared.
 	 */
 	protected TagPanel(Defect defect) {
 		inputEnabled = true;
@@ -78,14 +80,16 @@ public class TagPanel extends JPanel {
 	}
 
 	/**
-	 * Adds the components to the panel and places constraints on them
-	 * for SpringLayout.
-	 * @param layout the layout manager
+	 * Adds the components to the panel and places constraints on them for
+	 * SpringLayout.
+	 * 
+	 * @param layout
+	 *            the layout manager
 	 */
 	protected void addComponents(SpringLayout layout) {
 		txtNewTag = new JTextField(20);
-		lmTags = new DefaultListModel();
-		lstTags = new JList(lmTags);
+		lmTags = new DefaultListModel<String>();
+		lstTags = new JList<String>(lmTags);
 		lstTags.setBorder(txtNewTag.getBorder());
 		btnAddTag = new JButton("Add");
 		btnRemoveTag = new JButton("Remove");
@@ -94,28 +98,45 @@ public class TagPanel extends JPanel {
 
 		JLabel lblNewTag = new JLabel("Enter a new tag:");
 		int labelWidth = lblNewTag.getPreferredSize().width;
-		
-		layout.putConstraint(SpringLayout.NORTH, lblNewTag, VERTICAL_PADDING, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, lblNewTag, 10, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.EAST, lblNewTag, labelWidth, SpringLayout.WEST, lblNewTag);
-		layout.putConstraint(SpringLayout.WEST, txtNewTag, HORIZONTAL_PADDING, SpringLayout.EAST, lblNewTag);
 
-		layout.putConstraint(SpringLayout.NORTH, txtNewTag, VERTICAL_PADDING, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, lstTags, VERTICAL_PADDING, SpringLayout.SOUTH, txtNewTag);
+		layout.putConstraint(SpringLayout.NORTH, lblNewTag, VERTICAL_PADDING,
+				SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, lblNewTag, 10,
+				SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.EAST, lblNewTag, labelWidth,
+				SpringLayout.WEST, lblNewTag);
+		layout.putConstraint(SpringLayout.WEST, txtNewTag, HORIZONTAL_PADDING,
+				SpringLayout.EAST, lblNewTag);
 
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddTag, 0, SpringLayout.VERTICAL_CENTER, txtNewTag);
-		layout.putConstraint(SpringLayout.WEST, btnAddTag, HORIZONTAL_PADDING * 5, SpringLayout.EAST, txtNewTag);
+		layout.putConstraint(SpringLayout.NORTH, txtNewTag, VERTICAL_PADDING,
+				SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, lstTags, VERTICAL_PADDING,
+				SpringLayout.SOUTH, txtNewTag);
 
-		layout.putConstraint(SpringLayout.NORTH, lstTags, VERTICAL_PADDING, SpringLayout.SOUTH, txtNewTag);
-		layout.putConstraint(SpringLayout.WEST, lstTags, 0, SpringLayout.WEST, txtNewTag);
-		layout.putConstraint(SpringLayout.EAST, lstTags, 0, SpringLayout.EAST, txtNewTag);
-		layout.putConstraint(SpringLayout.SOUTH, lstTags, txtNewTag.getPreferredSize().height * 6, SpringLayout.NORTH, lstTags);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, btnAddTag, 0,
+				SpringLayout.VERTICAL_CENTER, txtNewTag);
+		layout.putConstraint(SpringLayout.WEST, btnAddTag,
+				HORIZONTAL_PADDING * 5, SpringLayout.EAST, txtNewTag);
 
-		layout.putConstraint(SpringLayout.WEST, btnRemoveTag, 0, SpringLayout.WEST, btnAddTag);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, btnRemoveTag, 0, SpringLayout.VERTICAL_CENTER, lstTags);
-		layout.putConstraint(SpringLayout.EAST, btnAddTag, 0, SpringLayout.EAST, btnRemoveTag);
+		layout.putConstraint(SpringLayout.NORTH, lstTags, VERTICAL_PADDING,
+				SpringLayout.SOUTH, txtNewTag);
+		layout.putConstraint(SpringLayout.WEST, lstTags, 0, SpringLayout.WEST,
+				txtNewTag);
+		layout.putConstraint(SpringLayout.EAST, lstTags, 0, SpringLayout.EAST,
+				txtNewTag);
+		layout.putConstraint(SpringLayout.SOUTH, lstTags,
+				txtNewTag.getPreferredSize().height * 6, SpringLayout.NORTH,
+				lstTags);
 
-		layout.putConstraint(SpringLayout.SOUTH, this, 15, SpringLayout.SOUTH, lstTags);
+		layout.putConstraint(SpringLayout.WEST, btnRemoveTag, 0,
+				SpringLayout.WEST, btnAddTag);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, btnRemoveTag, 0,
+				SpringLayout.VERTICAL_CENTER, lstTags);
+		layout.putConstraint(SpringLayout.EAST, btnAddTag, 0,
+				SpringLayout.EAST, btnRemoveTag);
+
+		layout.putConstraint(SpringLayout.SOUTH, this, 15, SpringLayout.SOUTH,
+				lstTags);
 
 		add(lblNewTag);
 		add(txtNewTag);
@@ -125,7 +146,8 @@ public class TagPanel extends JPanel {
 	}
 
 	/**
-	 * Checks if the Tags in this TagPanel differ from the model and highlights the Tag list accordingly.
+	 * Checks if the Tags in this TagPanel differ from the model and highlights
+	 * the Tag list accordingly.
 	 */
 	protected void checkIfUpdated() {
 		lstTags.setBackground(Color.WHITE);
@@ -135,12 +157,12 @@ public class TagPanel extends JPanel {
 			for (Tag tag : model.getTags()) {
 				if (!lmTags.contains(tag.getName())) {
 					lstTags.setBackground(new Color(243, 243, 209));
-					lstTags.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+					lstTags.setBorder(BorderFactory.createLineBorder(
+							Color.BLACK, 1));
 					break;
 				}
 			}
-		}
-		else {
+		} else {
 			lstTags.setBackground(new Color(243, 243, 209));
 			lstTags.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		}
@@ -179,10 +201,12 @@ public class TagPanel extends JPanel {
 	}
 
 	/**
-	 * Sets whether input is enabled for this panel and its children. This should be used instead of 
-	 * JComponent#setEnabled because setEnabled does not affect its children.
+	 * Sets whether input is enabled for this panel and its children. This
+	 * should be used instead of JComponent#setEnabled because setEnabled does
+	 * not affect its children.
 	 * 
-	 * @param enabled	Whether or not input is enabled.
+	 * @param enabled
+	 *            Whether or not input is enabled.
 	 */
 	public void setInputEnabled(boolean enabled) {
 		inputEnabled = enabled;
@@ -194,9 +218,11 @@ public class TagPanel extends JPanel {
 	}
 
 	/**
-	 * Returns a boolean representing whether or not input is enabled for the TagPanel and its children.
+	 * Returns a boolean representing whether or not input is enabled for the
+	 * TagPanel and its children.
 	 * 
-	 * @return	A boolean representing whether or not input is enabled for the TagPanel and its children.
+	 * @return A boolean representing whether or not input is enabled for the
+	 *         TagPanel and its children.
 	 */
 	public boolean getInputEnabled() {
 		return inputEnabled;
@@ -205,7 +231,8 @@ public class TagPanel extends JPanel {
 	/**
 	 * Updates the TagPanel's model to contain the values of the given Defect.
 	 * 
-	 * @param	defect	The Defect which contains the new values for the model.
+	 * @param defect
+	 *            The Defect which contains the new values for the model.
 	 */
 	protected void updateModel(Defect defect) {
 		model.setId(defect.getId());

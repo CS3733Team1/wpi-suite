@@ -14,7 +14,6 @@ import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
@@ -54,7 +53,8 @@ public class OverviewTableCellRenderer extends DefaultTableCellRenderer {
     
      * @return Component * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(JTable, Object, boolean, boolean, int, int) * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(JTable, Object, boolean, boolean, int, int)
      */
-    public Component getTableCellRendererComponent(JTable table, 
+    @Override
+	public Component getTableCellRendererComponent(JTable table, 
                                                    Object value,
                                                    boolean isSelected,
                                                    boolean hasFocus, 

@@ -9,16 +9,16 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.LinkedList;
 
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Month;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.Note;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.NoteList;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs.SingleNotePanel;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests the Note.java, NoteList.java, and SingleNotePanel.java source files

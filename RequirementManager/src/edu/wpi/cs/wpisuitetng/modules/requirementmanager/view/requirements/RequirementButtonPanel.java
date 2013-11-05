@@ -9,22 +9,15 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.FontMetrics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -113,6 +106,7 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 	private void setupListeners()
 	{
 		buttonOK.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				parentPanel.OKPressed();
 			}
@@ -127,12 +121,14 @@ public class RequirementButtonPanel extends JPanel implements RequirementPanelLi
 		});
 		
 		buttonCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				parentPanel.cancelPressed();
 			}
 		});
 		
 		buttonDelete.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				parentPanel.deletePressed();
