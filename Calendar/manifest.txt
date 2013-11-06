@@ -1,1 +1,1 @@
-module_class edu.wpi.cs.wpisuitetng.modules.calender.Calender
+module_class edu.wpi.cs.wpisuitetng.modules.calendar.Calendar
