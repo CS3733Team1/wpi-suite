@@ -13,18 +13,18 @@ public class CalendarView {
 	private List<JanewayTabModel> tabs;
 	private CalendarModel model;
 	private CalendarPanel calendarPanel;
-	private CalendarMenuBar calendarMenuBar;
+	private CalendarToolBar calendarToolBar;
 
 	public CalendarView(CalendarModel model) {
 		this.model = model;
 
 		calendarPanel = new CalendarPanel();
-		calendarMenuBar = new CalendarMenuBar();
+		calendarToolBar = new CalendarToolBar();
 
 		tabs = new ArrayList<JanewayTabModel>();
 
 		JanewayTabModel tab = new JanewayTabModel(getName(), new ImageIcon(),
-				calendarMenuBar, calendarPanel);
+				calendarToolBar, calendarPanel);
 
 		// Add the tab to the list of tabs owned by this module
 		tabs.add(tab);

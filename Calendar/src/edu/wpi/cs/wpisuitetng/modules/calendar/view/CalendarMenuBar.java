@@ -6,5 +6,6 @@ import javax.swing.JMenuBar;
 public class CalendarMenuBar extends JMenuBar {
 	public CalendarMenuBar() {
 		this.add(new JMenu("A Menu"));
+
 	}
 }

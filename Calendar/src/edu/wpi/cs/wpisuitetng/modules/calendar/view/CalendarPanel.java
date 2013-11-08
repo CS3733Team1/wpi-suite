@@ -6,6 +6,6 @@ import javax.swing.JPanel;
 public class CalendarPanel extends JPanel {
 
 	public CalendarPanel() {
-		this.add(new JLabel("CalendarPanel"));
+		this.add(new JLabel("CalendarPanel")).setVisible(true);
 	}
 }

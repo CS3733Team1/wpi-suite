@@ -13,49 +13,24 @@ package edu.wpi.cs.wpisuitetng.modules.calendar;
  *    Andrew Hurle
  ******************************************************************************/
 
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-/**
- * A dummy module to demonstrate the Janeway client
- *
- */
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.CalendarController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarView;
+
 public class Calendar implements IJanewayModule {
-	
-	/** The tabs used by this module */
-	private ArrayList<JanewayTabModel> tabs;
-	
-	/**
-	 * Construct a new DummyModule for demonstration purposes
-	 */
+
+	private CalendarModel model;
+	private CalendarView view;
+	private CalendarController controller;
+
 	public Calendar() {
-		
-		// Setup button panel
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.add(new JButton("Individual Calendar"));
-		buttonPanel.add(new JButton("Team Calendar"));
-		
-		// Setup the main panel
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(new JLabel("Calendar"), BorderLayout.PAGE_START);
-		mainPanel.add(new JTextField(), BorderLayout.CENTER);
-		mainPanel.add(new JTextField(), BorderLayout.CENTER);
-		
-		tabs = new ArrayList<JanewayTabModel>();
-		JanewayTabModel tab = new JanewayTabModel("Calendar", new ImageIcon(), buttonPanel, mainPanel);
-		tabs.add(tab);
+		model = new CalendarModel();
+		view = new CalendarView(model);
+		controller = new CalendarController(model, view);
 	}
 
 	/**
@@ -63,7 +38,7 @@ public class Calendar implements IJanewayModule {
 	 */
 	@Override
 	public String getName() {
-		return "Calendar";
+		return view.getName();
 	}
 
 	/**
@@ -71,6 +46,6 @@ public class Calendar implements IJanewayModule {
 	 */
 	@Override
 	public List<JanewayTabModel> getTabs() {
-		return tabs;
+		return view.getTabs();
 	}
 }
