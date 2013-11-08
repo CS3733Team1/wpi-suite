@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project> <!-- Removes No grammer [DTD/Schema] constraints warning -->
-<project name="Calender" default="compile.deps">
+<project name="Calendar" default="compile.deps">
 	<import file="../build-common.xml"/>
 
-	<property name="core-jar-dest" location="${core-lib}/Calender.jar"/>
-	<property name="janeway-jar-dest" location="../Janeway/modules/Calender.jar"/>
+	<property name="core-jar-dest" location="${core-lib}/Calendar.jar"/>
+	<property name="janeway-jar-dest" location="../Janeway/modules/Calendar.jar"/>
 
 	<path id="classpath">
 		<pathelement path="../Janeway/build"/>
