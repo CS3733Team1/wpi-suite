@@ -6,16 +6,14 @@ import java.util.List;
 public class CalendarObjectModel {
 	private String title;
 	private List<Commitment> commitments;
+	private List<Event> events;
 
 	public CalendarObjectModel(String title) {
 		this.title = title;
 
 		commitments = new ArrayList<Commitment>();
-		commitments.add(new Commitment("Meeting 1"));
-		commitments.add(new Commitment("Meeting 2"));
-		commitments.add(new Commitment("Meeting 3"));
-		commitments.add(new Commitment("Meeting 4"));
-		commitments.add(new Commitment("Meeting 5"));
+		commitments.add(new Commitment("A commitment: " + title, null));
+		events = new ArrayList<Event>();
 	}
 
 	public String getTitle() {

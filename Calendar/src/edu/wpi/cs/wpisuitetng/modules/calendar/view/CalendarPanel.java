@@ -29,15 +29,20 @@ public class CalendarPanel extends JTabbedPane {
 
 		DefaultListModel listModel = new DefaultListModel();
 		for (Commitment commitment : c.getCommitments()) {
-			listModel.addElement(commitment.getTitle());
-			System.out.println(commitment.getTitle());
+			listModel.addElement(commitment.getName());
+			System.out.println(commitment.getName());
 		}
 
-		listModel.addElement("TEST");
+		listModel.addElement("Test1");
+		listModel.addElement("Test2");
+		listModel.addElement("Test3");
+		listModel.addElement("Test4");
+		listModel.addElement("Test5");
+		listModel.addElement("Test6");
 
 		JList commitments = new JList(listModel);
 		commitments
-				.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+				.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		commitments.setLayoutOrientation(JList.VERTICAL);
 		commitments.setVisibleRowCount(-1);
