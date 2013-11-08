@@ -1,3 +1,5 @@
+package edu.wpi.cs.wpisuitetng.modules.calendar;
+
 /*******************************************************************************
  * Copyright (c) 2013 -- WPI Suite
  *
@@ -7,39 +9,53 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Team TART
+ *    Chris Casola
+ *    Andrew Hurle
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.calendar;
 
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.CalendarController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarView;
-
 /**
- * @author Shadi Ramadan
- * @version $Revision: 1.0 $
+ * A dummy module to demonstrate the Janeway client
+ *
  */
 public class Calendar implements IJanewayModule {
-
+	
 	/** The tabs used by this module */
 	private ArrayList<JanewayTabModel> tabs;
-	private CalendarModel model;
-	private CalendarView view;
-	private CalendarController controller;
-
+	
 	/**
-	 * Construct a new Calendar. Creates a main view containing a tool bar above
-	 * and sub-tabs below containing the Calendar Panel
+	 * Construct a new DummyModule for demonstration purposes
 	 */
 	public Calendar() {
-		model = new CalendarModel();
-		view = new CalendarView(model);
-		controller = new CalendarController(model, view);
+		
+		// Setup button panel
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout());
+		buttonPanel.add(new JButton("Individual Calendar"));
+		buttonPanel.add(new JButton("Team Calendar"));
+		
+		// Setup the main panel
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.add(new JLabel("Calendar"), BorderLayout.PAGE_START);
+		mainPanel.add(new JTextField(), BorderLayout.CENTER);
+		mainPanel.add(new JTextField(), BorderLayout.CENTER);
+		
+		tabs = new ArrayList<JanewayTabModel>();
+		JanewayTabModel tab = new JanewayTabModel("Calendar", new ImageIcon(), buttonPanel, mainPanel);
+		tabs.add(tab);
 	}
 
 	/**
@@ -47,7 +63,7 @@ public class Calendar implements IJanewayModule {
 	 */
 	@Override
 	public String getName() {
-		return view.getName();
+		return "Calendar";
 	}
 
 	/**
@@ -55,6 +71,6 @@ public class Calendar implements IJanewayModule {
 	 */
 	@Override
 	public List<JanewayTabModel> getTabs() {
-		return view.getTabs();
+		return tabs;
 	}
 }
