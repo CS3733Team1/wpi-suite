@@ -46,4 +46,8 @@ public class CalendarView {
 	public String getName() {
 		return "Calendar";
 	}
+	
+	public CalendarToolBar getcalendarToolBar(){
+		return this.calendarToolBar;
+	}
 }
