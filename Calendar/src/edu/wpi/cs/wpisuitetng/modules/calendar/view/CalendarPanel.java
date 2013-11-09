@@ -17,8 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 public class CalendarPanel extends JTabbedPane {
 
 	private JPanel p;
-	private JList commitments;
-	private DefaultListModel listModel;
+	private JList<Object> commitments;
 	private CalendarModel model;
 	
 	public CalendarPanel(CalendarModel model) {
@@ -35,20 +34,8 @@ public class CalendarPanel extends JTabbedPane {
 		p.setLayout(new BorderLayout());
 		p.add(new JLabel(c.getTitle()), BorderLayout.CENTER);
 
-		listModel = new DefaultListModel();
-		for (Commitment commitment : c.getCommitments()) {
-			listModel.addElement(commitment.getName());
-			System.out.println(commitment.getName());
-		}
 
-		listModel.addElement("Test1");
-		listModel.addElement("Test2");
-		listModel.addElement("Test3");
-		listModel.addElement("Test4");
-		listModel.addElement("Test5");
-		listModel.addElement("Test6");
-
-		commitments = new JList(listModel);
+		commitments = new JList<Object>(model.getcommitModel());
 		commitments
 				.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 

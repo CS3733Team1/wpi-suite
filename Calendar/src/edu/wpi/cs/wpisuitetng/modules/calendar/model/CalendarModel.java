@@ -26,6 +26,13 @@ public class CalendarModel {
 		return  commitModel.getElementAt(commitmentLocation).toString();
 	}
 	
+	public List<Commitment> getList(){
+		return commitModel.getList();
+	}
+	
+	public CommitmentModel getcommitModel(){
+		return commitModel;
+	}
 	
 	
 }

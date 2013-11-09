@@ -20,20 +20,24 @@ public class AddCommitmentController implements ActionListener{
 		this.view = view;
 	}
 	
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		Commitment commit = new Commitment("Hello", new Date());
 		
+		addCommitmentToModel(commit);
+		System.out.println("Shots Fired 2");
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
 		request.setBody(commit.toJSON()); // put the new message in the body of the request
 		request.addObserver(new AddCommitmentObserver(this)); // add an observer to process the response
 		request.send(); // send the request
 		
+		view.getCalendarPanel().refresh();
+		
 	}
 	
 	public void addCommitmentToModel(Commitment commit){
+		System.out.println("Shots  ADded Fired");
 		model.addCommitmentFromCalendar(commit);
 	}
 

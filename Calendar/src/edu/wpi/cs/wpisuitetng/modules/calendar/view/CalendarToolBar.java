@@ -19,17 +19,18 @@ public class CalendarToolBar extends JPanel {
 		this.model = model;
 		this.view = view;
 		
-		addCommitment = new JButton("Add Commitment");
+		addCommitment = new JButton("Add Commitmentz");
 		
 		this.setLayout(new FlowLayout());
 		this.add(new JButton("Add Calendar"));
 		this.add(new JButton("Delete Calendar"));
 		this.add(new JButton("Add Event"));
 		this.add(new JButton("Delete Event"));
-		this.add(new JButton("Add Commitment"));
 		this.add(new JButton("Delete Commitment"));
 		
 		addCommitment.addActionListener(new AddCommitmentController(view, model));
 		
+		
+		this.add(addCommitment);
 	}
 }

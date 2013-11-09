@@ -115,4 +115,8 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	public int getSize() {
 		return commitment.size();
 	}
+	
+	public List<Commitment> getList(){
+		return commitment;
+	}
 }

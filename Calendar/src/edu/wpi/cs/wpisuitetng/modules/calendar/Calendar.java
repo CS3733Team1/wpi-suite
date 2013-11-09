@@ -27,6 +27,9 @@ public class Calendar implements IJanewayModule {
 	private CalendarView view;
 
 	public Calendar() {
+		
+		System.out.println("Shots Fired");
+		
 		model = new CalendarModel();
 		view = new CalendarView(model);
 	}

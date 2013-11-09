@@ -11,16 +11,10 @@ public class CalendarObjectModel {
 	public CalendarObjectModel(String title) {
 		this.title = title;
 
-		commitments = new ArrayList<Commitment>();
-		commitments.add(new Commitment("A commitment: " + title, null));
-		events = new ArrayList<Event>();
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public List<Commitment> getCommitments() {
-		return commitments;
-	}
 }
