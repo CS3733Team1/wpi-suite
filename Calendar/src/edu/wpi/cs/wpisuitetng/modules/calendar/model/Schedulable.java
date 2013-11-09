@@ -1,10 +1,11 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import java.util.Date;
 
 public abstract class Schedulable extends AbstractModel implements Comparable{
 	private String name;
-	private DateTime dueDate;
+	private Date dueDate;
 
 	// Optional parameters
 	private String description;
@@ -17,10 +18,10 @@ public abstract class Schedulable extends AbstractModel implements Comparable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public DateTime getDueDate() {
+	public Date getDueDate() {
 		return dueDate;
 	}
-	public void setDueDate(DateTime dueDate) {
+	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
 	public String getDescription() {

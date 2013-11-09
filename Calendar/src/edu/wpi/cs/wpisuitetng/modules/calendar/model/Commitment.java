@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import com.google.gson.Gson;
+import java.util.Date;
 
 
 //BUGBUG why is this here?
@@ -9,28 +10,28 @@ import com.google.gson.Gson;
 public class Commitment extends Schedulable {
 	// Required parameters
 	private String name;
-	private DateTime dueDate;
+	private Date dueDate;
 
 	// Optional parameters
 	private String description;
 	private Category category;
 
-	public Commitment(String name, DateTime dueDate) {
+	public Commitment(String name, Date dueDate) {
 		this.name = name;
 		this.dueDate = dueDate;
 	}
 
-	public Commitment(String name, DateTime dueDate, String description) {
+	public Commitment(String name, Date dueDate, String description) {
 		this(name, dueDate);
 		this.description = description;
 	}
 
-	public Commitment(String name, DateTime dueDate, Category category) {
+	public Commitment(String name, Date dueDate, Category category) {
 		this(name, dueDate);
 		this.category = category;
 	}
 
-	public Commitment(String name, DateTime dueDate, String description,
+	public Commitment(String name, Date dueDate, String description,
 			Category category) {
 		this(name, dueDate);
 		this.description = description;
@@ -45,11 +46,11 @@ public class Commitment extends Schedulable {
 		this.name = name;
 	}
 
-	public DateTime getDueDate() {
+	public Date getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(DateTime dueDate) {
+	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
 
@@ -96,7 +97,7 @@ public class Commitment extends Schedulable {
 	
 	public String toString()
 	{
-		String str = "Name: " + this.name + " Due Date: " + this.dueDate;
+		String str = "Name: " + this.name + " Due Date: " + this.dueDate.toString();
 		if(this.category != null)
 			str += " Category: " + this.category;
 		if(this.description != null)
@@ -109,5 +110,11 @@ public class Commitment extends Schedulable {
 	public Boolean identify(Object o) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int compareTo(Object other) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
