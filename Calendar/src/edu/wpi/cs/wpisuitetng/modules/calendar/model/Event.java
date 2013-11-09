@@ -1,11 +1,18 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import com.google.gson.Gson;
 
-public class Event {
+import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+
+import java.util.Date;
+
+
+public class Event extends AbstractModel {
 	// Required parameters
 	private String name;
-	private DateTime startDateTime;
-	private DateTime endDateTime;
+	private Date startDate;
+	private Date endDate;
+	
 
 	// Optional parameters
 	private String description;
@@ -21,24 +28,29 @@ public class Event {
 	 * separate area above hours]
 	 */
 
-	public Event(String name, DateTime startDateTime, DateTime endDateTime) {
-		this.name = name;
-		this.startDateTime = startDateTime;
-		this.endDateTime = endDateTime;
+	public Event()
+	{
+		//huehueheuheuheuehueheuehuehuehue/EntityManager
 	}
 	
-	public Event(String name, DateTime startDateTime, DateTime endDateTime, String description) {
-		this(name, startDateTime, endDateTime);
+	public Event(String name, Date startDate, Date endDate) {
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+	
+	public Event(String name, Date startDate, Date endDate, String description) {
+		this(name, startDate, endDate);
 		this.description = description;
 	}
 	
-	public Event(String name, DateTime startDateTime, DateTime endDateTime, Category category) {
-		this(name, startDateTime, endDateTime);
+	public Event(String name, Date startDate, Date endDate, Category category) {
+		this(name, startDate, endDate);
 		this.category = category;
 	}
 	
-	public Event(String name, DateTime startDateTime, DateTime endDateTime, String description, Category category) {
-		this(name, startDateTime, endDateTime);
+	public Event(String name, Date startDate, Date endDate, String description, Category category) {
+		this(name, startDate, endDate);
 		this.description = description;
 		this.category = category;
 	}
@@ -51,20 +63,20 @@ public class Event {
 		this.name = name;
 	}
 
-	public DateTime getStartDateTime() {
-		return startDateTime;
+	public Date getStartDate() {
+		return startDate;
 	}
 
-	public void setStartDateTime(DateTime startDateTime) {
-		this.startDateTime = startDateTime;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 	
-	public DateTime getEndDateTime() {
-		return endDateTime;
+	public Date getEndDate() {
+		return endDate;
 	}
 
-	public void setEndDateTime(DateTime endDateTime) {
-		this.endDateTime = endDateTime;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	public String getDescription() {
@@ -81,5 +93,55 @@ public class Event {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+	
+	public String toJSON() {
+		//name, dueDate, description, category
+		String str = new Gson().toJson(this, Event.class);
+		return str;
+	}
+	
+	public static Event[] fromJSONArray(String input)
+	{
+		final Gson parser = new Gson();
+		return parser.fromJson(input, Event[].class);
+	}
+	
+	public static Event fromJSON(String input)
+	{
+		final Gson parser = new Gson();
+		return parser.fromJson(input, Event.class);
+	}
+	
+	
+	public String toString()
+	{
+		//TODO: Remember to change this when participants, recurrence etc. gets added
+		String str = "Name: " + this.name + " Start Date: " + this.startDate.toString()
+				+ " End Date: " + this.endDate.toString();
+		if(this.category != null)
+			str += " Category: " + this.category;
+		if(this.description != null)
+			str += " Description: " + this.description;
+		str += "\n";
+		return str;
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Boolean identify(Object o) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
