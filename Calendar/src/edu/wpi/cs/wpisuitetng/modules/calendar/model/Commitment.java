@@ -19,7 +19,10 @@ public class Commitment extends AbstractModel {
 	private String description;
 	private Category category;
 
-	
+	public Commitment()
+	{
+		//lulululululululul/EntityManager
+	}
 	
 	public Commitment(String name, Date dueDate) {
 		this.name = name;
