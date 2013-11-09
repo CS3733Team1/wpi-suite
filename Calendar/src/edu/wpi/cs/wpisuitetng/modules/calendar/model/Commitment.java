@@ -93,6 +93,17 @@ public class Commitment extends Schedulable {
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Commitment[].class);
 	}
+	
+	public String toString()
+	{
+		String str = "Name: " + this.name + " Due Date: " + this.dueDate;
+		if(this.category != null)
+			str += " Category: " + this.category;
+		if(this.description != null)
+			str += " Description: " + this.description;
+		str += "\n";
+		return str;
+	}
 
 	@Override
 	public Boolean identify(Object o) {
