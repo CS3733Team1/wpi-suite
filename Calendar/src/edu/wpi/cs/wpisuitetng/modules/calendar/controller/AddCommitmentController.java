@@ -34,7 +34,7 @@ public class AddCommitmentController implements ActionListener{
 	}
 	
 	public void addCommitmentToModel(Commitment commit){
-		
+		model.addCommitmentFromCalendar(commit);
 	}
 
 }
