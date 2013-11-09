@@ -1,7 +1,12 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import com.google.gson.Gson;
 
-public class Commitment {
+
+//BUGBUG why is this here?
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
+public class Commitment extends Schedulable {
 	// Required parameters
 	private String name;
 	private DateTime dueDate;
@@ -62,5 +67,36 @@ public class Commitment {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String toJSON() {
+		//name, dueDate, description, category
+		String str = new Gson().toJson(this, Commitment.class);
+		return str;
+	}
+	
+	public static Commitment[] fromJSONArray(String input)
+	{
+		final Gson parser = new Gson();
+		return parser.fromJson(input, Commitment[].class);
+	}
+
+	@Override
+	public Boolean identify(Object o) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
