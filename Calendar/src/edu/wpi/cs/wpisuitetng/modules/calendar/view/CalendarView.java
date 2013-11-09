@@ -23,7 +23,7 @@ public class CalendarView {
 		// view should access all data from model to display
 
 		calendarPanel = new CalendarPanel();
-		calendarToolBar = new CalendarToolBar();
+		calendarToolBar = new CalendarToolBar(model, this);
 
 		tabs = new ArrayList<JanewayTabModel>();
 
@@ -49,5 +49,9 @@ public class CalendarView {
 	
 	public CalendarToolBar getcalendarToolBar(){
 		return this.calendarToolBar;
+	}
+	
+	public CalendarPanel getCalendarPanel(){
+		return this.calendarPanel;
 	}
 }
