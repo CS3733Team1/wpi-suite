@@ -25,12 +25,10 @@ public class Calendar implements IJanewayModule {
 
 	private CalendarModel model;
 	private CalendarView view;
-	private CalendarController controller;
 
 	public Calendar() {
 		model = new CalendarModel();
 		view = new CalendarView(model);
-		controller = new CalendarController(model, view);
 	}
 
 	/**
