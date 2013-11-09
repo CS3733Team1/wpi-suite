@@ -1,13 +1,16 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import com.google.gson.Gson;
+
+import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+
 import java.util.Date;
 
 
 //BUGBUG why is this here?
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-public class Commitment extends Schedulable {
+public class Commitment extends AbstractModel {
 	// Required parameters
 	private String name;
 	private Date dueDate;
@@ -16,6 +19,8 @@ public class Commitment extends Schedulable {
 	private String description;
 	private Category category;
 
+	
+	
 	public Commitment(String name, Date dueDate) {
 		this.name = name;
 		this.dueDate = dueDate;
@@ -70,19 +75,16 @@ public class Commitment extends Schedulable {
 		this.category = category;
 	}
 
-	@Override
 	public void save() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public String toJSON() {
 		//name, dueDate, description, category
 		String str = new Gson().toJson(this, Commitment.class);
@@ -93,6 +95,12 @@ public class Commitment extends Schedulable {
 	{
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Commitment[].class);
+	}
+	
+	public static Commitment fromJSON(String input)
+	{
+		final Gson parser = new Gson();
+		return parser.fromJson(input, Commitment.class);
 	}
 	
 	public String toString()
@@ -112,9 +120,4 @@ public class Commitment extends Schedulable {
 		return null;
 	}
 
-	@Override
-	public int compareTo(Object other) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
