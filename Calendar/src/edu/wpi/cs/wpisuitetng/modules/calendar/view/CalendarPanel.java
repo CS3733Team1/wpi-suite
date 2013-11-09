@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 
@@ -17,9 +18,12 @@ public class CalendarPanel extends JTabbedPane {
 
 	private JPanel p;
 	private JList commitments;
-	DefaultListModel listModel;
+	private DefaultListModel listModel;
+	private CalendarModel model;
 	
-	public CalendarPanel() {
+	public CalendarPanel(CalendarModel model) {
+		
+		this.model = model;
 		// Initially Empty
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
@@ -58,8 +62,4 @@ public class CalendarPanel extends JTabbedPane {
 		this.addTab(c.getTitle(), null, p, "A Calendar");
 	}
 	
-	public void addCommitment(String data)
-	{
-		listModel.addElement(data);
-	}
 }

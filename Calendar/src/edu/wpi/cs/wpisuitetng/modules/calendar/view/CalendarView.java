@@ -22,7 +22,7 @@ public class CalendarView {
 		// this.model.setValue(InitialValue);
 		// view should access all data from model to display
 
-		calendarPanel = new CalendarPanel();
+		calendarPanel = new CalendarPanel(model);
 		calendarToolBar = new CalendarToolBar(model, this);
 
 		tabs = new ArrayList<JanewayTabModel>();

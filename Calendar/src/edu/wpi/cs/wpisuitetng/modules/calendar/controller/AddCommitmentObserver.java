@@ -12,10 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
  *    Chris Casola
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.postboard.controller;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.postboard.model.PostBoardMessage;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -47,7 +44,7 @@ public class AddCommitmentObserver implements RequestObserver {
 		final ResponseModel response = iReq.getResponse();
 		
 		// Parse the message out of the response body
-		final Commitment commit = Commitment.fromJson(response.getBody());
+		final Commitment commit = Commitment.fromJSON(response.getBody());
 		
 		// Pass the messages back to the controller
 		controller.addCommitmentToModel(commit);
