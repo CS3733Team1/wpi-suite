@@ -163,7 +163,6 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		buttonPanel.add(errorDisplay);
 		
 		
-
 		
 		buttonAdd.addActionListener(new AddCommitmentController(this, model));
 		
@@ -174,6 +173,8 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 				buttonUndoChanges.setEnabled(false);
 			}
 		});
+
+
 
 		//TODO: add action listener and give it our AddCommitmentController
 //		buttonUndoChanges.addActionListener(new ActionListener(){
