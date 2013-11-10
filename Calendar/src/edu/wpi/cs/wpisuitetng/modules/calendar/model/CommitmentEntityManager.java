@@ -14,7 +14,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 
 public class CommitmentEntityManager implements EntityManager<Commitment> {
 	/** The database */
-	Data db;
+	final Data db;
+	public static CommitmentEntityManager CManager;
 
 	
 	/**
@@ -25,7 +26,13 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public CommitmentEntityManager(Data db) {
+	public static CommitmentEntityManager getCommitmentEntityManager(Data db)
+	{
+		return (CManager == null) ? new CommitmentEntityManager(db) : CManager;
+			
+	}
+	
+	private CommitmentEntityManager(Data db) {
 		this.db = db;
 	}
 
@@ -47,6 +54,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 			throw new WPISuiteException();
 		}
 
+		
 		// Return the newly created message (this gets passed back to the client)
 		return newMessage;
 	}
