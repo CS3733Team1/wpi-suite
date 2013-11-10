@@ -19,7 +19,7 @@ public class CalendarToolBar extends JPanel {
 		this.model = model;
 		this.view = view;
 		
-		addCommitment = new JButton("Add Commitmentz");
+		addCommitment = new JButton("Add Commitment");
 		
 		this.setLayout(new FlowLayout());
 		this.add(new JButton("Add Calendar"));

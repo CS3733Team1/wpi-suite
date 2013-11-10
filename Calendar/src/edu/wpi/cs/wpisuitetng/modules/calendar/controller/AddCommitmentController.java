@@ -32,7 +32,6 @@ public class AddCommitmentController implements ActionListener{
 		request.addObserver(new AddCommitmentObserver(this)); // add an observer to process the response
 		request.send(); // send the request
 		
-		view.getCalendarPanel().refresh();
 		
 	}
 	
