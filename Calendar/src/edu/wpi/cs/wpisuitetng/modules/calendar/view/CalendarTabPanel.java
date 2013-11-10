@@ -13,7 +13,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
 
 public class CalendarTabPanel extends JPanel{
 	CalendarModel model;
-	private JList<Object> commitments;
+	private JList<Object> commitments, events;
 	
 	public CalendarTabPanel(CalendarObjectModel c, CalendarModel model){
 		this.model = model;
@@ -21,6 +21,17 @@ public class CalendarTabPanel extends JPanel{
 		setLayout(new BorderLayout());
 		add(new JLabel(c.getTitle()), BorderLayout.CENTER);
 
+		events = new JList<Object>(model.getEventModel());
+		events
+		.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+		events.setLayoutOrientation(JList.VERTICAL);
+		events.setVisibleRowCount(-1);
+
+
+		JScrollPane scrollPane2 = new JScrollPane(commitments);
+
+		//add(scrollPane2, BorderLayout.LINE_END);
 
 		commitments = new JList<Object>(model.getcommitModel());
 		commitments
