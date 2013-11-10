@@ -6,23 +6,25 @@ import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CommitmentPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class AddCommitmentController implements ActionListener{
 	CalendarModel model;
-	CalendarView view;
+	CommitmentPanel view;
 	
-	public AddCommitmentController(CalendarView view, CalendarModel model){
+	public AddCommitmentController(CommitmentPanel view, CalendarModel model){
 		this.model = model;
 		this.view = view;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		
-		Commitment commit = new Commitment("Hello", new Date());
+		Commitment commit = view.getDisplayCommitment();
 		
 		//don't need this because server works now
 		//addCommitmentToModel(commit);
