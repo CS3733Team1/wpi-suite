@@ -26,17 +26,20 @@ public class RemoveCommitmentController implements ActionListener{
 		
 		int[] index = view.getCalendarPanel().getSelectedPanel().getSelectedIndices();
 		
-		System.out.println("index: " + index[0]);
 		
-		Commitment commit = (Commitment) model.getcommitModel().getElement(index[0]);
-		model.removeCommitment(commit);
-		
-		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.DELETE); // PUT == create
-		request.setBody(commit.toJSON()); // put the new message in the body of the request
-		request.addObserver(new RemoveCommitmentObserver(this)); // add an observer to process the response
-		request.send(); // send the request
-		
+		for (int x = index.length-1; x >= 0; x--){
+			System.out.println("index: " + index[x]);
+
+			Commitment commit = (Commitment) model.getcommitModel().getElement(index[x]);
+			//remove this later
+			model.removeCommitment(commit);
+
+			// Send a request to the core to save this message
+			final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.DELETE); // PUT == create
+			request.setBody(commit.toJSON()); // put the new message in the body of the request
+			request.addObserver(new RemoveCommitmentObserver(this)); // add an observer to process the response
+			request.send(); // send the request
+		}
 		
 	}
 	
