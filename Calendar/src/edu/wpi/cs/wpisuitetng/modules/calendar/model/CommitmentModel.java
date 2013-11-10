@@ -105,16 +105,20 @@ public class CommitmentModel extends AbstractListModel<Object> {
 		return commitment.get(commitment.size() - 1 - index).toString();
 	}
 	
-	
+	public Object getElement(int index){
+		return commitment.get(commitment.size() - 1 - index);
+	}
 	
 	public void removeCommitment(int index)
 	{
 		commitment.remove(index);
+		this.fireIntervalAdded(this, 0, 0);
 	}
 	
-	public void removeCommitment(Commitment comit)
+	public void removeCommitment(Commitment commit)
 	{
-		commitment.remove(comit);
+		commitment.remove(commit);
+		this.fireIntervalAdded(this, 0, 0);
 	}
 	
 

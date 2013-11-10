@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -16,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 
 public class CalendarPanel extends JTabbedPane {
 
-	private JPanel p;
+	private ArrayList<JPanel> p;
 	private JList<Object> commitments;
 	private CalendarModel model;
 	
@@ -30,23 +31,11 @@ public class CalendarPanel extends JTabbedPane {
 	// Method to set / add Tab [Calendars]
 
 	public void addCalendar(CalendarObjectModel c) {
-		p = new JPanel();
-		p.setLayout(new BorderLayout());
-		p.add(new JLabel(c.getTitle()), BorderLayout.CENTER);
-
-
-		commitments = new JList<Object>(model.getcommitModel());
-		commitments
-				.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-		commitments.setLayoutOrientation(JList.VERTICAL);
-		commitments.setVisibleRowCount(-1);
-
-		JScrollPane scrollPane = new JScrollPane(commitments);
-
-		p.add(scrollPane, BorderLayout.LINE_END);
-
-		this.addTab(c.getTitle(), null, p, "A Calendar");
+		CalendarTabPanel panel = new CalendarTabPanel(c, model);
+		this.addTab(c.getTitle(), null, panel, "A Calendar");
 	}
 	
+	public JList<Object> getSelectedPanel(){
+		return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
+	}
 }
