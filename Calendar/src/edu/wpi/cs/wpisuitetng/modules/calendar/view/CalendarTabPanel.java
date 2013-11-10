@@ -34,6 +34,7 @@ public class CalendarTabPanel extends JPanel{
 		add(scrollPane2, BorderLayout.LINE_END);
 
 		commitments = new JList<Object>(model.getcommitModel());
+		commitments.setCellRenderer(new CommitmentListRenderer());
 		commitments
 		.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 

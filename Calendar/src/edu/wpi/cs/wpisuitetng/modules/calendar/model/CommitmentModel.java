@@ -109,7 +109,7 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	 */
 	@Override
 	public Object getElementAt(int index) {
-		return commitment.get(commitment.size() - 1 - index).toString();
+		return commitment.get(commitment.size() - 1 - index);
 	}
 	
 	public Object getElement(int index){
