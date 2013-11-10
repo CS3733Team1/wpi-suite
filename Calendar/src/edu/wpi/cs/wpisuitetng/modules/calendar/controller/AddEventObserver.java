@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
  ******************************************************************************/
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -24,11 +25,11 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * @author Chris Casola
  *
  */
-public class AddCommitmentObserver implements RequestObserver {
+public class AddEventObserver implements RequestObserver {
 	
-	private final AddCommitmentController controller;
+	private final AddEventController controller;
 	
-	public AddCommitmentObserver(AddCommitmentController controller) {
+	public AddEventObserver(AddEventController controller) {
 		this.controller = controller;
 	}
 	
@@ -44,21 +45,20 @@ public class AddCommitmentObserver implements RequestObserver {
 		final ResponseModel response = iReq.getResponse();
 		
 		// Parse the message out of the response body
-		final Commitment commit = Commitment.fromJSON(response.getBody());
+		final Event event = Event.fromJSON(response.getBody());
 		
 		// Pass the messages back to the controller
-		controller.addCommitmentToModel(commit);
+		controller.addEventToModel(event);
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to add a commitment failed.");
-		System.err.println("Response: " + iReq.getResponse().getStatusMessage());
+		System.err.println("The request to add a event failed.");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to add a commitment failed.");
+		System.err.println("The request to add a event failed.");
 	}
 
 }

@@ -31,7 +31,7 @@ public class CalendarTabPanel extends JPanel{
 
 		JScrollPane scrollPane2 = new JScrollPane(commitments);
 
-		//add(scrollPane2, BorderLayout.LINE_END);
+		add(scrollPane2, BorderLayout.LINE_END);
 
 		commitments = new JList<Object>(model.getcommitModel());
 		commitments
@@ -52,6 +52,11 @@ public class CalendarTabPanel extends JPanel{
 	
 	public void ResetSelection(){
 		commitments.setSelectedIndices(null);
+		events.setSelectedIndices(null);
+	}
+	
+	public JList<Object> getEventJList(){
+		return events;
 	}
 	
 }
