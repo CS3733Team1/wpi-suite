@@ -26,6 +26,11 @@ public class RemoveCommitmentController implements ActionListener{
 		
 		int[] index = view.getCalendarPanel().getSelectedPanel().getSelectedIndices();
 		
+		if(index.length == 0)
+		{
+			System.out.println("YA DUN GOOFED");
+			return;
+		}
 		
 		for (int x = index.length-1; x >= 0; x--){
 			System.out.println("index: " + index[x]);
