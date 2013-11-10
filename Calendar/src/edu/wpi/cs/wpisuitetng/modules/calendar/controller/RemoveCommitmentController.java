@@ -41,6 +41,8 @@ public class RemoveCommitmentController implements ActionListener{
 			request.send(); // send the request
 		}
 		
+		view.getCalendarPanel().RefreshSelectedPanel();
+		
 	}
 	
 	public void removeCommitmentToModel(Commitment commit){

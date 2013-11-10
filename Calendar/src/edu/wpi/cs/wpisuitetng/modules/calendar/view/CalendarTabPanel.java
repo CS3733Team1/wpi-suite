@@ -39,4 +39,8 @@ public class CalendarTabPanel extends JPanel{
 		return commitments;
 	}
 	
+	public void ResetSelection(){
+		commitments.setSelectedIndices(null);
+	}
+	
 }

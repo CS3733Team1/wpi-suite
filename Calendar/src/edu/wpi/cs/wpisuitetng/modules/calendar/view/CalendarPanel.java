@@ -38,4 +38,8 @@ public class CalendarPanel extends JTabbedPane {
 	public JList<Object> getSelectedPanel(){
 		return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
 	}
+	
+	public void RefreshSelectedPanel(){
+		((CalendarTabPanel)this.getSelectedComponent()).ResetSelection();
+	}
 }
