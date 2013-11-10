@@ -17,7 +17,7 @@ public class CalendarModel {
 	public CalendarModel()
 	{
 		commitModel = CommitmentModel.getCommitmentModel();
-		eventModel = new EventModel();
+		eventModel = EventModel.getEventModel();
 	}
 	/**
 	 * 

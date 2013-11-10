@@ -25,38 +25,42 @@ import javax.swing.AbstractListModel;
 @SuppressWarnings("serial")
 public class EventModel extends AbstractListModel<Object> { 
 
-
-
-
-
 /**
- * This is a model for the post board. It contains all of the messages to be
- * displayed on the board. It extends AbstractListModel so that it can provide
+ * This is a model for events. It contains all of the events to be
+ * displayed on the calendar. It extends AbstractListModel so that it can provide
  * the model data to the JList component in the BoardPanel.
  * 
- * @author Chris Casola
+ * @author Thomas DeSilva, Zach Estep
  * 
  */
+	
+	private static EventModel model;
 
-
-	/** The list of messages on the board */
+	/** The list of events on the calendar */
 	private List<Event> event;
 
 	/**
-	 * Constructs a new board with no messages.
+	 * Constructs a new calendar with no events.
 	 */
-	public EventModel() {
+	private EventModel() {
 		event = new ArrayList<Event>();
+	}
+	
+	public static EventModel getEventModel()
+	{
+		if( model == null)
+			model = new EventModel();
+		return model;
 	}
 
 	/**
-	 * Adds the given message to the board
+	 * Adds the given event to the calendar
 	 * 
 	 * @param newMessage
-	 *            the new message to add
+	 *            the new event to add
 	 */
 	public void addEvent(Event newEvent) {
-		// Add the message
+		// Add the event
 		event.add(newEvent);
 
 		// Notify the model that it has changed so the GUI will be udpated
@@ -64,10 +68,10 @@ public class EventModel extends AbstractListModel<Object> {
 	}
 
 	/**
-	 * Adds the given array of messages to the board
+	 * Adds the given array of events to the calendar
 	 * 
-	 * @param messages
-	 *            the array of messages to add
+	 * @param events
+	 *            the array of events to add
 	 */
 	public void addCommitments(Event[] events) {
 		for (int i = 0; i < events.length; i++) {
@@ -77,11 +81,11 @@ public class EventModel extends AbstractListModel<Object> {
 	}
 
 	/**
-	 * Removes all messages from this model
+	 * Removes all events from this model
 	 * 
 	 * NOTE: One cannot simply construct a new instance of the model, because
 	 * other classes in this module have references to it. Hence, we manually
-	 * remove each message from the model.
+	 * remove each event from the model.
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
@@ -94,9 +98,9 @@ public class EventModel extends AbstractListModel<Object> {
 	}
 
 	/*
-	 * Returns the message at the given index. This method is called internally
+	 * Returns the event at the given index. This method is called internally
 	 * by the JList in BoardPanel. Note this method returns elements in reverse
-	 * order, so newest messages are returned first.
+	 * order, so newest events are returned first.
 	 * 
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
@@ -119,7 +123,7 @@ public class EventModel extends AbstractListModel<Object> {
 	
 
 	/*
-	 * Returns the number of messages in the model. Also used internally by the
+	 * Returns the number of events in the model. Also used internally by the
 	 * JList in BoardPanel.
 	 * 
 	 * @see javax.swing.ListModel#getSize()
@@ -130,6 +134,8 @@ public class EventModel extends AbstractListModel<Object> {
 	}
 	
 	public List<Event> getList(){
-		return event;
+		List<Event> temp = new ArrayList<Event>();
+		temp.addAll(getEventModel().event);
+		return temp;
 	}
 }

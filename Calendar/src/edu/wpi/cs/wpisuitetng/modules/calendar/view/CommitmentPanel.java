@@ -163,15 +163,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		buttonPanel.add(errorDisplay);
 		
 		
-		//Add actionListeners to these buttons
-		buttonAdd.addActionListener(new AddCommitmentController(view, model));
-//		buttonAdd.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				updateDisplayCommitment();
-//			}
-//		});
-<<<<<<< HEAD
+
 		
 		buttonAdd.addActionListener(new AddCommitmentController(this, model));
 		
@@ -182,7 +174,6 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 				buttonUndoChanges.setEnabled(false);
 			}
 		});
-=======
 
 		//TODO: add action listener and give it our AddCommitmentController
 //		buttonUndoChanges.addActionListener(new ActionListener(){
@@ -192,7 +183,6 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 //				buttonUndoChanges.setEnabled(false);
 //			}
 //		});
->>>>>>> d5054e2cfb22c935819e380d440f1c0ec3c10a0d
 		
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
@@ -284,21 +274,12 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 //		Calendar cal = new GregorianCalendar();
 //		cal.setTime(Calendar.getInstance().getTime());
 //		cal.add(Calendar.DAY_OF_YEAR, -1);
-<<<<<<< HEAD
 //		Commitment forName;//TODO: get the Commitment from the model with the name in our boxName textbox // = CommitmentModel.getInstance().getIteration(boxName.getText().trim());
 //		if(boxName.getText().trim().length() == 0)
 //		{
 //			errorDisplay.displayError(EMPTY_NAME_ERROR);
 //		}
 //		
-=======
-		Commitment forName;//TODO: get the Commitment from the model with the name in our boxName textbox // = CommitmentModel.getInstance().getIteration(boxName.getText().trim());
-		if(nameTextField.getText().trim().length() == 0)
-		{
-			errorDisplay.displayError(EMPTY_NAME_ERROR);
-		}
-		
->>>>>>> d5054e2cfb22c935819e380d440f1c0ec3c10a0d
 //		else if(forName != null && forName != displayCommitment)	//the name is already taken
 //		{
 //			errorDisplay.displayError(INVALID_NAME_ERROR);
@@ -335,7 +316,6 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 * @return boolean */
 	private boolean checkForChanges()
 	{
-<<<<<<< HEAD
 //		boolean nameChanged = false;
 //		boolean dueDateChanged = false;
 //		if(vm == ViewMode.CREATING)
@@ -356,27 +336,6 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 //		buttonUndoChanges.setEnabled(anythingChanged);
 //		return anythingChanged;
 		return false;
-=======
-		boolean nameChanged = false;
-		boolean dueDateChanged = false;
-		if(vm == ViewMode.CREATING)
-		{
-			nameChanged = !nameTextField.getText().trim().equals("");
-			dueDateChanged = !dueDateBox.getText().equals("");
-		}
-		else
-		{
-			nameChanged = !nameTextField.getText().equals(displayCommitment.getName());
-			Date dueDate = (Date)dueDateBox.getValue();
-			
-			dueDateChanged = !dueDate.equals(displayCommitment.getDueDate().getDate());
-		}
-		
-		boolean anythingChanged = nameChanged || dueDateChanged;
-		buttonAdd.setEnabled(buttonAdd.isEnabled() && anythingChanged);
-		buttonUndoChanges.setEnabled(anythingChanged);
-		return anythingChanged;
->>>>>>> d5054e2cfb22c935819e380d440f1c0ec3c10a0d
 	}
 
 	/**
