@@ -104,6 +104,19 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	public Object getElementAt(int index) {
 		return commitment.get(commitment.size() - 1 - index).toString();
 	}
+	
+	
+	
+	public void removeCommitment(int index)
+	{
+		commitment.remove(index);
+	}
+	
+	public void removeCommitment()
+	{
+		
+	}
+	
 
 	/*
 	 * Returns the number of messages in the model. Also used internally by the

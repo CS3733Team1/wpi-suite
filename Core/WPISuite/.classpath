@@ -15,5 +15,8 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="/DefectTracker"/>
+	<classpathentry kind="src" path="/PostBoard"/>
+	<classpathentry kind="src" path="/RequirementManager"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
