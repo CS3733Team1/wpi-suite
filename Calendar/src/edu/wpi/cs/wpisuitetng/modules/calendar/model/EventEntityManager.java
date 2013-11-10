@@ -14,8 +14,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
 public class EventEntityManager implements EntityManager<Event> {
 	/** The database */
-	Data db;
-
+	final Data db;
+	public static EventEntityManager EManager;
 	
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -25,7 +25,13 @@ public class EventEntityManager implements EntityManager<Event> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public EventEntityManager(Data db) {
+	public static EventEntityManager getEventEntityManager(Data db)
+	{
+		return (EManager == null) ? new EventEntityManager(db) : EManager;
+			
+	}
+	
+	private EventEntityManager(Data db) {
 		this.db = db;
 	}
 
