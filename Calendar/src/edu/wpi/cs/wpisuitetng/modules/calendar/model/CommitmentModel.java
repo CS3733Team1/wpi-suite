@@ -38,17 +38,24 @@ public class CommitmentModel extends AbstractListModel<Object> {
  * 
  */
 
-
+	private static CommitmentModel model;
 	/** The list of messages on the board */
+
 	private List<Commitment> commitment;
 
 	/**
 	 * Constructs a new board with no messages.
 	 */
-	public CommitmentModel() {
+	private CommitmentModel() {
 		commitment = new ArrayList<Commitment>();
 	}
-
+	
+	static public CommitmentModel getCommitmentModel()
+	{
+		if (model == null)
+			model = new CommitmentModel();
+		return model;
+	}
 	/**
 	 * Adds the given message to the board
 	 * 
@@ -133,7 +140,9 @@ public class CommitmentModel extends AbstractListModel<Object> {
 		return commitment.size();
 	}
 	
-	public List<Commitment> getList(){
-		return commitment;
+	static public List<Commitment> getList(){
+		List<Commitment> temp = new ArrayList<Commitment>();
+		temp.addAll(getCommitmentModel().commitment);
+		return temp;
 	}
 }
