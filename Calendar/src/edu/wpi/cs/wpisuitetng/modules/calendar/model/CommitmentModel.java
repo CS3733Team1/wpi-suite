@@ -30,11 +30,11 @@ public class CommitmentModel extends AbstractListModel<Object> {
 
 
 /**
- * This is a model for the post board. It contains all of the messages to be
- * displayed on the board. It extends AbstractListModel so that it can provide
+ * This is a model for the commitment list. It contains all of the commitments to be
+ * displayed on the calendar. It extends AbstractListModel so that it can provide
  * the model data to the JList component in the BoardPanel.
  * 
- * @author Chris Casola
+ * @author Thomas DeSilva, Zach Estep
  * 
  */
 
