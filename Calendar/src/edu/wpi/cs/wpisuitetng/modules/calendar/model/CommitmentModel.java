@@ -112,9 +112,9 @@ public class CommitmentModel extends AbstractListModel<Object> {
 		commitment.remove(index);
 	}
 	
-	public void removeCommitment()
+	public void removeCommitment(Commitment comit)
 	{
-		
+		commitment.remove(comit);
 	}
 	
 

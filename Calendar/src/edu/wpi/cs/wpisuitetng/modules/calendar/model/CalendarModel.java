@@ -35,5 +35,10 @@ public class CalendarModel {
 	}
 	
 	
+	public void removeCommitment(Commitment commit)
+	{
+		commitModel.removeCommitment(commit);
+	}
+	
 }
 
