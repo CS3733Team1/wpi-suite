@@ -8,7 +8,7 @@ public class CommitmentTest {
 
 	@Before
 	public void setUp() {
-		homework = new Commitment("CS 3733", )
+		//homework = new Commitment("CS 3733", )
 	}
 	
 	@Test
