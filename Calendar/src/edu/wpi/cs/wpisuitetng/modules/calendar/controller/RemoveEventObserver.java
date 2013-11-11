@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
  *    Chris Casola
  ******************************************************************************/
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;

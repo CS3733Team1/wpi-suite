@@ -2,12 +2,9 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CommitmentPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -22,6 +19,7 @@ public class AddCommitmentController implements ActionListener{
 		this.view = view;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		Commitment commit = view.getDisplayCommitment();

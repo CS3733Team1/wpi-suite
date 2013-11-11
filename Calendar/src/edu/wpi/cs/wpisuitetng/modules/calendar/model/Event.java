@@ -1,10 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import java.util.Date;
+
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-
-import java.util.Date;
 
 
 public class Event extends AbstractModel {
@@ -95,6 +95,7 @@ public class Event extends AbstractModel {
 		this.category = category;
 	}
 	
+	@Override
 	public String toJSON() {
 		//name, dueDate, description, category
 		String str = new Gson().toJson(this, Event.class);
@@ -114,6 +115,7 @@ public class Event extends AbstractModel {
 	}
 	
 	
+	@Override
 	public String toString()
 	{
 		//TODO: Remember to change this when participants, recurrence etc. gets added

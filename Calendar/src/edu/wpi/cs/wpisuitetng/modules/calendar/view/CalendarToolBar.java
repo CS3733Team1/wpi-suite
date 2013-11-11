@@ -1,9 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -11,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RemoveCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.DisplayCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;

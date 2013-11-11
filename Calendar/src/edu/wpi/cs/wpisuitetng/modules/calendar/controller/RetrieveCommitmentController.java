@@ -21,8 +21,6 @@ import java.awt.event.MouseListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CommitmentPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;

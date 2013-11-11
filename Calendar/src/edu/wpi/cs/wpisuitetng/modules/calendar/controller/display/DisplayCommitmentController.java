@@ -2,7 +2,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.display;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarView;
@@ -17,6 +16,7 @@ public class DisplayCommitmentController implements ActionListener{
 		this.view = view;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		view.getCalendarPanel().addTab("Add Commitment",new CommitmentPanel(view, model));
 	}

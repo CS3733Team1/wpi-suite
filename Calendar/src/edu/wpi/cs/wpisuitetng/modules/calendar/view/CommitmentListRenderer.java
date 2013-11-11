@@ -8,11 +8,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 
 
 public class CommitmentListRenderer extends JPanel implements ListCellRenderer {

@@ -1,20 +1,17 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
-import java.awt.BorderLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.ListSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RetrieveCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 
 public class CalendarPanel extends JTabbedPane {
 
@@ -37,7 +34,12 @@ public class CalendarPanel extends JTabbedPane {
 		panel.addKeyListener(new RetrieveCommitmentController(model));
 		panel.addMouseListener(new RetrieveCommitmentController(model));
 		
-		this.addTab(c.getTitle(), null, panel, "A Calendar");
+		ImageIcon calIcon = new ImageIcon();
+		try {
+			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/personal_calendar.png")));
+		} catch (IOException e) {}
+		
+		this.addTab(c.getTitle(), calIcon, panel, "A Calendar");
 	}
 	
 	public JList<Object> getSelectedPanel(){

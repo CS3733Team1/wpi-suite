@@ -20,6 +20,7 @@ public class AddEventController implements ActionListener{
 		this.view = view;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		Event eve = new Event("Hello", new Date(), new Date());

@@ -2,7 +2,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
@@ -20,6 +19,7 @@ public class RemoveCommitmentController implements ActionListener{
 		this.view = view;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		System.out.println("Attempt Delete 2");

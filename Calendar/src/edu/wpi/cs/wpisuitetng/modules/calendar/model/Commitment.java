@@ -1,10 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import java.util.Date;
+
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-
-import java.util.Date;
 
 
 //BUGBUG why is this here?
@@ -78,16 +78,19 @@ public class Commitment extends AbstractModel {
 		this.category = category;
 	}
 
+	@Override
 	public void save() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public String toJSON() {
 		//name, dueDate, description, category
 		String str = new Gson().toJson(this, Commitment.class);
@@ -106,6 +109,7 @@ public class Commitment extends AbstractModel {
 		return parser.fromJson(input, Commitment.class);
 	}
 	
+	@Override
 	public String toString()
 	{
 		String str = "Name: " + this.name + " Due Date: " + this.dueDate.toString();
