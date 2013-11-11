@@ -50,7 +50,7 @@ public class CalendarToolBar extends JPanel {
 		
 		this.setLayout(new BorderLayout());
 		
-		addEventButton.addActionListener(new AddEventController(view, model));
+		addEventButton.addActionListener(new DisplayEventController(view, model));
 		deleteEventButton.addActionListener(new RemoveEventController(view, model));
 		addCommitmentButton.addActionListener(new DisplayCommitmentController(view, model));
 		deleteCommitmentButton.addActionListener(new RemoveCommitmentController(view, model));
