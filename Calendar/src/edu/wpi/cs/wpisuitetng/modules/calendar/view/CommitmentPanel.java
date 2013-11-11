@@ -111,7 +111,8 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		GridLayout gridLayout = new GridLayout(3,2);
 		
 		JPanel contentPanel = new JPanel(gridLayout);
-
+		JPanel contentPanel2 = new JPanel(gridLayout);
+		JPanel contentPanel3 = new JPanel(gridLayout);
 		JLabel labelName = new JLabel("Name: ");
 		nameTextField = new JTextField();
 		nameTextField.setPreferredSize(new Dimension(200, 20));
@@ -123,12 +124,14 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		dueDateBox.setPreferredSize(new Dimension(150, 20));
 				
 		//first row: name
-		contentPanel.add(labelName, "left");
-		contentPanel.add(nameTextField, "left");
+		contentPanel2.add(labelName, "left");
+		contentPanel2.add(nameTextField, "left");
+		contentPanel.add(contentPanel2, "left");
 		
 		//second row: due date
-		contentPanel.add(labelDue, "left");
-		contentPanel.add(dueDateBox, "left");
+		contentPanel3.add(labelDue, "left");
+		contentPanel3.add(dueDateBox, "left");
+		contentPanel.add(contentPanel3, "left");
 		
 		//add commitment (submit) button
 		String addButtonText = (vm == ViewMode.EDITING ? "Update Commitment" : "Add Commitment");
