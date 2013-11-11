@@ -2,7 +2,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
@@ -20,6 +19,7 @@ public class RemoveCommitmentController implements ActionListener{
 		this.view = view;
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		System.out.println("Attempt Delete 2");
@@ -37,10 +37,11 @@ public class RemoveCommitmentController implements ActionListener{
 
 			Commitment commit = (Commitment) model.getcommitModel().getElement(index[x]);
 			//remove this later
+			
+			commit.setName("DELETE:"+commit.getName());
 			model.removeCommitment(commit);
-
-			// Send a request to the core to save this message
-			final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.DELETE); // PUT == create
+			// Send a request to the core to save this message 
+			final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
 			request.setBody(commit.toJSON()); // put the new message in the body of the request
 			request.addObserver(new RemoveCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request

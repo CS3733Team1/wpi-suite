@@ -13,6 +13,9 @@
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar"/>
 		</fileset>
+		<fileset dir="${calendar-lib}">
+			<include name="joda-time-2.3.jar"/>
+		</fileset>
 		<pathelement path="build"/>
 	</path>
 
@@ -28,6 +31,9 @@
 				debuglevel="lines,vars,source" includeantruntime="false">
 			<classpath refid="classpath"/>
 		</javac>
+		<copy todir="build/images">
+			<fileset dir="images" includes="**/*.png" />
+		</copy>
 	</target>
 
 	<!-- Janeway and the Core need to load jars containing our module -->
@@ -42,6 +48,7 @@
 	<target name="core-jar" depends="compile-base">
 		<jar destfile="${core-jar-dest}">
 			<fileset dir="build"/>
+			<zipfileset src="./lib/joda-time-2.3.jar"/>
 		</jar>
 	</target>
 

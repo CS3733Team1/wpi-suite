@@ -43,6 +43,7 @@ public class AddCommitmentObserver implements RequestObserver {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
 		
+		
 		// Parse the message out of the response body
 		final Commitment commit = Commitment.fromJSON(response.getBody());
 		

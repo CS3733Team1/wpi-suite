@@ -20,19 +20,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
@@ -116,7 +111,8 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		GridLayout gridLayout = new GridLayout(3,2);
 		
 		JPanel contentPanel = new JPanel(gridLayout);
-
+		JPanel contentPanel2 = new JPanel(gridLayout);
+		JPanel contentPanel3 = new JPanel(gridLayout);
 		JLabel labelName = new JLabel("Name: ");
 		nameTextField = new JTextField();
 		nameTextField.setPreferredSize(new Dimension(200, 20));
@@ -124,19 +120,21 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		
 		JLabel labelDue = new JLabel("Due Date: ");
 		dueDateBox = new JFormattedTextField();
-		dueDateBox.setEnabled(false);
+		dueDateBox.setEnabled(true);
 		dueDateBox.setPreferredSize(new Dimension(150, 20));
 				
 		//first row: name
-		contentPanel.add(labelName, "left");
-		contentPanel.add(nameTextField, "left");
+		contentPanel2.add(labelName, "left");
+		contentPanel2.add(nameTextField, "left");
+		contentPanel.add(contentPanel2, "left");
 		
 		//second row: due date
-		contentPanel.add(labelDue, "left");
-		contentPanel.add(dueDateBox, "left");
+		contentPanel3.add(labelDue, "left");
+		contentPanel3.add(dueDateBox, "left");
+		contentPanel.add(contentPanel3, "left");
 		
 		//add commitment (submit) button
-		String addButtonText = (vm == ViewMode.EDITING ? "Update Iteration" : "Add Iteration");
+		String addButtonText = (vm == ViewMode.EDITING ? "Update Commitment" : "Add Commitment");
 		buttonAdd = new JButton(addButtonText);
 		buttonAdd.setAlignmentX(LEFT_ALIGNMENT);
 		buttonAdd.setEnabled(false);
@@ -163,14 +161,18 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		buttonPanel.add(errorDisplay);
 		
 		
-		//Add actionListeners to these buttons
-		buttonAdd.addActionListener(new AddCommitmentController(view, model));
-//		buttonAdd.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				updateDisplayCommitment();
-//			}
-//		});
+		
+		buttonAdd.addActionListener(new AddCommitmentController(this, model));
+		
+		buttonUndoChanges.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				populateInformation();
+				buttonUndoChanges.setEnabled(false);
+			}
+		});
+
+
 
 		//TODO: add action listener and give it our AddCommitmentController
 //		buttonUndoChanges.addActionListener(new ActionListener(){
@@ -184,17 +186,17 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: tell our controller to update this commitment and remove this tab
-				
-//				ViewEventController.getInstance().refreshTable();
-//				ViewEventController.getInstance().refreshTree();
-//				ViewEventController.getInstance().removeTab(IterationPanel.this);
+				killPanel();
 			}
 		});
 
 		//add the two sub-panels to our form
 		this.add(contentPanel, BorderLayout.NORTH);
 		this.add(buttonPanel, BorderLayout.SOUTH);
+	}
+	
+	public void killPanel(){
+		view.getCalendarPanel().remove(this);
 	}
 	
 	/**
@@ -204,7 +206,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	{
 		String name = nameTextField.getText();
 		displayCommitment.setName(name);
-		displayCommitment.setDueDate((Date)dueDateBox.getValue());
+		displayCommitment.setDueDate(new Date());
 
 		if(vm == ViewMode.CREATING)
 		{
@@ -256,6 +258,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 */
 	private void refreshPanel()
 	{
+		updateDisplayCommitment();
 		validateFields();
 		checkForChanges();
 //		if(vm == ViewMode.EDITING) ;//refreshEstimate();
@@ -266,25 +269,25 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 */
 	private void validateFields()
 	{
-		errorDisplay.removeAllErrors();
+//		errorDisplay.removeAllErrors();
 //		Calendar cal = new GregorianCalendar();
 //		cal.setTime(Calendar.getInstance().getTime());
 //		cal.add(Calendar.DAY_OF_YEAR, -1);
-		Commitment forName;//TODO: get the Commitment from the model with the name in our boxName textbox // = CommitmentModel.getInstance().getIteration(boxName.getText().trim());
-		if(nameTextField.getText().trim().length() == 0)
-		{
-			errorDisplay.displayError(EMPTY_NAME_ERROR);
-		}
-		
+//		Commitment forName;//TODO: get the Commitment from the model with the name in our boxName textbox // = CommitmentModel.getInstance().getIteration(boxName.getText().trim());
+//		if(boxName.getText().trim().length() == 0)
+//		{
+//			errorDisplay.displayError(EMPTY_NAME_ERROR);
+//		}
+//		
 //		else if(forName != null && forName != displayCommitment)	//the name is already taken
 //		{
 //			errorDisplay.displayError(INVALID_NAME_ERROR);
 //		}
 		
-		if(dueDateBox.getText().trim().length() == 0 || dueDateBox.getText().trim().length() == 0)
-		{
-			errorDisplay.displayError(DATES_REQ);
-		}
+//		if(dueDateBox.getText().trim().length() == 0 || dueDateBox.getText().trim().length() == 0)
+//		{
+//			errorDisplay.displayError(DATES_REQ);
+//		}
 		
 		//TODO: check if the due date is in the calendar's past
 		
@@ -312,25 +315,26 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 * @return boolean */
 	private boolean checkForChanges()
 	{
-		boolean nameChanged = false;
-		boolean dueDateChanged = false;
-		if(vm == ViewMode.CREATING)
-		{
-			nameChanged = !nameTextField.getText().trim().equals("");
-			dueDateChanged = !dueDateBox.getText().equals("");
-		}
-		else
-		{
-			nameChanged = !nameTextField.getText().equals(displayCommitment.getName());
-			Date dueDate = (Date)dueDateBox.getValue();
-			
-			dueDateChanged = !dueDate.equals(displayCommitment.getDueDate().getDate());
-		}
-		
-		boolean anythingChanged = nameChanged || dueDateChanged;
-		buttonAdd.setEnabled(buttonAdd.isEnabled() && anythingChanged);
-		buttonUndoChanges.setEnabled(anythingChanged);
-		return anythingChanged;
+//		boolean nameChanged = false;
+//		boolean dueDateChanged = false;
+//		if(vm == ViewMode.CREATING)
+//		{
+//			nameChanged = !boxName.getText().trim().equals("");
+//			dueDateChanged = !dueDateBox.getText().equals("");
+//		}
+//		else
+//		{
+//			nameChanged = !boxName.getText().equals(displayCommitment.getName());
+//			Date dueDate = (Date)dueDateBox.getValue();
+//			
+//			dueDateChanged = !dueDate.equals(displayCommitment.getDueDate().getDate());
+//		}
+//		
+//		boolean anythingChanged = nameChanged || dueDateChanged;
+//		buttonAdd.setEnabled(buttonAdd.isEnabled() && anythingChanged);
+//		buttonUndoChanges.setEnabled(anythingChanged);
+//		return anythingChanged;
+		return false;
 	}
 
 	/**

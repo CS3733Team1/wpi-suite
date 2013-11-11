@@ -1,7 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarModel {
