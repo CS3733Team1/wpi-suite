@@ -18,7 +18,7 @@ public class DisplayCommitmentController implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		view.getCalendarPanel().add(new CommitmentPanel(view, model));
+		view.getCalendarPanel().addTab("Add Commitment",new CommitmentPanel(view, model));
 	}
 	
 
