@@ -8,7 +8,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RemoveCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RemoveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.DisplayCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 
@@ -47,7 +49,8 @@ public class CalendarToolBar extends JPanel {
 		
 		this.setLayout(new BorderLayout());
 		
-		
+		addEventButton.addActionListener(new AddEventController(view, model));
+		deleteEventButton.addActionListener(new RemoveEventController(view, model));
 		addCommitmentButton.addActionListener(new DisplayCommitmentController(view, model));
 		deleteCommitmentButton.addActionListener(new RemoveCommitmentController(view, model));
 		
