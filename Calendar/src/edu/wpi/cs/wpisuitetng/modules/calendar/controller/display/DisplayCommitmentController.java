@@ -18,7 +18,9 @@ public class DisplayCommitmentController implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		view.getCalendarPanel().addTab("Add Commitment",new CommitmentPanel(view, model));
+		CommitmentPanel pan = new CommitmentPanel(view, model);
+		view.getCalendarPanel().addTab("Add Commitment",pan);
+		view.getCalendarPanel().setSelectedComponent(pan);
 	}
 	
 

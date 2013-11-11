@@ -47,7 +47,8 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		System.out.println("Retrieve Shots");
 		// Parse the message from JSON
 		final Commitment newMessage = Commitment.fromJSON(content);
-		if (newMessage.getName().substring(0,7).equals("DELETE:")){
+		
+		if (newMessage.getName().length() >= 7 && newMessage.getName().substring(0,7).equals("DELETE:")){
 			newMessage.setName(newMessage.getName().substring(7));
 			deleteCommitment(newMessage);
 			return newMessage;
@@ -113,7 +114,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 			throws WPISuiteException {
 		
 		System.out.println("Retrieve Shots 2");
-		if (model.getName().substring(0,7).equals("DELETE:")){
+		if (model.getName().length() >= 7 && model.getName().substring(0,7).equals("DELETE:")){
 			model.setName(model.getName().substring(7));
 			deleteCommitment(model);
 			return;
