@@ -51,8 +51,8 @@ public class CalendarToolBar extends JPanel {
 		addCommitmentButton.addActionListener(new DisplayCommitmentController(view, model));
 		deleteCommitmentButton.addActionListener(new RemoveCommitmentController(view, model));
 		
-		addDeletePanel.add(addCalendarButton);
-		addDeletePanel.add(deleteCalendarButton);
+		//addDeletePanel.add(addCalendarButton);
+		//addDeletePanel.add(deleteCalendarButton);
 		addDeletePanel.add(addCommitmentButton);
 		addDeletePanel.add(deleteCommitmentButton);
 		addDeletePanel.add(addEventButton);

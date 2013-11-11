@@ -32,7 +32,7 @@ public class AddCommitmentController implements ActionListener{
 		request.setBody(commit.toJSON()); // put the new message in the body of the request
 		request.addObserver(new AddCommitmentObserver(this)); // add an observer to process the response
 		request.send(); // send the request
-		
+		view.killPanel();
 		
 	}
 	

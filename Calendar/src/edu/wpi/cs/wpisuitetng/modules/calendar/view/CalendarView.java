@@ -36,7 +36,6 @@ public class CalendarView {
 		// Remove later
 		calendarPanel.addCalendar(new CalendarObjectModel("Team Calendar"));
 		calendarPanel.addCalendar(new CalendarObjectModel("Personal Calendar"));
-		calendarPanel.addCalendar(new CalendarObjectModel("Another Calendar"));
 	}
 
 	public List<JanewayTabModel> getTabs() {
