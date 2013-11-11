@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RemoveCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.DisplayCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.DisplayEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 
 public class CalendarToolBar extends JPanel {
@@ -50,6 +51,9 @@ public class CalendarToolBar extends JPanel {
 		
 		addCommitmentButton.addActionListener(new DisplayCommitmentController(view, model));
 		deleteCommitmentButton.addActionListener(new RemoveCommitmentController(view, model));
+		
+		addEventButton.addActionListener(new DisplayEventController(view, model));
+		
 		
 		addDeletePanel.add(addCalendarButton);
 		addDeletePanel.add(deleteCalendarButton);
