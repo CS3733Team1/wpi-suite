@@ -25,6 +25,8 @@ public class AddEventController implements ActionListener{
 		
 		Event eve = new Event("Hello", new Date(), new Date());
 		
+		addEventToModel(eve);
+		System.out.println("Shots Fired 2");
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT); // PUT == create
 		request.setBody(eve.toJSON()); // put the new message in the body of the request
