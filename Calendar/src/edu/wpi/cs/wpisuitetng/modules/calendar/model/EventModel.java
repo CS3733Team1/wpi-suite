@@ -69,7 +69,7 @@ public class EventModel extends AbstractListModel<Object> {
 	 * @param events
 	 *            the array of events to add
 	 */
-	public void addCommitments(Event[] events) {
+	public void addEvents(Event[] events) {
 		for (int i = 0; i < events.length; i++) {
 			this.event.add(events[i]);
 		}

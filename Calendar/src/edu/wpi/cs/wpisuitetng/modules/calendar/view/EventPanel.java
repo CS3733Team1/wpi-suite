@@ -408,6 +408,7 @@ public class EventPanel extends JPanel implements KeyListener{
 		refreshPanel();
 		super.paintComponent(g);
 	}
+	
 		
 	
 }
