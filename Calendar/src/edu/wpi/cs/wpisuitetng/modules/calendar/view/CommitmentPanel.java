@@ -131,7 +131,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		contentPanel.add(dueDateBox, "left");
 		
 		//add commitment (submit) button
-		String addButtonText = (vm == ViewMode.EDITING ? "Update Iteration" : "Add Iteration");
+		String addButtonText = (vm == ViewMode.EDITING ? "Update Commitment" : "Add Commitment");
 		buttonAdd = new JButton(addButtonText);
 		buttonAdd.setAlignmentX(LEFT_ALIGNMENT);
 		buttonAdd.setEnabled(false);
