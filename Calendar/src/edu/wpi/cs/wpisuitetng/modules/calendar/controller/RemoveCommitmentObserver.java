@@ -52,12 +52,16 @@ public class RemoveCommitmentObserver implements RequestObserver {
 
 	@Override
 	public void responseError(IRequest iReq) {
+		System.out.println(iReq.getResponse().getStatusMessage());
+		
 		System.err.println("The request to remove a commitment failed.");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to remove a commitment failed.");
+		System.out.println(exception);
+		
+		System.err.println("The request failed to connect to server.");
 	}
 
 }

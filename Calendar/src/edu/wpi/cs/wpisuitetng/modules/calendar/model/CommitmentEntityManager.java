@@ -45,9 +45,14 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	public Commitment makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 
+		System.out.println("Retrieve Shots");
 		// Parse the message from JSON
 		final Commitment newMessage = Commitment.fromJSON(content);
-
+		if (newMessage.getName().substring(0,7).equals("DELETE:")){
+			newMessage.setName(newMessage.getName().substring(7));
+			deleteCommitment(newMessage);
+			return newMessage;
+		}
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
@@ -107,11 +112,21 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	@Override
 	public void save(Session s, Commitment model)
 			throws WPISuiteException {
-
+		
+		System.out.println("Retrieve Shots 2");
+		if (model.getName().substring(0,7).equals("DELETE:")){
+			model.setName(model.getName().substring(7));
+			deleteCommitment(model);
+			return;
+		}
 		// Save the given defect in the database
 		db.save(model);
 	}
 
+	public void deleteCommitment(Commitment model){
+		db.delete(model);
+	}
+	
 	/*
 	 * Messages cannot be deleted
 	 * 

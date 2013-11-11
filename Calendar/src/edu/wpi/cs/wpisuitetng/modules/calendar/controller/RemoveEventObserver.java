@@ -53,6 +53,8 @@ public class RemoveEventObserver implements RequestObserver {
 
 	@Override
 	public void responseError(IRequest iReq) {
+		
+		
 		System.err.println("The request to remove a event failed.");
 	}
 
