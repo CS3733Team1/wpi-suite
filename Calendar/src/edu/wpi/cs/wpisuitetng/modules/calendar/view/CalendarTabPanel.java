@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
+import java.awt.Insets;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -19,6 +20,7 @@ public class CalendarTabPanel extends JPanel{
 	CalendarModel model;
 	private JList<Object> commitments, events;
 
+	private JButton prevButton, homeButton, nextButton;
 	private JButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
 	
 	public CalendarTabPanel(CalendarObjectModel c, CalendarModel model){
@@ -30,7 +32,15 @@ public class CalendarTabPanel extends JPanel{
 		JPanel calendarViewButtonsPanel = new JPanel();
 
 		try {
-
+			prevButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png"))));
+			homeButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/home.png"))));
+			nextButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/next.png"))));
+			
+			homeButton.setMargin(new Insets(0, 0, 0, 0));
+			prevButton.setMargin(new Insets(0, 0, 0, 0));
+			nextButton.setMargin(new Insets(0, 0, 0, 0));
+			
+			
 			dayViewButton = new JButton("Day",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/day_cal.png"))));
 			weekViewButton = new JButton("Week",
@@ -42,12 +52,22 @@ public class CalendarTabPanel extends JPanel{
 
 		} catch (IOException e) {}
 
+		JPanel temp = new JPanel(new BorderLayout());
+		JPanel temp2 = new JPanel();
+		temp2.add(prevButton);
+		temp2.add(homeButton);
+		temp2.add(nextButton);
+		temp2.add(new JLabel("November 2013"));
+		
 		calendarViewButtonsPanel.add(yearViewButton);
 		calendarViewButtonsPanel.add(monthViewButton);
 		calendarViewButtonsPanel.add(weekViewButton);
 		calendarViewButtonsPanel.add(dayViewButton);
 
-		calendarViewPanel.add(calendarViewButtonsPanel, BorderLayout.NORTH);
+		temp.add(temp2, BorderLayout.WEST);
+		temp.add(calendarViewButtonsPanel, BorderLayout.CENTER);
+		
+		calendarViewPanel.add(temp, BorderLayout.NORTH);
 		calendarViewPanel.add(new JLabel(c.getTitle()), BorderLayout.CENTER);
 		
 		add(calendarViewPanel, BorderLayout.CENTER);
