@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RetrieveCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
@@ -32,6 +33,10 @@ public class CalendarPanel extends JTabbedPane {
 
 	public void addCalendar(CalendarObjectModel c) {
 		CalendarTabPanel panel = new CalendarTabPanel(c, model);
+		
+		panel.addKeyListener(new RetrieveCommitmentController(model));
+		panel.addMouseListener(new RetrieveCommitmentController(model));
+		
 		this.addTab(c.getTitle(), null, panel, "A Calendar");
 	}
 	
