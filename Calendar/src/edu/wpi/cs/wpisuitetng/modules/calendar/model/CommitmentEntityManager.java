@@ -48,8 +48,8 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		// Parse the message from JSON
 		final Commitment newMessage = Commitment.fromJSON(content);
 		
-		if (newMessage.getName().length() >= 7 && newMessage.getName().substring(0,7).equals("DELETE:")){
-			newMessage.setName(newMessage.getName().substring(7));
+		if (newMessage.getName().length() >= 1 && newMessage.getName().substring(0,1).equals(EventEntityManager.DELETESYMBOL)){
+			newMessage.setName(newMessage.getName().substring(1));
 			deleteCommitment(newMessage);
 			return newMessage;
 		}
