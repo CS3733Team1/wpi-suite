@@ -32,19 +32,19 @@ public class CommitmentModel extends AbstractListModel<Object> {
 /**
  * This is a model for the commitment list. It contains all of the commitments to be
  * displayed on the calendar. It extends AbstractListModel so that it can provide
- * the model data to the JList component in the BoardPanel.
+ * the model data to the JList component in the CalendarPanel.
  * 
  * @author Thomas DeSilva, Zach Estep
  * 
  */
 
 	private static CommitmentModel model;
-	/** The list of messages on the board */
+	/** The list of commitments on the calendar */
 
 	private List<Commitment> commitment;
 
 	/**
-	 * Constructs a new board with no messages.
+	 * Constructs a new calendar with no commitments.
 	 */
 	private CommitmentModel() {
 		commitment = new ArrayList<Commitment>();
@@ -57,13 +57,13 @@ public class CommitmentModel extends AbstractListModel<Object> {
 		return model;
 	}
 	/**
-	 * Adds the given message to the board
+	 * Adds the given commitment to the calendar
 	 * 
-	 * @param newMessage
-	 *            the new message to add
+	 * @param newCommitment
+	 *            the new commitment to add
 	 */
 	public void addCommitment(Commitment newCommitment) {
-		// Add the message
+		// Add the commitment
 		commitment.add(newCommitment);
 
 		// Notify the model that it has changed so the GUI will be udpated
@@ -71,10 +71,10 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	}
 
 	/**
-	 * Adds the given array of messages to the board
+	 * Adds the given array of commitments to the calendar
 	 * 
-	 * @param messages
-	 *            the array of messages to add
+	 * @param commitments
+	 *            the array of commitments to add
 	 */
 	public void addCommitments(Commitment[] commitments) {
 		for (int i = 0; i < commitments.length; i++) {
@@ -84,11 +84,11 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	}
 
 	/**
-	 * Removes all messages from this model
+	 * Removes all commitments from this model
 	 * 
 	 * NOTE: One cannot simply construct a new instance of the model, because
 	 * other classes in this module have references to it. Hence, we manually
-	 * remove each message from the model.
+	 * remove each commitment from the model.
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
@@ -100,10 +100,10 @@ public class CommitmentModel extends AbstractListModel<Object> {
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 
-	/*
-	 * Returns the message at the given index. This method is called internally
-	 * by the JList in BoardPanel. Note this method returns elements in reverse
-	 * order, so newest messages are returned first.
+	/**
+	 * Returns the commitment at the given index. This method is called internally
+	 * by the JList in CalendarPanel. Note this method returns elements in reverse
+	 * order, so newest commitments are returned first.
 	 * 
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
@@ -129,9 +129,9 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	}
 	
 
-	/*
-	 * Returns the number of messages in the model. Also used internally by the
-	 * JList in BoardPanel.
+	/**
+	 * Returns the number of commitments in the model. Also used internally by the
+	 * JList in CalendarPanel.
 	 * 
 	 * @see javax.swing.ListModel#getSize()
 	 */
