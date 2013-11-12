@@ -15,6 +15,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	/** The database */
 	final Data db;
 	public static EventEntityManager EManager;
+	final public static String DELETESYMBOL = "^@^"; 
 	
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -46,6 +47,13 @@ public class EventEntityManager implements EntityManager<Event> {
 		// Parse the message from JSON
 		final Event newMessage = Event.fromJSON(content);
 
+		if (newMessage.getName().length() >= EventEntityManager.DELETESYMBOL.length()
+				&& newMessage.getName().substring(0,EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL)){
+			newMessage.setName(newMessage.getName().substring(EventEntityManager.DELETESYMBOL.length()));
+			deleteEvent(newMessage);
+			return newMessage;
+		}
+		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
@@ -109,6 +117,10 @@ public class EventEntityManager implements EntityManager<Event> {
 		db.save(model);
 	}
 
+	public void deleteEvent(Event model){
+		db.delete(model);
+	}
+	
 	/*
 	 * Messages cannot be deleted
 	 * 
