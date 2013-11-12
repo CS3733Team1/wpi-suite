@@ -42,6 +42,10 @@ public class CalendarPanel extends JTabbedPane {
 		this.addTab(c.getTitle(), calIcon, panel, "A Calendar");
 	}
 	
+	public CalendarTabPanel getCurrentPanel(){
+		return (CalendarTabPanel)this.getSelectedComponent();
+	}
+	
 	public JList<Object> getSelectedPanel(){
 		return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
 	}

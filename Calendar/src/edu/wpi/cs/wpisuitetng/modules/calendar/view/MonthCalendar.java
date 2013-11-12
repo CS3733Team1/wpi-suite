@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
-public class MonthCalendar extends JFrame {
+public class MonthCalendar extends JPanel {
 
 	private JPanel contentPane;
 	private JPanel panel_1;
@@ -47,16 +47,15 @@ public class MonthCalendar extends JFrame {
 	 * Create the frame.
 	 */
 	public MonthCalendar() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 600);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setBounds(100, 100, 700, 600);
+		//setBorder(new EmptyBorder(5, 5, 5, 5));
+		//setLayout(new BorderLayout(0, 0));
+		//setContentPane(contentPane);
 
 		int gridSize = 100;
 
-		contentPane.add(panel, BorderLayout.NORTH);
+		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
 		gbl_panel.rowHeights = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
@@ -82,6 +81,8 @@ public class MonthCalendar extends JFrame {
 			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
 		}
 		
+		System.out.println("finished!");
+		panel.setVisible(true);
 
 	}
 

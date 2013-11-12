@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Insets;
 import java.io.IOException;
 
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.DisplayMonthViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
 
@@ -23,12 +25,20 @@ public class CalendarTabPanel extends JPanel{
 	private JButton prevButton, homeButton, nextButton;
 	private JButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
 	
+	private JPanel calendarViewPanel;
+	
+	private Component currentview;
+	private MonthCalendar monthview;
+	
 	public CalendarTabPanel(CalendarObjectModel c, CalendarModel model){
 		this.model = model;
 
+		currentview = null;
+		monthview = null;
+		
 		setLayout(new BorderLayout());
 
-		JPanel calendarViewPanel = new JPanel(new BorderLayout());
+		calendarViewPanel = new JPanel(new BorderLayout());
 		JPanel calendarViewButtonsPanel = new JPanel();
 
 		try {
@@ -59,13 +69,21 @@ public class CalendarTabPanel extends JPanel{
 		temp2.add(nextButton);
 		temp2.add(new JLabel("November 2013"));
 		
+		
+
+		monthViewButton.addActionListener(new DisplayMonthViewController(this));
+		
 		calendarViewButtonsPanel.add(yearViewButton);
 		calendarViewButtonsPanel.add(monthViewButton);
 		calendarViewButtonsPanel.add(weekViewButton);
 		calendarViewButtonsPanel.add(dayViewButton);
 
+		
+		
 		temp.add(temp2, BorderLayout.WEST);
 		temp.add(calendarViewButtonsPanel, BorderLayout.CENTER);
+		
+		
 		
 		calendarViewPanel.add(temp, BorderLayout.NORTH);
 		//calendarViewPanel.add(new JScrollPane(new DayView()), BorderLayout.CENTER);
@@ -100,6 +118,32 @@ public class CalendarTabPanel extends JPanel{
 		add(scrollPane, BorderLayout.LINE_END);
 	}
 
+	public void changeMonthView(){
+		if (monthview == null){
+			monthview = new MonthCalendar();
+		}
+		if (currentview != null){
+			calendarViewPanel.remove(currentview);
+		}
+		
+		System.out.println("I'm at this spot! Again!");
+		
+		currentview = new JScrollPane(monthview);
+		calendarViewPanel.add(currentview, BorderLayout.CENTER);
+
+		monthview.setVisible(true);
+		currentview.setVisible(true);
+		
+		calendarViewPanel.updateUI();
+	}
+	
+	public MonthCalendar grabMonthView(){
+		if (monthview == null){
+			monthview = new MonthCalendar();
+		}	
+		return monthview;
+	}
+	
 	public JList<Object> getCommitmentJList(){
 		return commitments;
 	}
