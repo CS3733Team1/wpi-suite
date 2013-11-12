@@ -12,10 +12,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -28,19 +26,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
-import javax.swing.JInternalFrame;
-import javax.swing.JSplitPane;
-import javax.swing.SwingConstants;
-
-import net.miginfocom.swing.MigLayout;
-
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 /**
  * This panel tab is added whenever the user wants to create a new event or edit an existing one
@@ -48,6 +41,7 @@ import javax.swing.DefaultComboBoxModel;
  * @version $Revision: 1.0 $
  * @author rbansal
  */
+@SuppressWarnings("serial")
 public class EventPanel extends JPanel implements KeyListener{
 	CalendarView view;
 	CalendarModel model;
