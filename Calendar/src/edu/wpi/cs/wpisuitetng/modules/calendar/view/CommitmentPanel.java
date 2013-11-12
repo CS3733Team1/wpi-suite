@@ -122,7 +122,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 */
 	private void buildLayout(){
 		
-		this.setLayout(new BorderLayout());
+		//this.setLayout(new BorderLayout());
 		MigLayout migLayout = new MigLayout("", "[100px][50px][]", "[15px][][::100px,grow][]");
 			
 		JPanel contentPanel = new JPanel(migLayout);
