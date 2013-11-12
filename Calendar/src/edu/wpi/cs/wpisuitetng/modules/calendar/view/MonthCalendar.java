@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.JTextField;
@@ -42,6 +43,8 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 	private ArrayList<GridBagConstraints> gridBagList = new ArrayList<GridBagConstraints>();
 	private JPanel panel = new JPanel();
 
+	private Calendar mycal;
+	private int currentMonth;
 
 	/**
 	 * Create the frame.
@@ -63,9 +66,11 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 		gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 		panel.setLayout(gbl_panel);
 
+		
+		currentMonth = Calendar.NOVEMBER;
 		//TODO: Update with current month and year
-		Calendar mycal = new GregorianCalendar(2013, Calendar.NOVEMBER, 1);
-
+		mycal = new GregorianCalendar(2013, Calendar.NOVEMBER, 1);
+		
 		// Get the number of days in that month
 		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
@@ -283,20 +288,133 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 
 	@Override
 	public void next() {
-		// TODO Auto-generated method stub
+		if (currentMonth == 12){
+			currentMonth = 1;
+		}
+		else{
+			currentMonth++;
+		}
+		Calendar next = new GregorianCalendar(2013, currentMonth, 1);
+		mycal = next;
+		
+		
+		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
+		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
+		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
+		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
+		
+		this.remove(panel);
+		
+		dayLabel = new ArrayList<JLabel>();
+		panelList = new ArrayList<JPanel>();
+		gridBagList = new ArrayList<GridBagConstraints>();
+		panel = new JPanel();
+		
+		int gridSize = 100;
+
+		add(panel, BorderLayout.NORTH);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
+		gbl_panel.rowHeights = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
+		gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+		gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+		panel.setLayout(gbl_panel);
+
+		if(dayLabel.isEmpty()){
+			addDayLabels();
+			addDays(daysInMonth,dayOfWeek, numWeeksMonth);
+		}
+		else
+		{
+			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
+		}
 		
 	}
 
 	@Override
 	public void previous() {
-		// TODO Auto-generated method stub
+		if (currentMonth == 1){
+			currentMonth = 12;
+		}
+		else{
+			currentMonth--;
+		}
+		Calendar next = new GregorianCalendar(2013, currentMonth, 1);
+		mycal = next;
+		
+		
+		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
+		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
+		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
+		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
+		
+		this.remove(panel);
+		
+		dayLabel = new ArrayList<JLabel>();
+		panelList = new ArrayList<JPanel>();
+		gridBagList = new ArrayList<GridBagConstraints>();
+		panel = new JPanel();
+		
+		int gridSize = 100;
+
+		add(panel, BorderLayout.NORTH);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
+		gbl_panel.rowHeights = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
+		gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+		gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+		panel.setLayout(gbl_panel);
+
+		if(dayLabel.isEmpty()){
+			addDayLabels();
+			addDays(daysInMonth,dayOfWeek, numWeeksMonth);
+		}
+		else
+		{
+			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
+		}
 		
 	}
 
 	@Override
 	public void today() {
-		// TODO Auto-generated method stub
+		Date today = new Date();
+		currentMonth = today.getMonth();
 		
+		Calendar next = new GregorianCalendar(2013, currentMonth, 1);
+		mycal = next;
+		
+		
+		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
+		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
+		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
+		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
+		
+		this.remove(panel);
+		
+		dayLabel = new ArrayList<JLabel>();
+		panelList = new ArrayList<JPanel>();
+		gridBagList = new ArrayList<GridBagConstraints>();
+		panel = new JPanel();
+		
+		int gridSize = 100;
+
+		add(panel, BorderLayout.NORTH);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
+		gbl_panel.rowHeights = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
+		gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+		gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+		panel.setLayout(gbl_panel);
+
+		if(dayLabel.isEmpty()){
+			addDayLabels();
+			addDays(daysInMonth,dayOfWeek, numWeeksMonth);
+		}
+		else
+		{
+			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
+		}
 	}
 
 }

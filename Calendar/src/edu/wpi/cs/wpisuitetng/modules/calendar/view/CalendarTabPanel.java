@@ -14,6 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.CalendarViewNextController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.CalendarViewNowController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.CalendarViewPreviousController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.DisplayMonthViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
@@ -64,6 +67,10 @@ public class CalendarTabPanel extends JPanel{
 
 		} catch (IOException e) {}
 
+		prevButton.addActionListener(new CalendarViewPreviousController(this));
+		nextButton.addActionListener(new CalendarViewNextController(this));
+		homeButton.addActionListener(new CalendarViewNowController(this));
+		
 		JPanel temp = new JPanel(new BorderLayout());
 		JPanel temp2 = new JPanel();
 		temp2.add(prevButton);
@@ -130,14 +137,14 @@ public class CalendarTabPanel extends JPanel{
 		
 		System.out.println("I'm at this spot! Again!");
 		
-		//updateview = monthview;
+		updateview = monthview;
 		currentview = new JScrollPane(monthview);
 		calendarViewPanel.add(currentview, BorderLayout.CENTER);
 
 		monthview.setVisible(true);
 		currentview.setVisible(true);
 		
-		calendarViewPanel.updateUI();
+		this.refreshCalendarView();
 	}
 	
 	
@@ -150,6 +157,10 @@ public class CalendarTabPanel extends JPanel{
 	
 	public ICalendarViewComponent getUpdateView(){
 		return updateview;
+	}
+	
+	public void refreshCalendarView(){
+		calendarViewPanel.updateUI();
 	}
 	
 	public JList<Object> getCommitmentJList(){
