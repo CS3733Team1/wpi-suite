@@ -33,6 +33,7 @@ import javax.swing.DefaultComboBoxModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import net.miginfocom.swing.MigLayout;
 
 
 /**
@@ -74,10 +75,11 @@ public class EventPanel extends JPanel implements KeyListener{
 	private JTextField startTimeHoursTextField;
 	private JLabel endTimeLabel;
 	private JTextField endTimeHoursTextField;
-	private JLabel endTimeColonLabel;
 	private JTextField endTimeMinutesTextField;
 	private JComboBox<String> endTimeDayNightComboBox;
 	private JComboBox<String> startTimeDayNightComboBox;
+	private JLabel label;
+	private JLabel label_1;
 	
 	/**
 	 * The constructor for the event panel when creating a new event.
@@ -175,86 +177,72 @@ public class EventPanel extends JPanel implements KeyListener{
 		
 		dataPanel = new JPanel();
 		add(dataPanel, BorderLayout.CENTER);
-		dataPanel.setLayout(null);
+		dataPanel.setLayout(new MigLayout("", "[95px][26px][][32px][5px][50px]", "[17.00][20px][20px][20px][20px]"));
 		
 		nameLabel = new JLabel("Event Name");
-		nameLabel.setBounds(9, 44, 95, 14);
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		dataPanel.add(nameLabel);
+		dataPanel.add(nameLabel, "cell 0 1,growx,aligny center");
 		
 		nameTextField = new JTextField();
-		nameTextField.setBounds(114, 41, 117, 20);
 		nameTextField.setHorizontalAlignment(SwingConstants.LEFT);
-		dataPanel.add(nameTextField);
+		dataPanel.add(nameTextField, "cell 1 1 5 1,growx,aligny top");
 		nameTextField.setColumns(10);
 		
 		JLabel dateLabel = new JLabel("Date of Event");
 		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		dateLabel.setBounds(9, 72, 95, 14);
-		dataPanel.add(dateLabel);
+		dataPanel.add(dateLabel, "cell 0 2,growx,aligny center");
 		
 		dateFormattedTextField = new JFormattedTextField();
 		dateFormattedTextField.setText("mm/dd/yyyy");
 		dateFormattedTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		dateFormattedTextField.setColumns(10);
-		dateFormattedTextField.setBounds(114, 69, 117, 20);
-		dataPanel.add(dateFormattedTextField);
+		dataPanel.add(dateFormattedTextField, "cell 1 2 5 1,growx,aligny top");
 		
 		JLabel startTimeLabel = new JLabel("Start Time");
 		startTimeLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		startTimeLabel.setBounds(9, 100, 95, 14);
-		dataPanel.add(startTimeLabel);
+		dataPanel.add(startTimeLabel, "cell 0 3,growx,aligny center");
+		
+		label = new JLabel(":");
+		dataPanel.add(label, "cell 2 3");
 		
 		startTimeMinutesTextField = new JTextField();
 		startTimeMinutesTextField.setText("mm");
 		startTimeMinutesTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		startTimeMinutesTextField.setColumns(10);
-		startTimeMinutesTextField.setBounds(150, 97, 26, 20);
-		dataPanel.add(startTimeMinutesTextField);
-		
-		JLabel startTimeColonLabel = new JLabel(":");
-		startTimeColonLabel.setBounds(144, 100, 12, 14);
-		dataPanel.add(startTimeColonLabel);
+		dataPanel.add(startTimeMinutesTextField, "cell 3 3,growx,aligny top");
 		
 		startTimeDayNightComboBox = new JComboBox<String>();
 		startTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
-		startTimeDayNightComboBox.setBounds(181, 97, 50, 20);
-		dataPanel.add(startTimeDayNightComboBox);
+		dataPanel.add(startTimeDayNightComboBox, "cell 5 3,growx,aligny top");
 		
 		startTimeHoursTextField = new JTextField();
 		startTimeHoursTextField.setText("hh");
 		startTimeHoursTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		startTimeHoursTextField.setColumns(10);
-		startTimeHoursTextField.setBounds(114, 97, 26, 20);
-		dataPanel.add(startTimeHoursTextField);
+		dataPanel.add(startTimeHoursTextField, "cell 1 3,growx,aligny top");
 		
 		endTimeLabel = new JLabel("End Time");
 		endTimeLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		endTimeLabel.setBounds(9, 128, 95, 14);
-		dataPanel.add(endTimeLabel);
+		dataPanel.add(endTimeLabel, "cell 0 4,growx,aligny center");
 		
 		endTimeHoursTextField = new JTextField();
 		endTimeHoursTextField.setText("hh");
 		endTimeHoursTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		endTimeHoursTextField.setColumns(10);
-		endTimeHoursTextField.setBounds(114, 125, 26, 20);
-		dataPanel.add(endTimeHoursTextField);
+		dataPanel.add(endTimeHoursTextField, "cell 1 4,growx,aligny top");
 		
-		endTimeColonLabel = new JLabel(":");
-		endTimeColonLabel.setBounds(144, 128, 12, 14);
-		dataPanel.add(endTimeColonLabel);
+		label_1 = new JLabel(":");
+		dataPanel.add(label_1, "cell 2 4");
 		
 		endTimeMinutesTextField = new JTextField();
 		endTimeMinutesTextField.setText("mm");
 		endTimeMinutesTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		endTimeMinutesTextField.setColumns(10);
-		endTimeMinutesTextField.setBounds(150, 125, 26, 20);
-		dataPanel.add(endTimeMinutesTextField);
+		dataPanel.add(endTimeMinutesTextField, "cell 3 4,growx,aligny top");
 		
 		endTimeDayNightComboBox = new JComboBox<String>();
 		endTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
-		endTimeDayNightComboBox.setBounds(181, 125, 50, 20);
-		dataPanel.add(endTimeDayNightComboBox);
+		dataPanel.add(endTimeDayNightComboBox, "cell 5 4,growx,aligny top");
 	}
 	
 	public void killPanel(){
