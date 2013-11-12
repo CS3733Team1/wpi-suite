@@ -81,6 +81,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	private JButton buttonAdd;
 	private JButton buttonCancel;
 	private JButton buttonUndoChanges;
+	private JCalendar commitmentDate;
 	
 	private ErrorPanel errorDisplay;
 	
@@ -196,7 +197,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(dateLabel, "cell 0 2,growx,aligny center");
 		
-		JCalendar commitmentDate = new JCalendar();
+		commitmentDate = new JCalendar();
 		dataPanel.add(commitmentDate, "cell 1 2 5 1,growx,aligny top");
 		
 		JLabel labelDesc = new JLabel("Description: ");
@@ -228,8 +229,11 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	private void updateDisplayCommitment()
 	{
 		String name = nameTextField.getText();
+		Date date = commitmentDate.getDate();
+		String description = descriptionTextArea.getText();
 		displayCommitment.setName(name);
-		displayCommitment.setDueDate(new Date());
+		displayCommitment.setDueDate(date);
+		displayCommitment.setDescription(description);
 
 		if(vm == ViewMode.CREATING)
 		{
@@ -269,12 +273,12 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 * Sets the dates for the commitment panel
 	 * @param dueDate the due date
 	 */
-	public void setDueDate(Date dueDate)
-	{
-		if(dueDate != null) this.dueDateBox.setValue(dueDate);
-		
-		refreshPanel();
-	}
+	//public void setDueDate(Date dueDate)
+	//{
+	//	if(dueDate != null) this.dueDateBox.setValue(dueDate);
+	//	
+	//	refreshPanel();
+	//}
 	
 	/**
 	 * Refreshes the panel
@@ -390,6 +394,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	
 	 * @return the display commitment */
 	public Commitment getDisplayCommitment() {
+		updateDisplayCommitment();
 		return displayCommitment;
 	}
 
