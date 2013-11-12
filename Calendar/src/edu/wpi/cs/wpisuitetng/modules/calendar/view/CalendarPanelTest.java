@@ -1,3 +1,4 @@
+/*
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import static org.junit.Assert.*;
@@ -12,3 +13,4 @@ public class CalendarPanelTest {
 	}
 
 }
+*/

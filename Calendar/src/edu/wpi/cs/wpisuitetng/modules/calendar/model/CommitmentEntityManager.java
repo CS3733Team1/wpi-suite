@@ -48,11 +48,14 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		// Parse the message from JSON
 		final Commitment newMessage = Commitment.fromJSON(content);
 		
-		if (newMessage.getName().length() >= 1 && newMessage.getName().substring(0,1).equals(EventEntityManager.DELETESYMBOL)){
-			newMessage.setName(newMessage.getName().substring(1));
+		if (newMessage.getName().length() >= EventEntityManager.DELETESYMBOL.length()
+				&& newMessage.getName().substring(0,EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL)){
+			newMessage.setName(newMessage.getName().substring(EventEntityManager.DELETESYMBOL.length()));
 			deleteCommitment(newMessage);
 			return newMessage;
 		}
+		System.out.println("spooky copyright ghosts");
+		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
@@ -114,8 +117,9 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 			throws WPISuiteException {
 		
 		System.out.println("Retrieve Shots 2");
-		if (model.getName().length() >= 7 && model.getName().substring(0,7).equals("DELETE:")){
-			model.setName(model.getName().substring(7));
+		if (model.getName().length() >= EventEntityManager.DELETESYMBOL.length()
+				&& model.getName().substring(0,EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL)){
+			model.setName(model.getName().substring(EventEntityManager.DELETESYMBOL.length()));
 			deleteCommitment(model);
 			return;
 		}
