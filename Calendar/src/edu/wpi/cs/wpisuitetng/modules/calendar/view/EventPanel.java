@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
- * Contributors: Team Rolling Thunder
+ * Contributors: Team TART
  ******************************************************************************/
 
 
@@ -80,9 +80,9 @@ public class EventPanel extends JPanel implements KeyListener{
 	private JTextField endTimeMinutesTextField;
 	private JComboBox<String> endTimeDayNightComboBox;
 	private JComboBox<String> startTimeDayNightComboBox;
-	private JLabel label;
-	private JLabel label_1;
-	private JCalendar eventDate = new JCalendar();
+	private JLabel startTimeColonLabel;
+	private JLabel endTimeColonLabel;
+	private JCalendar dateCalendar = new JCalendar();
 	/**
 	 * The constructor for the event panel when creating a new event.
 	 * @wbp.parser.constructor
@@ -192,19 +192,14 @@ public class EventPanel extends JPanel implements KeyListener{
 		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(dateLabel, "cell 0 2,growx,aligny center");
 		
-		dateFormattedTextField = new JFormattedTextField();
-		dateFormattedTextField.setText("mm/dd/yyyy");
-		dateFormattedTextField.setHorizontalAlignment(SwingConstants.LEFT);
-		dateFormattedTextField.setColumns(10);
-		//dataPanel.add(dateFormattedTextField, "cell 1 2 5 1,growx,aligny top");
-		dataPanel.add(eventDate, "cell 1 2 5 1,growx,aligny top");
+		dataPanel.add(dateCalendar, "cell 1 2 5 1,growx,aligny top");
 		
 		JLabel startTimeLabel = new JLabel("Start Time");
 		startTimeLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(startTimeLabel, "cell 0 3,growx,aligny center");
 		
-		label = new JLabel(":");
-		dataPanel.add(label, "cell 2 3");
+		startTimeColonLabel = new JLabel(":");
+		dataPanel.add(startTimeColonLabel, "cell 2 3");
 		
 		startTimeMinutesTextField = new JTextField();
 		startTimeMinutesTextField.setText("mm");
@@ -232,8 +227,8 @@ public class EventPanel extends JPanel implements KeyListener{
 		endTimeHoursTextField.setColumns(10);
 		dataPanel.add(endTimeHoursTextField, "cell 1 4,growx,aligny top");
 		
-		label_1 = new JLabel(":");
-		dataPanel.add(label_1, "cell 2 4");
+		endTimeColonLabel = new JLabel(":");
+		dataPanel.add(endTimeColonLabel, "cell 2 4");
 		
 		endTimeMinutesTextField = new JTextField();
 		endTimeMinutesTextField.setText("mm");
