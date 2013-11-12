@@ -33,9 +33,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.toedter.calendar.JCalendar;
+
 import net.miginfocom.swing.MigLayout;
 
-import com.toedter.calendar.JCalendar;
+//import com.toedter.calendar.JCalendar;
 
 
 

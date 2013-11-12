@@ -15,6 +15,7 @@
 		</fileset>
 		<fileset dir="${calendar-lib}">
 			<include name="jcalendar-1.4.jar"/>
+			<include name="miglayout15-swing.jar"/>
 		</fileset>
 		<pathelement path="build"/>
 	</path>
@@ -49,6 +50,7 @@
 		<jar destfile="${core-jar-dest}">
 			<fileset dir="build"/>
 			<zipfileset src="./lib/jcalendar-1.4.jar"/>
+			<zipfileset src="./lib/miglayout15-swing.jar"/>
 		</jar>
 	</target>
 
