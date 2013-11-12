@@ -20,14 +20,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DateFormat;
 import java.util.Date;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import net.miginfocom.swing.MigLayout;
+
+import com.toedter.calendar.JCalendar;
+
+
+
+
+
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
@@ -56,6 +69,8 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	
 	//components that will be in the panel
 	private JTextField nameTextField;
+	private JTextArea descriptionTextArea;
+	private JComboBox categoryComboBox;
 	private JPanel buttonPanel;
 	
 	private JFormattedTextField dueDateBox;
@@ -106,32 +121,66 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	private void buildLayout(){
 		
 		this.setLayout(new BorderLayout());
-		//MigLayout layout = new MigLayout();
-
-		GridLayout gridLayout = new GridLayout(3,2);
+		MigLayout migLayout = new MigLayout("", "[100px][50px][]", "[15px][][::100px,grow][]");
+			
+		JPanel contentPanel = new JPanel(migLayout);
+		//contentPanel.setLayout();
+//		JPanel contentPanel2 = new JPanel();
+//		JPanel contentPanel3 = new JPanel();
+//		JPanel contentPanel4 = new JPanel();
+//		JPanel contentPanel5 = new JPanel();
 		
-		JPanel contentPanel = new JPanel(gridLayout);
-		JPanel contentPanel2 = new JPanel(gridLayout);
-		JPanel contentPanel3 = new JPanel(gridLayout);
 		JLabel labelName = new JLabel("Name: ");
 		nameTextField = new JTextField();
 		nameTextField.setPreferredSize(new Dimension(200, 20));
 		nameTextField.addKeyListener(this);
 		
 		JLabel labelDue = new JLabel("Due Date: ");
-		dueDateBox = new JFormattedTextField();
-		dueDateBox.setEnabled(true);
-		dueDateBox.setPreferredSize(new Dimension(150, 20));
-				
-		//first row: name
-		contentPanel2.add(labelName, "left");
-		contentPanel2.add(nameTextField, "left");
-		contentPanel.add(contentPanel2, "left");
+//		dueDateBox = new JFormattedTextField();
+//		dueDateBox.setEnabled(true);
+//		dueDateBox.setPreferredSize(new Dimension(150, 20));
+		JCalendar datePicker = new JCalendar();
 		
-		//second row: due date
-		contentPanel3.add(labelDue, "left");
-		contentPanel3.add(dueDateBox, "left");
-		contentPanel.add(contentPanel3, "left");
+		JLabel labelDesc = new JLabel("Description: ");
+		descriptionTextArea = new JTextArea();
+		descriptionTextArea.setPreferredSize(new Dimension(200, 20));
+		descriptionTextArea.addKeyListener(this);
+		
+		//
+		String[] tempCategory = {"Test1", "Test2"};
+		JLabel labelCat = new JLabel("Category: ");
+		categoryComboBox = new JComboBox<String>(tempCategory);
+		categoryComboBox.setPreferredSize(new Dimension(200, 20));
+		categoryComboBox.addKeyListener(this);
+		
+		contentPanel.add(labelName, "cell 0 0");
+		contentPanel.add(nameTextField, "cell 1 0,growx");
+		nameTextField.setColumns(10);
+		contentPanel.add(labelDue, "cell 0 1");
+		contentPanel.add(datePicker, "cell 1 1");
+		contentPanel.add(labelDesc, "cell 0 2");
+		contentPanel.add(descriptionTextArea, "cell 1 2,grow");
+		contentPanel.add(labelCat, "cell 0 3,alignx trailing");
+		contentPanel.add(categoryComboBox, "cell 1 3,growx");
+//		//first row: name
+//		contentPanel2.add(labelName);
+//		contentPanel2.add(nameTextField);
+//		contentPanel.add(contentPanel2);
+//		
+//		//second row: due date
+//		contentPanel3.add(labelDue);
+//		contentPanel3.add(datePicker);
+//		contentPanel.add(contentPanel3);
+//		
+//		//third row: due date
+//		contentPanel4.add(labelDesc);
+//		contentPanel4.add(descriptionTextArea);
+//		contentPanel.add(contentPanel4);
+//				
+//		//fourth row: due date
+//		contentPanel5.add(labelCat);
+//		contentPanel5.add(categoryComboBox);
+//		contentPanel.add(contentPanel5);
 		
 		//add commitment (submit) button
 		String addButtonText = (vm == ViewMode.EDITING ? "Update Commitment" : "Add Commitment");
@@ -258,8 +307,8 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 */
 	private void refreshPanel()
 	{
-		updateDisplayCommitment();
 		validateFields();
+		updateDisplayCommitment();
 		checkForChanges();
 //		if(vm == ViewMode.EDITING) ;//refreshEstimate();
 	}
@@ -270,33 +319,28 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	private void validateFields()
 	{
 //		errorDisplay.removeAllErrors();
-//		Calendar cal = new GregorianCalendar();
-//		cal.setTime(Calendar.getInstance().getTime());
-//		cal.add(Calendar.DAY_OF_YEAR, -1);
-//		Commitment forName;//TODO: get the Commitment from the model with the name in our boxName textbox // = CommitmentModel.getInstance().getIteration(boxName.getText().trim());
-//		if(boxName.getText().trim().length() == 0)
+//		
+//		//TODO: get the Commitment from the model with the name in our boxName textbox // = CommitmentModel.getInstance().getIteration(boxName.getText().trim());
+//		if(nameTextField.getText().trim().length() == 0)
 //		{
 //			errorDisplay.displayError(EMPTY_NAME_ERROR);
 //		}
 //		
-//		else if(forName != null && forName != displayCommitment)	//the name is already taken
-//		{
-//			errorDisplay.displayError(INVALID_NAME_ERROR);
-//		}
-		
-//		if(dueDateBox.getText().trim().length() == 0 || dueDateBox.getText().trim().length() == 0)
-//		{
+//		
+//		if(dueDateBox.getText().trim().length() == 0)
+//		{		
 //			errorDisplay.displayError(DATES_REQ);
 //		}
-		
-		//TODO: check if the due date is in the calendar's past
-		
+//		
+//		
+//		//TODO: check if the due date is in the calendar's past
+//		
 //		else if(((Date)dueDateBox.getValue()).before(cal.getTime()))
 //		{
 //			errorDisplay.displayError(PAST_ERROR);
 //		}
-		
-		//commitments can't conflict with eachother, so we don't check this
+//		
+//		//commitments can't conflict with eachother, so we don't check this
 //		else
 //		{
 //			Commitment conflicting = CommitmentModel.getInstance().getConflictingIteration((Date)dueDateBox.getValue());
@@ -305,7 +349,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 //				errorDisplay.displayError(OVERLAPPING_ERROR + " Overlaps with " + conflicting.getName() + ".");
 //			}
 //		}
-		
+//		
 		buttonAdd.setEnabled(!errorDisplay.hasErrors());
 	}
 	

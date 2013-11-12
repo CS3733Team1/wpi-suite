@@ -14,7 +14,7 @@
 			<include name="gson-*.jar"/>
 		</fileset>
 		<fileset dir="${calendar-lib}">
-			<include name="joda-time-2.3.jar"/>
+			<include name="jcalendar-1.4.jar"/>
 		</fileset>
 		<pathelement path="build"/>
 	</path>
@@ -48,7 +48,7 @@
 	<target name="core-jar" depends="compile-base">
 		<jar destfile="${core-jar-dest}">
 			<fileset dir="build"/>
-			<zipfileset src="./lib/joda-time-2.3.jar"/>
+			<zipfileset src="./lib/jcalendar-1.4.jar"/>
 		</jar>
 	</target>
 
