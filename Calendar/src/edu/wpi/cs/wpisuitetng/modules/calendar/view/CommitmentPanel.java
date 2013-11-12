@@ -162,7 +162,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		contentPanel.add(datePicker, "cell 1 1");
 		contentPanel.add(labelDesc, "cell 0 2");
 		contentPanel.add(descriptionTextArea, "cell 1 2,grow");
-		contentPanel.add(labelCat, "cell 0 3,alignx trailing");
+		contentPanel.add(labelCat, "cell 0 3");
 		contentPanel.add(categoryComboBox, "cell 1 3,growx");
 //		//first row: name
 //		contentPanel2.add(labelName);

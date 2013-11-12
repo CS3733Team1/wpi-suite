@@ -30,6 +30,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import com.toedter.calendar.JCalendar;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
@@ -80,7 +82,7 @@ public class EventPanel extends JPanel implements KeyListener{
 	private JComboBox<String> startTimeDayNightComboBox;
 	private JLabel label;
 	private JLabel label_1;
-	
+	private JCalendar eventDate = new JCalendar();
 	/**
 	 * The constructor for the event panel when creating a new event.
 	 * @wbp.parser.constructor
@@ -146,7 +148,7 @@ public class EventPanel extends JPanel implements KeyListener{
 		
 		
 		
-		buttonAdd.addActionListener(new AddEventController(this.view, this.model));
+		buttonAdd.addActionListener(new AddEventController(this, this.model));
 		
 		buttonUndoChanges.addActionListener(new ActionListener(){
 			@Override
@@ -196,7 +198,8 @@ public class EventPanel extends JPanel implements KeyListener{
 		dateFormattedTextField.setText("mm/dd/yyyy");
 		dateFormattedTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		dateFormattedTextField.setColumns(10);
-		dataPanel.add(dateFormattedTextField, "cell 1 2 5 1,growx,aligny top");
+		//dataPanel.add(dateFormattedTextField, "cell 1 2 5 1,growx,aligny top");
+		dataPanel.add(eventDate, "cell 1 2 5 1,growx,aligny top");
 		
 		JLabel startTimeLabel = new JLabel("Start Time");
 		startTimeLabel.setHorizontalAlignment(SwingConstants.LEFT);
