@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CommitmentPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -26,11 +27,10 @@ public class AddCommitmentController implements ActionListener{
 		Commitment commit = view.getDisplayCommitment();
 		
 		//set name encoding to ASCII so it can't have the delete character
-		try {
-			commit.setName(commit.getName().getBytes("US-ASCII").toString());
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			System.err.println("ERROR: Commitment names must be input in ASCII.");
+		if(commit.getName().substring(0, EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL))
+		{
+			System.err.println("Commitment names cannot begin with " + EventEntityManager.DELETESYMBOL);
+			return;
 		}
 		
 		//don't need this because server works now

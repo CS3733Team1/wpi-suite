@@ -40,6 +40,9 @@ public class RemoveCommitmentController implements ActionListener{
 			//remove this later
 			
 			commit.setName(EventEntityManager.DELETESYMBOL+commit.getName());
+			
+			//System.out.println(EventEntityManager.DELETESYMBOL);
+			
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
 			final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
