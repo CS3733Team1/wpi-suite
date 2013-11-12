@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -32,6 +33,7 @@ public class RemoveEventController implements ActionListener{
 
 			Event eve = (Event) model.getcommitModel().getElement(index[x]);
 			//remove this later
+			eve.setName(EventEntityManager.DELETESYMBOL+eve.getName());
 			model.removeEvent(eve);
 
 			// Send a request to the core to save this message

@@ -2,9 +2,11 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CommitmentPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -24,6 +26,13 @@ public class AddCommitmentController implements ActionListener{
 		
 		Commitment commit = view.getDisplayCommitment();
 		
+		//set name encoding to ASCII so it can't have the delete character
+		if(commit.getName().substring(0, EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL))
+		{
+			System.err.println("Commitment names cannot begin with " + EventEntityManager.DELETESYMBOL);
+			return;
+		}
+		
 		//don't need this because server works now
 		//addCommitmentToModel(commit);
 		System.out.println("Shots Fired 2");
@@ -32,7 +41,7 @@ public class AddCommitmentController implements ActionListener{
 		request.setBody(commit.toJSON()); // put the new message in the body of the request
 		request.addObserver(new AddCommitmentObserver(this)); // add an observer to process the response
 		request.send(); // send the request
-		view.killPanel();
+		
 		
 	}
 	

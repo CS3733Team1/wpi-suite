@@ -105,8 +105,8 @@ public class CalendarTabPanel extends JPanel{
 	}
 
 	public void ResetSelection(){
-		commitments.setSelectedIndices(null);
-		events.setSelectedIndices(null);
+		commitments.clearSelection();
+		events.clearSelection();
 	}
 
 	public JList<Object> getEventJList(){

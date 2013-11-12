@@ -6,6 +6,7 @@ import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -25,6 +26,15 @@ public class AddEventController implements ActionListener{
 		
 		Event eve = new Event("Hello", new Date(), new Date());
 		
+		//set name encoding to ASCII so it can't have the delete character
+		if(eve.getName().substring(0, EventEntityManager.DELETESYMBOL.length()) == EventEntityManager.DELETESYMBOL)
+		{
+			System.err.println("Event names cannot begin with " + EventEntityManager.DELETESYMBOL);
+			return;
+		}
+		
+		addEventToModel(eve);
+		System.out.println("Shots Fired 2");
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT); // PUT == create
 		request.setBody(eve.toJSON()); // put the new message in the body of the request
