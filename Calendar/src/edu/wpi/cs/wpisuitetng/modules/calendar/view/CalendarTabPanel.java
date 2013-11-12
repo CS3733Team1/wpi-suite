@@ -68,7 +68,7 @@ public class CalendarTabPanel extends JPanel{
 		temp.add(calendarViewButtonsPanel, BorderLayout.CENTER);
 		
 		calendarViewPanel.add(temp, BorderLayout.NORTH);
-		calendarViewPanel.add(new JLabel(c.getTitle()), BorderLayout.CENTER);
+		calendarViewPanel.add(new JScrollPane(new DayView()), BorderLayout.CENTER);
 		
 		add(calendarViewPanel, BorderLayout.CENTER);
 
