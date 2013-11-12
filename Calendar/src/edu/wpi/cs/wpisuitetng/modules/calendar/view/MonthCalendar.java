@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
-public class MonthCalendar extends JPanel {
+public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 
 	private JPanel contentPane;
 	private JPanel panel_1;
@@ -239,6 +239,7 @@ public class MonthCalendar extends JPanel {
 			}
 		}
 	}
+	
 	public void updateDays(int daysInMonth, int dayOfWeekFirstWeek, int numWeeksMonth)
 	{
 		dayLabel.clear();
@@ -278,6 +279,24 @@ public class MonthCalendar extends JPanel {
 
 			}
 		}
+	}
+
+	@Override
+	public void next() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void previous() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void today() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

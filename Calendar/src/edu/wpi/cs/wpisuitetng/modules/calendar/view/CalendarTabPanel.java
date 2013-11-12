@@ -28,6 +28,7 @@ public class CalendarTabPanel extends JPanel{
 	private JPanel calendarViewPanel;
 	
 	private Component currentview;
+	private ICalendarViewComponent updateview;
 	private MonthCalendar monthview;
 	
 	public CalendarTabPanel(CalendarObjectModel c, CalendarModel model){
@@ -35,6 +36,7 @@ public class CalendarTabPanel extends JPanel{
 
 		currentview = null;
 		monthview = null;
+		updateview = null;
 		
 		setLayout(new BorderLayout());
 
@@ -128,6 +130,7 @@ public class CalendarTabPanel extends JPanel{
 		
 		System.out.println("I'm at this spot! Again!");
 		
+		//updateview = monthview;
 		currentview = new JScrollPane(monthview);
 		calendarViewPanel.add(currentview, BorderLayout.CENTER);
 
@@ -137,11 +140,16 @@ public class CalendarTabPanel extends JPanel{
 		calendarViewPanel.updateUI();
 	}
 	
+	
 	public MonthCalendar grabMonthView(){
 		if (monthview == null){
 			monthview = new MonthCalendar();
 		}	
 		return monthview;
+	}
+	
+	public ICalendarViewComponent getUpdateView(){
+		return updateview;
 	}
 	
 	public JList<Object> getCommitmentJList(){
