@@ -146,8 +146,6 @@ public class EventPanel extends JPanel implements KeyListener{
 		buttonPanel.add(buttonCancel);
 		buttonPanel.add(errorDisplay);
 		
-		
-		
 		buttonAdd.addActionListener(new AddEventController(this, this.model));
 		
 		buttonUndoChanges.addActionListener(new ActionListener(){

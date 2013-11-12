@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.toedter.calendar.JCalendar;
 
@@ -74,7 +75,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	private JTextArea descriptionTextArea;
 	private JComboBox categoryComboBox;
 	private JPanel buttonPanel;
-	
+	private JPanel dataPanel;
 	private JFormattedTextField dueDateBox;
 	
 	private JButton buttonAdd;
@@ -122,67 +123,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 */
 	private void buildLayout(){
 		
-		//this.setLayout(new BorderLayout());
-		MigLayout migLayout = new MigLayout("", "[100px][50px][]", "[15px][][::100px,grow][]");
-			
-		JPanel contentPanel = new JPanel(migLayout);
-		//contentPanel.setLayout();
-//		JPanel contentPanel2 = new JPanel();
-//		JPanel contentPanel3 = new JPanel();
-//		JPanel contentPanel4 = new JPanel();
-//		JPanel contentPanel5 = new JPanel();
-		
-		JLabel labelName = new JLabel("Name: ");
-		nameTextField = new JTextField();
-		nameTextField.setPreferredSize(new Dimension(200, 20));
-		nameTextField.addKeyListener(this);
-		
-		JLabel labelDue = new JLabel("Due Date: ");
-//		dueDateBox = new JFormattedTextField();
-//		dueDateBox.setEnabled(true);
-//		dueDateBox.setPreferredSize(new Dimension(150, 20));
-		JCalendar datePicker = new JCalendar();
-		
-		JLabel labelDesc = new JLabel("Description: ");
-		descriptionTextArea = new JTextArea();
-		descriptionTextArea.setPreferredSize(new Dimension(200, 20));
-		descriptionTextArea.addKeyListener(this);
-		
-		//
-		String[] tempCategory = {"Test1", "Test2"};
-		JLabel labelCat = new JLabel("Category: ");
-		categoryComboBox = new JComboBox<String>(tempCategory);
-		categoryComboBox.setPreferredSize(new Dimension(200, 20));
-		categoryComboBox.addKeyListener(this);
-		
-		contentPanel.add(labelName, "cell 0 0");
-		contentPanel.add(nameTextField, "cell 1 0,growx");
-		nameTextField.setColumns(10);
-		contentPanel.add(labelDue, "cell 0 1");
-		contentPanel.add(datePicker, "cell 1 1");
-		contentPanel.add(labelDesc, "cell 0 2");
-		contentPanel.add(descriptionTextArea, "cell 1 2,grow");
-		contentPanel.add(labelCat, "cell 0 3");
-		contentPanel.add(categoryComboBox, "cell 1 3,growx");
-//		//first row: name
-//		contentPanel2.add(labelName);
-//		contentPanel2.add(nameTextField);
-//		contentPanel.add(contentPanel2);
-//		
-//		//second row: due date
-//		contentPanel3.add(labelDue);
-//		contentPanel3.add(datePicker);
-//		contentPanel.add(contentPanel3);
-//		
-//		//third row: due date
-//		contentPanel4.add(labelDesc);
-//		contentPanel4.add(descriptionTextArea);
-//		contentPanel.add(contentPanel4);
-//				
-//		//fourth row: due date
-//		contentPanel5.add(labelCat);
-//		contentPanel5.add(categoryComboBox);
-//		contentPanel.add(contentPanel5);
+		this.setLayout(new BorderLayout());
 		
 		//add commitment (submit) button
 		String addButtonText = (vm == ViewMode.EDITING ? "Update Commitment" : "Add Commitment");
@@ -211,9 +152,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		buttonPanel.add(buttonCancel);
 		buttonPanel.add(errorDisplay);
 		
-		
-		
-		buttonAdd.addActionListener(new AddCommitmentController(this, model));
+		buttonAdd.addActionListener(new AddCommitmentController(this, this.model));
 		
 		buttonUndoChanges.addActionListener(new ActionListener(){
 			@Override
@@ -222,8 +161,6 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 				buttonUndoChanges.setEnabled(false);
 			}
 		});
-
-
 
 		//TODO: add action listener and give it our AddCommitmentController
 //		buttonUndoChanges.addActionListener(new ActionListener(){
@@ -240,10 +177,45 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 				killPanel();
 			}
 		});
-
-		//add the two sub-panels to our form
-		this.add(contentPanel, BorderLayout.NORTH);
 		this.add(buttonPanel, BorderLayout.SOUTH);
+		
+		dataPanel = new JPanel();
+		add(dataPanel, BorderLayout.CENTER);
+		dataPanel.setLayout(new MigLayout("", "[95px][26px][][32px][5px][50px]", "[17.00][20px][20px][20px][20px]"));
+
+		JLabel nameLabel = new JLabel("Commitment Name");
+		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		dataPanel.add(nameLabel, "cell 0 1,growx,aligny center");
+		
+		nameTextField = new JTextField();
+		nameTextField.setHorizontalAlignment(SwingConstants.LEFT);
+		dataPanel.add(nameTextField, "cell 1 1 5 1,growx,aligny top");
+		nameTextField.setColumns(10);
+		
+		JLabel dateLabel = new JLabel("Date of Commitment:");
+		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		dataPanel.add(dateLabel, "cell 0 2,growx,aligny center");
+		
+		JCalendar commitmentDate = new JCalendar();
+		dataPanel.add(commitmentDate, "cell 1 2 5 1,growx,aligny top");
+		
+		JLabel labelDesc = new JLabel("Description: ");
+		labelDesc.setHorizontalAlignment(SwingConstants.LEFT);
+		dataPanel.add(labelDesc, "cell 0 3,growx,aligny center");
+		descriptionTextArea = new JTextArea();
+		descriptionTextArea.setPreferredSize(new Dimension(200, 20));
+		descriptionTextArea.addKeyListener(this);
+		dataPanel.add(descriptionTextArea, "cell 1 3,growx,aligny top");
+		
+		//
+		String[] tempCategory = {"Test1", "Test2"};
+		JLabel labelCat = new JLabel("Category: ");
+		categoryComboBox = new JComboBox<String>(tempCategory);
+		categoryComboBox.setPreferredSize(new Dimension(200, 20));
+		categoryComboBox.addKeyListener(this);
+		dataPanel.add(labelCat, "cell 0 4,growx,aligny top");
+		dataPanel.add(categoryComboBox, "cell 1 4,growx,aligny top");
+
 	}
 	
 	public void killPanel(){
@@ -309,8 +281,8 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	 */
 	private void refreshPanel()
 	{
-		validateFields();
 		updateDisplayCommitment();
+		validateFields();
 		checkForChanges();
 //		if(vm == ViewMode.EDITING) ;//refreshEstimate();
 	}
