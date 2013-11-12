@@ -33,6 +33,15 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
+import javax.swing.JInternalFrame;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
+
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  * This panel tab is added whenever the user wants to create a new event or edit an existing one
  * most of this is copied/based from the CommitmentPanel in the calendar->view
@@ -50,15 +59,7 @@ public class EventPanel extends JPanel implements KeyListener{
 	private final String EMPTY_NAME_ERROR = 		"Name is required.";
 	private final String DATES_REQ = 				"Start and end date required.";
 	private final String PAST_ERROR = 				"Commitment cannot occur in the past.";
-	
-	//private IterationRequirements requirements;
-	//private IterationCalendarPanel calPanel;
-	
-	//components that will be in the panel
-	private JTextField nameTextField;
 	private JPanel buttonPanel;
-	
-	private JFormattedTextField dueDateBox;
 	
 	private JButton buttonAdd;
 	private JButton buttonCancel;
@@ -71,9 +72,22 @@ public class EventPanel extends JPanel implements KeyListener{
 	private Event displayEvent;	//the Event currently being represented in this panel
 	
 	private boolean forceRemove = false;
+	private JPanel dataPanel;
+	private JTextField nameTextField;
+	private JLabel nameLabel;
+	private JFormattedTextField dateFormattedTextField;
+	private JTextField startTimeMinutesTextField;
+	private JTextField startTimeHoursTextField;
+	private JLabel endTimeLabel;
+	private JTextField endTimeHoursTextField;
+	private JLabel endTimeColonLabel;
+	private JTextField endTimeMinutesTextField;
+	private JComboBox<String> endTimeDayNightComboBox;
+	private JComboBox<String> startTimeDayNightComboBox;
 	
 	/**
 	 * The constructor for the event panel when creating a new event.
+	 * @wbp.parser.constructor
 	 */
 	public EventPanel(CalendarView view, CalendarModel model) {
 		this.view=view;
@@ -106,32 +120,6 @@ public class EventPanel extends JPanel implements KeyListener{
 	private void buildLayout(){
 		
 		this.setLayout(new BorderLayout());
-		//MigLayout layout = new MigLayout();
-
-		GridLayout gridLayout = new GridLayout(3,2);
-		
-		JPanel contentPanel = new JPanel(gridLayout);
-		JPanel contentPanel2 = new JPanel(gridLayout);
-		JPanel contentPanel3 = new JPanel(gridLayout);
-		JLabel labelName = new JLabel("Name: ");
-		nameTextField = new JTextField();
-		nameTextField.setPreferredSize(new Dimension(200, 20));
-		nameTextField.addKeyListener(this);
-		
-		JLabel labelDue = new JLabel("Due Date: ");
-		dueDateBox = new JFormattedTextField();
-		dueDateBox.setEnabled(true);
-		dueDateBox.setPreferredSize(new Dimension(150, 20));
-				
-		//first row: name
-		contentPanel2.add(labelName, "left");
-		contentPanel2.add(nameTextField, "left");
-		contentPanel.add(contentPanel2, "left");
-		
-		//second row: due date
-		contentPanel3.add(labelDue, "left");
-		contentPanel3.add(dueDateBox, "left");
-		contentPanel.add(contentPanel3, "left");
 		
 		//add event (submit) button
 		String addButtonText = (vm == ViewMode.EDITING ? "Update Event" : "Add Event");
@@ -189,10 +177,90 @@ public class EventPanel extends JPanel implements KeyListener{
 				killPanel();
 			}
 		});
-
-		//add the two sub-panels to our form
-		this.add(contentPanel, BorderLayout.NORTH);
 		this.add(buttonPanel, BorderLayout.SOUTH);
+		
+		dataPanel = new JPanel();
+		add(dataPanel, BorderLayout.CENTER);
+		dataPanel.setLayout(null);
+		
+		nameLabel = new JLabel("Event Name");
+		nameLabel.setBounds(9, 44, 95, 14);
+		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		dataPanel.add(nameLabel);
+		
+		nameTextField = new JTextField();
+		nameTextField.setBounds(114, 41, 117, 20);
+		nameTextField.setHorizontalAlignment(SwingConstants.LEFT);
+		dataPanel.add(nameTextField);
+		nameTextField.setColumns(10);
+		
+		JLabel dateLabel = new JLabel("Date of Event");
+		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		dateLabel.setBounds(9, 72, 95, 14);
+		dataPanel.add(dateLabel);
+		
+		dateFormattedTextField = new JFormattedTextField();
+		dateFormattedTextField.setText("mm/dd/yyyy");
+		dateFormattedTextField.setHorizontalAlignment(SwingConstants.LEFT);
+		dateFormattedTextField.setColumns(10);
+		dateFormattedTextField.setBounds(114, 69, 117, 20);
+		dataPanel.add(dateFormattedTextField);
+		
+		JLabel startTimeLabel = new JLabel("Start Time");
+		startTimeLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		startTimeLabel.setBounds(9, 100, 95, 14);
+		dataPanel.add(startTimeLabel);
+		
+		startTimeMinutesTextField = new JTextField();
+		startTimeMinutesTextField.setText("mm");
+		startTimeMinutesTextField.setHorizontalAlignment(SwingConstants.CENTER);
+		startTimeMinutesTextField.setColumns(10);
+		startTimeMinutesTextField.setBounds(150, 97, 26, 20);
+		dataPanel.add(startTimeMinutesTextField);
+		
+		JLabel startTimeColonLabel = new JLabel(":");
+		startTimeColonLabel.setBounds(144, 100, 12, 14);
+		dataPanel.add(startTimeColonLabel);
+		
+		startTimeDayNightComboBox = new JComboBox<String>();
+		startTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
+		startTimeDayNightComboBox.setBounds(181, 97, 50, 20);
+		dataPanel.add(startTimeDayNightComboBox);
+		
+		startTimeHoursTextField = new JTextField();
+		startTimeHoursTextField.setText("hh");
+		startTimeHoursTextField.setHorizontalAlignment(SwingConstants.CENTER);
+		startTimeHoursTextField.setColumns(10);
+		startTimeHoursTextField.setBounds(114, 97, 26, 20);
+		dataPanel.add(startTimeHoursTextField);
+		
+		endTimeLabel = new JLabel("End Time");
+		endTimeLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		endTimeLabel.setBounds(9, 128, 95, 14);
+		dataPanel.add(endTimeLabel);
+		
+		endTimeHoursTextField = new JTextField();
+		endTimeHoursTextField.setText("hh");
+		endTimeHoursTextField.setHorizontalAlignment(SwingConstants.CENTER);
+		endTimeHoursTextField.setColumns(10);
+		endTimeHoursTextField.setBounds(114, 125, 26, 20);
+		dataPanel.add(endTimeHoursTextField);
+		
+		endTimeColonLabel = new JLabel(":");
+		endTimeColonLabel.setBounds(144, 128, 12, 14);
+		dataPanel.add(endTimeColonLabel);
+		
+		endTimeMinutesTextField = new JTextField();
+		endTimeMinutesTextField.setText("mm");
+		endTimeMinutesTextField.setHorizontalAlignment(SwingConstants.CENTER);
+		endTimeMinutesTextField.setColumns(10);
+		endTimeMinutesTextField.setBounds(150, 125, 26, 20);
+		dataPanel.add(endTimeMinutesTextField);
+		
+		endTimeDayNightComboBox = new JComboBox<String>();
+		endTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
+		endTimeDayNightComboBox.setBounds(181, 125, 50, 20);
+		dataPanel.add(endTimeDayNightComboBox);
 	}
 	
 	public void killPanel(){
@@ -204,8 +272,7 @@ public class EventPanel extends JPanel implements KeyListener{
 	 */
 	private void updateDisplayEvent()
 	{
-		String name = nameTextField.getText();
-		displayEvent.setName(name);
+		displayEvent.setName(nameTextField.getText());
 		displayEvent.setEndDate(new Date());
 
 		if(vm == ViewMode.CREATING)
@@ -237,7 +304,7 @@ public class EventPanel extends JPanel implements KeyListener{
 	private void populateInformation()
 	{
 		this.nameTextField.setText(displayEvent.getName());
-		this.dueDateBox.setValue(displayEvent.getEndDate());
+		this.dateFormattedTextField.setValue(displayEvent.getEndDate());
 		refreshPanel();
 	}
 	
@@ -248,7 +315,7 @@ public class EventPanel extends JPanel implements KeyListener{
 	 */
 	public void setDueDate(Date dueDate)
 	{
-		if(dueDate != null) this.dueDateBox.setValue(dueDate);
+		if(dueDate != null) this.dateFormattedTextField.setValue(dueDate);
 		
 		refreshPanel();
 	}
@@ -344,7 +411,6 @@ public class EventPanel extends JPanel implements KeyListener{
 	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent) */
 	@Override
 	public void keyTyped(KeyEvent e) {
-		refreshPanel();
 	}
 
 	/**
@@ -354,7 +420,6 @@ public class EventPanel extends JPanel implements KeyListener{
 	 * @see java.awt.event.KeyListener#keyPressed(KeyEvent) */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		refreshPanel();
 	}
 
 	/**
@@ -364,7 +429,6 @@ public class EventPanel extends JPanel implements KeyListener{
 	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent) */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		refreshPanel();
 	}
 
 	/**
@@ -408,7 +472,4 @@ public class EventPanel extends JPanel implements KeyListener{
 		refreshPanel();
 		super.paintComponent(g);
 	}
-	
-		
-	
 }
