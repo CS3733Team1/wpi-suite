@@ -30,7 +30,7 @@ public class AddCommitmentController implements ActionListener{
 		if(commit.getName().substring(0, EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL))
 		{
 			System.err.println("Commitment names cannot begin with " + EventEntityManager.DELETESYMBOL);
-			//return;
+			return;
 		}
 		
 		//don't need this because server works now
