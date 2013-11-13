@@ -34,6 +34,8 @@ public class CalendarTabPanel extends JPanel{
 	private ICalendarViewComponent updateview;
 	private MonthCalendar monthview;
 	
+	private JLabel calendarViewTitle;
+	
 	public CalendarTabPanel(CalendarObjectModel c, CalendarModel model){
 		this.model = model;
 
@@ -67,18 +69,18 @@ public class CalendarTabPanel extends JPanel{
 
 		} catch (IOException e) {}
 
-		prevButton.addActionListener(new CalendarViewPreviousController(this));
-		nextButton.addActionListener(new CalendarViewNextController(this));
-		homeButton.addActionListener(new CalendarViewNowController(this));
+		calendarViewTitle = new JLabel();
 		
 		JPanel temp = new JPanel(new BorderLayout());
 		JPanel temp2 = new JPanel();
 		temp2.add(prevButton);
 		temp2.add(homeButton);
 		temp2.add(nextButton);
-		temp2.add(new JLabel("November 2013"));
+		temp2.add(calendarViewTitle);
 		
-		
+		prevButton.addActionListener(new CalendarViewPreviousController(this));
+		nextButton.addActionListener(new CalendarViewNextController(this));
+		homeButton.addActionListener(new CalendarViewNowController(this));
 
 		monthViewButton.addActionListener(new DisplayMonthViewController(this));
 		
@@ -86,8 +88,6 @@ public class CalendarTabPanel extends JPanel{
 		calendarViewButtonsPanel.add(monthViewButton);
 		calendarViewButtonsPanel.add(weekViewButton);
 		calendarViewButtonsPanel.add(dayViewButton);
-
-		
 		
 		temp.add(temp2, BorderLayout.WEST);
 		temp.add(calendarViewButtonsPanel, BorderLayout.CENTER);
@@ -144,6 +144,8 @@ public class CalendarTabPanel extends JPanel{
 		monthview.setVisible(true);
 		currentview.setVisible(true);
 		
+		setCalendarViewTitle(monthview.getTitle());
+		
 		this.refreshCalendarView();
 	}
 	
@@ -176,4 +178,7 @@ public class CalendarTabPanel extends JPanel{
 		return events;
 	}
 
+	public void setCalendarViewTitle(String title) {
+		calendarViewTitle.setText(title);
+	}
 }

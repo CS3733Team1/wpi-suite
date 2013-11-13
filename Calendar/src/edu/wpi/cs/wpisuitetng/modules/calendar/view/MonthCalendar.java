@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -21,7 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 public class MonthCalendar extends JPanel implements ICalendarViewComponent{
-
+	private static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July","August", "September", "October", "November", "December"};
 	private JPanel contentPane;
 	private JPanel panel_1;
 	private JPanel panel_7;
@@ -45,6 +46,7 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 
 	private Calendar mycal;
 	private int currentMonth;
+	private int currentYear;
 
 	/**
 	 * Create the frame.
@@ -66,11 +68,12 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 		gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 		panel.setLayout(gbl_panel);
 
-		
-		currentMonth = Calendar.NOVEMBER;
+		Date today = new Date();
+		currentMonth = today.getMonth();
+		currentYear = today.getYear() + 1900;
 		//TODO: Update with current month and year
-		mycal = new GregorianCalendar(2013, Calendar.NOVEMBER, 1);
-		
+		mycal = new GregorianCalendar(currentYear, currentMonth, 1);
+
 		// Get the number of days in that month
 		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
@@ -85,7 +88,7 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 		{
 			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
 		}
-		
+
 		System.out.println("finished!");
 		panel.setVisible(true);
 
@@ -244,7 +247,7 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 			}
 		}
 	}
-	
+
 	public void updateDays(int daysInMonth, int dayOfWeekFirstWeek, int numWeeksMonth)
 	{
 		dayLabel.clear();
@@ -288,28 +291,29 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 
 	@Override
 	public void next() {
-		if (currentMonth == 12){
-			currentMonth = 1;
+		if (currentMonth == 11){
+			currentMonth = 0;
+			currentYear++;
 		}
 		else{
 			currentMonth++;
 		}
-		Calendar next = new GregorianCalendar(2013, currentMonth, 1);
+		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 		mycal = next;
-		
-		
+
+
 		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
 		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-		
+
 		this.remove(panel);
-		
+
 		dayLabel = new ArrayList<JLabel>();
 		panelList = new ArrayList<JPanel>();
 		gridBagList = new ArrayList<GridBagConstraints>();
 		panel = new JPanel();
-		
+
 		int gridSize = 100;
 
 		add(panel, BorderLayout.NORTH);
@@ -328,33 +332,34 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 		{
 			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
 		}
-		
+
 	}
 
 	@Override
 	public void previous() {
-		if (currentMonth == 1){
-			currentMonth = 12;
+		if (currentMonth == 0){
+			currentMonth = 11;
+			currentYear--;
 		}
 		else{
 			currentMonth--;
 		}
-		Calendar next = new GregorianCalendar(2013, currentMonth, 1);
+		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 		mycal = next;
-		
-		
+
+
 		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
 		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-		
+
 		this.remove(panel);
-		
+
 		dayLabel = new ArrayList<JLabel>();
 		panelList = new ArrayList<JPanel>();
 		gridBagList = new ArrayList<GridBagConstraints>();
 		panel = new JPanel();
-		
+
 		int gridSize = 100;
 
 		add(panel, BorderLayout.NORTH);
@@ -373,30 +378,31 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 		{
 			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
 		}
-		
+
 	}
 
 	@Override
 	public void today() {
 		Date today = new Date();
 		currentMonth = today.getMonth();
-		
-		Calendar next = new GregorianCalendar(2013, currentMonth, 1);
+		currentYear = today.getYear() + 1900;
+
+		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 		mycal = next;
-		
-		
+
+
 		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
 		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-		
+
 		this.remove(panel);
-		
+
 		dayLabel = new ArrayList<JLabel>();
 		panelList = new ArrayList<JPanel>();
 		gridBagList = new ArrayList<GridBagConstraints>();
 		panel = new JPanel();
-		
+
 		int gridSize = 100;
 
 		add(panel, BorderLayout.NORTH);
@@ -415,6 +421,11 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 		{
 			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
 		}
+	}
+
+	@Override
+	public String getTitle() {
+		return monthNames[currentMonth] + ", " + currentYear;
 	}
 
 }

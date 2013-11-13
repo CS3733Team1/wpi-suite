@@ -33,9 +33,9 @@ public class CalendarView {
 		// Add the tab to the list of tabs owned by this module
 		tabs.add(tab);
 
-		// Remove later
-		calendarPanel.addCalendar(new CalendarObjectModel("Team Calendar"));
-		calendarPanel.addCalendar(new CalendarObjectModel("Personal Calendar"));
+		// changed from using addCalendarPanel()
+		calendarPanel.createTeamCalendar(new CalendarObjectModel("Team Calendar"));
+		calendarPanel.createPersonalCalendar(new CalendarObjectModel("Personal Calendar"));
 	}
 
 	public List<JanewayTabModel> getTabs() {

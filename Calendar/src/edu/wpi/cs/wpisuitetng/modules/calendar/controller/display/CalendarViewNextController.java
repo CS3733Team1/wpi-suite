@@ -14,8 +14,11 @@ public class CalendarViewNextController implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		view.getUpdateView().next();
-		view.refreshCalendarView();
+		if(view.getUpdateView() != null) {
+			view.getUpdateView().next();
+			view.setCalendarViewTitle(view.getUpdateView().getTitle());
+			view.refreshCalendarView();
+		}
 	}
 
 }

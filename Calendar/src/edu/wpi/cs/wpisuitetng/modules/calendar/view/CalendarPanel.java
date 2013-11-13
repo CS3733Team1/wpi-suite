@@ -18,42 +18,76 @@ public class CalendarPanel extends JTabbedPane {
 	private ArrayList<JPanel> p;
 	private JList<Object> commitments;
 	private CalendarModel model;
-	
+
+	private CalendarTabPanel teamCalendarPanel;
+	private CalendarTabPanel personalCalendarPanel;
+
 	public CalendarPanel(CalendarModel model) {
-		
+
 		this.model = model;
 		// Initially Empty
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
 
-	// Method to set / add Tab [Calendars]
+	// Create TeamCalendar
+	public void createTeamCalendar(CalendarObjectModel c) {
+		teamCalendarPanel = new CalendarTabPanel(c, model);
 
-	public void addCalendar(CalendarObjectModel c) {
-		CalendarTabPanel panel = new CalendarTabPanel(c, model);
-		
-		panel.addKeyListener(new RetrieveCommitmentController(model));
-		panel.addMouseListener(new RetrieveCommitmentController(model));
-		
+		teamCalendarPanel.addKeyListener(new RetrieveCommitmentController(model));
+		teamCalendarPanel.addMouseListener(new RetrieveCommitmentController(model));
+
+		ImageIcon calIcon = new ImageIcon();
+		try {
+			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/team_calendar.png")));
+		} catch (IOException e) {}
+
+		this.addTab(c.getTitle(), calIcon, teamCalendarPanel, "Team Calendar");
+	}
+	
+
+	// Create PersonalCalendar
+	public void createPersonalCalendar(CalendarObjectModel c) {
+		personalCalendarPanel = new CalendarTabPanel(c, model);
+
+		personalCalendarPanel.addKeyListener(new RetrieveCommitmentController(model));
+		personalCalendarPanel.addMouseListener(new RetrieveCommitmentController(model));
+
 		ImageIcon calIcon = new ImageIcon();
 		try {
 			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/personal_calendar.png")));
 		} catch (IOException e) {}
-		
+
+		this.addTab(c.getTitle(), calIcon, personalCalendarPanel, "Personal Calendar");
+	}
+
+	// UNUSED
+	// Method to set / add Tab [Calendars] PHASE THIS OUT FOR NOW
+	public void addCalendar(CalendarObjectModel c) {
+		CalendarTabPanel panel = new CalendarTabPanel(c, model);
+
+		panel.addKeyListener(new RetrieveCommitmentController(model));
+		panel.addMouseListener(new RetrieveCommitmentController(model));
+
+		ImageIcon calIcon = new ImageIcon();
+		try {
+			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/personal_calendar.png")));
+		} catch (IOException e) {}
+
 		this.addTab(c.getTitle(), calIcon, panel, "A Calendar");
 	}
-	
+
 	public CalendarTabPanel getCurrentPanel(){
 		return (CalendarTabPanel)this.getSelectedComponent();
 	}
-	
+
 	public JList<Object> getSelectedPanel(){
 		return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
 	}
-	
+
 	public JList<Object> getSelectedEventList(){
 		return ((CalendarTabPanel)this.getSelectedComponent()).getEventJList();
 	}
-	
+
 	public void RefreshSelectedPanel(){
 		((CalendarTabPanel)this.getSelectedComponent()).ResetSelection();
 	}
