@@ -21,26 +21,29 @@ import edu.wpi.cs.wpisuitetng.modules.defecttracker.models.DefectEvent;
 /**
  * A data model for a list of DefectEvents.
  */
-@SuppressWarnings({"serial"})
-public class DefectEventListModel extends DefaultListModel {
-	
+@SuppressWarnings("serial")
+public class DefectEventListModel extends DefaultListModel<Object> {
+
 	/**
-	 * Construct a new model and populate with the DefectEvents contained
-	 * in the given Defect
+	 * Construct a new model and populate with the DefectEvents contained in the
+	 * given Defect
 	 * 
-	 * @param defect the Defect containing the events to populate this model
+	 * @param defect
+	 *            the Defect containing the events to populate this model
 	 */
 	public DefectEventListModel(Defect defect) {
 		update(defect);
 	}
-	
+
 	/**
 	 * Replaces the contents of this model with the events in the given Defect
-	 * @param model the Defect containing the events to populate this model
+	 * 
+	 * @param model
+	 *            the Defect containing the events to populate this model
 	 */
 	public void update(Defect model) {
 		this.clear();
-		
+
 		for (DefectEvent event : model.getEvents()) {
 			addElement(event);
 		}

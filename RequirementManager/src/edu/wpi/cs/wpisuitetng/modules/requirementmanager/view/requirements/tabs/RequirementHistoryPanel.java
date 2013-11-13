@@ -10,6 +10,7 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.tabs;
 
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener;
@@ -33,7 +34,7 @@ public class RequirementHistoryPanel extends JScrollPane implements RequirementP
 	{
 		this.currentRequirement = currentRequirement;
 		// Create scroll pane for window, set scroll bar to always be on
-		this.setVerticalScrollBarPolicy(RequirementHistoryPanel.VERTICAL_SCROLLBAR_ALWAYS);
+		this.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		// Show the requirement's transaction history in the scroll pane
 
 		this.refresh();

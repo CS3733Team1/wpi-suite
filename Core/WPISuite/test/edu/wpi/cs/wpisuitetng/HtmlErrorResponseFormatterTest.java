@@ -12,13 +12,14 @@
 
 package edu.wpi.cs.wpisuitetng;
 
-import org.junit.*;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.authentication.Authenticator;
 import edu.wpi.cs.wpisuitetng.authentication.BasicAuth;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
-
-import static org.junit.Assert.*;
 
 /**
  * Testing the abtract class Authentictor. Uses the BasicAuth 

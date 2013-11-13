@@ -84,7 +84,8 @@ public class SingleAcceptanceTestPanel extends JPanel
 		}
 
 		ItemListener itemListener = new ItemListener() {
-		      public void itemStateChanged(ItemEvent itemEvent) {
+		      @Override
+			public void itemStateChanged(ItemEvent itemEvent) {
 		    	  updateRequirementTest((TestStatus)itemEvent.getItem());
 		      }
 		    };

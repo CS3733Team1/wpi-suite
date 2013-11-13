@@ -15,7 +15,6 @@ import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreePath;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.icons.IterationIcon;
@@ -25,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.icons.Req
  * @author justinhess
  * @version $Revision: 1.0 $
  */
+@SuppressWarnings("serial")
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	Icon requirementIcon;
 	Icon iterationIcon;
@@ -52,10 +52,13 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	 *            int
 	 * @param hasFocus
 	 *            boolean
-	
-	
-	 * @return Component * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(JTree,
-	 *      Object, boolean, boolean, boolean, int, boolean) */
+	 * 
+	 * 
+	 * @return Component * @see
+	 *         javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent
+	 *         (JTree, Object, boolean, boolean, boolean, int, boolean)
+	 */
+	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value,
 			boolean sel, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
@@ -69,13 +72,14 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 		} else {
 			setIcon(iterationIcon);
 			/*
-			DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode) tree
-					.getModel().getRoot());
-			tree.setSelectionPath(new TreePath(firstLeaf.getPath()));
-			String label = firstLeaf.toString(); //Does not work
-
-			setToolTipText("" + value);*/
+			 * DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode) tree
+			 * .getModel().getRoot()); tree.setSelectionPath(new
+			 * TreePath(firstLeaf.getPath())); String label =
+			 * firstLeaf.toString(); //Does not work
+			 * 
+			 * setToolTipText("" + value);
+			 */
 		}
-		return this; 
+		return this;
 	}
 }

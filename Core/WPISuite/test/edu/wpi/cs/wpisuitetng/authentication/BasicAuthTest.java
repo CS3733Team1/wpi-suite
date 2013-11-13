@@ -12,14 +12,14 @@
 
 package edu.wpi.cs.wpisuitetng.authentication;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-import edu.wpi.cs.wpisuitetng.authentication.BasicAuth;
-import edu.wpi.cs.wpisuitetng.exceptions.AuthenticationException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.codec.binary.Base64;
+import org.junit.Before;
+import org.junit.Test;
+
+import edu.wpi.cs.wpisuitetng.exceptions.AuthenticationException;
 
 public class BasicAuthTest {
 	String header = "Authorization: Basic "; // the static BasicAuth header

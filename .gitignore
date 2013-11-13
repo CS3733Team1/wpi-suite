@@ -40,8 +40,5 @@ Janeway/janeway.conf
 /Core/WPISuite/WebContent/WEB-INF/lib/RequirementManager.jar
 /Core/WPISuite/WebContent/WEB-INF/lib/Calendar.jar
 
-.idea
-.idea/*
-
-RequirementManager/build
-RequirementManager/bin
+*/bin/*
+*/build/*

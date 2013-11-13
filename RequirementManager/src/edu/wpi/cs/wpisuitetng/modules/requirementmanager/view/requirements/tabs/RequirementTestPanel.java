@@ -18,12 +18,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
@@ -118,7 +118,7 @@ public class RequirementTestPanel extends JPanel implements RequirementPanelList
 		final GridBagConstraints bc = new GridBagConstraints();
 
 		// Create new scroll pane for notes
-		testsScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		testsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		// Always show scroll bar
 		testsScroll.setMinimumSize(new Dimension(100,100));
 
@@ -182,6 +182,7 @@ public class RequirementTestPanel extends JPanel implements RequirementPanelList
 	{
 		// Listener for add note button
 		buttonAddTest.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Display error message if there is no text in noteMessage
 				if (testMessage.getText().length() <= 0 && testTitle.getText().length() <= 0) {
@@ -217,6 +218,7 @@ public class RequirementTestPanel extends JPanel implements RequirementPanelList
 
 		// Listener for the Clear button
 		buttonClear.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Clear all text fields
 				testTitle.setText("");
