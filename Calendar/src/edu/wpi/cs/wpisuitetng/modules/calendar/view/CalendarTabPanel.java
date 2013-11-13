@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.io.IOException;
 
@@ -72,16 +73,19 @@ public class CalendarTabPanel extends JPanel{
 		calendarViewTitle = new JLabel();
 		
 		JPanel temp = new JPanel(new BorderLayout());
-		JPanel temp2 = new JPanel();
-		temp2.add(prevButton);
-		temp2.add(homeButton);
-		temp2.add(nextButton);
-		temp2.add(calendarViewTitle);
+		JPanel temp2 = new JPanel(new BorderLayout());
+		JPanel temp3 = new JPanel();
+		
+		temp3.add(prevButton);
+		temp3.add(homeButton);
+		temp3.add(nextButton);
+		
+		temp2.add(temp3, BorderLayout.WEST);
+		temp2.add(calendarViewTitle, BorderLayout.CENTER);
 		
 		prevButton.addActionListener(new CalendarViewPreviousController(this));
 		nextButton.addActionListener(new CalendarViewNextController(this));
 		homeButton.addActionListener(new CalendarViewNowController(this));
-
 		monthViewButton.addActionListener(new DisplayMonthViewController(this));
 		
 		calendarViewButtonsPanel.add(yearViewButton);
@@ -90,6 +94,9 @@ public class CalendarTabPanel extends JPanel{
 		calendarViewButtonsPanel.add(dayViewButton);
 		
 		temp.add(temp2, BorderLayout.WEST);
+		
+		temp2.setPreferredSize(new Dimension(200, 1));
+		
 		temp.add(calendarViewButtonsPanel, BorderLayout.CENTER);
 		
 		
@@ -100,31 +107,46 @@ public class CalendarTabPanel extends JPanel{
 		add(calendarViewPanel, BorderLayout.CENTER);
 
 		
+		JPanel eventsListPanel = new JPanel(new BorderLayout());
 
 		events = new JList<Object>(model.getEventModel());
-		events
-		.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
+		events.setCellRenderer(new EventListRenderer());
+		events.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
 		events.setLayoutOrientation(JList.VERTICAL);
 		events.setVisibleRowCount(-1);
+		
+		JScrollPane scrollPane = new JScrollPane(events, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+		eventsListPanel.add(new JLabel("Events"), BorderLayout.NORTH);
+		eventsListPanel.add(scrollPane, BorderLayout.CENTER);
 
-		JScrollPane scrollPane2 = new JScrollPane(commitments);
-
-		add(scrollPane2, BorderLayout.LINE_END);
-
+		JPanel commitmentsListPanel = new JPanel(new BorderLayout());
+		
 		commitments = new JList<Object>(model.getcommitModel());
 		commitments.setCellRenderer(new CommitmentListRenderer());
-		commitments
-		.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		commitments.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		commitments.setLayoutOrientation(JList.VERTICAL);
 		commitments.setVisibleRowCount(-1);
 
+		JScrollPane scrollPane2 = new JScrollPane(commitments, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		JScrollPane scrollPane = new JScrollPane(commitments);
+		commitmentsListPanel.add(new JLabel("Commitments"), BorderLayout.NORTH);
+		commitmentsListPanel.add(scrollPane2, BorderLayout.CENTER);
 
-		add(scrollPane, BorderLayout.LINE_END);
+		commitmentsListPanel.setPreferredSize(new Dimension(300, 1));
+		
+		//JPanel eventCommitmentListPanel = new JPanel(new BorderLayout());
+		//eventCommitmentListPanel.add(eventsListPanel, BorderLayout.NORTH);
+		//eventCommitmentListPanel.add(commitmentsListPanel, BorderLayout.SOUTH);
+		add(commitmentsListPanel, BorderLayout.LINE_END);
+		
+		//yearViewButton.setEnabled(false);
+		//weekViewButton.setEnabled(false);
+		//dayViewButton.setEnabled(false);
+		
+		changeMonthView();
 	}
 
 	public void changeMonthView(){

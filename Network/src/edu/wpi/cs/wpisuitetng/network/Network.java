@@ -89,6 +89,10 @@ public class Network {
 		return new NetworkConfiguration(defaultNetworkConfiguration);
 	}
 	
+	public static boolean isNull() {
+		return instance == null;
+	}
+	
 	/**
 	 * Returns the singleton instance of Network.
 	 * 

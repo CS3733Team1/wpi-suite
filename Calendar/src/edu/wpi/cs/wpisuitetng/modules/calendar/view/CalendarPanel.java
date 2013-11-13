@@ -21,6 +21,8 @@ public class CalendarPanel extends JTabbedPane {
 
 	private CalendarTabPanel teamCalendarPanel;
 	private CalendarTabPanel personalCalendarPanel;
+	
+	private RetrieveCommitmentController retrieve;
 
 	public CalendarPanel(CalendarModel model) {
 
@@ -33,8 +35,8 @@ public class CalendarPanel extends JTabbedPane {
 	public void createTeamCalendar(CalendarObjectModel c) {
 		teamCalendarPanel = new CalendarTabPanel(c, model);
 
-		teamCalendarPanel.addKeyListener(new RetrieveCommitmentController(model));
-		teamCalendarPanel.addMouseListener(new RetrieveCommitmentController(model));
+		teamCalendarPanel.addKeyListener(retrieve);
+		teamCalendarPanel.addMouseListener(retrieve);
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
@@ -49,8 +51,9 @@ public class CalendarPanel extends JTabbedPane {
 	public void createPersonalCalendar(CalendarObjectModel c) {
 		personalCalendarPanel = new CalendarTabPanel(c, model);
 
-		personalCalendarPanel.addKeyListener(new RetrieveCommitmentController(model));
-		personalCalendarPanel.addMouseListener(new RetrieveCommitmentController(model));
+		retrieve = new RetrieveCommitmentController(model);
+		personalCalendarPanel.addKeyListener(retrieve);
+		personalCalendarPanel.addMouseListener(retrieve);
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
@@ -65,15 +68,18 @@ public class CalendarPanel extends JTabbedPane {
 	public void addCalendar(CalendarObjectModel c) {
 		CalendarTabPanel panel = new CalendarTabPanel(c, model);
 
-		panel.addKeyListener(new RetrieveCommitmentController(model));
-		panel.addMouseListener(new RetrieveCommitmentController(model));
-
+		retrieve = new RetrieveCommitmentController(model);
+		panel.addKeyListener(retrieve);
+		panel.addMouseListener(retrieve);
+		
 		ImageIcon calIcon = new ImageIcon();
 		try {
 			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/personal_calendar.png")));
 		} catch (IOException e) {}
 
 		this.addTab(c.getTitle(), calIcon, panel, "A Calendar");
+		
+		retrieve.grabMessages();
 	}
 
 	public CalendarTabPanel getCurrentPanel(){
@@ -81,14 +87,19 @@ public class CalendarPanel extends JTabbedPane {
 	}
 
 	public JList<Object> getSelectedPanel(){
-		return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
+		if(this.getSelectedComponent() instanceof CalendarTabPanel)
+			return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
+		else return new JList<Object>();
 	}
 
 	public JList<Object> getSelectedEventList(){
-		return ((CalendarTabPanel)this.getSelectedComponent()).getEventJList();
+		if(this.getSelectedComponent() instanceof CalendarTabPanel)
+			return ((CalendarTabPanel)this.getSelectedComponent()).getEventJList();
+		else return new JList<Object>();
 	}
 
 	public void RefreshSelectedPanel(){
-		((CalendarTabPanel)this.getSelectedComponent()).ResetSelection();
+		if(this.getSelectedComponent() instanceof CalendarTabPanel)
+			((CalendarTabPanel)this.getSelectedComponent()).ResetSelection();
 	}
 }

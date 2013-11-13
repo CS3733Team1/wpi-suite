@@ -20,7 +20,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -92,6 +91,7 @@ public class RetrieveEventController implements ActionListener, KeyListener, Mou
 	public void grabMessages(){
 		System.out.println("Reloading");
 		// Send a request to the core to save this message
+		
 		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.GET); // GET == read
 		request.addObserver(new RetrieveEventObserver(this)); // add an observer to process the response
 		request.send(); // send the request

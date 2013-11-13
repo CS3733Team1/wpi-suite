@@ -1,28 +1,21 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Color;
-import java.awt.List;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 public class MonthCalendar extends JPanel implements ICalendarViewComponent{
-	private static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July","August", "September", "October", "November", "December"};
+	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July","August", "September", "October", "November", "December"};
 	private JPanel contentPane;
 	private JPanel panel_1;
 	private JPanel panel_7;
@@ -173,7 +166,7 @@ public class MonthCalendar extends JPanel implements ICalendarViewComponent{
 		panel_12 = new JPanel();
 		panel_12.setBorder(new LineBorder(new Color(0, 0, 0)));
 		GridBagConstraints gbc_panel_12 = new GridBagConstraints();
-		gbc_panel_12.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_12.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_12.fill = GridBagConstraints.BOTH;
 		gbc_panel_12.gridx = 6;
 		gbc_panel_12.gridy = 0;

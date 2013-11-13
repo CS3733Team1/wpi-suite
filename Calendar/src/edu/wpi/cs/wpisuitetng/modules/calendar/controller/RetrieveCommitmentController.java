@@ -18,6 +18,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
@@ -35,9 +37,21 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class RetrieveCommitmentController implements ActionListener, KeyListener, MouseListener {
 	CalendarModel model;
+	private Timer timer;
 
 	public RetrieveCommitmentController(CalendarModel model) {
 		this.model = model;
+		
+		timer = new Timer(true);
+		timer.scheduleAtFixedRate(new TimerTask() {
+			  @Override
+			  public void run() {
+				  if(!Network.isNull()) {
+					  grabMessages();
+					  this.cancel();
+				  }
+			  }
+			}, 3000, 3000);
 	}
 
 	@Override

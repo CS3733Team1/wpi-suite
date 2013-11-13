@@ -12,18 +12,14 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.text.DateFormat;
 import java.util.Date;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -34,19 +30,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.toedter.calendar.JCalendar;
-
 import net.miginfocom.swing.MigLayout;
 
+import com.toedter.calendar.JCalendar;
+
 //import com.toedter.calendar.JCalendar;
-
-
-
-
-
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 
 /**
@@ -55,7 +46,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
  * @version $Revision: 1.0 $
  * @author djfitzgerald
  */
-public class CommitmentPanel extends JPanel implements KeyListener{
+public class CommitmentPanel extends JPanel  {
 	CalendarView view;
 	CalendarModel model;
 	
@@ -73,7 +64,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	//components that will be in the panel
 	private JTextField nameTextField;
 	private JTextArea descriptionTextArea;
-	private JComboBox categoryComboBox;
+	private JComboBox<String> categoryComboBox;
 	private JPanel buttonPanel;
 	private JPanel dataPanel;
 	private JFormattedTextField dueDateBox;
@@ -90,6 +81,9 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	private Commitment displayCommitment;	//the Commitment currently being represented in this panel
 	
 	private boolean forceRemove = false;
+	
+	private final Category[] categories = {new Category("Personal", Color.GREEN), new Category("Team", Color.BLUE), 
+			new Category("Important!", Color.RED)};
 	
 	/**
 	 * The constructor for the commitment panel when creating a new commitment.
@@ -205,15 +199,17 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		dataPanel.add(labelDesc, "cell 0 3,growx,aligny center");
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setPreferredSize(new Dimension(200, 20));
-		descriptionTextArea.addKeyListener(this);
 		dataPanel.add(descriptionTextArea, "cell 1 3,growx,aligny top");
 		
 		//
-		String[] tempCategory = {"Test1", "Test2"};
+		
+		
+		String[] tempCategoriesNames = {"Personal", "Team", "Important!"};
+		
 		JLabel labelCat = new JLabel("Category: ");
-		categoryComboBox = new JComboBox<String>(tempCategory);
+		categoryComboBox = new JComboBox<String>(tempCategoriesNames);
+		
 		categoryComboBox.setPreferredSize(new Dimension(200, 20));
-		categoryComboBox.addKeyListener(this);
 		dataPanel.add(labelCat, "cell 0 4,growx,aligny top");
 		dataPanel.add(categoryComboBox, "cell 1 4,growx,aligny top");
 
@@ -234,6 +230,7 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		displayCommitment.setName(name);
 		displayCommitment.setDueDate(date);
 		displayCommitment.setDescription(description);
+		displayCommitment.setCategory(categories[categoryComboBox.getSelectedIndex()]);
 
 		if(vm == ViewMode.CREATING)
 		{
@@ -360,36 +357,6 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 	}
 
 	/**
-	 * Method keyTyped.
-	 * @param e KeyEvent
-	
-	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent) */
-	@Override
-	public void keyTyped(KeyEvent e) {
-		refreshPanel();
-	}
-
-	/**
-	 * Method keyPressed.
-	 * @param e KeyEvent
-	
-	 * @see java.awt.event.KeyListener#keyPressed(KeyEvent) */
-	@Override
-	public void keyPressed(KeyEvent e) {
-		refreshPanel();
-	}
-
-	/**
-	 * Method keyReleased.
-	 * @param e KeyEvent
-	
-	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent) */
-	@Override
-	public void keyReleased(KeyEvent e) {
-		refreshPanel();
-	}
-
-	/**
 	 * 
 	
 	 * @return the display commitment */
@@ -431,6 +398,4 @@ public class CommitmentPanel extends JPanel implements KeyListener{
 		refreshPanel();
 		super.paintComponent(g);
 	}
-		
-	
 }
