@@ -23,7 +23,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.iterationcontroller.Upd
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.IterationDate;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 
 /**
  * An iteration in a project. Requirements can be assigned to an iteration.
@@ -230,6 +229,7 @@ public class Iteration extends AbstractModel {
 	 * @return the name * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() * @see edu.wpi.cs.wpisuitetng.modules.Model#toString() * @see edu.wpi.cs.wpisuitetng.modules.Model#toString()
 	 */
 	// should this be extended for the other fields?
+	@Override
 	public String toString() {
 		return name;
 	}
@@ -281,6 +281,7 @@ public class Iteration extends AbstractModel {
 	
 	 * @return String * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON() * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
 	 */
+	@Override
 	public String toJSON() {
 		return new Gson().toJson(this, Iteration.class);
 	}

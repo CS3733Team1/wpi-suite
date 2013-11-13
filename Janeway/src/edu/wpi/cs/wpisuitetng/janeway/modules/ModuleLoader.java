@@ -27,59 +27,62 @@ import java.util.List;
 import java.util.jar.JarFile;
 
 /**
- * Loads modules of the given type from JAR files
- * located in the given directory.
- *
- * @param <T> the type of the modules to load
+ * Loads modules of the given type from JAR files located in the given
+ * directory.
+ * 
+ * @param <T>
+ *            the type of the modules to load
  */
 public class ModuleLoader<T> {
-	
+
 	/** The directory where the module config file is located */
 	private String configPath;
-	
+
 	/** A list of directories where module jars are located */
 	List<String> modPaths = new ArrayList<String>();
-	
+
 	/** A list of class names that contain modules */
 	List<String> classNames = new ArrayList<String>();
-	
+
 	/** A list of URL objects pointing to the jar files */
 	private List<URL> jarNames = new ArrayList<URL>();
-	
+
 	/** An array of URL objects, to be passed to the class loader */
 	private URL[] urlArray = new URL[5];
-	
+
 	/** The class loader */
 	private URLClassLoader classLoader;
-	
+
 	/** List of loaded modules */
 	private List<T> modules = new ArrayList<T>();
-	
+
 	/**
-	 * Creates a new ModuleLoader that loads modules of type <T>
-	 * from the given directory.
+	 * Creates a new ModuleLoader that loads modules of type <T> from the given
+	 * directory.
 	 * 
-	 * @param modPath the directory containing module JAR files
+	 * @param modPath
+	 *            the directory containing module JAR files
 	 */
 	@SuppressWarnings("unchecked")
 	public ModuleLoader(String configPath) {
 		this.configPath = configPath;
-		
+
 		// Read the module configuration file to get module folder locations
 		readConfig();
-		
+
 		// Find all the jar files
 		for (String path : modPaths) {
 			jarNames.addAll(getJarNames(path));
 		}
-		
+
 		// Get the names of the classes to load
 		getModuleClassNames();
-		
+
 		// Instantiate the class loader
 		urlArray = jarNames.toArray(urlArray);
-		classLoader = new URLClassLoader(urlArray, this.getClass().getClassLoader());
-		
+		classLoader = new URLClassLoader(urlArray, this.getClass()
+				.getClassLoader());
+
 		// Instantiate all of the modules and add them to the module array
 		for (String modClass : classNames) {
 			Class<?> currClass;
@@ -89,72 +92,80 @@ public class ModuleLoader<T> {
 				currClass = classLoader.loadClass(modClass);
 				System.out.println("Loaded module " + currClass.getName());
 				modules.add((T) currClass.newInstance());
-				
+
 			} catch (ClassNotFoundException e) {
-				System.out.println("The class " + modClass + " could not be found!");
+				System.out.println("The class " + modClass
+						+ " could not be found!");
 				e.printStackTrace();
 			} catch (InstantiationException e) {
-				System.out.println("The class " + modClass + " could not be instantiated!");
+				System.out.println("The class " + modClass
+						+ " could not be instantiated!");
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				System.out.println("Could not access constructor for class " + modClass + "!");
+				System.out.println("Could not access constructor for class "
+						+ modClass + "!");
 				e.printStackTrace();
 			} catch (Exception e) {
-				System.out.println("An error occurred loading class: " + modClass);
+				System.out.println("An error occurred loading class: "
+						+ modClass);
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	/**
 	 * Looks at the manifest.txt file in each JAR file and adds the class names
-	 * contained in each to the list of class names to load. 
+	 * contained in each to the list of class names to load.
 	 */
 	private void getModuleClassNames() {
 		for (URL url : jarNames) {
-			try {				
-				JarFile jarFile = new JarFile(url.getFile().substring(5, url.getFile().length() - 2));
-				BufferedReader br = new BufferedReader(new InputStreamReader(jarFile.getInputStream(jarFile.getJarEntry("manifest.txt"))));
-				
+			try {
+				JarFile jarFile = new JarFile(url.getFile().substring(5,
+						url.getFile().length() - 2));
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						jarFile.getInputStream(jarFile
+								.getJarEntry("manifest.txt"))));
+
 				String currLine;
 				while ((currLine = br.readLine()) != null) {
-					if (currLine.startsWith("#")) { // make sure this line is not a comment
+					if (currLine.startsWith("#")) { // make sure this line is
+													// not a comment
 						// this line is a comment, do nothing
-					}
-					else if (currLine.toLowerCase().startsWith("module_class")) {
+					} else if (currLine.toLowerCase()
+							.startsWith("module_class")) {
 						String[] tokens = currLine.split(" ");
 						for (int i = 1; i < tokens.length; i++) {
 							classNames.add(tokens[i]);
 						}
-					}
-					else {
+					} else {
 						// do nothing - line not recognized
 					}
 				}
 				br.close();
 				jarFile.close();
-			}
-			catch (IOException ioe) {
-				System.out.println("Could not open the manifest file for: " + url.getFile());
+			} catch (IOException ioe) {
+				System.out.println("Could not open the manifest file for: "
+						+ url.getFile());
 				ioe.printStackTrace();
 			}
-			
+
 		}
 	}
 
 	/**
 	 * Returns the list of instantiated modules
+	 * 
 	 * @return the list of instantiated modules
 	 */
 	public List<T> getModules() {
 		return modules;
 	}
-	
+
 	/**
-	 * Builds a list of all of the JAR files in the
-	 * given directory.
+	 * Builds a list of all of the JAR files in the given directory.
 	 * 
-	 * @param path the directory to look in
+	 * @param path
+	 *            the directory to look in
 	 * @return a list of JAR files in the given directory
 	 */
 	private List<URL> getJarNames(String path) {
@@ -163,8 +174,10 @@ public class ModuleLoader<T> {
 		String[] children = jarDir.list();
 		for (String currJar : children) {
 			try {
-				// NOTE: The exclamation point at the end of the path is VERY necessary
-				retVal.add(new URL("jar", "", "file:" + path + "/" + currJar + "!/"));
+				// NOTE: The exclamation point at the end of the path is VERY
+				// necessary
+				retVal.add(new URL("jar", "", "file:" + path + "/" + currJar
+						+ "!/"));
 			} catch (MalformedURLException e) {
 				System.out.println("Could not open jar file: " + currJar);
 				e.printStackTrace();
@@ -172,7 +185,7 @@ public class ModuleLoader<T> {
 		}
 		return retVal;
 	}
-	
+
 	/**
 	 * Reads the configuration file at path and parses out the module
 	 * directories and the names of the module classes.
@@ -180,20 +193,22 @@ public class ModuleLoader<T> {
 	private void readConfig() {
 		BufferedReader configFile;
 		String currLine;
-		
+
 		try {
-			configFile = new BufferedReader(new FileReader(configPath)); // open the config file
+			configFile = new BufferedReader(new FileReader(configPath)); // open
+																			// the
+																			// config
+																			// file
 			while ((currLine = configFile.readLine()) != null) {
-				if (currLine.startsWith("#")) { // make sure this line is not a comment
+				if (currLine.startsWith("#")) { // make sure this line is not a
+												// comment
 					// this line is a comment, do nothing
-				}
-				else if (currLine.toLowerCase().startsWith("module_path")) {
+				} else if (currLine.toLowerCase().startsWith("module_path")) {
 					String[] tokens = currLine.split(" ");
 					for (int i = 1; i < tokens.length; i++) {
 						modPaths.add(tokens[i]);
 					}
-				}
-				else {
+				} else {
 					// do nothing, line not recognized
 				}
 			}

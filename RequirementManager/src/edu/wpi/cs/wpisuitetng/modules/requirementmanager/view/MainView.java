@@ -115,6 +115,7 @@ public class MainView extends JTabbedPane {
 
 
 		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
 			public void mouseDragged(MouseEvent e) {
 
 				if(!dragging) {
@@ -162,6 +163,7 @@ public class MainView extends JTabbedPane {
 				if(e.isPopupTrigger()) popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent e) {
 				if(dragging) {
 					int tabNumber = getUI().tabForCoordinate(MainView.this, e.getX(), e.getY());
@@ -182,6 +184,7 @@ public class MainView extends JTabbedPane {
 		});
 		final MainView panel = this;
 		this.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				JComponent selected = (JComponent)MainView.this.getSelectedComponent();
 				
@@ -219,6 +222,7 @@ public class MainView extends JTabbedPane {
 	 * Method paintComponent.
 	 * @param g Graphics
 	 */
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 

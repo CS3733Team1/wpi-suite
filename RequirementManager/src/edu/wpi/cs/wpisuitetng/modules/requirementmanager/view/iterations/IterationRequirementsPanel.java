@@ -18,10 +18,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelector;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelectorMode;
 
@@ -44,7 +42,7 @@ public class IterationRequirementsPanel extends JPanel {
 		reqSelector = new RequirementSelector(null, null, RequirementSelectorMode.ITERATION, false);
 		
 		JScrollPane scroll = new JScrollPane();
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		// Always show scroll bar
 		
 		addRequirementButton = new JButton("Add Requirement");

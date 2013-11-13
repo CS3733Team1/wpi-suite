@@ -33,7 +33,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewTableTransferHandler;
 /**
  * @author justinhess
  * @version $Revision: 1.0 $
@@ -73,6 +72,7 @@ public class OverviewTable extends JTable
 
 		/* Create double-click event listener */
 		this.addMouseListener(new MouseAdapter(){
+			@Override
 			public void mouseClicked(MouseEvent e){
 				
 				if(getRowCount() > 0)

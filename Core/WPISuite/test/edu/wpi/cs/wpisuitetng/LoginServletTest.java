@@ -13,37 +13,24 @@
 
 package edu.wpi.cs.wpisuitetng;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpUtils;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.HttpClientUtils;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.authentication.BasicAuth;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
-import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.UserManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 /**
  * Performs acceptence tests against the LoginSerlvet.
  * 	Uses Apache HTTPClient to facilitate the HTTP interactions.

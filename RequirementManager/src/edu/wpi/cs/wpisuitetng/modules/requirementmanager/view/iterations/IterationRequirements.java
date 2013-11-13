@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -38,53 +39,61 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
 
 /**
  * 
- *
+ * 
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class IterationRequirements extends JPanel implements RequirementSelectorListener{
+public class IterationRequirements extends JPanel implements
+		RequirementSelectorListener {
 	private JButton removeButton;
 	private JTable requirementTable;
 	private DefaultTableModel tableModel;
 	private IterationPanel parentPanel;
 	private ViewMode viewMode;
-	
+
 	private Iteration activeIteration;
-	
+
 	private RequirementSelector reqSelector;
 
 	/**
 	 * Constructor for IterationRequirements.
-	 * @param displayIteration Iteration
-	 * @param parent IterationPanel
-	 * @param vm ViewMode
+	 * 
+	 * @param displayIteration
+	 *            Iteration
+	 * @param parent
+	 *            IterationPanel
+	 * @param vm
+	 *            ViewMode
 	 */
-	public IterationRequirements(IterationPanel parent, ViewMode vm,  Iteration displayIteration) {
-	
+	public IterationRequirements(IterationPanel parent, ViewMode vm,
+			Iteration displayIteration) {
+
 		activeIteration = displayIteration;
 		parentPanel = parent;
 		viewMode = vm;
-		
+
 		this.setLayout(new BorderLayout());
-		
-		reqSelector = new RequirementSelector(this, null, RequirementSelectorMode.ITERATION, false);
-		
+
+		reqSelector = new RequirementSelector(this, null,
+				RequirementSelectorMode.ITERATION, false);
+
 		JScrollPane scroll = new JScrollPane();
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		// Always show scroll bar
-		
+
 		removeButton = new JButton("Remove");
-		removeButton.addActionListener(new ActionListener(){
+		removeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int[] selectedObjects = requirementTable.getSelectedRows();
-				
-				for(int i = 0; i < selectedObjects.length; i++)
-				{
-					Requirement toBeRemoved = (Requirement)requirementTable.getValueAt(selectedObjects[i], 1);
+
+				for (int i = 0; i < selectedObjects.length; i++) {
+					Requirement toBeRemoved = (Requirement) requirementTable
+							.getValueAt(selectedObjects[i], 1);
 					toBeRemoved.setIteration("Backlog");
-					
-					UpdateRequirementController.getInstance().updateRequirement(toBeRemoved);
+
+					UpdateRequirementController.getInstance()
+							.updateRequirement(toBeRemoved);
 				}
 				refreshTable();
 				ViewEventController.getInstance().refreshTree();
@@ -94,116 +103,122 @@ public class IterationRequirements extends JPanel implements RequirementSelector
 			}
 		});
 		removeButton.setEnabled(false);
-		
+
 		this.add(scroll, BorderLayout.CENTER); // Add scroll pane to panel
-		
-		reqSelector.addButton(0,removeButton);
-		this.add(reqSelector,BorderLayout.SOUTH);
-		
+
+		reqSelector.addButton(0, removeButton);
+		this.add(reqSelector, BorderLayout.SOUTH);
+
 		requirementTable = buildTable();
 		scroll.setViewportView(requirementTable);
-		
-		if(vm == ViewMode.CREATING) reqSelector.enableChildren(false);
-		
+
+		if (vm == ViewMode.CREATING)
+			reqSelector.enableChildren(false);
+
 		this.refreshTable();
 	}
-	
+
 	/**
 	 * Method buildTable.
-	
-	 * @return JTable */
-	private JTable buildTable()
-	{
-		requirementTable = new JTable()
-		{
+	 * 
+	 * @return JTable
+	 */
+	@SuppressWarnings("serial")
+	private JTable buildTable() {
+		requirementTable = new JTable() {
 			/**
-			 * Overrides the isCellEditable method to ensure no cells are editable.
+			 * Overrides the isCellEditable method to ensure no cells are
+			 * editable.
 			 * 
-			 * @param row	row of OverviewTable cell is located
-			 * @param col	column of OverviewTable cell is located
+			 * @param row
+			 *            row of OverviewTable cell is located
+			 * @param col
+			 *            column of OverviewTable cell is located
 			 */
 			@Override
-			public boolean isCellEditable(int row, int col)
-			{
+			public boolean isCellEditable(int row, int col) {
 				return false;
 			}
 		};
 
-		String[] columnNames = {"ID", "Name", "Description", "Release #", "Type", "Status", "Priority", "Estimate"}; 		
+		String[] columnNames = { "ID", "Name", "Description", "Release #",
+				"Type", "Status", "Priority", "Estimate" };
 		tableModel = new DefaultTableModel(columnNames, 0);
 		requirementTable.setModel(tableModel);
 
 		requirementTable.getTableHeader().setReorderingAllowed(false);
 		requirementTable.setAutoCreateRowSorter(true);
 		requirementTable.setFillsViewportHeight(true);
-		
+
 		/* Create double-click event listener */
-		requirementTable.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				
-				if(requirementTable.getRowCount() > 0)
-				{
+		requirementTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if (requirementTable.getRowCount() > 0) {
 					int mouseY = e.getY();
-					Rectangle lastRow = requirementTable.getCellRect(requirementTable.getRowCount() - 1, 0, true);
+					Rectangle lastRow = requirementTable.getCellRect(
+							requirementTable.getRowCount() - 1, 0, true);
 					int lastRowY = lastRow.y + lastRow.height;
 
-					if(mouseY > lastRowY) 
-					{
+					if (mouseY > lastRowY) {
 						requirementTable.getSelectionModel().clearSelection();
 						repaint();
 					}
 				}
-				
-				if (e.getClickCount() == 2)
-				{
+
+				if (e.getClickCount() == 2) {
 					int[] selection = requirementTable.getSelectedRows();
 
-					if(selection.length != 1) return;
-					Requirement toEdit = (Requirement)requirementTable.getValueAt(selection[0], 1);
+					if (selection.length != 1)
+						return;
+					Requirement toEdit = (Requirement) requirementTable
+							.getValueAt(selection[0], 1);
 					ViewEventController.getInstance().editRequirement(toEdit);
 				}
 			}
 		});
-		
-		requirementTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-		{
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				removeButton.setEnabled(requirementTable.getSelectedRowCount() > 0 && viewMode == ViewMode.EDITING);
-			}		
-		});
-		
+
+		requirementTable.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					@Override
+					public void valueChanged(ListSelectionEvent e) {
+						removeButton.setEnabled(requirementTable
+								.getSelectedRowCount() > 0
+								&& viewMode == ViewMode.EDITING);
+					}
+				});
+
 		return requirementTable;
 	}
-	
-	private void refreshTable()
-	{
-		if(viewMode == ViewMode.CREATING) return; 
-		tableModel.setRowCount(0); //clear the table
+
+	private void refreshTable() {
+		if (viewMode == ViewMode.CREATING)
+			return;
+		tableModel.setRowCount(0); // clear the table
 
 		List<Requirement> requirements = activeIteration.getRequirements();
 
 		for (int i = 0; i < requirements.size(); i++) {
 			Requirement req = requirements.get(i);
 			if (!req.isDeleted()) {
-				tableModel.addRow(new Object[]{ req.getId(),
-						req,
-						req.getDescription(),
-						req.getRelease(),
-						req.getType(),
-						req.getStatus(),
-						req.getPriority(),
-						req.getEstimate()
-				});
+				tableModel
+						.addRow(new Object[] { req.getId(), req,
+								req.getDescription(), req.getRelease(),
+								req.getType(), req.getStatus(),
+								req.getPriority(), req.getEstimate() });
 			}
 		}
 	}
 
 	/**
 	 * Method requirementSelected.
-	 * @param requirements Object[]
-	
-	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelectorListener#requirementSelected(Object[]) */
+	 * 
+	 * @param requirements
+	 *            Object[]
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementSelectorListener#requirementSelected(Object[])
+	 */
 	@Override
 	public void requirementSelected(Object[] requirements) {
 		for (Object obj : requirements) {
@@ -211,21 +226,22 @@ public class IterationRequirements extends JPanel implements RequirementSelector
 			req.setIteration(activeIteration.getName());
 			UpdateRequirementController.getInstance().updateRequirement(req);
 		}
-		
+
 		refreshTable();
 		ViewEventController.getInstance().refreshTree();
 		ViewEventController.getInstance().refreshTable();
 		parentPanel.refreshEstimate();
 	}
-	
+
 	/**
-	* Overrides the paintComponent method to retrieve the requirements on the first painting.
-	* 
-	 * @param g	The component object to paint
+	 * Overrides the paintComponent method to retrieve the requirements on the
+	 * first painting.
+	 * 
+	 * @param g
+	 *            The component object to paint
 	 */
 	@Override
-	public void paintComponent(Graphics g)
-	{
+	public void paintComponent(Graphics g) {
 		refreshTable();
 		reqSelector.refreshList();
 		super.paintComponent(g);

@@ -19,14 +19,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.UpdateRequirementController;
@@ -38,7 +37,9 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ViewM
  * @author justinhess
  * @version $Revision: 1.0 $
  */
-public class RequirementNotePanel extends JPanel implements RequirementPanelListener {
+@SuppressWarnings("serial")
+public class RequirementNotePanel extends JPanel implements
+		RequirementPanelListener {
 	private final ViewMode viewMode;
 	private final Requirement currentRequirement;
 	private int notesAdded;
@@ -47,18 +48,23 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 	private final JButton buttonAddNote;
 	private final JButton buttonClear;
 	private final JLabel errorMsg;
-	
+
 	/**
 	 * Constructor for the requirement note panel
-	 * @param parent parent panel
-	 * @param vm view mode
-	 * @param current current requirement
+	 * 
+	 * @param parent
+	 *            parent panel
+	 * @param vm
+	 *            view mode
+	 * @param current
+	 *            current requirement
 	 */
-	public RequirementNotePanel(RequirementTabsPanel parent, ViewMode vm, Requirement current) {
+	public RequirementNotePanel(RequirementTabsPanel parent, ViewMode vm,
+			Requirement current) {
 		currentRequirement = current;
 		viewMode = vm;
 		notesAdded = 0;
-		
+
 		Component noteField = this.buildNoteField();
 		noteScroll = new JScrollPane();
 
@@ -82,9 +88,10 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 		final GridBagConstraints bc = new GridBagConstraints();
 
 		// Create new scroll pane for notes
-		noteScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		noteScroll
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		// Always show scroll bar
-		noteScroll.setMinimumSize(new Dimension(100,100));
+		noteScroll.setMinimumSize(new Dimension(100, 100));
 
 		c.fill = GridBagConstraints.BOTH; // Fill grid cell with elements
 		c.weightx = 1; // Fill horizontal space
@@ -113,26 +120,26 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 		c.fill = GridBagConstraints.NONE; // Do not fill cell
 		c.anchor = GridBagConstraints.WEST; // Anchor buttons to west of panel
 		this.add(bottomPanel, c); // Add buttons to the panel
-		
+
 		this.setupListeners();
 		this.refresh();
 	}
-	
+
 	/**
 	 * Refreshes the note panel
 	 */
-	private void refresh()
-	{
-		noteScroll.setViewportView(SingleNotePanel.createList(currentRequirement.getNotes()));
+	private void refresh() {
+		noteScroll.setViewportView(SingleNotePanel
+				.createList(currentRequirement.getNotes()));
 	}
-	
+
 	/**
-	 * Sets up the listeners 
+	 * Sets up the listeners
 	 */
-	private void setupListeners()
-	{
+	private void setupListeners() {
 		// Listener for add note button
 		buttonAddNote.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Display error message if there is no text in noteMessage
 				if (noteMessage.getText().length() <= 0) {
@@ -162,6 +169,7 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 
 		// Listener for the Clear button
 		buttonClear.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Clear all text fields
 				noteMessage.setText("");
@@ -174,15 +182,15 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 
 	/**
 	 * Method buildNoteMessage.
-	
-	 * @return JTextArea */
-	private Component buildNoteField(){		
-		noteMessage.addKeyListener(new KeyAdapter()
-		{
+	 * 
+	 * @return JTextArea
+	 */
+	private Component buildNoteField() {
+		noteMessage.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e)
-			{
-				boolean enabledButtons = !noteMessage.getText().trim().isEmpty();
+			public void keyReleased(KeyEvent e) {
+				boolean enabledButtons = !noteMessage.getText().trim()
+						.isEmpty();
 				buttonAddNote.setEnabled(enabledButtons);
 				buttonClear.setEnabled(enabledButtons);
 			}
@@ -192,107 +200,129 @@ public class RequirementNotePanel extends JPanel implements RequirementPanelList
 		noteMessage.setLineWrap(true); // If right of box is reach, goes down a
 										// line
 		noteMessage.setWrapStyleWord(true); // Doesn't chop off words
-		noteMessage.setMinimumSize(new Dimension(50,50));
-		noteMessage.setSize(new Dimension(100,100));
+		noteMessage.setMinimumSize(new Dimension(50, 50));
+		noteMessage.setSize(new Dimension(100, 100));
 		Border b = BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Color.GRAY), 
-	            BorderFactory.createEmptyBorder(4, 4, 4, 4));
+				BorderFactory.createLineBorder(Color.GRAY),
+				BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		noteMessage.setBorder(b);
-		
+
 		JScrollPane scroller = new JScrollPane(noteMessage);
-		scroller.setMinimumSize(new Dimension(50,50));
-		scroller.setPreferredSize(new Dimension(60,60));
-		
+		scroller.setMinimumSize(new Dimension(50, 50));
+		scroller.setPreferredSize(new Dimension(60, 60));
+
 		return scroller;
 	}
 
 	/**
 	 * Method readyToRemove.
-	
-	
-	 * @return boolean * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove() * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#readyToRemove()
+	 * 
+	 * 
+	 * @return boolean * @see
+	 *         edu.wpi.cs.wpisuitetng.modules.requirementmanager.view
+	 *         .requirements.RequirementPanelListener#readyToRemove() * @see
+	 *         edu.
+	 *         wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements
+	 *         .RequirementPanelListener#readyToRemove()
 	 */
 	@Override
 	public boolean readyToRemove() {
-		return noteMessage.getText().length() == 0 && (notesAdded == 0 || viewMode == ViewMode.EDITING);
+		return noteMessage.getText().length() == 0
+				&& (notesAdded == 0 || viewMode == ViewMode.EDITING);
 	}
 
 	/**
 	 * Method fireDeleted.
-	 * @param b boolean
-	
-	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireDeleted(boolean) */
+	 * 
+	 * @param b
+	 *            boolean
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireDeleted(boolean)
+	 */
 	@Override
 	public void fireDeleted(boolean b) {
 	}
 
 	/**
 	 * Method fireValid.
-	 * @param b boolean
-	
-	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireValid(boolean) */
+	 * 
+	 * @param b
+	 *            boolean
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireValid(boolean)
+	 */
 	@Override
-	public void fireValid(boolean b) {		
+	public void fireValid(boolean b) {
 	}
 
 	/**
 	 * Method fireChanges.
-	 * @param b boolean
-	
-	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireChanges(boolean) */
+	 * 
+	 * @param b
+	 *            boolean
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireChanges(boolean)
+	 */
 	@Override
-	public void fireChanges(boolean b) {		
+	public void fireChanges(boolean b) {
 	}
 
 	/**
 	 * Method fireRefresh.
+	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.RequirementPanelListener#fireRefresh()
 	 */
 	@Override
 	public void fireRefresh() {
 		this.refresh();
 	}
-	
+
 	/**
-	
-	 * @return the note message text area */
+	 * 
+	 * @return the note message text area
+	 */
 	public JTextArea getNoteMessage() {
 		return noteMessage;
 	}
-	
+
 	/**
-	
-	 * @return the button for adding a note */
+	 * 
+	 * @return the button for adding a note
+	 */
 	public JButton getAddNoteButton() {
 		return buttonAddNote;
 	}
-	
+
 	/**
-	
-	 * @return the requirement this note panel is in */
+	 * 
+	 * @return the requirement this note panel is in
+	 */
 	public Requirement getRequirement() {
 		return currentRequirement;
 	}
-	
+
 	/**
-	
-	 * @return the number of notes added */
+	 * 
+	 * @return the number of notes added
+	 */
 	public int getNotesAdded() {
 		return notesAdded;
 	}
 
 	/**
 	 * Method getClearButton.
-	
-	 * @return JButton */
+	 * 
+	 * @return JButton
+	 */
 	public JButton getClearButton() {
 		return buttonClear;
 	}
 
 	/**
 	 * Method getErrorMsg.
-	
-	 * @return JLabel */
+	 * 
+	 * @return JLabel
+	 */
 	public JLabel getErrorMsg() {
 		return errorMsg;
 	}

@@ -50,7 +50,8 @@ public class Rotator extends Timer implements ActionListener {
      * @param event  the action event.
     
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent) */
-    public void actionPerformed(final ActionEvent event) {
+    @Override
+	public void actionPerformed(final ActionEvent event) {
         this.plot.setStartAngle(this.angle);
         this.angle = this.angle + 1;
         if (this.angle == 360) {

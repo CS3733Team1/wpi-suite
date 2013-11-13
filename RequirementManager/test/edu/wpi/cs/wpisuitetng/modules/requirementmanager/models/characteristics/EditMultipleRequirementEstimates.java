@@ -16,7 +16,8 @@
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +26,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ToolbarView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.OverviewTable;
 
 /**

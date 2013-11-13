@@ -9,16 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.view;
 
-
-import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
-
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
-import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons.ChartButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons.EditButtonsPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons.RequirementButtonsPanel;
@@ -26,19 +17,22 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.buttons.Requiremen
 /**
  * Sets up upper toolbar of RequirementManager tab
  * 
- *
+ * 
  * @version $Revision: 1.0 $
  * @author justinhess
  */
-public class ToolbarView  extends DefaultToolbarView {
+@SuppressWarnings("serial")
+public class ToolbarView extends DefaultToolbarView {
 
 	public ChartButtonsPanel chartButton = new ChartButtonsPanel();
 	public EditButtonsPanel editButton = new EditButtonsPanel();
 	public RequirementButtonsPanel reqButton = new RequirementButtonsPanel();
-	
+
 	/**
 	 * Creates and positions option buttons in upper toolbar
-	 * @param visible boolean
+	 * 
+	 * @param visible
+	 *            boolean
 	 */
 	public ToolbarView(boolean visible) {
 
@@ -47,27 +41,30 @@ public class ToolbarView  extends DefaultToolbarView {
 		this.addGroup(editButton);
 
 	}
-	
+
 	/**
 	 * Method getEditButton.
-	
-	 * @return EditButtonsPanel */
-	public EditButtonsPanel getEditButton(){
+	 * 
+	 * @return EditButtonsPanel
+	 */
+	public EditButtonsPanel getEditButton() {
 		return editButton;
 	}
-	
+
 	/**
 	 * Method getChartButton.
-	
-	 * @return ChartButtonsPanel */
+	 * 
+	 * @return ChartButtonsPanel
+	 */
 	public ChartButtonsPanel getChartButton() {
 		return chartButton;
 	}
 
 	/**
 	 * Method getReqButton.
-	
-	 * @return RequirementButtonsPanel */
+	 * 
+	 * @return RequirementButtonsPanel
+	 */
 	public RequirementButtonsPanel getReqButton() {
 		return reqButton;
 	}
