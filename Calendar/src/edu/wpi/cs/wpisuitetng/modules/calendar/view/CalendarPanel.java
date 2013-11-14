@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.io.IOException;
@@ -9,32 +19,31 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RetrieveCommitmentController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RetrieveCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 
 public class CalendarPanel extends JTabbedPane {
 
 	private ArrayList<JPanel> p;
 	private JList<Object> commitments;
-	private CalendarModel model;
+	private MainModel model;
 
 	private CalendarTabPanel teamCalendarPanel;
 	private CalendarTabPanel personalCalendarPanel;
 
-	public CalendarPanel(CalendarModel model) {
+	public CalendarPanel(MainModel model) {
 
 		this.model = model;
 		// Initially Empty
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		
+		this.addAncestorListener(new RetrieveCommitmentController(model));
 	}
 
 	// Create TeamCalendar
 	public void createTeamCalendar(CalendarObjectModel c) {
-		teamCalendarPanel = new CalendarTabPanel(c, model);
-
-		teamCalendarPanel.addKeyListener(new RetrieveCommitmentController(model));
-		teamCalendarPanel.addMouseListener(new RetrieveCommitmentController(model));
+		teamCalendarPanel = new CalendarTabPanel(model);
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
@@ -47,10 +56,7 @@ public class CalendarPanel extends JTabbedPane {
 
 	// Create PersonalCalendar
 	public void createPersonalCalendar(CalendarObjectModel c) {
-		personalCalendarPanel = new CalendarTabPanel(c, model);
-
-		personalCalendarPanel.addKeyListener(new RetrieveCommitmentController(model));
-		personalCalendarPanel.addMouseListener(new RetrieveCommitmentController(model));
+		personalCalendarPanel = new CalendarTabPanel(model);
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
@@ -60,35 +66,24 @@ public class CalendarPanel extends JTabbedPane {
 		this.addTab(c.getTitle(), calIcon, personalCalendarPanel, "Personal Calendar");
 	}
 
-	// UNUSED
-	// Method to set / add Tab [Calendars] PHASE THIS OUT FOR NOW
-	public void addCalendar(CalendarObjectModel c) {
-		CalendarTabPanel panel = new CalendarTabPanel(c, model);
-
-		panel.addKeyListener(new RetrieveCommitmentController(model));
-		panel.addMouseListener(new RetrieveCommitmentController(model));
-
-		ImageIcon calIcon = new ImageIcon();
-		try {
-			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/personal_calendar.png")));
-		} catch (IOException e) {}
-
-		this.addTab(c.getTitle(), calIcon, panel, "A Calendar");
-	}
-
 	public CalendarTabPanel getCurrentPanel(){
 		return (CalendarTabPanel)this.getSelectedComponent();
 	}
 
 	public JList<Object> getSelectedPanel(){
-		return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
+		if(this.getSelectedComponent() instanceof CalendarTabPanel)
+			return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
+		else return new JList<Object>();
 	}
 
 	public JList<Object> getSelectedEventList(){
-		return ((CalendarTabPanel)this.getSelectedComponent()).getEventJList();
+		if(this.getSelectedComponent() instanceof CalendarTabPanel)
+			return ((CalendarTabPanel)this.getSelectedComponent()).getEventJList();
+		else return new JList<Object>();
 	}
 
-	public void RefreshSelectedPanel(){
-		((CalendarTabPanel)this.getSelectedComponent()).ResetSelection();
+	public void refreshSelectedPanel(){
+		if(this.getSelectedComponent() instanceof CalendarTabPanel)
+			((CalendarTabPanel)this.getSelectedComponent()).resetSelection();
 	}
 }

@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
@@ -8,23 +18,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.AddEventController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RemoveCommitmentController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RemoveEventController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.DisplayCommitmentController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.display.DisplayEventController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.DisplayCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RemoveCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RemoveEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 
 public class CalendarToolBar extends JPanel {
-	private CalendarModel model;
-	private CalendarView view;
+	private MainModel model;
+	private MainView view;
 	
 	private JButton addCalendarButton, deleteCalendarButton;
 	private JButton addCommitmentButton, deleteCommitmentButton;
 	private JButton addEventButton, deleteEventButton;
 	
 	
-	public CalendarToolBar(CalendarModel model, CalendarView view) {
+	public CalendarToolBar(MainModel model, MainView view) {
 		
 		this.model = model;
 		this.view = view;

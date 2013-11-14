@@ -1,56 +1,48 @@
-
-
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
- *
+ * Copyright (c) 2013 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Chris Casola
+ * 
+ * Contributors: Team TART
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
-@SuppressWarnings("serial")
+
 public class CommitmentModel extends AbstractListModel<Object> { 
 
+	/**
+	 * This is a model for the commitment list. It contains all of the commitments to be
+	 * displayed on the calendar. It extends AbstractListModel so that it can provide
+	 * the model data to the JList component in the CalendarPanel.
+	 * 
+	 * @author Thomas DeSilva, Zach Estep
+	 * 
+	 */
 
+	private static CommitmentModel commitmentModel;
 
-
-
-/**
- * This is a model for the commitment list. It contains all of the commitments to be
- * displayed on the calendar. It extends AbstractListModel so that it can provide
- * the model data to the JList component in the CalendarPanel.
- * 
- * @author Thomas DeSilva, Zach Estep
- * 
- */
-
-	private static CommitmentModel model;
 	/** The list of commitments on the calendar */
-
-	private List<Commitment> commitment;
+	private List<Commitment> commitments;
 
 	/**
 	 * Constructs a new calendar with no commitments.
 	 */
 	private CommitmentModel() {
-		commitment = new ArrayList<Commitment>();
+		commitments = new ArrayList<Commitment>();
 	}
-	
-	static public CommitmentModel getCommitmentModel()
-	{
-		if (model == null)
-			model = new CommitmentModel();
-		return model;
+
+	static public CommitmentModel getCommitmentModel() {
+		if (commitmentModel == null)
+			commitmentModel = new CommitmentModel();
+		return commitmentModel;
 	}
 	/**
 	 * Adds the given commitment to the calendar
@@ -60,7 +52,7 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	 */
 	public void addCommitment(Commitment newCommitment) {
 		// Add the commitment
-		commitment.add(newCommitment);
+		commitments.add(newCommitment);
 
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
@@ -74,7 +66,15 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	 */
 	public void addCommitments(Commitment[] commitments) {
 		for (int i = 0; i < commitments.length; i++) {
-			this.commitment.add(commitments[i]);
+			this.commitments.add(commitments[i]);
+		}
+		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
+	}
+	
+	public void setCommitments(Commitment[] commitments) {
+		this.emptyModel();
+		for (int i = 0; i < commitments.length; i++) {
+			this.commitments.add(commitments[i]);
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
@@ -88,7 +88,7 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		Iterator<Commitment> iterator = commitment.iterator();
+		Iterator<Commitment> iterator = commitments.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
@@ -105,25 +105,23 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	 */
 	@Override
 	public Object getElementAt(int index) {
-		return commitment.get(commitment.size() - 1 - index);
+		return commitments.get(commitments.size() - 1 - index);
 	}
-	
+
 	public Object getElement(int index){
-		return commitment.get(commitment.size() - 1 - index);
+		return commitments.get(commitments.size() - 1 - index);
 	}
-	
-	public void removeCommitment(int index)
-	{
-		commitment.remove(index);
+
+	public void removeCommitment(int index) {
+		commitments.remove(index);
 		this.fireIntervalAdded(this, 0, 0);
 	}
-	
-	public void removeCommitment(Commitment commit)
-	{
-		commitment.remove(commit);
+
+	public void removeCommitment(Commitment commit) {
+		commitments.remove(commit);
 		this.fireIntervalAdded(this, 0, 0);
 	}
-	
+
 
 	/**
 	 * Returns the number of commitments in the model. Also used internally by the
@@ -133,12 +131,12 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	 */
 	@Override
 	public int getSize() {
-		return commitment.size();
+		return commitments.size();
 	}
-	
+
 	static public List<Commitment> getList(){
-		List<Commitment> temp = new ArrayList<Commitment>();
-		temp.addAll(getCommitmentModel().commitment);
-		return temp;
+		List<Commitment> rtnCommitmentList = new ArrayList<Commitment>();
+		rtnCommitmentList.addAll(getCommitmentModel().commitments);
+		return rtnCommitmentList;
 	}
 }

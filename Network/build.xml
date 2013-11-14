@@ -5,7 +5,7 @@
 
 	<path id="classpath">
 		<pathelement path="build"/>
-		<fileset dir="Libraries">
+		<fileset dir="lib">
 			<include name="simple-*.jar"/>
 		</fileset>
 	</path>
