@@ -30,6 +30,9 @@ public class RemoveCommitmentController implements ActionListener{
 		this.view = view;
 	}
 	
+	/**
+	 * Handles the pressing of the Remove Commitment button
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
