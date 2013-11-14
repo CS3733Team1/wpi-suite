@@ -51,8 +51,8 @@ public class ManagerLayer {
 
 	private static final ManagerLayer layer = new ManagerLayer();
 	private Data data;
-	@SuppressWarnings("rawtypes")
-	private Map<String, EntityManager> map;
+
+	private Map<String, EntityManager<? extends Model>> map;
 	private SessionManager sessions;
 	public Cookie superCookie;
 
@@ -62,10 +62,10 @@ public class ManagerLayer {
 	/**
 	 * initializes the database initializes the JSON serializer
 	 */
-	@SuppressWarnings("rawtypes")
-	private ManagerLayer() {
+	
+	public ManagerLayer() {
 		data = DataStore.getDataStore();
-		map = new HashMap<String, EntityManager>();
+		map = new HashMap<String, EntityManager<? extends Model>>();
 		sessions = new SessionManager();
 
 		// TODO pull these mappings from some config file and reflect them
@@ -109,8 +109,7 @@ public class ManagerLayer {
 	 * 
 	 * THIS IS FOR TESTING PURPOSES ONLY
 	 */
-	@SuppressWarnings("rawtypes")
-	private ManagerLayer(Map<String, EntityManager> map, SessionManager ses) {
+	public ManagerLayer(Map<String, EntityManager<? extends Model>> map, SessionManager ses) {
 		this.map = map;
 		this.sessions = ses;
 	}
@@ -132,8 +131,7 @@ public class ManagerLayer {
 	 * 
 	 * @return ManagerLayer
 	 */
-	protected static ManagerLayer getTestInstance(
-			@SuppressWarnings("rawtypes") Map<String, EntityManager> map,
+	protected static ManagerLayer getTestInstance(Map<String, EntityManager<? extends Model>> map,
 			SessionManager ses) {
 		return new ManagerLayer(map, ses);
 	}

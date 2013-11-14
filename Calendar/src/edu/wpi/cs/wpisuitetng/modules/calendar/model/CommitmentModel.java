@@ -13,17 +13,14 @@
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
-@SuppressWarnings("serial")
+
 public class CommitmentModel extends AbstractListModel<Object> { 
-
-
-
-
 
 /**
  * This is a model for the commitment list. It contains all of the commitments to be
