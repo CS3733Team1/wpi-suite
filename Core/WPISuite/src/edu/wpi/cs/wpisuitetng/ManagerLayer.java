@@ -27,6 +27,8 @@ import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentEntityManager;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.ProjectManager;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.UserManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -35,8 +37,6 @@ import edu.wpi.cs.wpisuitetng.modules.defecttracker.entitymanagers.DefectManager
 import edu.wpi.cs.wpisuitetng.modules.postboard.model.PostBoardEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationEntityManager;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentEntityManager;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
 
 /**
  * This singleton class responds to API requests directed at models by
