@@ -59,13 +59,10 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		// Parse the message from JSON
 		final Commitment newMessage = Commitment.fromJSON(content);
 		
-		if (newMessage.getName().length() >= EventEntityManager.DELETESYMBOL.length()
-				&& newMessage.getName().substring(0,EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL)){
-			newMessage.setName(newMessage.getName().substring(EventEntityManager.DELETESYMBOL.length()));
+		if (newMessage.isMarkedForDeletion()){
 			deleteCommitment(newMessage);
 			return newMessage;
 		}
-		System.out.println("spooky copyright ghosts");
 		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to

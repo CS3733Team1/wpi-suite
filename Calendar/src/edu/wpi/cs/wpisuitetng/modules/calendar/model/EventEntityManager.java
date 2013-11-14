@@ -57,9 +57,7 @@ public class EventEntityManager implements EntityManager<Event> {
 		// Parse the message from JSON
 		final Event newMessage = Event.fromJSON(content);
 
-		if (newMessage.getName().length() >= EventEntityManager.DELETESYMBOL.length()
-				&& newMessage.getName().substring(0,EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL)){
-			newMessage.setName(newMessage.getName().substring(EventEntityManager.DELETESYMBOL.length()));
+		if (newMessage.isMarkedForDeletion()){
 			deleteEvent(newMessage);
 			return newMessage;
 		}

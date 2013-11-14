@@ -47,7 +47,7 @@ public class RemoveEventController implements ActionListener{
 			Event event = (Event) model.getEventModel().getElement(index[x]);
 			//remove this later
 			
-			event.setName(EventEntityManager.DELETESYMBOL+event.getName());
+			event.markForDeletion();
 			
 			//System.out.println(EventEntityManager.DELETESYMBOL);
 			
