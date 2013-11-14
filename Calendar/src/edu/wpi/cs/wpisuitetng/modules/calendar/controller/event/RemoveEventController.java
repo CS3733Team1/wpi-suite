@@ -33,22 +33,28 @@ public class RemoveEventController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		System.out.println("Attempt Delete 2");
+		int[] index = view.getCalendarPanel().getSelectedEventsInList().getSelectedIndices();
 		
-		int[] index = view.getCalendarPanel().getSelectedEventList().getSelectedIndices();
-		
+		if(index.length == 0)
+		{
+			System.out.println("YA DUN GOOFED");
+			return;
+		}
 		
 		for (int x = index.length-1; x >= 0; x--){
 			System.out.println("index: " + index[x]);
 
-			Event eve = (Event) model.getEventModel().getElement(index[x]);
+			Event event = (Event) model.getEventModel().getElement(index[x]);
 			//remove this later
-			eve.setName(EventEntityManager.DELETESYMBOL+eve.getName());
-			model.removeEvent(eve);
-
-			// Send a request to the core to save this message
-			final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.DELETE); // PUT == create
-			request.setBody(eve.toJSON()); // put the new message in the body of the request
+			
+			event.setName(EventEntityManager.DELETESYMBOL+event.getName());
+			
+			//System.out.println(EventEntityManager.DELETESYMBOL);
+			
+			model.removeEvent(event);
+			// Send a request to the core to save this message 
+			final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT); // PUT == create
+			request.setBody(event.toJSON()); // put the new message in the body of the request
 			request.addObserver(new RemoveEventObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}

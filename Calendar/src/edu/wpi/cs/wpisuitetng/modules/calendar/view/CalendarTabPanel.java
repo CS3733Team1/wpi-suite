@@ -123,8 +123,10 @@ public class CalendarTabPanel extends JPanel{
 		add(calendarViewPanel, BorderLayout.CENTER);
 
 		commitmentListPanel = new CommitmentListPanel(model.getCommitmentModel());
+		eventListPanel = new EventListPanel(model.getEventModel());
 
-		add(commitmentListPanel, BorderLayout.LINE_END);
+		add(eventListPanel, BorderLayout.WEST);
+		add(commitmentListPanel, BorderLayout.EAST);
 
 		dayView = new DayCalendarView();
 		weekView = new WeekCalendarView();
@@ -149,7 +151,7 @@ public class CalendarTabPanel extends JPanel{
 
 	public void resetSelection() {
 		commitmentListPanel.getCommitmentList().clearSelection();
-		//eventListPanel.getEventList().clearSelection();
+		eventListPanel.getEventList().clearSelection();
 	}
 
 	public JList<Object> getEventJList(){

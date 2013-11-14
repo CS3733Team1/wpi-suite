@@ -42,9 +42,8 @@ public class AddCommitmentController implements ActionListener{
 			return;
 		}
 		
-		//don't need this because server works now
-		//addCommitmentToModel(commit);
-		System.out.println("Shots Fired 2");
+		System.out.println("Adding commitment...");
+		
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
 		request.setBody(commit.toJSON()); // put the new message in the body of the request
@@ -55,7 +54,7 @@ public class AddCommitmentController implements ActionListener{
 	}
 	
 	public void addCommitmentToModel(Commitment commit){
-		System.out.println("Shots  ADded Fired");
+		System.out.println("Commitment added.");
 		model.addCommitmentFromCalendar(commit);
 	}
 

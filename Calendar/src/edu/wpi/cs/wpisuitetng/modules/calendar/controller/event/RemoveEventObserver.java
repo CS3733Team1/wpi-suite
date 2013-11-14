@@ -50,14 +50,13 @@ public class RemoveEventObserver implements RequestObserver {
 
 	@Override
 	public void responseError(IRequest iReq) {
-		
-		
-		System.err.println("The request to remove a event failed.");
+		System.out.println(iReq.getResponse().getStatusMessage());
+		System.err.println("The request to remove an event failed.");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to remove a event failed.");
+		System.out.println(exception);
+		System.err.println("The request failed to connect to server.");
 	}
-
 }

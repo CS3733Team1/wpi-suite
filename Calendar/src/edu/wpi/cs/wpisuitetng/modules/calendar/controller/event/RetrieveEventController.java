@@ -10,12 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
@@ -31,65 +27,16 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author Chris Casola
  *
  */
-public class RetrieveEventController implements ActionListener, KeyListener, MouseListener {
+public class RetrieveEventController implements AncestorListener {
 	MainModel model;
 
 	public RetrieveEventController(MainModel model) {
 		this.model = model;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		grabMessages();
-	}
-	
-	@Override
-	public void keyTyped(KeyEvent e) {
-		grabMessages();
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		grabMessages();
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		grabMessages();
-		
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		grabMessages();
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		return;
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		return;
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		return;
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		return;
-	}
-	
-	public void grabMessages(){
-		System.out.println("Reloading");
+	public void retrieveMessages(){
+		System.out.println("Retrieving commitments from server...");
 		// Send a request to the core to save this message
-		
 		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.GET); // GET == read
 		request.addObserver(new RetrieveEventObserver(this)); // add an observer to process the response
 		request.send(); // send the request
@@ -101,17 +48,26 @@ public class RetrieveEventController implements ActionListener, KeyListener, Mou
 	 * 
 	 * @param messages an array of messages received from the server
 	 */
-	public void receivedMessages(Event[] event) {
-		// Empty the local model to eliminate duplications
-		model.getEventModel().emptyModel();
-		
+	public void receivedMessages(Event[] events) {		
 		// Make sure the response was not null
-		if (event != null) {
-			
-			// add the messages to the local model
-			model.getEventModel().addEvents(event);
+		if (events != null) {
+			// set the messages to the local model
+			model.getEventModel().setEvents(events);
 		}
 	}
 
+	/**
+	 * Whenever the Calendar Module Tab is viewed it will refetch Events from the server.
+	 * This also runs on first launch.
+	 */
+	@Override
+	public void ancestorAdded(AncestorEvent e) {
+		this.retrieveMessages();
+	}
 
+	@Override
+	public void ancestorMoved(AncestorEvent e) {}
+
+	@Override
+	public void ancestorRemoved(AncestorEvent e) {}
 }

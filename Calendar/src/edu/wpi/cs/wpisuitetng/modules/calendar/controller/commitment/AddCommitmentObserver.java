@@ -59,5 +59,4 @@ public class AddCommitmentObserver implements RequestObserver {
 	public void fail(IRequest iReq, Exception exception) {
 		System.err.println("The request to add a commitment failed.");
 	}
-
 }

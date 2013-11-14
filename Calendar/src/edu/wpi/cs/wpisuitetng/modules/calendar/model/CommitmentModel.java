@@ -117,8 +117,8 @@ public class CommitmentModel extends AbstractListModel<Object> {
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
-	public void removeCommitment(Commitment commit) {
-		commitments.remove(commit);
+	public void removeCommitment(Commitment commitment) {
+		commitments.remove(commitment);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 

@@ -35,7 +35,7 @@ public class RemoveCommitmentController implements ActionListener{
 		
 		System.out.println("Attempt Delete 2");
 		
-		int[] index = view.getCalendarPanel().getSelectedPanel().getSelectedIndices();
+		int[] index = view.getCalendarPanel().getSelectedCommitmentsInList().getSelectedIndices();
 		
 		if(index.length == 0)
 		{

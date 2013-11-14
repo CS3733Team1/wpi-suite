@@ -23,13 +23,13 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  *
  */
 public class RemoveCommitmentObserver implements RequestObserver {
-	
+
 	private final RemoveCommitmentController controller;
-	
+
 	public RemoveCommitmentObserver(RemoveCommitmentController controller) {
 		this.controller = controller;
 	}
-	
+
 	/*
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
@@ -40,10 +40,10 @@ public class RemoveCommitmentObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
-		
+
 		// Parse the message out of the response body
 		final Commitment commit = Commitment.fromJSON(response.getBody());
-		
+
 		// Pass the messages back to the controller
 		controller.removeCommitmentToModel(commit);
 	}
@@ -51,15 +51,12 @@ public class RemoveCommitmentObserver implements RequestObserver {
 	@Override
 	public void responseError(IRequest iReq) {
 		System.out.println(iReq.getResponse().getStatusMessage());
-		
 		System.err.println("The request to remove a commitment failed.");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
 		System.out.println(exception);
-		
 		System.err.println("The request failed to connect to server.");
 	}
-
 }

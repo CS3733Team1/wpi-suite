@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RetrieveCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 
@@ -39,6 +40,7 @@ public class CalendarPanel extends JTabbedPane {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
 		this.addAncestorListener(new RetrieveCommitmentController(model));
+		this.addAncestorListener(new RetrieveEventController(model));
 	}
 
 	// Create TeamCalendar
@@ -70,13 +72,13 @@ public class CalendarPanel extends JTabbedPane {
 		return (CalendarTabPanel)this.getSelectedComponent();
 	}
 
-	public JList<Object> getSelectedPanel(){
+	public JList<Object> getSelectedCommitmentsInList(){
 		if(this.getSelectedComponent() instanceof CalendarTabPanel)
 			return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
 		else return new JList<Object>();
 	}
 
-	public JList<Object> getSelectedEventList(){
+	public JList<Object> getSelectedEventsInList(){
 		if(this.getSelectedComponent() instanceof CalendarTabPanel)
 			return ((CalendarTabPanel)this.getSelectedComponent()).getEventJList();
 		else return new JList<Object>();
