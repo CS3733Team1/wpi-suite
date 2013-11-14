@@ -37,8 +37,8 @@ public class EventEntityManager implements EntityManager<Event> {
 	 */
 	public static EventEntityManager getEventEntityManager(Data db)
 	{
-		return (EManager == null) ? new EventEntityManager(db) : EManager;
-			
+		EManager = (EManager == null) ? new EventEntityManager(db) : EManager;
+		return EManager;
 	}
 	
 	private EventEntityManager(Data db) {
