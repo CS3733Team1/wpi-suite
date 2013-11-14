@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.io.IOException;
@@ -8,40 +18,32 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RetrieveCommitmentController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RetrieveCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 
-public class CalendarPanel extends JTabbedPane implements AncestorListener {
+public class CalendarPanel extends JTabbedPane {
 
 	private ArrayList<JPanel> p;
 	private JList<Object> commitments;
-	private CalendarModel model;
+	private MainModel model;
 
 	private CalendarTabPanel teamCalendarPanel;
 	private CalendarTabPanel personalCalendarPanel;
-	
-	private RetrieveCommitmentController retrieve;
 
-	public CalendarPanel(CalendarModel model) {
+	public CalendarPanel(MainModel model) {
 
 		this.model = model;
 		// Initially Empty
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
-		retrieve = new RetrieveCommitmentController(model);
-		this.addAncestorListener(this);
+		this.addAncestorListener(new RetrieveCommitmentController(model));
 	}
 
 	// Create TeamCalendar
 	public void createTeamCalendar(CalendarObjectModel c) {
-		teamCalendarPanel = new CalendarTabPanel(c, model);
-
-		teamCalendarPanel.addKeyListener(retrieve);
-		teamCalendarPanel.addMouseListener(retrieve);
+		teamCalendarPanel = new CalendarTabPanel(model);
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
@@ -54,11 +56,7 @@ public class CalendarPanel extends JTabbedPane implements AncestorListener {
 
 	// Create PersonalCalendar
 	public void createPersonalCalendar(CalendarObjectModel c) {
-		personalCalendarPanel = new CalendarTabPanel(c, model);
-
-		
-		personalCalendarPanel.addKeyListener(retrieve);
-		personalCalendarPanel.addMouseListener(retrieve);
+		personalCalendarPanel = new CalendarTabPanel(model);
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
@@ -66,25 +64,6 @@ public class CalendarPanel extends JTabbedPane implements AncestorListener {
 		} catch (IOException e) {}
 
 		this.addTab(c.getTitle(), calIcon, personalCalendarPanel, "Personal Calendar");
-	}
-
-	// UNUSED
-	// Method to set / add Tab [Calendars] PHASE THIS OUT FOR NOW
-	public void addCalendar(CalendarObjectModel c) {
-		CalendarTabPanel panel = new CalendarTabPanel(c, model);
-
-		retrieve = new RetrieveCommitmentController(model);
-		panel.addKeyListener(retrieve);
-		panel.addMouseListener(retrieve);
-		
-		ImageIcon calIcon = new ImageIcon();
-		try {
-			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/personal_calendar.png")));
-		} catch (IOException e) {}
-
-		this.addTab(c.getTitle(), calIcon, panel, "A Calendar");
-		
-		retrieve.grabMessages();
 	}
 
 	public CalendarTabPanel getCurrentPanel(){
@@ -103,19 +82,8 @@ public class CalendarPanel extends JTabbedPane implements AncestorListener {
 		else return new JList<Object>();
 	}
 
-	public void RefreshSelectedPanel(){
+	public void refreshSelectedPanel(){
 		if(this.getSelectedComponent() instanceof CalendarTabPanel)
-			((CalendarTabPanel)this.getSelectedComponent()).ResetSelection();
+			((CalendarTabPanel)this.getSelectedComponent()).resetSelection();
 	}
-
-	@Override
-	public void ancestorAdded(AncestorEvent arg0) {
-		retrieve.grabMessages();
-	}
-
-	@Override
-	public void ancestorMoved(AncestorEvent arg0) {}
-
-	@Override
-	public void ancestorRemoved(AncestorEvent arg0) {}
 }

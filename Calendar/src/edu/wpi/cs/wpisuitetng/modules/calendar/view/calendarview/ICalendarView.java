@@ -8,22 +8,13 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-import java.util.List;
+public interface ICalendarView {
 
-public class CalendarObjectModel {
-	private String title;
-	private List<Commitment> commitments;
-	private List<Event> events;
-
-	public CalendarObjectModel(String title) {
-		this.title = title;
-
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
+	public String getTitle();
+	
+	public void next();
+	public void previous();
+	public void today();
 }

@@ -8,22 +8,36 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-import java.util.List;
+public class DayCalendarView implements ICalendarView {
 
-public class CalendarObjectModel {
-	private String title;
-	private List<Commitment> commitments;
-	private List<Event> events;
+	public DayCalendarView() {
+		// TODO Auto-generated constructor stub
+	}
 
-	public CalendarObjectModel(String title) {
-		this.title = title;
+	@Override
+	public void next() {
+		// TODO Auto-generated method stub
 
 	}
 
+	@Override
+	public void previous() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void today() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public String getTitle() {
-		return title;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

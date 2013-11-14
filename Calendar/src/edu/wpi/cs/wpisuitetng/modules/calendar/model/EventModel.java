@@ -1,52 +1,49 @@
-
-
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
- *
+ * Copyright (c) 2013 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Chris Casola
+ * 
+ * Contributors: Team TART
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
-@SuppressWarnings("serial")
+
 public class EventModel extends AbstractListModel<Object> { 
 
-/**
- * This is a model for events. It contains all of the events to be
- * displayed on the calendar. It extends AbstractListModel so that it can provide
- * the model data to the JList component in the BoardPanel.
- * 
- * @author Thomas DeSilva, Zach Estep
- * 
- */
-	
-	private static EventModel model;
+	/**
+	 * This is a model for events. It contains all of the events to be
+	 * displayed on the calendar. It extends AbstractListModel so that it can provide
+	 * the model data to the JList component in the BoardPanel.
+	 * 
+	 * @author Thomas DeSilva, Zach Estep
+	 * 
+	 */
+
+	private static EventModel eventModel;
 
 	/** The list of events on the calendar */
-	private List<Event> event;
+	private List<Event> events;
 
 	/**
 	 * Constructs a new calendar with no events.
 	 */
 	private EventModel() {
-		event = new ArrayList<Event>();
+		events = new ArrayList<Event>();
 	}
-	
+
 	public static EventModel getEventModel()
 	{
-		if( model == null)
-			model = new EventModel();
-		return model;
+		if( eventModel == null)
+			eventModel = new EventModel();
+		return eventModel;
 	}
 
 	/**
@@ -57,7 +54,7 @@ public class EventModel extends AbstractListModel<Object> {
 	 */
 	public void addEvent(Event newEvent) {
 		// Add the event
-		event.add(newEvent);
+		events.add(newEvent);
 
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
@@ -71,7 +68,15 @@ public class EventModel extends AbstractListModel<Object> {
 	 */
 	public void addEvents(Event[] events) {
 		for (int i = 0; i < events.length; i++) {
-			this.event.add(events[i]);
+			this.events.add(events[i]);
+		}
+		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
+	}
+	
+	public void setEvents(Event[] events) {
+		this.emptyModel();
+		for (int i = 0; i < events.length; i++) {
+			this.events.add(events[i]);
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
@@ -85,7 +90,7 @@ public class EventModel extends AbstractListModel<Object> {
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		Iterator<Event> iterator = event.iterator();
+		Iterator<Event> iterator = events.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
@@ -93,7 +98,7 @@ public class EventModel extends AbstractListModel<Object> {
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 
-	/*
+	/**
 	 * Returns the event at the given index. This method is called internally
 	 * by the JList in BoardPanel. Note this method returns elements in reverse
 	 * order, so newest events are returned first.
@@ -102,23 +107,25 @@ public class EventModel extends AbstractListModel<Object> {
 	 */
 	@Override
 	public Object getElementAt(int index) {
-		return event.get(event.size() - 1 - index).toString();
+		return events.get(events.size() - 1 - index);
 	}
-	
-	
-	
-	public void removeEvent(int index)
-	{
-		event.remove(index);
-	}
-	
-	public void removeEvent(Event givenEvent)
-	{
-		event.remove(givenEvent);
-	}
-	
 
-	/*
+	public Object getElement(int index){
+		return events.get(events.size() - 1 - index);
+	}
+
+	public void removeEvent(int index) {
+		events.remove(index);
+		this.fireIntervalAdded(this, 0, 0);
+	}
+
+	public void removeEvent(Event event) {
+		events.remove(event);
+		this.fireIntervalAdded(this, 0, 0);
+	}
+
+
+	/**
 	 * Returns the number of events in the model. Also used internally by the
 	 * JList in BoardPanel.
 	 * 
@@ -126,12 +133,12 @@ public class EventModel extends AbstractListModel<Object> {
 	 */
 	@Override
 	public int getSize() {
-		return event.size();
+		return events.size();
 	}
-	
+
 	public List<Event> getList(){
-		List<Event> temp = new ArrayList<Event>();
-		temp.addAll(getEventModel().event);
-		return temp;
+		List<Event> rtnEventList = new ArrayList<Event>();
+		rtnEventList.addAll(getEventModel().events);
+		return rtnEventList;
 	}
 }

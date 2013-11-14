@@ -8,22 +8,19 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
 
-import java.util.List;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 
-public class CalendarObjectModel {
-	private String title;
-	private List<Commitment> commitments;
-	private List<Event> events;
-
-	public CalendarObjectModel(String title) {
-		this.title = title;
-
-	}
-
-	public String getTitle() {
-		return title;
+public class MainController {
+	
+	MainModel model;
+	MainView view;
+	
+	public MainController(MainModel model, MainView view) {
+		this.model = model;
+		this.view = view;
 	}
 
 }

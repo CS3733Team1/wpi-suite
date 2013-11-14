@@ -8,22 +8,23 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview;
 
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class CalendarObjectModel {
-	private String title;
-	private List<Commitment> commitments;
-	private List<Event> events;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 
-	public CalendarObjectModel(String title) {
-		this.title = title;
+public class CalendarViewNextController implements ActionListener{
+	CalendarTabPanel view;
 
+	public CalendarViewNextController(CalendarTabPanel view){
+		this.view = view;
 	}
 
-	public String getTitle() {
-		return title;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		view.setCalendarViewNext();
 	}
 
 }
