@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentModel;
 
 public class CommitmentListPanel extends JPanel {
