@@ -8,12 +8,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RetrieveCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
 
-public class CalendarPanel extends JTabbedPane {
+public class CalendarPanel extends JTabbedPane implements AncestorListener {
 
 	private ArrayList<JPanel> p;
 	private JList<Object> commitments;
@@ -29,6 +31,9 @@ public class CalendarPanel extends JTabbedPane {
 		this.model = model;
 		// Initially Empty
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		
+		retrieve = new RetrieveCommitmentController(model);
+		this.addAncestorListener(this);
 	}
 
 	// Create TeamCalendar
@@ -51,7 +56,7 @@ public class CalendarPanel extends JTabbedPane {
 	public void createPersonalCalendar(CalendarObjectModel c) {
 		personalCalendarPanel = new CalendarTabPanel(c, model);
 
-		retrieve = new RetrieveCommitmentController(model);
+		
 		personalCalendarPanel.addKeyListener(retrieve);
 		personalCalendarPanel.addMouseListener(retrieve);
 
@@ -102,4 +107,15 @@ public class CalendarPanel extends JTabbedPane {
 		if(this.getSelectedComponent() instanceof CalendarTabPanel)
 			((CalendarTabPanel)this.getSelectedComponent()).ResetSelection();
 	}
+
+	@Override
+	public void ancestorAdded(AncestorEvent arg0) {
+		retrieve.grabMessages();
+	}
+
+	@Override
+	public void ancestorMoved(AncestorEvent arg0) {}
+
+	@Override
+	public void ancestorRemoved(AncestorEvent arg0) {}
 }

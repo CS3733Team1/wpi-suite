@@ -15,9 +15,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -46,7 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
  * @version $Revision: 1.0 $
  * @author djfitzgerald
  */
-public class CommitmentPanel extends JPanel  {
+public class CommitmentPanel extends JPanel  implements KeyListener, MouseListener {
 	CalendarView view;
 	CalendarModel model;
 	
@@ -74,8 +78,8 @@ public class CommitmentPanel extends JPanel  {
 	private JButton buttonUndoChanges;
 	private JCalendar commitmentDate;
 	
-	private ErrorPanel errorDisplay;
-	
+	private JLabel nameErrorLabel;
+	private JLabel dateErrorLabel;
 	
 	private ViewMode vm;
 	private Commitment displayCommitment;	//the Commitment currently being represented in this panel
@@ -137,7 +141,7 @@ public class CommitmentPanel extends JPanel  {
 		buttonCancel.setAlignmentX(LEFT_ALIGNMENT);
 		
 		//error panel
-		errorDisplay = new ErrorPanel();
+		//errorDisplay = new ErrorPanel();
 		
 		//panel for the add, undo, and cancel buttons, and the error display
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -145,7 +149,7 @@ public class CommitmentPanel extends JPanel  {
 		buttonPanel.add(buttonAdd);
 		buttonPanel.add(buttonUndoChanges);
 		buttonPanel.add(buttonCancel);
-		buttonPanel.add(errorDisplay);
+		//buttonPanel.add(errorDisplay);
 		
 		buttonAdd.addActionListener(new AddCommitmentController(this, this.model));
 		
@@ -182,17 +186,35 @@ public class CommitmentPanel extends JPanel  {
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(nameLabel, "cell 0 1,growx,aligny center");
 		
+		JPanel namePanel = new JPanel(new BorderLayout());
+		nameErrorLabel = new JLabel();
+		nameErrorLabel.setForeground(Color.RED);
+		
 		nameTextField = new JTextField();
 		nameTextField.setHorizontalAlignment(SwingConstants.LEFT);
-		dataPanel.add(nameTextField, "cell 1 1 5 1,growx,aligny top");
 		nameTextField.setColumns(10);
+		nameTextField.addKeyListener(this);
+		
+		namePanel.add(nameTextField, BorderLayout.WEST);
+		namePanel.add(nameErrorLabel, BorderLayout.CENTER);
+		
+		dataPanel.add(namePanel, "cell 1 1 5 1,growx,aligny top");
 		
 		JLabel dateLabel = new JLabel("Date of Commitment:");
 		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(dateLabel, "cell 0 2,growx,aligny center");
 		
+		JPanel datePickerPanel = new JPanel(new BorderLayout());
+		dateErrorLabel = new JLabel();
+		dateErrorLabel.setForeground(Color.RED);
+		
 		commitmentDate = new JCalendar();
-		dataPanel.add(commitmentDate, "cell 1 2 5 1,growx,aligny top");
+		commitmentDate.addMouseListener(this);
+		
+		datePickerPanel.add(commitmentDate, BorderLayout.WEST);
+		datePickerPanel.add(dateErrorLabel, BorderLayout.CENTER);
+		
+		dataPanel.add(datePickerPanel, "cell 1 2 5 1,growx,aligny top");
 		
 		JLabel labelDesc = new JLabel("Description: ");
 		labelDesc.setHorizontalAlignment(SwingConstants.LEFT);
@@ -201,7 +223,7 @@ public class CommitmentPanel extends JPanel  {
 		descriptionTextArea.setPreferredSize(new Dimension(200, 20));
 		dataPanel.add(descriptionTextArea, "cell 1 3,growx,aligny top");
 		
-		//
+		
 		
 		
 		String[] tempCategoriesNames = {"Personal", "Team", "Important!"};
@@ -291,41 +313,26 @@ public class CommitmentPanel extends JPanel  {
 	/**
 	 * Validates the options of the fields inputted.
 	 */
-	private void validateFields()
-	{
-//		errorDisplay.removeAllErrors();
-//		
-//		//TODO: get the Commitment from the model with the name in our boxName textbox // = CommitmentModel.getInstance().getIteration(boxName.getText().trim());
-//		if(nameTextField.getText().trim().length() == 0)
-//		{
-//			errorDisplay.displayError(EMPTY_NAME_ERROR);
-//		}
-//		
-//		
-//		if(dueDateBox.getText().trim().length() == 0)
-//		{		
-//			errorDisplay.displayError(DATES_REQ);
-//		}
-//		
-//		
-//		//TODO: check if the due date is in the calendar's past
-//		
-//		else if(((Date)dueDateBox.getValue()).before(cal.getTime()))
-//		{
-//			errorDisplay.displayError(PAST_ERROR);
-//		}
-//		
-//		//commitments can't conflict with eachother, so we don't check this
-//		else
-//		{
-//			Commitment conflicting = CommitmentModel.getInstance().getConflictingIteration((Date)dueDateBox.getValue());
-//			if(conflicting != null && conflicting != displayIteration)
-//			{
-//				errorDisplay.displayError(OVERLAPPING_ERROR + " Overlaps with " + conflicting.getName() + ".");
-//			}
-//		}
-//		
-		buttonAdd.setEnabled(!errorDisplay.hasErrors());
+	private void validateFields() {
+		boolean enableAdd = true;
+		
+		if(nameTextField.getText().trim().length() == 0) {
+			nameErrorLabel.setVisible(true);
+			nameErrorLabel.setText(EMPTY_NAME_ERROR);
+			enableAdd = false;
+		} else {
+			nameErrorLabel.setVisible(false);
+		}
+		
+		if(commitmentDate.getCalendar().get(Calendar.YEAR) <= 0) {
+			dateErrorLabel.setVisible(true);
+			dateErrorLabel.setText("Invalid Date");
+			enableAdd = false;
+		} else {
+			dateErrorLabel.setVisible(false);
+		}
+
+		buttonAdd.setEnabled(enableAdd);
 	}
 	
 	/**
@@ -386,16 +393,30 @@ public class CommitmentPanel extends JPanel  {
 		
 		return readyToRemove;
 	}
-	
-	/**
-	* Overrides the paintComponent method to retrieve the requirements on the first painting.
-	* 
-	 * @param g	The component object to paint
-	 */
+
 	@Override
-	public void paintComponent(Graphics g)
-	{
-		refreshPanel();
-		super.paintComponent(g);
+	public void keyPressed(KeyEvent arg0) {}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {validateFields();}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		validateFields();
 	}
 }
