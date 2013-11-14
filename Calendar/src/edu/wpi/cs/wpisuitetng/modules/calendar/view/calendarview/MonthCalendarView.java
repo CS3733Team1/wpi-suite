@@ -311,7 +311,21 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			}
 		}
 	}
-
+	
+	public JPanel getDayPanel(Date d)
+	{
+		int month = d.getMonth();
+		int day = d.getDay();
+		int year = d.getYear();
+		
+		
+		
+		
+		
+		return null;
+	}
+	
+	
 
 
 	public void updateDays(int daysInMonth, int dayOfWeekFirstWeek, int numWeeksMonth)
@@ -492,7 +506,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 			gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 			panel.setLayout(gbl_panel);
-
 
 			addDayLabels();
 			addDays(next);
