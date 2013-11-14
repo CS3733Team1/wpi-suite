@@ -86,7 +86,7 @@ public class CommitmentPanel extends JPanel  implements KeyListener, MouseListen
 	
 	private boolean forceRemove = false;
 	
-	private final Category[] categories = {new Category("Personal", Color.GREEN), new Category("Team", Color.BLUE), 
+	private final Category[] categories = {null, new Category("Personal", Color.GREEN), new Category("Team", Color.BLUE), 
 			new Category("Important!", Color.RED)};
 	
 	/**
@@ -226,7 +226,7 @@ public class CommitmentPanel extends JPanel  implements KeyListener, MouseListen
 		
 		
 		
-		String[] tempCategoriesNames = {"Personal", "Team", "Important!"};
+		String[] tempCategoriesNames = {"None", "Personal", "Team", "Important!"};
 		
 		JLabel labelCat = new JLabel("Category: ");
 		categoryComboBox = new JComboBox<String>(tempCategoriesNames);
