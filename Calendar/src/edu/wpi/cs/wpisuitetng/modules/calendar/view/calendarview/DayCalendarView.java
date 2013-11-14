@@ -10,10 +10,17 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-public class DayCalendarView implements ICalendarView {
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class DayCalendarView extends JPanel implements ICalendarView {
 
 	public DayCalendarView() {
 		// TODO Auto-generated constructor stub
+		this.setLayout(new BorderLayout());
+		this.add(new JLabel("Day View Unimplemented"), BorderLayout.CENTER);
 	}
 
 	@Override
@@ -37,7 +44,6 @@ public class DayCalendarView implements ICalendarView {
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Day view unimplemented";
 	}
-
 }

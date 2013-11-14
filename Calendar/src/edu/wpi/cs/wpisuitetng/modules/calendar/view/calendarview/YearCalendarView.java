@@ -10,33 +10,40 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-public class YearCalendarView implements ICalendarView {
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class YearCalendarView extends JPanel implements ICalendarView {
 
 	public YearCalendarView() {
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public String getTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		this.setLayout(new BorderLayout());
+		this.add(new JLabel("Year View Unimplemented"), BorderLayout.CENTER);
 	}
 
 	@Override
 	public void next() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void previous() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void today() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "Year view unimplemented";
 	}
 }

@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.io.IOException;
@@ -32,8 +31,11 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayMo
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWeekViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
 
@@ -48,9 +50,13 @@ public class CalendarTabPanel extends JPanel{
 	private CommitmentListPanel commitmentListPanel;
 	private EventListPanel eventListPanel;
 
-	private Component currentview;
+	private JScrollPane currentViewScrollPane;
+
 	private ICalendarView calendarView;
-	private MonthCalendarView monthview;
+	private DayCalendarView dayView;
+	private WeekCalendarView weekView;
+	private MonthCalendarView monthView;
+	private YearCalendarView yearView;
 
 	private JLabel calendarViewTitleLabel;
 
@@ -73,20 +79,20 @@ public class CalendarTabPanel extends JPanel{
 			yearViewButton = new JButton("Year",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png"))));
 		} catch (IOException e) {}
-		
+
 		homeButton.setMargin(new Insets(0, 0, 0, 0));
 		prevButton.setMargin(new Insets(0, 0, 0, 0));
 		nextButton.setMargin(new Insets(0, 0, 0, 0));
-		
+
 		prevButton.addActionListener(new CalendarViewPreviousController(this));
 		nextButton.addActionListener(new CalendarViewNextController(this));
 		homeButton.addActionListener(new CalendarViewTodayController(this));
-		
+
 		dayViewButton.addActionListener(new DisplayDayViewController(this));
 		weekViewButton.addActionListener(new DisplayWeekViewController(this));
 		monthViewButton.addActionListener(new DisplayMonthViewController(this));
 		yearViewButton.addActionListener(new DisplayYearViewController(this));
-		
+
 		calendarViewTitleLabel = new JLabel();
 
 		JPanel calendarViewToolBar = new JPanel(new BorderLayout());
@@ -100,9 +106,9 @@ public class CalendarTabPanel extends JPanel{
 		p2.add(p3, BorderLayout.WEST);
 		p2.add(calendarViewTitleLabel, BorderLayout.CENTER);
 		p2.setPreferredSize(new Dimension(200, 1));
-		
+
 		JPanel calendarViewButtonsPanel = new JPanel();
-		
+
 		calendarViewButtonsPanel.add(yearViewButton);
 		calendarViewButtonsPanel.add(monthViewButton);
 		calendarViewButtonsPanel.add(weekViewButton);
@@ -119,7 +125,12 @@ public class CalendarTabPanel extends JPanel{
 		commitmentListPanel = new CommitmentListPanel(model.getCommitmentModel());
 
 		add(commitmentListPanel, BorderLayout.LINE_END);
-		
+
+		dayView = new DayCalendarView();
+		weekView = new WeekCalendarView();
+		monthView = new MonthCalendarView();
+		yearView = new YearCalendarView();
+
 		displayMonthView();
 	}
 
@@ -150,41 +161,84 @@ public class CalendarTabPanel extends JPanel{
 	}
 
 	public void setCalendarViewNext() {
-		calendarView.next();;
+		calendarView.next();
+		this.setCalendarViewTitle(calendarView.getTitle());
+		this.refreshCalendarView();
 	}
 
 	public void setCalendarViewToday() {
 		calendarView.today();
+		this.setCalendarViewTitle(calendarView.getTitle());
+		this.refreshCalendarView();
 	}
 
 	public void setCalendarViewPrevious() {
 		calendarView.previous();
-	}
-
-	public void displayDayView() {
-		// TODO Auto-generated method stub
-	}
-
-	public void displayWeekView() {
-		// TODO Auto-generated method stub
-	}
-	
-	public void displayMonthView(){
-		if (monthview == null) monthview = new MonthCalendarView();
-		if (currentview != null) calendarViewPanel.remove(currentview);
-
-		calendarView = monthview;
-		currentview = new JScrollPane(monthview);
-		calendarViewPanel.add(currentview, BorderLayout.CENTER);
-
-		monthview.setVisible(true);
-		currentview.setVisible(true);
-
-		this.setCalendarViewTitle(monthview.getTitle());
+		this.setCalendarViewTitle(calendarView.getTitle());
 		this.refreshCalendarView();
 	}
 
+	public void displayDayView() {
+		if(!(calendarView instanceof DayCalendarView)){
+			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
+
+			calendarView = dayView;
+			currentViewScrollPane = new JScrollPane(dayView);
+			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
+
+			dayView.setVisible(true);
+			currentViewScrollPane.setVisible(true);
+
+			this.setCalendarViewTitle(dayView.getTitle());
+			this.refreshCalendarView();
+		}
+	}
+
+	public void displayWeekView() {
+		if(!(calendarView instanceof WeekCalendarView)){
+			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
+
+			calendarView = weekView;
+			currentViewScrollPane = new JScrollPane(weekView);
+			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
+
+			weekView.setVisible(true);
+			currentViewScrollPane.setVisible(true);
+
+			this.setCalendarViewTitle(weekView.getTitle());
+			this.refreshCalendarView();
+		}
+	}
+
+	public void displayMonthView() {
+		if(!(calendarView instanceof MonthCalendarView)){
+			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
+
+			calendarView = monthView;
+			currentViewScrollPane = new JScrollPane(monthView);
+			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
+
+			monthView.setVisible(true);
+			currentViewScrollPane.setVisible(true);
+
+			this.setCalendarViewTitle(monthView.getTitle());
+			this.refreshCalendarView();
+		}
+	}
+
 	public void displayYearView() {
-		// TODO Auto-generated method stub
+		if(!(calendarView instanceof YearCalendarView)){
+			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
+
+			calendarView = yearView;
+			currentViewScrollPane = new JScrollPane(yearView);
+			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
+
+			yearView.setVisible(true);
+			currentViewScrollPane.setVisible(true);
+
+			this.setCalendarViewTitle(yearView.getTitle());
+			this.refreshCalendarView();
+		}
 	}
 }
