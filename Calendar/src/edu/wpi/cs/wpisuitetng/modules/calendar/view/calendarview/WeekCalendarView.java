@@ -10,34 +10,40 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-public class WeekCalendarView implements ICalendarView {
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class WeekCalendarView extends JPanel implements ICalendarView {
 
 	public WeekCalendarView() {
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public String getTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		this.setLayout(new BorderLayout());
+		this.add(new JLabel("Week View Unimplemented"), BorderLayout.CENTER);
 	}
 
 	@Override
 	public void next() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void previous() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void today() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "Week view unimplemented";
+	}
 }

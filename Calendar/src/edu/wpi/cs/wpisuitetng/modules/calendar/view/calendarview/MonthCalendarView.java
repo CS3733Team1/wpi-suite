@@ -54,7 +54,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("deprecation")
 	public MonthCalendarView() {
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setBounds(100, 100, 700, 600);
@@ -440,7 +439,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 		mycal = next;
 
-
 		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
@@ -465,7 +463,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 
 		if(dayLabel.isEmpty()){
 			addDayLabels();
-			addDays(daysInMonth,dayOfWeek, numWeeksMonth, true);
+			addDays(daysInMonth, dayOfWeek, numWeeksMonth, true);
 		}
 		else
 		{
