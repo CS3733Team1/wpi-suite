@@ -34,6 +34,7 @@ public class RemoveCommitmentController implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		System.out.println("Attempt Delete 2");
+		System.out.println("FUCK");
 		
 		int[] index = view.getCalendarPanel().getSelectedCommitmentsInList().getSelectedIndices();
 		
@@ -49,9 +50,9 @@ public class RemoveCommitmentController implements ActionListener{
 			Commitment commit = (Commitment) model.getCommitmentModel().getElement(index[x]);
 			//remove this later
 			
-			commit.setName(EventEntityManager.DELETESYMBOL+commit.getName());
-			
-			//System.out.println(EventEntityManager.DELETESYMBOL);
+			commit.markForDeletion();
+
+			System.out.println("SHIT'S CURRENT");
 			
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
