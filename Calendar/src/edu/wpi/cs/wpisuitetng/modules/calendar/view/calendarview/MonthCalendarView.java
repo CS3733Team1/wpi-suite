@@ -28,24 +28,8 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
 public class MonthCalendarView extends JPanel implements ICalendarView{
-	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	public static final String[] weekNames = {"Saturday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-	private JPanel contentPane;
-	private JPanel panel_1;
-	private JPanel panel_7;
-	private JPanel panel_8;
-	private JPanel panel_9;
-	private JPanel panel_10;
-	private JPanel panel_11;
-	private JPanel panel_12;
-	private JPanel panel_13;
-	private JLabel lblSunday;
-	private JLabel lblMonday;
-	private JLabel lblTuesday;
-	private JLabel lblWednesday;
-	private JLabel lblThursday;
-	private JLabel lblFriday;
-	private JLabel lblSaturday;
 	private ArrayList<JLabel> dayLabel = new ArrayList<JLabel>();
 	private ArrayList<JPanel> panelList = new ArrayList<JPanel>();
 	private ArrayList<JLabel> nameLabelList = new ArrayList<JLabel>();
@@ -62,23 +46,16 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 	 * Create the frame.
 	 */
 	public MonthCalendarView() {
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setBounds(100, 100, 700, 600);
-		//setBorder(new EmptyBorder(5, 5, 5, 5));
-		//setLayout(new BorderLayout(0, 0));
-		//setContentPane(contentPane);
-
-		
-		int gridSize = 100;
-		
-		add(panel, BorderLayout.NORTH);
+		int gridWidth = 110;
+		int gridHeight = 100;
+		this.add(panel);
 		System.out.println("Size: " + panel.getSize());
 		GridBagLayout gbl_panel = new GridBagLayout();
 		
-		gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-		gbl_panel.rowHeights = new int[]{30, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-		gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-		gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+		gbl_panel.columnWidths = new int[]{gridWidth, gridWidth, gridWidth, gridWidth, gridWidth, gridWidth, gridWidth};
+		gbl_panel.rowHeights = new int[]{30, gridHeight, gridHeight, gridHeight, gridHeight, gridHeight, gridHeight};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
 
 		Date today = new Date();
@@ -86,52 +63,36 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		currentYear = today.getYear() + 1900;
 		//TODO: Update with current month and year
 		mycal = new GregorianCalendar(currentYear, currentMonth, 1);
-
-		// Get the number of days in that month
-//		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
-//		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
-//		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
-//		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-
-		if(dayLabel.isEmpty()){
-			addDayLabels();
-//			addDays(daysInMonth,dayOfWeek, numWeeksMonth, true);
-			addDays(mycal);
-		}
-		else
-		{
-//			updateDays(daysInMonth, dayOfWeek, numWeeksMonth);
-		}
-
-		System.out.println("finished!");
+		addDayLabels();
+		addDays(mycal);
 		panel.setVisible(true);
 
 	}
-	
+
 	public void addDayLabels()
 	{
-		 nameLabelList = new ArrayList<JLabel>();
-	 nameList = new ArrayList<JPanel>();
-		 nameGridBagList = new ArrayList<GridBagConstraints>();
+		nameLabelList = new ArrayList<JLabel>();
+		nameList = new ArrayList<JPanel>();
+		nameGridBagList = new ArrayList<GridBagConstraints>();
 		for(int i = 0; i < weekNames.length; i++)
 		{
 			nameList.add(new JPanel());
 			nameList.get(i).setBackground(new Color(138, 173, 209));
 			nameGridBagList.add(new GridBagConstraints());
-			
+
 			nameGridBagList.get(i).insets = new Insets(0, 0, 0, 0);
 			nameGridBagList.get(i).fill = GridBagConstraints.BOTH;
-			nameGridBagList.get(i).weightx = 0.5;
-			nameGridBagList.get(i).weighty = 0.5;
+			nameGridBagList.get(i).weightx = 0.0;
+			nameGridBagList.get(i).weighty = 0.0;
 			nameGridBagList.get(i).gridx = i;
 			nameGridBagList.get(i).gridy = 0;
 			panel.add(nameList.get(i),nameGridBagList.get(i));
-			
+
 			nameLabelList.add(new JLabel(weekNames[i]));
 			nameList.get(i).add(nameLabelList.get(i));
 		}
 	}
-	
+
 	public void addDay(int x, int y, int day, int gridIndex, Color c)
 	{
 		if(day > 0)
@@ -142,8 +103,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			gridBagList.get(gridIndex).fill = GridBagConstraints.BOTH;
 			gridBagList.get(gridIndex).gridx = x;
 			gridBagList.get(gridIndex).gridy = y;
-			gridBagList.get(gridIndex).weightx = 0.5;
-			gridBagList.get(gridIndex).weighty = 0.5;
+			gridBagList.get(gridIndex).weightx = 0.0;
+			gridBagList.get(gridIndex).weighty = 0.0;
 			panel.add(panelList.get(gridIndex), gridBagList.get(gridIndex));
 			StringBuilder sb = new StringBuilder();
 			sb = sb.append("");
@@ -162,12 +123,12 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			gridBagList.get(gridIndex).fill = GridBagConstraints.BOTH;
 			gridBagList.get(gridIndex).gridx = x;
 			gridBagList.get(gridIndex).gridy = y;
-			gridBagList.get(gridIndex).weightx = 0.5;
-			gridBagList.get(gridIndex).weighty = 0.5;
+			gridBagList.get(gridIndex).weightx = 0.0;
+			gridBagList.get(gridIndex).weighty = 0.0;
 			panel.add(panelList.get(gridIndex), gridBagList.get(gridIndex));
 		}
 	}
-	
+
 	public ArrayList<Integer> makeListOfDays(Calendar c)
 	{
 		ArrayList<Integer> listOfDays = new ArrayList<Integer>();
@@ -177,7 +138,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		int daysInMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH); 
 		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 		c.set(Calendar.DAY_OF_MONTH, daysInMonth);
-		
+
 		if (c.get(Calendar.MONTH) == 0){
 			nextMonth = 11;
 			nextYear = c.get(Calendar.YEAR) -1;
@@ -211,7 +172,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		}
 		return listOfDays;
 	}
-	
+
 	public boolean isCurrentMonth(Calendar c)
 	{
 		Calendar currentMonth = Calendar.getInstance();
@@ -219,7 +180,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		int todayYear = currentMonth.get(Calendar.YEAR);
 		int givenMonth = c.get(Calendar.MONTH);
 		int givenYear = c.get(Calendar.YEAR);
-		
+
 		if(todayMonth == givenMonth && todayYear == givenYear)
 		{
 			System.out.println("TRUE");
@@ -231,9 +192,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			return false;
 		}
 	}
-	
-	
-	
+
+
+
 	public void addDays(Calendar cal)
 	{
 		int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -241,11 +202,11 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		ArrayList<Integer> listOfDays = makeListOfDays(cal);
 		Calendar currentMonth = Calendar.getInstance();
 		int todayDate = currentMonth.get(Calendar.DAY_OF_MONTH);
-		
+
 		boolean isMonth = isCurrentMonth(cal);
-		
+
 		System.out.println("days In Month: " + daysInMonth);
-		
+
 		dayOfWeek = dayOfWeek-1;
 		boolean firstDaySet = false;
 		boolean lastDaySet = false;
@@ -299,11 +260,11 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		ArrayList<Integer> listOfDays = makeListOfDays(cal);
 		Calendar currentMonth = Calendar.getInstance();
 		int todayDate = currentMonth.get(Calendar.DAY_OF_MONTH);
-		
+
 		boolean isMonth = isCurrentMonth(cal);
-		
+
 		System.out.println("days In Month: " + daysInMonth);
-		
+
 		dayOfWeek = dayOfWeek-1;
 		boolean firstDaySet = false;
 		boolean lastDaySet = false;
@@ -350,9 +311,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	public void updateDays(int daysInMonth, int dayOfWeekFirstWeek, int numWeeksMonth)
 	{
 		dayLabel.clear();
@@ -387,7 +348,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 	public void next() {
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH);
-		
+
 		if (currentMonth == 11){
 			currentMonth = 0;
 			currentYear++;
@@ -461,31 +422,31 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 
 
 	}
-	
+
 	public void addEvent(Event e)
 	{
 		Date today = new Date();
 		if(currentMonth != today.getMonth()) {
 			currentMonth = today.getMonth();
 			currentYear = today.getYear() + 1900;
-	
+
 			Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 			mycal = next;
-	
+
 			int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 			int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 			mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
 			int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-	
+
 			this.remove(panel);
-	
+
 			dayLabel = new ArrayList<JLabel>();
 			panelList = new ArrayList<JPanel>();
 			gridBagList = new ArrayList<GridBagConstraints>();
 			panel = new JPanel();
-	
+
 			int gridSize = 100;
-	
+
 			add(panel, BorderLayout.NORTH);
 			GridBagLayout gbl_panel = new GridBagLayout();
 			gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
@@ -499,31 +460,31 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			addDays(next);
 		}
 	}
-	
+
 	@Override
 	public void today() {
 		Date today = new Date();
 		if(currentMonth != today.getMonth()) {
 			currentMonth = today.getMonth();
 			currentYear = today.getYear() + 1900;
-	
+
 			Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 			mycal = next;
-	
+
 			int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
 			int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 			mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
 			int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-	
+
 			this.remove(panel);
-	
+
 			dayLabel = new ArrayList<JLabel>();
 			panelList = new ArrayList<JPanel>();
 			gridBagList = new ArrayList<GridBagConstraints>();
 			panel = new JPanel();
-	
+
 			int gridSize = 100;
-	
+
 			add(panel, BorderLayout.NORTH);
 			GridBagLayout gbl_panel = new GridBagLayout();
 			gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
@@ -535,7 +496,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 
 			addDayLabels();
 			addDays(next);
-			
+
 		}
 	}
 

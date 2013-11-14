@@ -125,7 +125,7 @@ public class CalendarTabPanel extends JPanel{
 		commitmentListPanel = new CommitmentListPanel(model.getCommitmentModel());
 		eventListPanel = new EventListPanel(model.getEventModel());
 
-		add(eventListPanel, BorderLayout.WEST);
+//		add(eventListPanel, BorderLayout.WEST);
 		add(commitmentListPanel, BorderLayout.EAST);
 
 		dayView = new DayCalendarView();
@@ -217,7 +217,8 @@ public class CalendarTabPanel extends JPanel{
 			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
 
 			calendarView = monthView;
-			currentViewScrollPane = new JScrollPane(monthView);
+			currentViewScrollPane = new JScrollPane(monthView, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
 			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
 
 			monthView.setVisible(true);
