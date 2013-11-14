@@ -37,7 +37,8 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 */
 	public static CommitmentEntityManager getCommitmentEntityManager(Data db)
 	{
-		return (CManager == null) ? new CommitmentEntityManager(db) : CManager;
+		CManager = (CManager == null) ? new CommitmentEntityManager(db) : CManager;
+		return CManager;
 			
 	}
 	
