@@ -22,7 +22,16 @@ public abstract class Schedulable extends AbstractModel{
 	private String description;
 	private Category category;
 	
+	protected boolean isMarkedForDeletion = false;
 	
+	public boolean isMarkedForDeletion()
+	{
+		return isMarkedForDeletion();
+	}
+	public void markForDeletion()
+	{
+		this.isMarkedForDeletion = true;
+	}
 	public String getName() {
 		return name;
 	}

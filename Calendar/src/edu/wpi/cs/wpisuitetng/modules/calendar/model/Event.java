@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 
-public class Event extends AbstractModel {
+public class Event extends Schedulable {
 	// Required parameters
 	private String name;
 	private Date startDate;
@@ -28,8 +28,7 @@ public class Event extends AbstractModel {
 	private String description;
 	private Category category;
 	
-	// Internal variables
-	private boolean isMarkedForDeletion = false;
+	
 
 	/*
 	 * TO DO:
@@ -152,11 +151,6 @@ public class Event extends AbstractModel {
 	public void delete() {
 		this.isMarkedForDeletion=true;
 		
-	}
-	
-	public boolean IsMarkedForDeletion()
-	{
-		return this.isMarkedForDeletion;
 	}
 
 	@Override
