@@ -27,6 +27,9 @@ public class Event extends AbstractModel {
 	// Optional parameters
 	private String description;
 	private Category category;
+	
+	// Internal variables
+	private boolean isMarkedForDeletion = false;
 
 	/*
 	 * TO DO:
@@ -147,8 +150,13 @@ public class Event extends AbstractModel {
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		this.isMarkedForDeletion=true;
 		
+	}
+	
+	public boolean IsMarkedForDeletion()
+	{
+		return this.isMarkedForDeletion;
 	}
 
 	@Override

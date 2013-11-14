@@ -29,6 +29,11 @@ public class Commitment extends AbstractModel {
 	private String description;
 	private Category category;
 
+	//internal parameters
+	/* This boolean signals that this commitment should be deleted to the entity manager*/
+	private boolean isMarkedForDeletion = false;
+
+	
 	public Commitment()
 	{
 		//lulululululululul/EntityManager
@@ -97,7 +102,12 @@ public class Commitment extends AbstractModel {
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
-		
+		this.isMarkedForDeletion=true;
+	}
+
+	public boolean isMarkedForDeletion()
+	{
+		return this.isMarkedForDeletion;
 	}
 
 	@Override
