@@ -49,7 +49,7 @@ public class ManagerLayerTest {
 	public String[] testUserArgsFake = {"core","user","fake"};
 	public String[] testUserArgsFakeDNE = {"core","user","steve"};
 	@SuppressWarnings("rawtypes")
-	public Map<String, EntityManager> testMap = new HashMap<String, EntityManager>();
+	public Map<String, EntityManager<? extends Model>> testMap = new HashMap<String, EntityManager<? extends Model>>();
 	public User fake, uniqueFake;
 	public User[] fakeList;
 	public User[] doubleFakeList;
