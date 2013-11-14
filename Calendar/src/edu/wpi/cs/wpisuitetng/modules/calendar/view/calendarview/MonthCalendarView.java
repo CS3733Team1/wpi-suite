@@ -28,7 +28,8 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
 public class MonthCalendarView extends JPanel implements ICalendarView{
-	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July","August", "September", "October", "November", "December"};
+	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	private JPanel contentPane;
 	private JPanel panel_1;
 	private JPanel panel_7;
@@ -47,6 +48,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 	private JLabel lblSaturday;
 	private ArrayList<JLabel> dayLabel = new ArrayList<JLabel>();
 	private ArrayList<JPanel> panelList = new ArrayList<JPanel>();
+	private ArrayList<JLabel> nameLabelList = new ArrayList<JLabel>();
+	private ArrayList<JPanel> nameList = new ArrayList<JPanel>();
+	private ArrayList<GridBagConstraints> nameGridBagList = new ArrayList<GridBagConstraints>();
 	private ArrayList<GridBagConstraints> gridBagList = new ArrayList<GridBagConstraints>();
 	private JPanel panel = new JPanel();
 
@@ -106,114 +110,26 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 	
 	public void addDayLabels()
 	{
-
-		panel_1 = new JPanel();
-//		panel_1.setBorder(new LineBorder(Color.WHITE));
-		panel_1.setBackground(new Color(138, 173, 209));
-//		GridLayout gl_panel1 = new GridLayout();
-		
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.insets = new Insets(0, 0, 0, 0);
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_1.weightx = 0.5;
-		gbc_panel_1.weighty = 0.5;
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 0;
-		panel.add(panel_1, gbc_panel_1);
-
-		lblSunday = new JLabel("Sunday");
-		panel_1.add(lblSunday);
-
-		panel_7 = new JPanel();
-		panel_7.setBackground(new Color(138, 173, 209));
-//		panel_7.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_panel_7 = new GridBagConstraints();
-		gbc_panel_7.insets = new Insets(0, 0, 0, 0);
-		gbc_panel_7.fill = GridBagConstraints.BOTH;
-		gbc_panel_7.weightx = 0.5;
-		gbc_panel_7.weighty = 0.5;
-		gbc_panel_7.gridx = 1;
-		gbc_panel_7.gridy = 0;
-		panel.add(panel_7, gbc_panel_7);
-
-		lblMonday = new JLabel("Monday");
-		panel_7.add(lblMonday);
-
-		panel_8 = new JPanel();
-		panel_8.setBackground(new Color(138, 173, 209));
-//		panel_8.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_panel_8 = new GridBagConstraints();
-		gbc_panel_8.insets = new Insets(0, 0, 0, 0);
-		gbc_panel_8.fill = GridBagConstraints.BOTH;
-		gbc_panel_8.weightx = 0.5;
-		gbc_panel_8.weighty = 0.5;
-		gbc_panel_8.gridx = 2;
-		gbc_panel_8.gridy = 0;
-		panel.add(panel_8, gbc_panel_8);
-
-		lblTuesday = new JLabel("Tuesday");
-		panel_8.add(lblTuesday);
-
-		panel_9 = new JPanel();
-		panel_9.setBackground(new Color(138, 173, 209));
-//		panel_9.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_panel_9 = new GridBagConstraints();
-		gbc_panel_9.insets = new Insets(0, 0, 0, 0);
-		gbc_panel_9.fill = GridBagConstraints.BOTH;
-		gbc_panel_9.weightx = 0.5;
-		gbc_panel_9.weighty = 0.5;
-		gbc_panel_9.gridx = 3;
-		gbc_panel_9.gridy = 0;
-		panel.add(panel_9, gbc_panel_9);
-
-		lblWednesday = new JLabel("Wednesday");
-		panel_9.add(lblWednesday);
-
-
-		panel_10 = new JPanel();
-		panel_10.setBackground(new Color(138, 173, 209));
-//		panel_10.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_panel_10 = new GridBagConstraints();
-		gbc_panel_10.insets = new Insets(0, 0, 0, 0);
-		gbc_panel_10.fill = GridBagConstraints.BOTH;
-		gbc_panel_10.weightx = 0.5;
-		gbc_panel_10.weighty = 0.5;
-		gbc_panel_10.gridx = 4;
-		gbc_panel_10.gridy = 0;
-		panel.add(panel_10, gbc_panel_10);
-
-		lblThursday = new JLabel("Thursday");
-		panel_10.add(lblThursday);
-
-		panel_11 = new JPanel();
-		panel_11.setBackground(new Color(138, 173, 209));
-//		panel_11.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_panel_11 = new GridBagConstraints();
-		gbc_panel_11.insets = new Insets(0, 0, 0, 0);
-		gbc_panel_11.fill = GridBagConstraints.BOTH;
-		gbc_panel_11.weightx = 0.5;
-		gbc_panel_11.weighty = 0.5;
-		gbc_panel_11.gridx = 5;
-		gbc_panel_11.gridy = 0;
-		panel.add(panel_11, gbc_panel_11);
-
-		lblFriday = new JLabel("Friday");
-		panel_11.add(lblFriday);
-
-		panel_12 = new JPanel();
-		panel_12.setBackground(new Color(138, 173, 209));
-//		panel_12.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_panel_12 = new GridBagConstraints();
-		gbc_panel_12.insets = new Insets(0, 0, 0, 0);
-		gbc_panel_12.fill = GridBagConstraints.BOTH;
-		gbc_panel_12.weightx = 0.5;
-		gbc_panel_12.weighty = 0.5;
-		gbc_panel_12.gridx = 6;
-		gbc_panel_12.gridy = 0;
-		panel.add(panel_12, gbc_panel_12);
-
-		lblSaturday = new JLabel("Saturday");
-		panel_12.add(lblSaturday);
+		 nameLabelList = new ArrayList<JLabel>();
+	 nameList = new ArrayList<JPanel>();
+		 nameGridBagList = new ArrayList<GridBagConstraints>();
+		for(int i = 0; i < weekNames.length; i++)
+		{
+			nameList.add(new JPanel());
+			nameList.get(i).setBackground(new Color(138, 173, 209));
+			nameGridBagList.add(new GridBagConstraints());
+			
+			nameGridBagList.get(i).insets = new Insets(0, 0, 0, 0);
+			nameGridBagList.get(i).fill = GridBagConstraints.BOTH;
+			nameGridBagList.get(i).weightx = 0.5;
+			nameGridBagList.get(i).weighty = 0.5;
+			nameGridBagList.get(i).gridx = i;
+			nameGridBagList.get(i).gridy = 0;
+			panel.add(nameList.get(i),nameGridBagList.get(i));
+			
+			nameLabelList.add(new JLabel(weekNames[i]));
+			nameList.get(i).add(nameLabelList.get(i));
+		}
 	}
 	
 	public void addDay(int x, int y, int day, int gridIndex, Color c)
