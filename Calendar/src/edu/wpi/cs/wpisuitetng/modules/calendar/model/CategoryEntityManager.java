@@ -21,10 +21,10 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
-public class CommitmentEntityManager implements EntityManager<Commitment> {
+public class CategoryEntityManager implements EntityManager<Category> {
 	/** The database */
 	final Data db;
-	public static CommitmentEntityManager CManager;
+	public static CategoryEntityManager CManager;
 
 	
 	/**
@@ -35,14 +35,14 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public static CommitmentEntityManager getCommitmentEntityManager(Data db)
+	public static CategoryEntityManager getCategoryEntityManager(Data db)
 	{
-		CManager = (CManager == null) ? new CommitmentEntityManager(db) : CManager;
+		CManager = (CManager == null) ? new CategoryEntityManager(db) : CManager;
 		return CManager;
 			
 	}
 	
-	private CommitmentEntityManager(Data db) {
+	private CategoryEntityManager(Data db) {
 		this.db = db;
 	}
 
@@ -52,17 +52,16 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Commitment makeEntity(Session s, String content)
+	public Category makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 
 		System.out.println("Retrieve Shots");
 		// Parse the message from JSON
-		final Commitment newMessage = Commitment.fromJSON(content);
+		final Category newMessage = Category.fromJSON(content);
 		
-		if (newMessage.getName().length() >= EventEntityManager.DELETESYMBOL.length()
-				&& newMessage.getName().substring(0,EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL)){
-			newMessage.setName(newMessage.getName().substring(EventEntityManager.DELETESYMBOL.length()));
-			deleteCommitment(newMessage);
+		if (newMessage.isMarkedForDeletion())
+		{
+			deleteCategory(newMessage);
 			return newMessage;
 		}
 		System.out.println("spooky copyright ghosts");
@@ -84,7 +83,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Commitment[] getEntity(Session s, String id)
+	public Category[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific Commitments.
@@ -97,14 +96,14 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public Commitment[] getAll(Session s) throws WPISuiteException {
+	public Category[] getAll(Session s) throws WPISuiteException {
 		// Ask the database to retrieve all objects of the type Commitment.
 		// Passing a dummy Commitment lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		List<Model> messages = db.retrieveAll(new Commitment(), s.getProject());
+		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
 
 		// Return the list of messages as an array
-		return messages.toArray(new Commitment[0]);
+		return messages.toArray(new Category[0]);
 	}
 
 	/*
@@ -113,7 +112,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Commitment update(Session s, String content)
+	public Category update(Session s, String content)
 			throws WPISuiteException {
 
 		// This module does not allow Commitments to be modified, so throw an exception
@@ -124,21 +123,19 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Commitment model)
+	public void save(Session s, Category model)
 			throws WPISuiteException {
 		
-		System.out.println("Retrieve Shots 2");
-		if (model.getName().length() >= EventEntityManager.DELETESYMBOL.length()
-				&& model.getName().substring(0,EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL)){
-			model.setName(model.getName().substring(EventEntityManager.DELETESYMBOL.length()));
-			deleteCommitment(model);
+		if (model.isMarkedForDeletion())
+		{
+			deleteCategory(model);
 			return;
 		}
 		// Save the given defect in the database
 		db.save(model);
 	}
 
-	public void deleteCommitment(Commitment model){
+	public void deleteCategory(Category model){
 		db.delete(model);
 	}
 	
