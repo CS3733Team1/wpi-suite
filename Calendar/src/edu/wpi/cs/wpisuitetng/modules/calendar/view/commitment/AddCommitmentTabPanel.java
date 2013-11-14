@@ -88,6 +88,7 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 	
 	private boolean forceRemove = false;
 	
+	//defining temporary categories
 	private final Category[] categories = {null, new Category("Personal", Color.GREEN), new Category("Team", Color.BLUE), 
 			new Category("Important!", Color.RED)};
 	
@@ -142,19 +143,17 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 		buttonCancel = new JButton("Cancel");
 		buttonCancel.setAlignmentX(LEFT_ALIGNMENT);
 		
-		//error panel
-		//errorDisplay = new ErrorPanel();
-		
-		//panel for the add, undo, and cancel buttons, and the error display
+		//panel for the add, undo, and cancel buttons
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
 		buttonPanel.add(buttonAdd);
 		buttonPanel.add(buttonUndoChanges);
 		buttonPanel.add(buttonCancel);
-		//buttonPanel.add(errorDisplay);
 		
+		//Action Listener for Add Commitment Button
 		buttonAdd.addActionListener(new AddCommitmentController(this, this.model));
-		
+
+		//Action Listener for Undo Changes Button
 		buttonUndoChanges.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -163,82 +162,87 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 			}
 		});
 
-		//TODO: add action listener and give it our AddCommitmentController
-//		buttonUndoChanges.addActionListener(new ActionListener(){
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				populateInformation();
-//				buttonUndoChanges.setEnabled(false);
-//			}
-//		});
-		
+		//Action Listener for Cancel Button
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				killPanel();
 			}
 		});
+		
+		//Add button panel to build layout
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		
+		//Panel for the add commitment form
 		dataPanel = new JPanel();
 		add(dataPanel, BorderLayout.CENTER);
 		dataPanel.setLayout(new MigLayout("", "[95px][26px][][32px][5px][50px]", "[17.00][20px][20px][20px][20px]"));
 
+		//Commitment Name label
 		JLabel nameLabel = new JLabel("Commitment Name");
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(nameLabel, "cell 0 1,growx,aligny center");
-		
-		JPanel namePanel = new JPanel(new BorderLayout());
-		nameErrorLabel = new JLabel();
-		nameErrorLabel.setForeground(Color.RED);
-		
+
+		//Commitment Name text field
 		nameTextField = new JTextField();
 		nameTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		nameTextField.setColumns(10);
 		nameTextField.addKeyListener(this);
 		
+		//ERROR panel to display name errors
+		JPanel namePanel = new JPanel(new BorderLayout());
+		nameErrorLabel = new JLabel();
+		nameErrorLabel.setForeground(Color.RED);
+
+		//Adding name text field and error label to namePanel
 		namePanel.add(nameTextField, BorderLayout.WEST);
 		namePanel.add(nameErrorLabel, BorderLayout.CENTER);
 		
+		//Adding namePanel to dataPanel
 		dataPanel.add(namePanel, "cell 1 1 5 1,growx,aligny top");
 		
+		//Commitment Date label
 		JLabel dateLabel = new JLabel("Date of Commitment:");
 		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(dateLabel, "cell 0 2,growx,aligny center");
 		
+		//Commitment datePicker panel and error label
 		JPanel datePickerPanel = new JPanel(new BorderLayout());
 		dateErrorLabel = new JLabel();
 		dateErrorLabel.setForeground(Color.RED);
 		
+		//Commitment datePicker
 		commitmentDate = new JCalendar();
 		commitmentDate.addMouseListener(this);
 		
+		//Adding commitment datePicker and error label to datePicker panel
 		datePickerPanel.add(commitmentDate, BorderLayout.WEST);
 		datePickerPanel.add(dateErrorLabel, BorderLayout.CENTER);
 		
+		//Adding datePicker panel to dataPanel
 		dataPanel.add(datePickerPanel, "cell 1 2 5 1,growx,aligny top");
 		
+		//Commitment Description label
 		JLabel labelDesc = new JLabel("Description: ");
 		labelDesc.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(labelDesc, "cell 0 3,growx,aligny center");
 		descriptionTextArea = new JTextArea();
-		descriptionTextArea.setPreferredSize(new Dimension(200, 20));
+		descriptionTextArea.setSize(new Dimension(200, 50));
 		dataPanel.add(descriptionTextArea, "cell 1 3,growx,aligny top");
 		
-		
-		
-		
+		//Temporary Categories
 		String[] tempCategoriesNames = {"None", "Personal", "Team", "Important!"};
 		
+		//Category drop down box and adding it to dataPanel
 		JLabel labelCat = new JLabel("Category: ");
 		categoryComboBox = new JComboBox<String>(tempCategoriesNames);
-		
 		categoryComboBox.setPreferredSize(new Dimension(200, 20));
 		dataPanel.add(labelCat, "cell 0 4,growx,aligny top");
 		dataPanel.add(categoryComboBox, "cell 1 4,growx,aligny top");
 
 	}
 	
+	// Kills the current tab
 	public void killPanel(){
 		view.getCalendarPanel().remove(this);
 	}
@@ -259,23 +263,14 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 		if(vm == ViewMode.CREATING)
 		{
 			//TODO: create this commitment based on the current information of the UI components and add it to the model
-			
-//			int id = CommitmentModel.getInstance().getNextID();
-//			displayCommitment.setId(id);
-//			CommitmentModel.getInstance().addCommitment(displayCommitment);
+
 		}
 		else
 		{
 			//TODO: update the model with this new commitment
 			
-//			UpdateCommitmentController.getInstance().updateCommitment(displayCommitment);
 		}
 		
-		//Why are they removing this tab after updating the information being displayed?
-		
-//		forceRemove = true;
-//		
-//		ViewEventController.getInstance().removeTab(IterationPanel.this);
 	}
 	
 	/**
@@ -291,17 +286,6 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 	
 	
 	/**
-	 * Sets the dates for the commitment panel
-	 * @param dueDate the due date
-	 */
-	//public void setDueDate(Date dueDate)
-	//{
-	//	if(dueDate != null) this.dueDateBox.setValue(dueDate);
-	//	
-	//	refreshPanel();
-	//}
-	
-	/**
 	 * Refreshes the panel
 	 */
 	private void refreshPanel()
@@ -309,7 +293,6 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 		updateDisplayCommitment();
 		validateFields();
 		checkForChanges();
-//		if(vm == ViewMode.EDITING) ;//refreshEstimate();
 	}
 	
 	/**
@@ -343,25 +326,7 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 	 * @return boolean */
 	private boolean checkForChanges()
 	{
-//		boolean nameChanged = false;
-//		boolean dueDateChanged = false;
-//		if(vm == ViewMode.CREATING)
-//		{
-//			nameChanged = !boxName.getText().trim().equals("");
-//			dueDateChanged = !dueDateBox.getText().equals("");
-//		}
-//		else
-//		{
-//			nameChanged = !boxName.getText().equals(displayCommitment.getName());
-//			Date dueDate = (Date)dueDateBox.getValue();
-//			
-//			dueDateChanged = !dueDate.equals(displayCommitment.getDueDate().getDate());
-//		}
-//		
-//		boolean anythingChanged = nameChanged || dueDateChanged;
-//		buttonAdd.setEnabled(buttonAdd.isEnabled() && anythingChanged);
-//		buttonUndoChanges.setEnabled(anythingChanged);
-//		return anythingChanged;
+		//TODO: Implement this function
 		return false;
 	}
 
@@ -395,7 +360,8 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 		
 		return readyToRemove;
 	}
-
+	
+	//Listeners for key presses and mouse clicks
 	@Override
 	public void keyPressed(KeyEvent arg0) {}
 
