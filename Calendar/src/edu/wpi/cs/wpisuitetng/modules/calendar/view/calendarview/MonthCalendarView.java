@@ -405,16 +405,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			}
 		}
 	}
-	
-	
-	
-	
-
-	private void addNextMonthDays(int gridIndex, int numWeeksMonth) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void updateDays(int daysInMonth, int dayOfWeekFirstWeek, int numWeeksMonth)
 	{
 		dayLabel.clear();
