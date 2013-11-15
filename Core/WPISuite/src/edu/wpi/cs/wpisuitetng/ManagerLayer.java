@@ -84,7 +84,7 @@ public class ManagerLayer {
 		map.put("calendar"+"category", CategoryEntityManager.getCategoryEntityManager(data));
 		// add just your module to this list
 		String[] fullModuleList = { "core", "defecttracker", "postboard",
-				"requirementmanager" };
+				"requirementmanager", "calendar" };
 		((ProjectManager) map.get("coreproject")).setAllModules(fullModuleList);
 		String ssid = null;
 
