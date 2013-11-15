@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ListIterator;
+import java.util.SortedSet;
 
 import javax.swing.JPanel;
 import javax.swing.event.ListDataEvent;
@@ -50,6 +51,8 @@ public class YearCalendarView extends JPanel implements ICalendarView, ListDataL
 		
 		EventModel.getEventModel().addListDataListener(this);
 		UpdateYearView();
+		
+		yearView.setFlaggedDayForeground(Color.RED);
 	}
 
 	@Override
@@ -81,8 +84,12 @@ public class YearCalendarView extends JPanel implements ICalendarView, ListDataL
 	public void HighlightDate(Date m){
 		System.out.println("Eve no Jikan");
 		
-		yearView.setFlaggedDates(m);
-		yearView.setFlaggedDayForeground(Color.RED);
+		SortedSet<Date> dateset = yearView.getFlaggedDates();
+		dateset.add(m);
+		
+		
+		
+		yearView.setFlaggedDates(dateset.toArray(new Date[dateset.size()]));
 	}
 	
 	public void UpdateYearView(){
