@@ -18,6 +18,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -390,6 +392,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		addDays(next);
 		
 		SetDate();
+		updatePanels();
 	}
 
 	@Override
@@ -435,6 +438,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		addDays(next);
 
 		SetDate();
+		updatePanels();
 	}
 
 	public void addEvent(Event e)
@@ -514,6 +518,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 			addDays(next);
 
 			SetDate();
+			updatePanels();
 		}
 	}
 	
@@ -525,7 +530,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		if (currentMonth == 0){
 			setMonth = 12;
 		}
-		setMonth = currentMonth;
+		else{
+			setMonth = currentMonth-1;
+		}
+		
 		for (int x = 0; x < panelList.size(); x ++){
 			day = Integer.valueOf(dayLabel.get(x).getText());
 			if (day == 1){
@@ -548,6 +556,12 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		}
 	}
 
+	public void updatePanels(){
+		for (int x = 0;x < panelList.size(); x++){
+			panelList.get(x).updatePanel();
+		}
+	}
+	
 	@Override
 	public String getTitle() {
 		return monthNames[currentMonth] + ", " + currentYear;
