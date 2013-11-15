@@ -14,7 +14,7 @@ import java.awt.Color;
 
 import com.google.gson.Gson;
 
-public class Category extends Schedulable {
+public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
 	

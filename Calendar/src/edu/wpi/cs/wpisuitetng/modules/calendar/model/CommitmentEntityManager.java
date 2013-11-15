@@ -124,10 +124,8 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	public void save(Session s, Commitment model)
 			throws WPISuiteException {
 		
-		System.out.println("Retrieve Shots 2");
-		if (model.getName().length() >= EventEntityManager.DELETESYMBOL.length()
-				&& model.getName().substring(0,EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL)){
-			model.setName(model.getName().substring(EventEntityManager.DELETESYMBOL.length()));
+		if (model.isMarkedForDeletion())
+		{
 			deleteCommitment(model);
 			return;
 		}

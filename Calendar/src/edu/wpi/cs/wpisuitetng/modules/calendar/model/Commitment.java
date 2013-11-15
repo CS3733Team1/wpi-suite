@@ -20,7 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 //BUGBUG why is this here?
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-public class Commitment extends Schedulable {
+public class Commitment extends DeletableAbstractModel {
 	// Required parameters
 	private String name;
 	private Date dueDate;
