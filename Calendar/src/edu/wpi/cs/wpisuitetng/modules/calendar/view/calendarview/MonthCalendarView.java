@@ -18,20 +18,28 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 
-public class MonthCalendarView extends JPanel implements ICalendarView{
+public class MonthCalendarView extends JPanel implements ICalendarView {
 	public static final String[] weekNames = {"Saturday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	private ArrayList<JLabel> dayLabel = new ArrayList<JLabel>();
-	private ArrayList<JPanel> panelList = new ArrayList<JPanel>();
+	private ArrayList<DatePanel> panelList = new ArrayList<DatePanel>();
 	private ArrayList<JLabel> nameLabelList = new ArrayList<JLabel>();
 	private ArrayList<JPanel> nameList = new ArrayList<JPanel>();
 	private ArrayList<GridBagConstraints> nameGridBagList = new ArrayList<GridBagConstraints>();
@@ -66,6 +74,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		addDayLabels();
 		addDays(mycal);
 		panel.setVisible(true);
+		
+		SetDate();
 
 	}
 
@@ -115,7 +125,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		}
 		else
 		{
-			panelList.add(new JPanel());
+			panelList.add(new DatePanel());
 			panelList.get(gridIndex).setBackground(Color.white);
 			panelList.get(gridIndex).setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.black));
 			gridBagList.add(new GridBagConstraints());
@@ -215,39 +225,39 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			int y = (i/7)+1;
 			if(listOfDays.get(i) != 1 && !firstDaySet)
 			{
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.gray);
 			}
 			else if(listOfDays.get(i) == 1 && !firstDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 				firstDaySet = true;
 			}
 			else if(listOfDays.get(i) == daysInMonth && !lastDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 				lastDaySet = true;
 			}
 			else if(listOfDays.get(i) == todayDate && firstDaySet && isMonth && !lastDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(new Color(236,252,144));
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 			}
 			else if(listOfDays.get(i) == todayDate && firstDaySet && !isMonth && !lastDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 			}
 			else if(listOfDays.get(i) > 0 && listOfDays.get(i) != todayDate && firstDaySet && !lastDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 			}
 			else{
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.gray);
 			}
@@ -273,45 +283,59 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			int y = (i/7)+1;
 			if(listOfDays.get(i) != 1 && !firstDaySet)
 			{
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.gray);
 			}
 			else if(listOfDays.get(i) == 1 && !firstDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 				firstDaySet = true;
 			}
 			else if(listOfDays.get(i) == daysInMonth && !lastDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 				lastDaySet = true;
 			}
 			else if(listOfDays.get(i) == todayDate && firstDaySet && isMonth && !lastDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(new Color(236,252,144));
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 			}
 			else if(listOfDays.get(i) == todayDate && firstDaySet && !isMonth && !lastDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 			}
 			else if(listOfDays.get(i) > 0 && listOfDays.get(i) != todayDate && firstDaySet && !lastDaySet){
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.black);
 			}
 			else{
-				panelList.add(new JPanel());
+				panelList.add(new DatePanel());
 				panelList.get(i).setBackground(Color.white);
 				addDay(x,y,listOfDays.get(i),i, Color.gray);
 			}
 		}
 	}
-
+	
+	public JPanel getDayPanel(Date d)
+	{
+		int month = d.getMonth();
+		int day = d.getDay();
+		int year = d.getYear();
+		
+		
+		
+		
+		
+		return null;
+	}
+	
+	
 
 
 	public void updateDays(int daysInMonth, int dayOfWeekFirstWeek, int numWeeksMonth)
@@ -346,6 +370,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 
 	@Override
 	public void next() {
+		removeListeners();
+		
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH);
 
@@ -362,7 +388,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		this.remove(panel);
 
 		dayLabel = new ArrayList<JLabel>();
-		panelList = new ArrayList<JPanel>();
+		panelList = new ArrayList<DatePanel>();
 		gridBagList = new ArrayList<GridBagConstraints>();
 		panel = new JPanel();
 
@@ -378,10 +404,15 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 
 		addDayLabels();
 		addDays(next);
+		
+		SetDate();
+		updatePanels();
 	}
 
 	@Override
 	public void previous() {
+		removeListeners();
+		
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH);
 		if (currentMonth == 0){
@@ -403,7 +434,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		this.remove(panel);
 
 		dayLabel = new ArrayList<JLabel>();
-		panelList = new ArrayList<JPanel>();
+		panelList = new ArrayList<DatePanel>();
 		gridBagList = new ArrayList<GridBagConstraints>();
 		panel = new JPanel();
 
@@ -420,7 +451,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 		addDayLabels();
 		addDays(next);
 
-
+		SetDate();
+		updatePanels();
 	}
 
 	public void addEvent(Event e)
@@ -441,7 +473,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			this.remove(panel);
 
 			dayLabel = new ArrayList<JLabel>();
-			panelList = new ArrayList<JPanel>();
+			panelList = new ArrayList<DatePanel>();
 			gridBagList = new ArrayList<GridBagConstraints>();
 			panel = new JPanel();
 
@@ -463,6 +495,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 
 	@Override
 	public void today() {
+		removeListeners();
+		
 		Date today = new Date();
 		if(currentMonth != today.getMonth()) {
 			currentMonth = today.getMonth();
@@ -479,7 +513,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			this.remove(panel);
 
 			dayLabel = new ArrayList<JLabel>();
-			panelList = new ArrayList<JPanel>();
+			panelList = new ArrayList<DatePanel>();
 			gridBagList = new ArrayList<GridBagConstraints>();
 			panel = new JPanel();
 
@@ -493,16 +527,58 @@ public class MonthCalendarView extends JPanel implements ICalendarView{
 			gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 			panel.setLayout(gbl_panel);
 
-
 			addDayLabels();
 			addDays(next);
 
+			SetDate();
+			updatePanels();
+		}
+	}
+	
+	public void SetDate(){
+		int setMonth;
+		int day =0;
+		int setYear = currentYear - 1900;
+		
+		if (currentMonth == 0){
+			setMonth = 12;
+		}
+		else{
+			setMonth = currentMonth-1;
+		}
+		
+		for (int x = 0; x < panelList.size(); x ++){
+			day = Integer.valueOf(dayLabel.get(x).getText());
+			if (day == 1){
+				if (setMonth == 12){
+					setMonth = 1;
+					setYear++;
+				}
+				else{
+					setMonth++;
+				}
+			}
+			panelList.get(x).setDate(new Date(setYear, setMonth, day));
+			EventModel.getEventModel().addListDataListener(panelList.get(x));
+		}
+	}
+	
+	public void removeListeners(){
+		for (int x = 0;x < panelList.size(); x++){
+			EventModel.getEventModel().removeListDataListener(panelList.get(x));
 		}
 	}
 
+	public void updatePanels(){
+		for (int x = 0;x < panelList.size(); x++){
+			panelList.get(x).updatePanel();
+		}
+	}
+	
 	@Override
 	public String getTitle() {
 		return monthNames[currentMonth] + ", " + currentYear;
 	}
 
+	
 }
