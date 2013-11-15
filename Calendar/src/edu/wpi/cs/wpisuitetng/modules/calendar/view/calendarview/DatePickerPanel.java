@@ -31,13 +31,14 @@ public class DatePickerPanel extends JPanel {
 	private void buildLayout(){
 		
 		this.setLayout(new BorderLayout());
-		calendarMonthView = new JXMonthView();
-		calendarMonthView.setPreferredColumnCount(4);
-		calendarMonthView.setPreferredRowCount(3);
-		calendarMonthView.setSelectionBackground(SELECTION);
-		calendarMonthView.setFlaggedDayForeground(START_END_DAY);
-		calendarMonthView.setSelectionMode(SelectionMode.MULTIPLE_INTERVAL_SELECTION);
+		/*
+		 * potential inputs to daypicker constructor:
+		 * 		number of months to be displayed
+		 * 		this (so it can set local start and end date variables)
+		 */
+		calendarMonthView = new DatePicker();
 		this.setAlignmentX(CENTER_ALIGNMENT);
+		this.add(calendarMonthView);
 	}
 	
 }
