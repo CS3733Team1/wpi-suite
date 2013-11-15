@@ -12,10 +12,15 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.awt.Color;
 
-public class Category {
+import com.google.gson.Gson;
+
+public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
 	
+	public Category()
+	{
+	}
 	public Category(String name, Color color) {
 		this.name = name;
 		this.color = color;
@@ -35,5 +40,38 @@ public class Category {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		this.markForDeletion();
+	}
+	@Override
+	public String toJSON() {
+		//name, dueDate, description, category
+		String str = new Gson().toJson(this, Category.class);
+		return str;
+	}
+	
+	public static Category[] fromJSONArray(String input)
+	{
+		final Gson parser = new Gson();
+		return parser.fromJson(input, Category[].class);
+	}
+	
+	public static Category fromJSON(String input)
+	{
+		final Gson parser = new Gson();
+		return parser.fromJson(input, Category.class);
+	}
+	@Override
+	public Boolean identify(Object o) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

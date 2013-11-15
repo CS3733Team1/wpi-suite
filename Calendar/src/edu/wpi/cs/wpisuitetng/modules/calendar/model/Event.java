@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 
-public class Event extends Schedulable {
+public class Event extends DeletableAbstractModel {
 	// Required parameters
 	private String name;
 	private Date startDate;
