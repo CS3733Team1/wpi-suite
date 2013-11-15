@@ -36,7 +36,7 @@ public class AddCommitmentController implements ActionListener{
 		Commitment commit = view.getDisplayCommitment();
 		
 		//set name encoding to ASCII so it can't have the delete character
-		if(commit.getName().length() > EventEntityManager.DELETESYMBOL.length() && commit.getName().substring(0, EventEntityManager.DELETESYMBOL.length()).equals(EventEntityManager.DELETESYMBOL))
+		if(commit.isMarkedForDeletion())
 		{
 			System.err.println("Commitment names cannot begin with " + EventEntityManager.DELETESYMBOL);
 			return;
