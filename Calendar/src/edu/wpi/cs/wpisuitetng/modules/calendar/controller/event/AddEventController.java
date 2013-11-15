@@ -36,11 +36,6 @@ public class AddEventController implements ActionListener{
 
 		Event eve = new Event("Hello", new Date(), new Date());
 		
-		if(eve.isMarkedForDeletion())
-		{
-			System.err.println("Commitment names cannot begin with " + EventEntityManager.DELETESYMBOL);
-			return;
-		}
 		
 		System.out.println("Adding event...");
 		
