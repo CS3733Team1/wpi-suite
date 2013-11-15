@@ -25,7 +25,6 @@ public class EventEntityManager implements EntityManager<Event> {
 	/** The database */
 	final Data db;
 	public static EventEntityManager EManager;
-	final public static String DELETESYMBOL = "^@^"; 
 	
 	/**
 	 * Constructs the entity manager. This constructor is called by
