@@ -21,7 +21,7 @@ public abstract class DeletableAbstractModel extends AbstractModel{
 	
 	public boolean isMarkedForDeletion()
 	{
-		return isMarkedForDeletion();
+		return isMarkedForDeletion;
 	}
 	public void markForDeletion()
 	{
