@@ -520,18 +520,18 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 	public void SetDate(){
 		int setMonth;
 		int day =0;
-		int setYear = currentYear;
+		int setYear = currentYear - 1900;
 		
 		if (currentMonth == 0){
-			setMonth = 11;
+			setMonth = 12;
 		}
-		setMonth = currentMonth--;
+		setMonth = currentMonth;
 		for (int x = 0; x < panelList.size(); x ++){
 			System.out.println(day);
 			day = Integer.valueOf(dayLabel.get(x).getText());
 			if (day == 1){
-				if (setMonth == 11){
-					setMonth = 0;
+				if (setMonth == 12){
+					setMonth = 1;
 					setYear++;
 				}
 				else{
