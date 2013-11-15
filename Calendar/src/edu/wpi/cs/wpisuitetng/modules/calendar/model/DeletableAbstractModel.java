@@ -8,19 +8,23 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.controller;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
+import java.util.Date;
 
-public class MainController {
+import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+
+public abstract class DeletableAbstractModel extends AbstractModel{
 	
-	MainModel model;
-	MainView view;
+	protected boolean MarkedForDeletion = false;
 	
-	public MainController(MainModel model, MainView view) {
-		this.model = model;
-		this.view = view;
+	public boolean isMarkedForDeletion()
+	{
+		return this.MarkedForDeletion;
+	}
+	public void markForDeletion()
+	{
+		this.MarkedForDeletion = true;
 	}
 
 }
