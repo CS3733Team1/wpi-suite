@@ -66,7 +66,7 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 		mycal = new GregorianCalendar(currentYear, currentMonth, currentDay);
 		currentDayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 		
-		addDayLabels();
+		//addDayLabels();
 //		addDays(mycal);
 		panel.setVisible(true);
 		// TODO Auto-generated constructor stub
@@ -85,16 +85,17 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 	}
 	
 	
-	public void addDayLabels()
+	public void addDayLabels(Calendar c)
 	{
+		
 		StringBuilder sb = new StringBuilder();
-		sb = sb.append(weekNames[currentDayOfWeek]);
+		sb = sb.append(weekNames[c.get(Calendar.DAY_OF_WEEK)]);
 		sb = sb.append(", ");
-		sb = sb.append(monthNames[currentMonth]);
+		sb = sb.append(monthNames[c.get(Calendar.DAY_OF_WEEK)]);
 		sb = sb.append(" ");
-		sb = sb.append(currentDay);
+		sb = sb.append(c.get(Calendar.DAY_OF_MONTH));
 		sb = sb.append(", ");
-		sb = sb.append(currentYear);
+		sb = sb.append(c.get(Calendar.YEAR));
 
 		JLabel dayJLabel = new JLabel(sb.toString(),SwingConstants.RIGHT);
 		dayJLabel.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -119,7 +120,6 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 
 	@Override
 	public void previous() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -131,7 +131,15 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
-		return "Day view unimplemented";
+		
+		StringBuilder sb = new StringBuilder();
+		sb = sb.append(weekNames[currentDayOfWeek]);
+		sb = sb.append(", ");
+		sb = sb.append(monthNames[currentMonth]);
+		sb = sb.append(" ");
+		sb = sb.append(currentDay);
+		sb = sb.append(", ");
+		sb = sb.append(currentYear);
+		return sb.toString();
 	}
 }
