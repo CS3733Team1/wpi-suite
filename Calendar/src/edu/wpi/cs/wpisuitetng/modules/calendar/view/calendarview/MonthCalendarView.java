@@ -527,7 +527,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		}
 		setMonth = currentMonth;
 		for (int x = 0; x < panelList.size(); x ++){
-			System.out.println(day);
 			day = Integer.valueOf(dayLabel.get(x).getText());
 			if (day == 1){
 				if (setMonth == 12){

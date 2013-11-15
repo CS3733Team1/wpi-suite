@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.ListIterator;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -30,10 +32,20 @@ public class DatePanel extends JPanel implements ListDataListener{
 	}
 	
 	public void addEventPanel(Event eve){
-		System.out.println("Event Month Added");
+		System.out.println(paneldate.toString());
+		System.out.println(eve.getStartDate().toString());
 		JPanel eventpan = new JPanel();
-		eventpan.add(new JLabel(eve.toString()));
+		JTextArea eventdata = new JTextArea();
+		eventdata.setText(eve.getName());
+		eventpan.add(eventdata);
+		
+		eventdata.setSize(50,50);
+		eventpan.setSize(50,50);
+		
+		eventdata.setVisible(true);
 		eventpan.setVisible(true);
+		
+		this.add(eventpan);
 		this.updateUI();
 		eventlist.add(eventpan);
 	}
@@ -51,9 +63,7 @@ public class DatePanel extends JPanel implements ListDataListener{
 		while(event.hasNext()){
 			Event eve = event.next();
 			Date evedate = eve.getStartDate();
-			System.out.println("Panel Date: " + paneldate.toString() + " Event Date: " + eve.getStartDate().toString());
 			if (evedate.getYear() == paneldate.getYear() && evedate.getDay() == paneldate.getDay() && evedate.getMonth() == paneldate.getMonth()){
-				System.out.println(eve.toString());
 				addEventPanel(eve);
 			}
 		}
@@ -66,10 +76,8 @@ public class DatePanel extends JPanel implements ListDataListener{
 		ListIterator<Event> event = EventModel.getEventModel().getList().listIterator();
 		while(event.hasNext()){
 			Event eve = event.next();
-			
 			Date evedate = eve.getStartDate();
 			if (evedate.getYear() == paneldate.getYear() && evedate.getDay() == paneldate.getDay() && evedate.getMonth() == paneldate.getMonth()){
-				System.out.println(eve.toString());
 				addEventPanel(eve);
 			}
 		}
@@ -83,8 +91,6 @@ public class DatePanel extends JPanel implements ListDataListener{
 			Event eve = event.next();
 			Date evedate = eve.getStartDate();
 			if (evedate.getYear() == paneldate.getYear() && evedate.getDay() == paneldate.getDay() && evedate.getMonth() == paneldate.getMonth()){
-
-				System.out.println(eve.toString());
 				addEventPanel(eve);
 			}
 		}
