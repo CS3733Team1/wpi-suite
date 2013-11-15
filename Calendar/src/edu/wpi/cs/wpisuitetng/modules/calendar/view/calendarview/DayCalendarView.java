@@ -66,7 +66,7 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 		mycal = new GregorianCalendar(currentYear, currentMonth, currentDay);
 		currentDayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 		
-		addDayLabels();
+		//addDayLabels();
 //		addDays(mycal);
 		panel.setVisible(true);
 		// TODO Auto-generated constructor stub
