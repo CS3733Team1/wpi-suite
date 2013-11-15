@@ -35,7 +35,7 @@ public class DatePicker extends JXMonthView implements ActionListener, KeyListen
 		
 		this.setSelectionBackground(SELECTION);
 		this.setFlaggedDayForeground(START_END_DAY);
-		this.setSelectionMode(SelectionMode.SINGLE_INTERVAL_SELECTION);
+		this.setSelectionMode(SelectionMode.MULTIPLE_INTERVAL_SELECTION);
 		
 		this.setAlignmentX(CENTER_ALIGNMENT);
 		
