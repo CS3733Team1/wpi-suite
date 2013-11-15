@@ -457,6 +457,7 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	
 	public Event getEvent()
 	{
+
 		Event thisEvent = new Event(nameTextField.getText(), dateCalendar.getStartDate(), dateCalendar.getEndDate());
 		return thisEvent;
 	}
