@@ -105,7 +105,7 @@ public class CalendarTabPanel extends JPanel{
 
 		p2.add(p3, BorderLayout.WEST);
 		p2.add(calendarViewTitleLabel, BorderLayout.CENTER);
-		p2.setPreferredSize(new Dimension(200, 1));
+//		p2.setPreferredSize(new Dimension(250, 1));
 
 		JPanel calendarViewButtonsPanel = new JPanel();
 
@@ -115,7 +115,7 @@ public class CalendarTabPanel extends JPanel{
 		calendarViewButtonsPanel.add(dayViewButton);
 
 		calendarViewToolBar.add(p2, BorderLayout.WEST);
-		calendarViewToolBar.add(calendarViewButtonsPanel, BorderLayout.CENTER);
+		calendarViewToolBar.add(calendarViewButtonsPanel, BorderLayout.EAST);
 
 		calendarViewPanel = new JPanel(new BorderLayout());
 		calendarViewPanel.add(calendarViewToolBar, BorderLayout.NORTH);
