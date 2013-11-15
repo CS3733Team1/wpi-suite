@@ -2,6 +2,9 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JPanel;
 
@@ -41,4 +44,18 @@ public class DatePickerPanel extends JPanel {
 		this.add(calendarMonthView);
 	}
 	
+	public ArrayList<Date> getDates(){
+		ArrayList<Date> dates = new ArrayList<Date>();
+		Date firstSel,lastSel,testDate;
+		firstSel=calendarMonthView.getFirstSelectionDate();
+		lastSel=calendarMonthView.getLastSelectionDate();
+		testDate=firstSel;
+		while(testDate.compareTo(lastSel)<=0){
+			if(calendarMonthView.isSelected(testDate)){
+				dates.add(new Date(testDate.getYear(),testDate.getMonth(),testDate.getDate()));
+			}
+			testDate.setDate(testDate.getDate()+1);
+		}
+		return dates;
+	}
 }
