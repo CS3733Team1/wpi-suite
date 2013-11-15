@@ -58,4 +58,11 @@ public class DatePickerPanel extends JPanel {
 		}
 		return dates;
 	}
+	
+	/*
+	 * temporary function while event is modified
+	 */
+	public Date getDate(){
+		return calendarMonthView.getFirstSelectionDate();
+	}
 }
