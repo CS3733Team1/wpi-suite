@@ -1,0 +1,236 @@
+[33mcommit 9af54200ed6187331d538fc89cc31fafa700ed1a[m
+Merge: b5d6a1c 61b9f8c
+Author: ztestep <ztestep@github.com>
+Date:   Thu Nov 14 17:05:00 2013 -0500
+
+    Merge branch 'dev' of https://github.com/CS3733Team1/wpi-suite into dev
+
+[33mcommit 61b9f8cfcfc748be804f75e9013ceb73305f2765[m
+Author: Chris Molica <cmolica@wpi.edu>
+Date:   Thu Nov 14 16:44:18 2013 -0500
+
+    Updated MonthCalendarVi refactored more --Chris
+
+[33mcommit b5d6a1c38519a77c0fb55a39f6cca1a72ba3add6[m
+Merge: 308907d bea7ea9
+Author: ztestep <ztestep@github.com>
+Date:   Thu Nov 14 15:41:09 2013 -0500
+
+    Merge branch 'dev' of https://github.com/CS3733Team1/wpi-suite into dev
+
+[33mcommit bea7ea9c5fefc6c532de6aab3006b6365dba83ef[m
+Author: Chris Molica <cmolica@wpi.edu>
+Date:   Thu Nov 14 15:03:54 2013 -0500
+
+    Updated MonthCalendarVi refactored addDayLabels()
+
+[33mcommit e3c8dd0ff111935ac7c86d837889aa2a964932d9[m
+Author: Chris Molica <cmolica@wpi.edu>
+Date:   Thu Nov 14 14:50:02 2013 -0500
+
+    Updated Calendar Module-Chris
+
+[33mcommit 308907dbed4553cd0665732ed722925482b39353[m
+Author: ztestep <ztestep@github.com>
+Date:   Thu Nov 14 14:35:15 2013 -0500
+
+    Likewise for EventEntitymanager
+
+[33mcommit c245bd04a1cffa3dd7abdb3e5c5d53c6e2d48969[m
+Author: ztestep <ztestep@github.com>
+Date:   Thu Nov 14 14:32:18 2013 -0500
+
+    Fixed minor to make CommitmentEntityManager actually a signleton.
+
+[33mcommit 9615a0327378b90f6b85b5cb58ab311d5ecd2bb0[m
+Author: ztestep <ztestep@github.com>
+Date:   Thu Nov 14 14:27:51 2013 -0500
+
+    Minor updates to Commitment and Event. New Boolean isMarkedForDeletion for purposes of deletion
+
+[33mcommit 0c04fa69a7cfaf9d719d251b4eb5ae0861d38b44[m
+Author: Chris Molica <cmolica@wpi.edu>
+Date:   Thu Nov 14 13:41:51 2013 -0500
+
+    Removed getDaysFunction MonthCaldendarVi--Chris
+
+[33mcommit 98a2e5134497e88791503e3f1a63738ccd4870f1[m
+Author: Chris Molica <cmolica@wpi.edu>
+Date:   Thu Nov 14 13:39:11 2013 -0500
+
+    Updated MonthCalendarsVi to have fixed size, so will include the previous months. Also refactored MonthCalendarsVi
+
+[33mcommit 82405091fa9f9ab5426716e00f7042cb53e5001b[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 05:18:05 2013 -0500
+
+    cleanup
+
+[33mcommit cebc3e7425264f265e291839cb5642bb8023c383[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 05:10:01 2013 -0500
+
+    Got Event's List working as a proof of concept- AddEvent listener still needs to provide ability to retrieve a filled in Event object GUI needs the method to do that [just comment out add(eventListPanel.. to hide the EventList
+
+[33mcommit 51b5876dcf70e7ba1b4519c7d7350e0c123d01c3[m
+Merge: 8a70fd5 ff39397
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 04:22:45 2013 -0500
+
+    Merge branch 'stage'
+
+[33mcommit ff393973d6533808caa3ce9a8f0a6e77d9d2521e[m
+Merge: ec20090 c9fa889
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 04:22:31 2013 -0500
+
+    Merge branch 'dev' into stage
+
+[33mcommit c9fa88990a6753ea68c8bf8c7919714e35bdce23[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 04:21:46 2013 -0500
+
+    Oops forgot to include the bug fix in that commit [read last commit message
+
+[33mcommit c4b0c6ee4fbfc5ebb51c50ecf760ad1ac2b1e4bf[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 04:20:25 2013 -0500
+
+    Refresh calendar fixed [I was stupid] - bug found and fixed if today() was called more than once in a row - month view would dissapear [not sure why it happened but I fixed it in MonthView.  I made a LOT of changes of the structure.  All the functionality should be the same- but take a look in the package view.calendar view.  Fill those out and we are golden - eventually we can modify the interface to pass an eventmodel and calendarmodel so that the calendar view can populate itself.  <3
+
+[33mcommit ec20090b16a2660830995867b1c06aabd4782c1e[m
+Merge: c57517c eab66de
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 03:21:08 2013 -0500
+
+    Merge branch 'dev' into stage
+
+[33mcommit eab66de6043207bae9f4c347a58664ea1010e9b3[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 03:19:41 2013 -0500
+
+    Refactored tons of code - rearranged and cleaned up, one slight issue with refreshing the calendar view [will fix now]
+
+[33mcommit 98042338f3ef04bb97937f6cbed7a430d090d5da[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Thu Nov 14 00:08:08 2013 -0500
+
+    Added None Category [Just currently null = will eventually not be null to be able to set a color], Mine builds without build path errors
+
+[33mcommit 1ea64709f29144fcfa42e1b174a7a3a857590f97[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Wed Nov 13 23:41:27 2013 -0500
+
+    Fixing build path
+
+[33mcommit 19e58006bdd011a239f6350f6cdc979a630aa76b[m
+Merge: 97344cd e957d5d
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Wed Nov 13 22:13:50 2013 -0500
+
+    Merge branch 'dev' of https://github.com/CS3733Team1/wpi-suite into dev
+
+[33mcommit 97344cdb84d58009a7ad2b9efc5ec27b3847421f[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Wed Nov 13 22:13:03 2013 -0500
+
+    Fixed my auto load of Commitments to load when calendar is first displayed - removes timer hack, doesn't ever error, and is fast - added Name empty Commitment error handling
+
+[33mcommit e957d5d1d63c257bd8f971d9325ae3f2abbac2b0[m
+Author: Chris Molica <cmolica@wpi.edu>
+Date:   Wed Nov 13 21:07:10 2013 -0500
+
+    Updated Calendar to Highlight Day, changes color at current day, and changed color scheme
+
+[33mcommit 5502e2c7012c7db629fba4314ff6751fed65666a[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Wed Nov 13 04:31:09 2013 -0500
+
+    Well.  I did a shit ton.
+
+[33mcommit 275887e55e3f0b1e7d92dccb64cca8dccc95d178[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Tue Nov 12 22:59:59 2013 -0500
+
+    Cleaned up some code
+
+[33mcommit 8a70fd5577b25db4b7017ff30140ff4b5e0d862d[m
+Merge: ad379c0 c57517c
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Tue Nov 12 21:59:41 2013 -0500
+
+    Merge branch 'stage'
+
+[33mcommit c57517c1494150aeeb00fed8c8a76046e410d238[m
+Merge: 59fa171 a756157
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Tue Nov 12 21:58:18 2013 -0500
+
+    Merge branch 'dev' into stage
+
+[33mcommit a7561572b27968959a007b783e420d42b276d24e[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Tue Nov 12 21:48:27 2013 -0500
+
+    Pushing working calendar module before attempting minor fixes
+
+[33mcommit 31c0347919d2249fd49354542d3c035be64fcdad[m
+Author: Kyle Lafontant <klafontant@wpi.edu>
+Date:   Tue Nov 12 17:27:58 2013 -0500
+
+    tests and category class
+
+[33mcommit d7c095355c50bcef30c4f69fba52345bcc29c2e8[m
+Author: jjbreen <jjbreen@wpi.edu>
+Date:   Tue Nov 12 17:17:41 2013 -0500
+
+    Month Buttons Working
+
+[33mcommit f9322da1649858cda7549ea899b39ec5591c622f[m
+Author: Shadi Ramadan <srramadan@wpi.edu>
+Date:   Tue Nov 12 17:03:01 2013 -0500
+
+    fixed commitment panel - now uses Jcal date
+
+[33mcommit a28e0f3431a9703398dc31323722452ba68824f2[m
+Merge: 5752754 f474374
+Author: jjbreen <jjbreen@wpi.edu>
+Date:   Tue Nov 12 15:59:11 2013 -0500
+
+    Merge branch 'dev' of https://github.com/CS3733Team1/wpi-suite into dev
+
+[33mcommit 5752754d6fc30874a732374fef345189a7f04dcc[m
+Author: jjbreen <jjbreen@wpi.edu>
+Date:   Tue Nov 12 15:59:06 2013 -0500
+
+    more updates to monthview
+
+[33mcommit f474374ccbb192c06500a90446075b5ac990955b[m
+Author: Rohit Bansal <rbansal@wpi.edu>
+Date:   Tue Nov 12 15:54:43 2013 -0500
+
+    Refactoring to better follow code conventions
+
+[33mcommit 59e0662c915a08056ff5708bab9d1b82fe4f97d9[m
+Author: Samuel Naseef <snaseef@wpi.edu>
+Date:   Tue Nov 12 15:44:01 2013 -0500
+
+    Updated look and feel of commitment and event tab for uniformity
+
+[33mcommit 13151870caa87e64dc368a83826b61c5a53a6027[m
+Author: jjbreen <jjbreen@wpi.edu>
+Date:   Tue Nov 12 15:34:51 2013 -0500
+
+    changed name
+
+[33mcommit c6f8ddffb683ce14c1314a459b6173140d11a2fe[m
+Author: jjbreen <jjbreen@wpi.edu>
+Date:   Tue Nov 12 15:34:03 2013 -0500
+
+    added new interface for calendarviews
+
+[33mcommit 195aa885b82ef306d5251f30dce0e0bea40edc7f[m
+Author: jjbreen <jjbreen@wpi.edu>
+Date:   Tue Nov 12 15:26:05 2013 -0500
+
+    Month View A
