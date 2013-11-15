@@ -15,7 +15,6 @@ import java.util.Date;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 public abstract class DeletableAbstractModel extends AbstractModel{
-
 	
 	protected boolean isMarkedForDeletion = false;
 	
