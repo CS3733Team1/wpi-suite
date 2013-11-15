@@ -18,6 +18,7 @@ public class DatePanel extends JPanel implements ListDataListener{
 	private ArrayList<JPanel> eventlist;
 	
 	public DatePanel(){
+		eventlist = new ArrayList<JPanel>();
 	}
 	
 	public void setDate(Date today){
@@ -29,8 +30,11 @@ public class DatePanel extends JPanel implements ListDataListener{
 	}
 	
 	public void addEventPanel(Event eve){
+		System.out.println(eve.toString());
 		JPanel eventpan = new JPanel();
 		eventpan.add(new JLabel(eve.toString()));
+		eventpan.setVisible(true);
+		this.updateUI();
 		eventlist.add(eventpan);
 	}
 	
@@ -46,6 +50,7 @@ public class DatePanel extends JPanel implements ListDataListener{
 		ListIterator<Event> event = EventModel.getEventModel().getList().listIterator();
 		while(event.hasNext()){
 			Event eve = event.next();
+			System.out.println(eve.toString());
 			Date evedate = eve.getStartDate();
 			if (evedate.getYear() == paneldate.getYear() && evedate.getDay() == paneldate.getDay() && evedate.getMonth() == paneldate.getMonth()){
 				addEventPanel(eve);
@@ -60,6 +65,7 @@ public class DatePanel extends JPanel implements ListDataListener{
 		ListIterator<Event> event = EventModel.getEventModel().getList().listIterator();
 		while(event.hasNext()){
 			Event eve = event.next();
+			System.out.println(eve.toString());
 			Date evedate = eve.getStartDate();
 			if (evedate.getYear() == paneldate.getYear() && evedate.getDay() == paneldate.getDay() && evedate.getMonth() == paneldate.getMonth()){
 				addEventPanel(eve);
@@ -73,6 +79,7 @@ public class DatePanel extends JPanel implements ListDataListener{
 		ListIterator<Event> event = EventModel.getEventModel().getList().listIterator();
 		while(event.hasNext()){
 			Event eve = event.next();
+			System.out.println(eve.toString());
 			Date evedate = eve.getStartDate();
 			if (evedate.getYear() == paneldate.getYear() && evedate.getDay() == paneldate.getDay() && evedate.getMonth() == paneldate.getMonth()){
 				addEventPanel(eve);
