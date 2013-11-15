@@ -149,7 +149,7 @@ public class Event extends DeletableAbstractModel {
 
 	@Override
 	public void delete() {
-		this.isMarkedForDeletion=true;
+		this.markForDeletion();
 		
 	}
 
