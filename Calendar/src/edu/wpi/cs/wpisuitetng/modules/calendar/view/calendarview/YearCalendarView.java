@@ -10,40 +10,61 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
+import java.util.Calendar;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import org.jdesktop.swingx.JXMonthView;
 
 public class YearCalendarView extends JPanel implements ICalendarView {
 
+	public static final Color START_END_DAY = new Color(47, 150, 9);
+
+	private JXMonthView yearView;
+
+	/**
+	 * Constructor for the iteration calendar.
+	 * @param parent IterationPanel
+	 * @param vm ViewMode
+	 * @param displayIteration Iteration
+	 */
 	public YearCalendarView() {
-		// TODO Auto-generated constructor stub
-		this.setLayout(new BorderLayout());
-		this.add(new JLabel("Year View Unimplemented"), BorderLayout.CENTER);
-	}
-
-	@Override
-	public void next() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void previous() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void today() {
-		// TODO Auto-generated method stub
-
+		yearView = new JXMonthView();
+		yearView.setPreferredColumnCount(4);
+		yearView.setPreferredRowCount(3);
+		yearView.setFlaggedDayForeground(START_END_DAY);
+		yearView.setAlignmentX(CENTER_ALIGNMENT);
+		
+		
+		this.today();
+		
+		this.add(yearView);
 	}
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
-		return "Year view unimplemented";
+		return "Year of " + yearView.getCalendar().get(Calendar.YEAR);
+	}
+
+	@Override
+	public void next() {
+		Calendar cal = yearView.getCalendar();
+		cal.add(Calendar.YEAR, +1);
+		yearView.setFirstDisplayedDay(cal.getTime());
+	}
+
+	@Override
+	public void previous() {
+		Calendar cal = yearView.getCalendar();
+		cal.add(Calendar.YEAR, -1);
+		yearView.setFirstDisplayedDay(cal.getTime());
+	}
+
+	@Override
+	public void today() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, Calendar.JANUARY);
+		yearView.setFirstDisplayedDay(cal.getTime());
 	}
 }
