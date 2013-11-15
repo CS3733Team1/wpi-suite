@@ -98,7 +98,7 @@ public class Commitment extends DeletableAbstractModel {
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
-		this.isMarkedForDeletion=true;
+		this.markForDeletion();
 	}
 
 	
