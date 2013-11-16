@@ -5,7 +5,6 @@
 
 	<property name="core-jar-dest" location="${core-lib}/Calendar.jar"/>
 	<property name="janeway-jar-dest" location="../Janeway/modules/Calendar.jar"/>
-
 	<path id="classpath">
 		<pathelement path="../Janeway/build"/>
 		<pathelement path="../Network/build"/>
@@ -18,6 +17,9 @@
 		</fileset>
 		<fileset dir="${janeway-lib}">
 			<include name="miglayout-4.0-swing.jar"/>
+			<include name="swingx-all-1.6.4.jar"/>
+		</fileset>
+		<fileset dir="${janeway-lib}">
 			<include name="swingx-all-1.6.4.jar"/>
 		</fileset>
 		<pathelement path="build"/>

@@ -25,6 +25,7 @@ public abstract class DeletableAbstractModel extends AbstractModel{
 	public void markForDeletion()
 	{
 		this.MarkedForDeletion = true;
+		System.out.println("AbsModel: deletion" + MarkedForDeletion);
 	}
 
 }
