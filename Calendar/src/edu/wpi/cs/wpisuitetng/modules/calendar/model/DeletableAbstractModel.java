@@ -22,10 +22,15 @@ public abstract class DeletableAbstractModel extends AbstractModel{
 	{
 		return this.MarkedForDeletion;
 	}
+	
+	public void unmarkForDeletion()
+	{
+		this.MarkedForDeletion = false;
+	}
+	
 	public void markForDeletion()
 	{
 		this.MarkedForDeletion = true;
-		System.out.println("AbsModel: deletion" + MarkedForDeletion);
 	}
 
 }

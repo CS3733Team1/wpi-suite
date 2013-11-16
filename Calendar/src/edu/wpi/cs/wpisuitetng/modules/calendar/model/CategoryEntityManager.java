@@ -61,6 +61,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		
 		if (newMessage.isMarkedForDeletion())
 		{
+			newMessage.unmarkForDeletion();
 			deleteCategory(newMessage);
 			return newMessage;
 		}
