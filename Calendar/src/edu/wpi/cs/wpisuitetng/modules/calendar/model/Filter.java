@@ -7,10 +7,17 @@ import com.google.gson.Gson;
 
 public class Filter extends DeletableAbstractModel {
 	
+	public String name;
 	private ArrayList<Category> categories;
 	
-	public Filter(ArrayList<Category> categories)
+	public Filter(String name)
 	{
+		this.name = name;
+	}
+	
+	public Filter(String name, ArrayList<Category> categories)
+	{
+		this.name = name;
 		this.categories.addAll(categories);
 	}
 	
