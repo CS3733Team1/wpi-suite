@@ -1,10 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,11 +23,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.jdesktop.swingx.JXMonthView;
-import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.ErrorPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
-
+/**
+ * Panel to hold the date picking calendar and the buttons to scroll
+ * which month it is displaying
+ */
 public class DatePickerPanel extends JPanel {
 	private JXMonthView calendarMonthView;
 	
@@ -27,8 +36,9 @@ public class DatePickerPanel extends JPanel {
 	private JButton today;
 
 	/**
-	 * Create the panel.
-	 * @param whether panel will be single or multiple interval true -> single interval
+	 * Panel constructor
+	 * @param singleSelection selects whether panel will be set to single or
+	 * multiple interval selection, true selects single interval
 	 */
 	public DatePickerPanel(boolean singleSelection) {
 		buildLayout(singleSelection);
@@ -44,11 +54,6 @@ public class DatePickerPanel extends JPanel {
 		buttonPanel.add(prevMonth);
 		buttonPanel.add(today);
 		buttonPanel.add(nextMonth);
-		/*
-		 * potential inputs to daypicker constructor:
-		 * 		number of months to be displayed
-		 * 		this (so it can set local start and end date variables)
-		 */
 		calendarMonthView = new DatePicker(singleSelection);
 		this.setAlignmentX(CENTER_ALIGNMENT);
 		this.add(buttonPanel,BorderLayout.NORTH);
@@ -105,6 +110,10 @@ public class DatePickerPanel extends JPanel {
 		calendarMonthView.setFirstDisplayedDay(cal.getTime());
 	}
 	
+	/**
+	 * @return all the dates the user has selected
+	 */
+	@SuppressWarnings("deprecation")
 	public ArrayList<Date> getAllDates(){
 		ArrayList<Date> dates = new ArrayList<Date>();
 		Date firstSel,lastSel,testDate;
@@ -120,10 +129,16 @@ public class DatePickerPanel extends JPanel {
 		return dates;
 	}
 	
+	/**
+	 * @return the first date the user has selected
+	 */
 	public Date getStartDate(){
 		return calendarMonthView.getFirstSelectionDate();
 	}
 	
+	/**
+	 * @return the last date the user has selected
+	 */
 	public Date getEndDate(){
 		return calendarMonthView.getLastSelectionDate();
 	}

@@ -28,7 +28,6 @@ public class CalendarToolBar extends JPanel {
 	private MainModel model;
 	private MainView view;
 	
-	private JButton addCalendarButton, deleteCalendarButton;
 	private JButton addCommitmentButton, deleteCommitmentButton;
 	private JButton addEventButton, deleteEventButton;
 	
@@ -41,11 +40,6 @@ public class CalendarToolBar extends JPanel {
 		JPanel addDeletePanel = new JPanel();
 		
 		try {
-			addCalendarButton = new JButton("<html>Create New<br/>Calendar</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_cal.png"))));
-			deleteCalendarButton = new JButton("<html>Delete<br/>Calendar</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_cal.png"))));
-			
 			addCommitmentButton = new JButton("<html>New<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png"))));
 			deleteCommitmentButton = new JButton("<html>Delete<br/>Commitment</html>",
@@ -64,9 +58,6 @@ public class CalendarToolBar extends JPanel {
 		addCommitmentButton.addActionListener(new DisplayCommitmentController(view, model));
 		deleteCommitmentButton.addActionListener(new RemoveCommitmentController(view, model));
 		
-
-		//addDeletePanel.add(addCalendarButton);
-		//addDeletePanel.add(deleteCalendarButton);
 		addDeletePanel.add(addCommitmentButton);
 		addDeletePanel.add(deleteCommitmentButton);
 		addDeletePanel.add(addEventButton);
