@@ -40,6 +40,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.ErrorPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
+import java.awt.Color;
+import java.awt.Font;
 
 /**
  * This panel tab is added whenever the user wants to create a new event or edit an existing one
@@ -59,6 +61,7 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	private final String EMPTY_NAME_ERROR = 		"Name is required.";
 	private final String DATES_REQ = 				"Start and end date required.";
 	private final String PAST_ERROR = 				"Commitment cannot occur in the past.";
+
 	private JPanel buttonPanel;
 	
 	private JButton buttonAdd;
@@ -87,6 +90,12 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	private JLabel endTimeColonLabel;
 	//TODO remove the initialization here and change as necessary for two date pickers
 	private DatePickerPanel dateCalendar = new DatePickerPanel(true);
+
+	private JLabel nameErrorLabel;
+	private JLabel dateErrorLabel;
+	private JLabel startTimeErrorLabel;
+	private JLabel endTimeErrorLabel;
+
 	/**
 	 * The constructor for the event panel when creating a new event.
 	 * @wbp.parser.constructor
@@ -180,8 +189,9 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		
 		dataPanel = new JPanel();
+		dataPanel.setForeground(Color.RED);
 		add(dataPanel, BorderLayout.CENTER);
-		dataPanel.setLayout(new MigLayout("", "[95px][26px][][32px][5px][50px]", "[17.00][20px][20px][20px][20px]"));
+		dataPanel.setLayout(new MigLayout("", "[95px][26px][][32px][5px][][50px][][]", "[17.00][20px][20px][20px][20px]"));
 		
 		nameLabel = new JLabel("Event Name");
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -189,14 +199,24 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 		
 		nameTextField = new JTextField();
 		nameTextField.setHorizontalAlignment(SwingConstants.LEFT);
-		dataPanel.add(nameTextField, "cell 1 1 5 1,growx,aligny top");
+		dataPanel.add(nameTextField, "cell 1 1 6 1,growx,aligny top");
 		nameTextField.setColumns(10);
+		
+		nameErrorLabel = new JLabel("");
+		nameErrorLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		nameErrorLabel.setForeground(Color.RED);
+		dataPanel.add(nameErrorLabel, "cell 7 1 2 1");
 		
 		JLabel dateLabel = new JLabel("Date of Event");
 		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(dateLabel, "cell 0 2,growx,aligny center");
 		
-		dataPanel.add(dateCalendar, "cell 1 2 5 1,growx,aligny top");
+		dataPanel.add(dateCalendar, "cell 1 2 6 1,growx,aligny top");
+		
+		dateErrorLabel = new JLabel("");
+		dateErrorLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		dateErrorLabel.setForeground(Color.RED);
+		dataPanel.add(dateErrorLabel, "cell 7 2 2 1");
 		
 		JLabel startTimeLabel = new JLabel("Start Time");
 		startTimeLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -211,15 +231,20 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 		startTimeMinutesTextField.setColumns(10);
 		dataPanel.add(startTimeMinutesTextField, "cell 3 3,growx,aligny top");
 		
-		startTimeDayNightComboBox = new JComboBox<String>();
-		startTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
-		dataPanel.add(startTimeDayNightComboBox, "cell 5 3,growx,aligny top");
-		
 		startTimeHoursTextField = new JTextField();
 		startTimeHoursTextField.setText("hh");
 		startTimeHoursTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		startTimeHoursTextField.setColumns(10);
 		dataPanel.add(startTimeHoursTextField, "cell 1 3,growx,aligny top");
+		
+		startTimeDayNightComboBox = new JComboBox<String>();
+		startTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
+		dataPanel.add(startTimeDayNightComboBox, "cell 5 3,growx,aligny top");
+		
+		startTimeErrorLabel = new JLabel("");
+		startTimeErrorLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		startTimeErrorLabel.setForeground(Color.RED);
+		dataPanel.add(startTimeErrorLabel, "cell 6 3 3 1");
 		
 		endTimeLabel = new JLabel("End Time");
 		endTimeLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -243,6 +268,11 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 		endTimeDayNightComboBox = new JComboBox<String>();
 		endTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
 		dataPanel.add(endTimeDayNightComboBox, "cell 5 4,growx,aligny top");
+		
+		endTimeErrorLabel = new JLabel("");
+		endTimeErrorLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		endTimeErrorLabel.setForeground(Color.RED);
+		dataPanel.add(endTimeErrorLabel, "cell 6 4 3 1");
 	}
 	
 	public void killPanel(){
@@ -318,6 +348,10 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	 */
 	private void validateFields()
 	{
+		if(nameTextField.getText() != "")
+		{
+			
+		}
 //		errorDisplay.removeAllErrors();
 //		Calendar cal = new GregorianCalendar();
 //		cal.setTime(Calendar.getInstance().getTime());
