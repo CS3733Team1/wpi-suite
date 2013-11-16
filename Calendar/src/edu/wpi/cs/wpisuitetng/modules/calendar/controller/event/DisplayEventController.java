@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.AddEventTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 
 /**
  * This Controller is based largely off of DisplayCommitmentController 
@@ -35,7 +35,7 @@ public class DisplayEventController implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AddEventTabPanel pan = new AddEventTabPanel(view, model);
+		EventTabPanel pan = new EventTabPanel(view, model);
 		view.getCalendarPanel().addTab("Add Event",pan);
 		view.getCalendarPanel().setSelectedComponent(pan);
 	}
