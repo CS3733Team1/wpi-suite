@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +29,8 @@ import java.util.ListIterator;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -36,7 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 
 public class MonthCalendarView extends JPanel implements ICalendarView {
-	public static final String[] weekNames = {"Saturday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	private ArrayList<JLabel> dayLabel = new ArrayList<JLabel>();
 	private ArrayList<DatePanel> panelList = new ArrayList<DatePanel>();
@@ -45,6 +48,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 	private ArrayList<GridBagConstraints> nameGridBagList = new ArrayList<GridBagConstraints>();
 	private ArrayList<GridBagConstraints> gridBagList = new ArrayList<GridBagConstraints>();
 	private JPanel panel = new JPanel();
+	
+	private JPanel[] dayJPanelArrary = new JPanel[7];
+	private DatePanel [][] monthJDatePanelArray = new DatePanel[6][7];
 
 	private Calendar mycal;
 	private int currentMonth;
@@ -71,13 +77,43 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		currentYear = today.getYear() + 1900;
 		//TODO: Update with current month and year
 		mycal = new GregorianCalendar(currentYear, currentMonth, 1);
-		addDayLabels();
-		addDays(mycal);
+//		addDayLabels();
+//		addDays(mycal);
+		
+		
+//		SetDate();
+		
+		
+		panel = new JPanel();
+		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+//		setContentPane(panel);
+		panel.setLayout(new GridLayout(6,7));
+		makeGridLayoutDayOfWeek();
 		panel.setVisible(true);
 		
-		SetDate();
+		
 
 	}
+	
+	
+	
+	
+	
+	
+	public void makeGridLayoutDayOfWeek()
+	{
+		for(int i = 0; i < 7; i++)
+		{
+				dayJPanelArrary[i] = new JPanel();
+				dayJPanelArrary[i].setBorder(new MatteBorder(1, 0, 1, 0, (Color) new Color(0, 0, 0)));
+				dayJPanelArrary[i].setBackground(Color.WHITE);
+				panel.add(dayJPanelArrary[i]);
+				dayJPanelArrary[i].add(new JLabel(weekNames[i]));
+		}
+	}
+	
+	
+	
 
 	public void addDayLabels()
 	{

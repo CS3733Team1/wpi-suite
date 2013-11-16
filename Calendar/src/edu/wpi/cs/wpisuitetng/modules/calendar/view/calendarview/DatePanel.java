@@ -18,7 +18,7 @@ import javax.swing.event.ListDataListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventModel;
 
-public class DatePanel extends JPanel implements ListDataListener{
+public class DatePanel extends JScrollPane implements ListDataListener{
 	private Date paneldate;
 	private ArrayList<JPanel> eventlist;
 	private JScrollPane showMEdaMONEY;
@@ -33,7 +33,7 @@ public class DatePanel extends JPanel implements ListDataListener{
 		showMEdaMONEY = new JScrollPane();
 		layout = new JPanel();
 		
-		this.setLayout(grid);
+//		this.setLayout(grid);
 		layout.setLayout(grid);
 		showMEdaMONEY.setVisible(true);
 		layout.setVisible(true);
