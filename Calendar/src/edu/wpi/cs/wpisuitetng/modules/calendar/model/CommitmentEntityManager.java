@@ -59,7 +59,10 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		// Parse the message from JSON
 		final Commitment newMessage = Commitment.fromJSON(content);
 		
+		//System.out.println("EM: marked for delete:" + newMessage.isMarkedForDeletion());
+		
 		if (newMessage.isMarkedForDeletion()){
+			newMessage.unmarkForDeletion();
 			deleteCommitment(newMessage);
 			return newMessage;
 		}
@@ -123,9 +126,10 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	@Override
 	public void save(Session s, Commitment model)
 			throws WPISuiteException {
-		
+		//System.out.println("EM: save");
 		if (model.isMarkedForDeletion())
 		{
+			model.unmarkForDeletion();
 			deleteCommitment(model);
 			return;
 		}
@@ -134,6 +138,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	}
 
 	public void deleteCommitment(Commitment model){
+		//System.out.println("made it to entitymanager delete");
 		db.delete(model);
 	}
 	
