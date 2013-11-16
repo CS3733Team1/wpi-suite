@@ -12,10 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.AddEventTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -34,7 +32,7 @@ public class AddEventController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Event eve = new Event("Hello", new Date(), new Date());
+		Event eve = view.getEvent();
 		
 		
 		System.out.println("Adding event...");
