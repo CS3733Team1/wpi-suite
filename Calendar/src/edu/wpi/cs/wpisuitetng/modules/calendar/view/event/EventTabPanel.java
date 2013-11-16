@@ -31,8 +31,6 @@ import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
-import com.toedter.calendar.JCalendar;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
@@ -50,13 +48,14 @@ import java.awt.Font;
  * @author rbansal
  */
 @SuppressWarnings("serial")
-public class AddEventTabPanel extends JPanel implements KeyListener{
+public class EventTabPanel extends JPanel implements KeyListener{
 	MainView view;
 	MainModel model;
 	
 	
 	//errors thrown for improper input
 	private final String START_AFTER_END_ERROR = 	"Start date cannot be after end date.";
+	private final String INVALID_TIME_ERROR =       "Invalid time entered";
 	private final String INVALID_NAME_ERROR = 		"Iteration exists with given name.";
 	private final String EMPTY_NAME_ERROR = 		"Name is required.";
 	private final String DATES_REQ = 				"Start and end date required.";
@@ -99,7 +98,7 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	 * The constructor for the event panel when creating a new event.
 	 * @wbp.parser.constructor
 	 */
-	public AddEventTabPanel(MainView view, MainModel model) {
+	public EventTabPanel(MainView view, MainModel model) {
 		this.view=view;
 		this.model=model;
 		
@@ -113,7 +112,7 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	 * Constructor for the iteration panel when editing an iteration
 	 * @param iter the iteration to edit.
 	 */
-	public AddEventTabPanel(Event event, MainView view, MainModel model) {
+	public EventTabPanel(Event event, MainView view, MainModel model) {
 		this.view=view;
 		this.model=model;
 		
@@ -349,8 +348,27 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	{
 		if(nameTextField.getText() != "")
 		{
-			
+			nameErrorLabel.setText(EMPTY_NAME_ERROR);
 		}
+		
+		if(dateCalendar.getStartDate() == null)
+		{
+			dateErrorLabel.setText(DATES_REQ);
+		}
+		
+		try  
+		  {  
+		    int hours = Integer.parseInt(startTimeHoursTextField.getText());  
+		    int min =  Integer.parseInt(startTimeMinutesTextField.getText());
+		    if(hours > 12 || hours < 1 || min > 59 || min < 0)
+		    {
+		    	startTimeErrorLabel.setText(INVALID_TIME_ERROR);
+		    }
+		  }  
+		  catch(NumberFormatException nfe)  
+		  { 
+			  
+		  }   
 //		errorDisplay.removeAllErrors();
 //		Calendar cal = new GregorianCalendar();
 //		cal.setTime(Calendar.getInstance().getTime());
