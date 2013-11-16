@@ -82,12 +82,8 @@ public class YearCalendarView extends JPanel implements ICalendarView, ListDataL
 	}
 
 	public void HighlightDate(Date m){
-		System.out.println("Eve no Jikan");
-		
 		SortedSet<Date> dateset = yearView.getFlaggedDates();
 		dateset.add(m);
-		
-		
 		
 		yearView.setFlaggedDates(dateset.toArray(new Date[dateset.size()]));
 	}
