@@ -12,12 +12,20 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.ListIterator;
+import java.util.SortedSet;
 
 import javax.swing.JPanel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.jdesktop.swingx.JXMonthView;
 
-public class YearCalendarView extends JPanel implements ICalendarView {
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventModel;
+
+public class YearCalendarView extends JPanel implements ICalendarView, ListDataListener{
 
 	public static final Color START_END_DAY = new Color(47, 150, 9);
 
@@ -40,6 +48,11 @@ public class YearCalendarView extends JPanel implements ICalendarView {
 		this.today();
 		
 		this.add(yearView);
+		
+		EventModel.getEventModel().addListDataListener(this);
+		UpdateYearView();
+		
+		yearView.setFlaggedDayForeground(Color.RED);
 	}
 
 	@Override
@@ -66,5 +79,41 @@ public class YearCalendarView extends JPanel implements ICalendarView {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, Calendar.JANUARY);
 		yearView.setFirstDisplayedDay(cal.getTime());
+	}
+
+	public void HighlightDate(Date m){
+		SortedSet<Date> dateset = yearView.getFlaggedDates();
+		dateset.add(m);
+		
+		yearView.setFlaggedDates(dateset.toArray(new Date[dateset.size()]));
+	}
+	
+	public void UpdateYearView(){
+		ListIterator<Event> event = EventModel.getEventModel().getList().listIterator();
+		while(event.hasNext()){
+			Event eve = event.next();
+			Date evedate = eve.getStartDate();
+			if (evedate.getYear() == yearView.getCalendar().getTime().getYear()){
+				HighlightDate(evedate);
+			}
+		}
+	}
+	
+	@Override
+	public void intervalAdded(ListDataEvent e) {
+		// TODO Auto-generated method stub
+		UpdateYearView();
+	}
+
+	@Override
+	public void intervalRemoved(ListDataEvent e) {
+		// TODO Auto-generated method stub
+		UpdateYearView();
+	}
+
+	@Override
+	public void contentsChanged(ListDataEvent e) {
+		// TODO Auto-generated method stub
+		UpdateYearView();
 	}
 }

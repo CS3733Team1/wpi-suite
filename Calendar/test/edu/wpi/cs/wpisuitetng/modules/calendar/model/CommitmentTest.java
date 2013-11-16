@@ -67,4 +67,18 @@ public class CommitmentTest {
 		c4.setCategory(cat2);
 		assertEquals(cat2,c4.getCategory());
 	}
+	
+	@Test
+	public void testCategoryName() {
+		assertEquals("school",cat1.getName());
+		cat1.setName("class");
+		assertEquals("class",cat1.getName());
+	}
+	
+	@Test
+	public void testCategoryColor() {
+		assertEquals(Color.red,cat2.getColor());
+		cat2.setColor(Color.green);
+		assertEquals(Color.green,cat2.getColor());
+	}
 }

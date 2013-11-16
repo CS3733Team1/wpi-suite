@@ -37,8 +37,6 @@ import net.miginfocom.swing.MigLayout;
 
 import com.toedter.calendar.JCalendar;
 
-//import com.toedter.calendar.JCalendar;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
@@ -239,7 +237,6 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 		categoryComboBox.setPreferredSize(new Dimension(200, 20));
 		dataPanel.add(labelCat, "cell 0 4,growx,aligny top");
 		dataPanel.add(categoryComboBox, "cell 1 4,growx,aligny top");
-
 	}
 	
 	// Kills the current tab
