@@ -87,13 +87,12 @@ public class EventTabPanel extends JPanel implements KeyListener{
 	private JComboBox<String> startTimeDayNightComboBox;
 	private JLabel startTimeColonLabel;
 	private JLabel endTimeColonLabel;
-	//TODO remove the initialization here and change as necessary for two date pickers
-	private DatePickerPanel dateCalendar = new DatePickerPanel(true);
-
 	private JLabel nameErrorLabel;
 	private JLabel dateErrorLabel;
 	private JLabel startTimeErrorLabel;
 	private JLabel endTimeErrorLabel;
+	//TODO remove the initialization here and change as necessary for two date pickers
+	private DatePickerPanel dateCalendar = new DatePickerPanel(true);
 
 	/**
 	 * The constructor for the event panel when creating a new event.
