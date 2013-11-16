@@ -88,11 +88,13 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	private JComboBox<String> startTimeDayNightComboBox;
 	private JLabel startTimeColonLabel;
 	private JLabel endTimeColonLabel;
-	private DatePickerPanel dateCalendar = new DatePickerPanel();
 	private JLabel nameErrorLabel;
 	private JLabel dateErrorLabel;
 	private JLabel startTimeErrorLabel;
 	private JLabel endTimeErrorLabel;
+	//TODO remove the initialization here and change as necessary for two date pickers
+	private DatePickerPanel dateCalendar = new DatePickerPanel(true);
+
 	/**
 	 * The constructor for the event panel when creating a new event.
 	 * @wbp.parser.constructor
@@ -488,7 +490,7 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	
 	public Event getEvent()
 	{
-		Event thisEvent = new Event(nameTextField.getText(), dateCalendar.getDate(), dateCalendar.getDate());
+		Event thisEvent = new Event(nameTextField.getText(), dateCalendar.getStartDate(), dateCalendar.getEndDate());
 		return thisEvent;
 	}
 	

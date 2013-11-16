@@ -23,19 +23,27 @@ public class DatePicker extends JXMonthView implements ActionListener, KeyListen
 	private Date startDate = null;
 	private Date endDate = null;
 	
-	public DatePicker()
+	/**
+	 * @param whether panel will be single or multiple interval true -> single interval
+	 */
+	public DatePicker(boolean singleSelection)
 	{
-		buildLayout();
+		buildLayout(singleSelection);
 	}
 	
-	public void buildLayout(){
+	public void buildLayout(boolean singleSelection){
 		//set rows and columns of months displayed
 		this.setPreferredColumnCount(1);
 		this.setPreferredRowCount(1);
 		
 		this.setSelectionBackground(SELECTION);
 		this.setFlaggedDayForeground(START_END_DAY);
-		this.setSelectionMode(SelectionMode.MULTIPLE_INTERVAL_SELECTION);
+		if(singleSelection){
+			this.setSelectionMode(SelectionMode.SINGLE_INTERVAL_SELECTION);
+		}
+		else{
+			this.setSelectionMode(SelectionMode.MULTIPLE_INTERVAL_SELECTION);
+		}
 		
 		this.setAlignmentX(CENTER_ALIGNMENT);
 		
