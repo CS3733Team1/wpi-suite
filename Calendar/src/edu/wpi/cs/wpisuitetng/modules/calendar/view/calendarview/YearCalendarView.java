@@ -89,6 +89,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, ListDataL
 	}
 	
 	public void UpdateYearView(){
+		yearView.setFlaggedDates();
 		ListIterator<Event> event = EventModel.getEventModel().getList().listIterator();
 		while(event.hasNext()){
 			Event eve = event.next();
