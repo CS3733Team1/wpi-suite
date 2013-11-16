@@ -22,16 +22,13 @@ public class DatePickerPanel extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * @param whether panel will be single or multiple interval true -> single interval
 	 */
-	public DatePickerPanel() {
-		
-		
-		buildLayout();
-		
-
+	public DatePickerPanel(boolean singleSelection) {
+		buildLayout(singleSelection);
 	}
 	
-	private void buildLayout(){
+	private void buildLayout(boolean singleSelection){
 		
 		this.setLayout(new BorderLayout());
 		/*
@@ -39,12 +36,12 @@ public class DatePickerPanel extends JPanel {
 		 * 		number of months to be displayed
 		 * 		this (so it can set local start and end date variables)
 		 */
-		calendarMonthView = new DatePicker();
+		calendarMonthView = new DatePicker(singleSelection);
 		this.setAlignmentX(CENTER_ALIGNMENT);
 		this.add(calendarMonthView);
 	}
 	
-	public ArrayList<Date> getDates(){
+	public ArrayList<Date> getAllDates(){
 		ArrayList<Date> dates = new ArrayList<Date>();
 		Date firstSel,lastSel,testDate;
 		firstSel=calendarMonthView.getFirstSelectionDate();
@@ -59,10 +56,11 @@ public class DatePickerPanel extends JPanel {
 		return dates;
 	}
 	
-	/*
-	 * temporary function while event is modified
-	 */
-	public Date getDate(){
+	public Date getStartDate(){
 		return calendarMonthView.getFirstSelectionDate();
+	}
+	
+	public Date getEndDate(){
+		return calendarMonthView.getLastSelectionDate();
 	}
 }
