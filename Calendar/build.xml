@@ -37,7 +37,7 @@
 				debuglevel="lines,vars,source" includeantruntime="false">
 			<classpath refid="classpath"/>
 		</javac>
-		<copy todir="build/images">
+		<copy todir="build/images" overwrite="true">
 			<fileset dir="images" includes="*.png" />
 		</copy>
 	</target>
