@@ -15,16 +15,16 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.AddEventTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class AddEventController implements ActionListener{
 	MainModel model;
-	AddEventTabPanel view;
+	EventTabPanel view;
 	
-	public AddEventController(AddEventTabPanel view, MainModel model){
+	public AddEventController(EventTabPanel view, MainModel model){
 		this.model = model;
 		this.view = view;
 	}
