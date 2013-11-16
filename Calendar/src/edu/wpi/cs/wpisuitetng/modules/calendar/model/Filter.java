@@ -24,6 +24,11 @@ public class Filter extends DeletableAbstractModel {
 		categories.remove(cat);
 	}
 	
+	public ArrayList<Category> getCategories()
+	{
+		return categories;
+	}
+	
 	public ArrayList<Event> apply(Event[] inlist)
 	{
 		ArrayList<Event> outlist = new ArrayList<Event>();
