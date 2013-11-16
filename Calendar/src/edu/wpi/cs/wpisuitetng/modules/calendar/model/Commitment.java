@@ -20,7 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 //BUGBUG why is this here?
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-public class Commitment extends DeletableAbstractModel {
+public class Commitment extends AbstractModel /*DeletableAbstractModel*/ {
 	// Required parameters
 	private String name;
 	private Date dueDate;
@@ -29,6 +29,7 @@ public class Commitment extends DeletableAbstractModel {
 	private String description;
 	private Category category;
 
+	private boolean toBeDeleted;
 	
 	public Commitment()
 	{
@@ -101,7 +102,20 @@ public class Commitment extends DeletableAbstractModel {
 		this.markForDeletion();
 	}
 
+	public void markForDeletion()
+	{
+		toBeDeleted = true;
+	}
 	
+	public void unmarkForDeletion()
+	{
+		toBeDeleted = false;
+	}
+	
+	public boolean isMarkedForDeletion()
+	{
+		return toBeDeleted;
+	}
 
 	@Override
 	public String toJSON() {

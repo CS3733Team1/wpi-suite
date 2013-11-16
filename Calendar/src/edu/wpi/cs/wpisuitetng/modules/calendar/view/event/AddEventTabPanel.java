@@ -39,6 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ErrorPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
 
 /**
  * This panel tab is added whenever the user wants to create a new event or edit an existing one
@@ -84,7 +85,7 @@ public class AddEventTabPanel extends JPanel implements KeyListener{
 	private JComboBox<String> startTimeDayNightComboBox;
 	private JLabel startTimeColonLabel;
 	private JLabel endTimeColonLabel;
-	private JCalendar dateCalendar = new JCalendar();
+	private DatePickerPanel dateCalendar = new DatePickerPanel();
 	/**
 	 * The constructor for the event panel when creating a new event.
 	 * @wbp.parser.constructor

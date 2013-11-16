@@ -52,12 +52,16 @@ public class RemoveCommitmentController implements ActionListener{
 			Commitment commit = (Commitment) model.getCommitmentModel().getElement(index[x]);
 			//remove this later
 			
+			//System.out.println("controller: marking for deletion");
 			commit.markForDeletion();
+			
+			//System.out.println("delete: " + commit.isMarkedForDeletion());
 			
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
 			final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
 			request.setBody(commit.toJSON()); // put the new message in the body of the request
+			//System.out.println("controller: sending this for deletion: " + commit.toJSON());
 			request.addObserver(new RemoveCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
