@@ -149,7 +149,7 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 		buttonPanel.add(buttonCancel);
 		
 		//Action Listener for Add Commitment Button
-		buttonAdd.addActionListener(new AddCommitmentController(this, this.model));
+		buttonAdd.addActionListener(new AddCommitmentController(this));
 
 		//Action Listener for Undo Changes Button
 		buttonUndoChanges.addActionListener(new ActionListener(){

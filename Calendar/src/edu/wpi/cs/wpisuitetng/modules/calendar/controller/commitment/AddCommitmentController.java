@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.AddCommitmentTabPanel;
@@ -22,11 +23,11 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class AddCommitmentController implements ActionListener{
-	MainModel model;
+	CommitmentModel model;
 	AddCommitmentTabPanel view;
 	
-	public AddCommitmentController(AddCommitmentTabPanel view, MainModel model){
-		this.model = model;
+	public AddCommitmentController(AddCommitmentTabPanel view){
+		this.model = CommitmentModel.getCommitmentModel();
 		this.view = view;
 	}
 	
@@ -49,7 +50,7 @@ public class AddCommitmentController implements ActionListener{
 	
 	public void addCommitmentToModel(Commitment commit){
 		System.out.println("Commitment added.");
-		model.addCommitmentFromCalendar(commit);
+		model.addCommitment(commit);
 	}
 
 }
