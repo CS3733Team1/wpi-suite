@@ -48,7 +48,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel
 
 public class EventTabPanel extends JPanel implements KeyListener {
 	//errors thrown for improper input
-	private final String START_AFTER_END_ERROR = 	"Start date cannot be after end date.";
+	private final String START_AFTER_END_ERROR = 	"Start time cannot be after end time.";
 	private final String INVALID_TIME_ERROR =       "Invalid time entered";
 	private final String INVALID_NAME_ERROR = 		"Iteration exists with given name.";
 	private final String EMPTY_NAME_ERROR = 		"Name is required.";
@@ -271,7 +271,9 @@ public class EventTabPanel extends JPanel implements KeyListener {
 	private void updateDisplayEvent()
 	{
 		displayEvent.setName(nameTextField.getText());
-		displayEvent.setEndDate(new Date());
+		displayEvent.setStartDate(dateCalendar.getStartDate());
+		displayEvent.setEndDate(dateCalendar.getEndDate());
+		
 
 		if(vm == ViewMode.CREATING)
 		{
@@ -306,84 +308,82 @@ public class EventTabPanel extends JPanel implements KeyListener {
 		refreshPanel();
 	}
 	
-	
-	/**
-	 * Sets the dates for the event panel
-	 * @param dueDate the due date
-	 */
-	public void setDueDate(Date dueDate)
-	{
-		if(dueDate != null) this.dateFormattedTextField.setValue(dueDate);
-		
-		refreshPanel();
-	}
-	
 	/**
 	 * Refreshes the panel
 	 */
 	private void refreshPanel()
 	{
-		updateDisplayEvent();
+		
 		validateFields();
+		updateDisplayEvent();
 		checkForChanges();
 //		if(vm == ViewMode.EDITING) ;//refreshEstimate();
 	}
 	
 	/**
-	 * Validates the options of the fields inputted.
+	 * Validates the options of the fields inputed.
 	 */
 	private void validateFields()
 	{
+		int startHours = 0, startMin = 0, endHours = 0, endMin = 0;
+		 
+		errorDisplay.removeAllErrors();
 		if(nameTextField.getText() != "")
 		{
-			nameErrorLabel.setText(EMPTY_NAME_ERROR);
+			errorDisplay.displayError(EMPTY_NAME_ERROR);
 		}
-		
-		if(dateCalendar.getStartDate() == null)
+		else if(dateCalendar.getStartDate() == null)
 		{
-			dateErrorLabel.setText(DATES_REQ);
+			errorDisplay.displayError(DATES_REQ);
+		}
+		else
+		{
+			try  
+			  {  
+			    startHours = Integer.parseInt(startTimeHoursTextField.getText());  
+			    startMin =  Integer.parseInt(startTimeMinutesTextField.getText());
+			    if(startHours > 12 || startHours < 1 || startMin > 59 || startMin < 0)
+			    {
+			    	errorDisplay.displayError(INVALID_TIME_ERROR);
+			    }
+			  }  
+			  catch(NumberFormatException nfe)  
+			  { 
+				  errorDisplay.displayError(INVALID_TIME_ERROR);
+			  }   
 		}
 		
-		try  
-		  {  
-		    int hours = Integer.parseInt(startTimeHoursTextField.getText());  
-		    int min =  Integer.parseInt(startTimeMinutesTextField.getText());
-		    if(hours > 12 || hours < 1 || min > 59 || min < 0)
-		    {
-		    	startTimeErrorLabel.setText(INVALID_TIME_ERROR);
-		    }
-		  }  
-		  catch(NumberFormatException nfe)  
-		  { 
-			  
-		  }   
-//		errorDisplay.removeAllErrors();
-//		Calendar cal = new GregorianCalendar();
-//		cal.setTime(Calendar.getInstance().getTime());
-//		cal.add(Calendar.DAY_OF_YEAR, -1);
-//		Event forName;//TODO: get the Event from the model with the name in our boxName textbox // = EventModel.getInstance().getIteration(boxName.getText().trim());
-//		if(boxName.getText().trim().length() == 0)
-//		{
-//			errorDisplay.displayError(EMPTY_NAME_ERROR);
-//		}
-//		
-//		else if(forName != null && forName != displayEvent)	//the name is already taken
-//		{
-//			errorDisplay.displayError(INVALID_NAME_ERROR);
-//		}
+		if(!errorDisplay.hasErrors())
+		{
+			try  
+			  {  
+			    endHours = Integer.parseInt(endTimeHoursTextField.getText());  
+			    endMin =  Integer.parseInt(endTimeMinutesTextField.getText());
+			    if(endHours > 12 || endHours < 1 || endMin > 59 || endMin < 0)
+			    {
+			    	errorDisplay.displayError(INVALID_TIME_ERROR);
+			    }
+			  }  
+			  catch(NumberFormatException nfe)  
+			  { 
+				  errorDisplay.displayError(INVALID_TIME_ERROR);
+			  }   
+		}
 		
-//		if(dueDateBox.getText().trim().length() == 0 || dueDateBox.getText().trim().length() == 0)
-//		{
-//			errorDisplay.displayError(DATES_REQ);
-//		}
-		
-		//TODO: check if the due date is in the calendar's past
-		
-//		else if(((Date)dueDateBox.getValue()).before(cal.getTime()))
-//		{
-//			errorDisplay.displayError(PAST_ERROR);
-//		}
-		
+		if(!errorDisplay.hasErrors() && dateCalendar.getStartDate() == dateCalendar.getEndDate())
+		{
+			if(startTimeDayNightComboBox.getSelectedItem() == "PM" && endTimeDayNightComboBox.getSelectedItem() =="AM")
+			{
+				errorDisplay.displayError(START_AFTER_END_ERROR);
+			}
+			else if(startTimeDayNightComboBox.getSelectedItem() == startTimeDayNightComboBox.getSelectedItem())
+			{
+				if(startHours > endHours || (startHours == endHours && startMin >= endMin))
+				{
+					errorDisplay.displayError(START_AFTER_END_ERROR);
+				}
+			}
+		}
 		//events can't conflict with each other, so we don't check this
 //		else
 //		{
@@ -432,6 +432,7 @@ public class EventTabPanel extends JPanel implements KeyListener {
 	 * @see java.awt.event.KeyListener#keyTyped(KeyEvent) */
 	@Override
 	public void keyTyped(KeyEvent e) {
+		refreshPanel();
 	}
 
 	/**
@@ -450,6 +451,7 @@ public class EventTabPanel extends JPanel implements KeyListener {
 	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent) */
 	@Override
 	public void keyReleased(KeyEvent e) {
+		refreshPanel();
 	}
 
 	/**
