@@ -303,8 +303,8 @@ public class EventTabPanel extends JPanel implements KeyListener {
 	 */
 	private void populateInformation()
 	{
-		this.nameTextField.setText(displayEvent.getName());
-		this.dateFormattedTextField.setValue(displayEvent.getEndDate());
+		//this.nameTextField.setText(displayEvent.getName());
+		// displayEvent.getEndDate());
 		refreshPanel();
 	}
 	
@@ -442,6 +442,7 @@ public class EventTabPanel extends JPanel implements KeyListener {
 	 * @see java.awt.event.KeyListener#keyPressed(KeyEvent) */
 	@Override
 	public void keyPressed(KeyEvent e) {
+		refreshPanel();
 	}
 
 	/**
@@ -454,13 +455,6 @@ public class EventTabPanel extends JPanel implements KeyListener {
 		refreshPanel();
 	}
 
-	/**
-	 * 
-	
-	 * @return the display event */
-	public Event getDisplayEvent() {
-		return displayEvent;
-	}
 
 	/**
 	
