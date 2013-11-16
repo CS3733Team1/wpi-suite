@@ -113,13 +113,13 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 		return categories.get(categories.size() - 1 - index);
 	}
 
-	public void removeCommitment(int index) {
+	public void removeCategory(int index) {
 		categories.remove(index);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
-	public void removeCommitment(Commitment commitment) {
-		categories.remove(commitment);
+	public void removeCategory(Category cat) {
+		categories.remove(cat);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
