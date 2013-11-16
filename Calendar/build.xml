@@ -38,7 +38,7 @@
 			<classpath refid="classpath"/>
 		</javac>
 		<copy todir="build/images">
-			<fileset dir="images" includes="**/*.png" />
+			<fileset dir="images" includes="*.png" />
 		</copy>
 	</target>
 
