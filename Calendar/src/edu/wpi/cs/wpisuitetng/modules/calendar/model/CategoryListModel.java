@@ -119,7 +119,7 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 	}
 
 	public void removeCategory(Category cat) {
-		categories.remove(commitment);
+		categories.remove(cat);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
