@@ -28,23 +28,18 @@ public class DatePicker extends JXMonthView{
 	 * @param singleSelection selects whether panel will be single or multiple
 	 * interval, true selects single interval selection
 	 */
-	public DatePicker(boolean singleSelection)
+	public DatePicker(SelectionMode sm)
 	{
-		buildLayout(singleSelection);
+		buildLayout(sm);
 	}
 	
-	private void buildLayout(boolean singleSelection){
+	private void buildLayout(SelectionMode sm){
 		this.setPreferredColumnCount(1);
 		this.setPreferredRowCount(1);
 		
 		this.setSelectionBackground(SELECTION);
 		this.setFlaggedDayForeground(START_END_DAY);
-		if(singleSelection){
-			this.setSelectionMode(SelectionMode.SINGLE_INTERVAL_SELECTION);
-		}
-		else{
-			this.setSelectionMode(SelectionMode.MULTIPLE_INTERVAL_SELECTION);
-		}
+		this.setSelectionMode(sm);
 		
 		this.setAlignmentX(CENTER_ALIGNMENT);
 	}

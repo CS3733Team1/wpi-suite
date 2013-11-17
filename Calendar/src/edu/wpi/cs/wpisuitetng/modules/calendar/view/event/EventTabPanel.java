@@ -29,8 +29,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import net.miginfocom.swing.MigLayout;
+import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
@@ -38,6 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.ErrorPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
+
 import java.awt.Color;
 import java.awt.Font;
 
@@ -92,7 +94,7 @@ public class EventTabPanel extends JPanel implements KeyListener{
 	private JLabel startTimeErrorLabel;
 	private JLabel endTimeErrorLabel;
 	//TODO remove the initialization here and change as necessary for two date pickers
-	private DatePickerPanel dateCalendar = new DatePickerPanel(true);
+	private DatePickerPanel dateCalendar = new DatePickerPanel(SelectionMode.SINGLE_INTERVAL_SELECTION);
 
 	/**
 	 * The constructor for the event panel when creating a new event.

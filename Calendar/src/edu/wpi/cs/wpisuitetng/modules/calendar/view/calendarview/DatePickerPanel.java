@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.jdesktop.swingx.JXMonthView;
+import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 
 /**
  * Panel to hold the date picking calendar and the buttons to scroll
@@ -40,11 +41,11 @@ public class DatePickerPanel extends JPanel {
 	 * @param singleSelection selects whether panel will be set to single or
 	 * multiple interval selection, true selects single interval
 	 */
-	public DatePickerPanel(boolean singleSelection) {
-		buildLayout(singleSelection);
+	public DatePickerPanel(SelectionMode sm) {
+		buildLayout(sm);
 	}
 	
-	private void buildLayout(boolean singleSelection){
+	private void buildLayout(SelectionMode sm){
 		
 		this.setLayout(new BorderLayout());
 		JPanel buttonPanel = new JPanel();
@@ -54,7 +55,7 @@ public class DatePickerPanel extends JPanel {
 		buttonPanel.add(prevMonth);
 		buttonPanel.add(today);
 		buttonPanel.add(nextMonth);
-		calendarMonthView = new DatePicker(singleSelection);
+		calendarMonthView = new DatePicker(sm);
 		this.setAlignmentX(CENTER_ALIGNMENT);
 		this.add(buttonPanel,BorderLayout.NORTH);
 		this.add(calendarMonthView,BorderLayout.CENTER);
