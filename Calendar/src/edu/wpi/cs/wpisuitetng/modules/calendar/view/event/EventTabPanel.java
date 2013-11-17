@@ -49,7 +49,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel
  * @author rbansal
  */
 
-public class EventTabPanel extends JPanel implements KeyListener, MouseListener {
+public class EventTabPanel extends JPanel implements KeyListener, MouseListener{
 	//errors thrown for improper input
 	private final String START_AFTER_END_ERROR = 	"Start time cannot be after end time.";
 	private final String INVALID_TIME_ERROR =       "Invalid time entered";
@@ -91,7 +91,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 	private JLabel endTimeErrorLabel;
 	//TODO remove the initialization here and change as necessary for two date pickers
 	private DatePickerPanel dateCalendar = new DatePickerPanel(SelectionMode.SINGLE_INTERVAL_SELECTION);
-	private JButton btnRefresh;
+
 
 	/**
 	 * The constructor for the event panel when creating a new event.
@@ -149,13 +149,6 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 		buttonPanel.add(buttonUndoChanges);
 		buttonPanel.add(buttonCancel);
 		
-		btnRefresh = new JButton("Refresh");
-		btnRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				refreshPanel();
-			}
-		});
-		buttonPanel.add(btnRefresh);
 		buttonPanel.add(errorDisplay);
 
 		buttonAdd.addActionListener(new AddEventController(this));
@@ -198,6 +191,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 
 		nameTextField = new JTextField();
 		nameTextField.setHorizontalAlignment(SwingConstants.LEFT);
+		nameTextField.addKeyListener(this);
 		dataPanel.add(nameTextField, "cell 1 1 6 1,growx,aligny top");
 		nameTextField.setColumns(10);
 
@@ -210,6 +204,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 		dateLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dataPanel.add(dateLabel, "cell 0 2,growx,aligny center");
 
+		dateCalendar.addMouseListener(this);
 		dataPanel.add(dateCalendar, "cell 1 2 6 1,growx,aligny top");
 
 		dateErrorLabel = new JLabel("");
@@ -228,15 +223,18 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 		startTimeMinutesTextField.setText("mm");
 		startTimeMinutesTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		startTimeMinutesTextField.setColumns(10);
+		startTimeMinutesTextField.addKeyListener(this);
 		dataPanel.add(startTimeMinutesTextField, "cell 3 3,growx,aligny top");
 
 		startTimeHoursTextField = new JTextField();
 		startTimeHoursTextField.setText("hh");
 		startTimeHoursTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		startTimeHoursTextField.setColumns(10);
+		startTimeHoursTextField.addKeyListener(this);
 		dataPanel.add(startTimeHoursTextField, "cell 1 3,growx,aligny top");
 
 		startTimeDayNightComboBox = new JComboBox<String>();
+		startTimeDayNightComboBox.addMouseListener(this);
 		startTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
 		dataPanel.add(startTimeDayNightComboBox, "cell 5 3,growx,aligny top");
 
@@ -253,6 +251,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 		endTimeHoursTextField.setText("hh");
 		endTimeHoursTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		endTimeHoursTextField.setColumns(10);
+		endTimeHoursTextField.addKeyListener(this);
 		dataPanel.add(endTimeHoursTextField, "cell 1 4,growx,aligny top");
 
 		endTimeColonLabel = new JLabel(":");
@@ -262,9 +261,11 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 		endTimeMinutesTextField.setText("mm");
 		endTimeMinutesTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		endTimeMinutesTextField.setColumns(10);
+		endTimeMinutesTextField.addKeyListener(this);
 		dataPanel.add(endTimeMinutesTextField, "cell 3 4,growx,aligny top");
 
 		endTimeDayNightComboBox = new JComboBox<String>();
+		endTimeDayNightComboBox.addMouseListener(this);
 		endTimeDayNightComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"AM", "PM"}));
 		dataPanel.add(endTimeDayNightComboBox, "cell 5 4,growx,aligny top");
 
@@ -500,7 +501,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 	 * @see java.awt.event.KeyListener#keyReleased(KeyEvent) */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		validateFields();
+		refreshPanel();
 	}
 
 
@@ -536,33 +537,29 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener 
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseClicked(MouseEvent e) {
+		refreshPanel();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		refreshPanel();
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		refreshPanel();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		refreshPanel();
 		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseReleased(MouseEvent e) {
+		refreshPanel();
 		
 	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		validateFields();
-		
-	}
-
 }
