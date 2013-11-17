@@ -19,8 +19,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RetrieveCommitmentController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 
@@ -38,9 +36,6 @@ public class CalendarPanel extends JTabbedPane {
 		this.model = model;
 		// Initially Empty
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		
-		this.addAncestorListener(new RetrieveCommitmentController(model));
-		this.addAncestorListener(new RetrieveEventController(model));
 	}
 
 	// Create TeamCalendar

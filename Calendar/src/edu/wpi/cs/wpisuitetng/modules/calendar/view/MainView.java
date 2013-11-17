@@ -16,6 +16,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RetrieveCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 
@@ -35,6 +37,15 @@ public class MainView {
 		calendarPanel = new CalendarPanel(model);
 		calendarToolBar = new CalendarToolBar(model, this);
 
+		RetrieveCommitmentController rcc = new RetrieveCommitmentController(model);
+		RetrieveEventController rec = new RetrieveEventController(model);
+		
+		calendarPanel.addAncestorListener(rcc);
+		calendarPanel.addAncestorListener(rec);
+		
+		calendarToolBar.refreshButtonListener(rcc);
+		calendarToolBar.refreshButtonListener(rec);
+		
 		tabs = new ArrayList<JanewayTabModel>();
 
 		JanewayTabModel tab = new JanewayTabModel(getName(), new ImageIcon(),

@@ -10,6 +10,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
@@ -27,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author Chris Casola
  *
  */
-public class RetrieveCommitmentController implements AncestorListener {
+public class RetrieveCommitmentController implements AncestorListener, ActionListener {
 	MainModel model;
 
 	public RetrieveCommitmentController(MainModel model) {
@@ -70,4 +73,9 @@ public class RetrieveCommitmentController implements AncestorListener {
 
 	@Override
 	public void ancestorRemoved(AncestorEvent e) {}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		this.retrieveMessages();
+	}
 }

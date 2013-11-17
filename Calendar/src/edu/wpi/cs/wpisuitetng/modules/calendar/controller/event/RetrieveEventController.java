@@ -10,6 +10,9 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
@@ -27,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author Chris Casola
  *
  */
-public class RetrieveEventController implements AncestorListener {
+public class RetrieveEventController implements AncestorListener, ActionListener {
 	MainModel model;
 
 	public RetrieveEventController(MainModel model) {
@@ -70,4 +73,9 @@ public class RetrieveEventController implements AncestorListener {
 
 	@Override
 	public void ancestorRemoved(AncestorEvent e) {}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		this.retrieveMessages();
+	}
 }
