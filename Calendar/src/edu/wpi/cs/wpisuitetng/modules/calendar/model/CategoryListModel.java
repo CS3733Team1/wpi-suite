@@ -39,7 +39,7 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 		categories = new ArrayList<Category>();
 	}
 
-	static public CategoryListModel getCategoryModel() {
+	static public CategoryListModel getCategoryListModel() {
 		if (categoryModel == null)
 			categoryModel = new CategoryListModel();
 		return categoryModel;
@@ -137,7 +137,7 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 
 	static public List<Category> getList(){
 		List<Category> rtnCategoryList = new ArrayList<Category>();
-		rtnCategoryList.addAll(getCategoryModel().categories);
+		rtnCategoryList.addAll(getCategoryListModel().categories);
 		return rtnCategoryList;
 	}
 }

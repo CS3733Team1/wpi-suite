@@ -14,17 +14,13 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 
 public class Calendar implements IJanewayModule {
-
-	private MainModel model;
 	private MainView view;
 
 	public Calendar() {
-		model = new MainModel();
-		view = new MainView(model);
+		view = new MainView();
 	}
 
 	/**

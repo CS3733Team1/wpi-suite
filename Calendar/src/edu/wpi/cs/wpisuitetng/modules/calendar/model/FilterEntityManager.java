@@ -21,10 +21,10 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
-public class CategoryEntityManager implements EntityManager<Category> {
+public class FilterEntityManager implements EntityManager<Filter> {
 	/** The database */
 	final Data db;
-	public static CategoryEntityManager CManager;
+	public static FilterEntityManager FManager;
 
 	
 	/**
@@ -35,34 +35,32 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public static CategoryEntityManager getCategoryEntityManager(Data db)
-	{
-		CManager = (CManager == null) ? new CategoryEntityManager(db) : CManager;
-		return CManager;
+	public static FilterEntityManager getFilterEntityManager(Data db) {
+		FManager = (FManager == null) ? new FilterEntityManager(db) : FManager;
+		return FManager;
 			
 	}
 	
-	private CategoryEntityManager(Data db) {
+	private FilterEntityManager(Data db) {
 		this.db = db;
 	}
 
 	/*
-	 * Saves a Commitment when it is received from a client
+	 * Saves a Filter when it is received from a client
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category makeEntity(Session s, String content)
+	public Filter makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-
-		System.out.println("Retrieve Shots");
+		
 		// Parse the message from JSON
-		final Category newMessage = Category.fromJSON(content);
+		final Filter newMessage = Filter.fromJSON(content);
 		
 		if (newMessage.isMarkedForDeletion())
 		{
 			newMessage.unmarkForDeletion();
-			deleteCategory(newMessage);
+			deleteFilter(newMessage);
 			return newMessage;
 		}
 		
@@ -83,7 +81,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category[] getEntity(Session s, String id)
+	public Filter[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific Commitments.
@@ -96,14 +94,14 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public Category[] getAll(Session s) throws WPISuiteException {
+	public Filter[] getAll(Session s) throws WPISuiteException {
 		// Ask the database to retrieve all objects of the type Commitment.
 		// Passing a dummy Commitment lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
+		List<Model> messages = db.retrieveAll(new Filter(), s.getProject());
 
 		// Return the list of messages as an array
-		return messages.toArray(new Category[0]);
+		return messages.toArray(new Filter[0]);
 	}
 
 	/*
@@ -112,7 +110,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category update(Session s, String content)
+	public Filter update(Session s, String content)
 			throws WPISuiteException {
 
 		// This module does not allow Commitments to be modified, so throw an exception
@@ -123,19 +121,19 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Category model)
+	public void save(Session s, Filter model)
 			throws WPISuiteException {
 		
 		if (model.isMarkedForDeletion())
 		{
-			deleteCategory(model);
+			deleteFilter(model);
 			return;
 		}
 		// Save the given defect in the database
 		db.save(model);
 	}
 
-	public void deleteCategory(Category model){
+	public void deleteFilter(Filter model){
 		db.delete(model);
 	}
 	
@@ -147,7 +145,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 
-		// This module does not allow Commitments to be deleted, so throw an exception
+		// This module does not allow Filters to be deleted, so throw an exception
 		throw new WPISuiteException();
 	}
 
