@@ -23,7 +23,7 @@ import javax.swing.event.ListDataListener;
 import org.jdesktop.swingx.JXMonthView;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
 public class YearCalendarView extends JPanel implements ICalendarView, ListDataListener{
 
@@ -49,7 +49,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, ListDataL
 		
 		this.add(yearView);
 		
-		EventModel.getEventModel().addListDataListener(this);
+		EventListModel.getEventListModel().addListDataListener(this);
 		UpdateYearView();
 		
 		yearView.setFlaggedDayForeground(Color.RED);
@@ -90,7 +90,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, ListDataL
 	
 	public void UpdateYearView(){
 		yearView.setFlaggedDates();
-		ListIterator<Event> event = EventModel.getEventModel().getList().listIterator();
+		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
 		while(event.hasNext()){
 			Event eve = event.next();
 			Date evedate = eve.getStartDate();

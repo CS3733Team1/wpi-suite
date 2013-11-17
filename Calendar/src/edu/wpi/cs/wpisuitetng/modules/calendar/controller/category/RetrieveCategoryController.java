@@ -6,11 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RetrieveCommitmentObserver;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -18,14 +15,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class RetrieveCategoryController implements AncestorListener, ActionListener{
 	CategoryListModel model;
 
-	public RetrieveCategoryController(MainModel model) {
-		this.model = CategoryListModel.getCategoryModel();
+	public RetrieveCategoryController() {
+		this.model = CategoryListModel.getCategoryListModel();
 	}
 
-	public void retrieveMessages(){
-		System.out.println("Retrieving commitments from server...");
+	public void retrieveMessages() {
+		System.out.println("Retrieving categories from server...");
 		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance().makeRequest("calendar/category", HttpMethod.GET); // GET == read
 		request.addObserver(new RetrieveCategoryObserver(this)); // add an observer to process the response
 		request.send(); // send the request
 	}
@@ -45,7 +42,7 @@ public class RetrieveCategoryController implements AncestorListener, ActionListe
 	}
 
 	/**
-	 * Whenever the Calendar Module Tab is viewed it will refetch Commitments from the server.
+	 * Whenever the Calendar Module Tab is viewed it will refetch Categories from the server.
 	 * This also runs on first launch.
 	 */
 	@Override

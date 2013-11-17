@@ -18,9 +18,8 @@ public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
 	
-	public Category()
-	{
-	}
+	public Category(){}
+	
 	public Category(String name, Color color) {
 		this.name = name;
 		this.color = color;

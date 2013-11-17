@@ -4,28 +4,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentObserver;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.AddCommitmentTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class AddFilterController implements ActionListener{
-	FilterModel model;
+	FilterListModel model;
 	
-	public AddFilterController(){
-		model = FilterModel.getFilterModel();
+	public AddFilterController(CalendarPanel calendarPanel){
+		model = FilterListModel.getFilterListModel();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		Filter filt = new Filter("hello",new ArrayList<Category>());
+		Filter filt = new Filter("A FILTER" , new ArrayList<Category>());
 	
 		System.out.println("Adding filter...");
 		
