@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,20 +28,33 @@ public class DatePanel extends JScrollPane implements ListDataListener{
 	
 	private boolean temp;
 	
-	public DatePanel(){
-		grid = new GridLayout(0,1);
-		eventlist = new ArrayList<JPanel>();
-		showMEdaMONEY = new JScrollPane();
-		layout = new JPanel();
+	public DatePanel(int day, Color text){
+		StringBuilder sb = new StringBuilder();
 		
-//		this.setLayout(grid);
-		layout.setLayout(grid);
-		showMEdaMONEY.setVisible(true);
-		layout.setVisible(true);
+		sb.append("");
+		sb.append(day);
 		
-		showMEdaMONEY.getViewport().add(layout);
-		showMEdaMONEY.setOpaque(false);
+		JLabel date = new JLabel(sb.toString());
+		date.setForeground(text);
+	
 		
+		this.setLayout(new BorderLayout());
+		this.add(date, BorderLayout.NORTH);
+//		grid = new GridLayout(0,1);
+//		eventlist = new ArrayList<JPanel>();
+//		showMEdaMONEY = new JScrollPane();
+//		layout = new JPanel();
+//		
+////		this.setLayout(grid);
+//		layout.setLayout(grid);
+//		showMEdaMONEY.setVisible(true);
+//		layout.setVisible(true);
+//		
+//		showMEdaMONEY.getViewport().add(layout);
+//		showMEdaMONEY.setOpaque(false);
+//		
+//		this.add(layout,BorderLayout.SOUTH);
+		this.setVisible(true);
 		//showMEdaMONEY.setViewportView(layout);
 		
 		temp = false;
