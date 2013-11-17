@@ -67,7 +67,7 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 		
 		JButton b = new JButton("Fake");
 		Dimension buttonSize = b.getPreferredSize();
-		grid1.setPreferredSize(new Dimension(600, 2000));
+		grid1.setPreferredSize(new Dimension(700, 2000));
 		grid2.setPreferredSize(new Dimension(50, 2000));
 		
 		JPanel header1 = new JPanel();
@@ -152,6 +152,7 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 		grid2.add(new JLabel("11:00 PM"));
 		grid2.add(new JLabel());
 		//grid2.add(new JLabel("11:30 PM"));
+		
 		
 		for(int i = 0; i < 48; i++) {
 			JPanel temp1 = new JPanel();
