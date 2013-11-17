@@ -11,7 +11,9 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.event;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,18 +32,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
-
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ErrorPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
-
-import java.awt.Color;
-import java.awt.Font;
 
 /**
  * This panel tab is added whenever the user wants to create a new event or edit an existing one
@@ -49,12 +45,8 @@ import java.awt.Font;
  * @version $Revision: 1.0 $
  * @author rbansal
  */
-@SuppressWarnings("serial")
-public class EventTabPanel extends JPanel implements KeyListener{
-	MainView view;
-	MainModel model;
-	
-	
+
+public class EventTabPanel extends JPanel implements KeyListener {
 	//errors thrown for improper input
 	private final String START_AFTER_END_ERROR = 	"Start date cannot be after end date.";
 	private final String INVALID_TIME_ERROR =       "Invalid time entered";
@@ -100,10 +92,7 @@ public class EventTabPanel extends JPanel implements KeyListener{
 	 * The constructor for the event panel when creating a new event.
 	 * @wbp.parser.constructor
 	 */
-	public EventTabPanel(MainView view, MainModel model) {
-		this.view=view;
-		this.model=model;
-		
+	public EventTabPanel() {
 		//this.vm = ViewMode.CREATING;
 		displayEvent = new Event();	//start by displaying an empty event
 		buildLayout();
@@ -114,10 +103,7 @@ public class EventTabPanel extends JPanel implements KeyListener{
 	 * Constructor for the iteration panel when editing an iteration
 	 * @param iter the iteration to edit.
 	 */
-	public EventTabPanel(Event event, MainView view, MainModel model) {
-		this.view=view;
-		this.model=model;
-		
+	public EventTabPanel(Event event) {		
 		//this.vm = ViewMode.EDITING;
 		displayEvent = event;
 		buildLayout();
@@ -159,7 +145,7 @@ public class EventTabPanel extends JPanel implements KeyListener{
 		buttonPanel.add(buttonCancel);
 		buttonPanel.add(errorDisplay);
 		
-		buttonAdd.addActionListener(new AddEventController(this, this.model));
+		buttonAdd.addActionListener(new AddEventController(this));
 		
 		buttonUndoChanges.addActionListener(new ActionListener(){
 			@Override
@@ -275,8 +261,8 @@ public class EventTabPanel extends JPanel implements KeyListener{
 		dataPanel.add(endTimeErrorLabel, "cell 6 4 3 1");
 	}
 	
-	public void killPanel(){
-		view.getCalendarPanel().remove(this);
+	public void killPanel() {
+		this.getParent().remove(this);
 	}
 	
 	/**

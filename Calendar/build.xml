@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project> <!-- Removes No grammer [DTD/Schema] constraints warning -->
 <project name="Calendar" default="compile.deps">
 	<import file="../build-common.xml"/>
@@ -37,8 +36,8 @@
 				debuglevel="lines,vars,source" includeantruntime="false">
 			<classpath refid="classpath"/>
 		</javac>
-		<copy todir="build/images">
-			<fileset dir="images" includes="**/*.png" />
+		<copy todir="build/images" overwrite="true">
+			<fileset dir="images" includes="*.png" />
 		</copy>
 	</target>
 

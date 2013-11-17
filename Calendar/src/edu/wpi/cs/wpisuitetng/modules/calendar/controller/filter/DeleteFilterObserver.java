@@ -1,17 +1,16 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.controller.category;
+package edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RemoveCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.DeleteCategoryController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
-public class RemoveCategoryObserver implements RequestObserver{
+public class DeleteFilterObserver implements RequestObserver{
+	private final DeleteFilterController controller;
 
-	private final RemoveCategoryController controller;
-
-	public RemoveCategoryObserver(RemoveCategoryController controller) {
+	public DeleteFilterObserver(DeleteFilterController controller) {
 		this.controller = controller;
 	}
 
@@ -27,10 +26,10 @@ public class RemoveCategoryObserver implements RequestObserver{
 		final ResponseModel response = iReq.getResponse();
 
 		// Parse the message out of the response body
-		final Category cat = Category.fromJSON(response.getBody());
+		final Filter filt = Filter.fromJSON(response.getBody());
 
 		// Pass the messages back to the controller
-		controller.removeCategoryToModel(cat);
+		controller.removeFilterToModel(filt);
 	}
 
 	@Override
