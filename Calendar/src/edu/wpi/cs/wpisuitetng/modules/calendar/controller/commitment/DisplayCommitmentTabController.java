@@ -13,23 +13,20 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.AddCommitmentTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 
-public class DisplayCommitmentController implements ActionListener{
-	MainModel model;
-	MainView view;
+public class DisplayCommitmentTabController implements ActionListener {
+	private CalendarPanel calendarPanel;
 	
-	public DisplayCommitmentController(MainView view, MainModel model){
-		this.model = model;
-		this.view = view;
+	public DisplayCommitmentTabController(CalendarPanel calendarPanel){
+		this.calendarPanel = calendarPanel;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AddCommitmentTabPanel pan = new AddCommitmentTabPanel(view, model);
-		view.getCalendarPanel().addTab("Add Commitment",pan);
-		view.getCalendarPanel().setSelectedComponent(pan);
+		CommitmentTabPanel pan = new CommitmentTabPanel();
+		calendarPanel.addTab("Add Commitment", pan);
+		calendarPanel.setSelectedComponent(pan);
 	}
 }

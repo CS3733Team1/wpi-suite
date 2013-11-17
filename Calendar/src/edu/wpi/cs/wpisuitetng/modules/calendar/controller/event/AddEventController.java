@@ -12,29 +12,27 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.AddEventTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class AddEventController implements ActionListener{
-	MainModel model;
-	AddEventTabPanel view;
+	EventTabPanel view;
+	EventListModel model;
 	
-	public AddEventController(AddEventTabPanel view, MainModel model){
-		this.model = model;
+	public AddEventController(EventTabPanel view){
+		this.model = EventListModel.getEventListModel();;
 		this.view = view;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Event eve = new Event("Hello", new Date(), new Date());
+		Event eve = view.getEvent();
 		
 		
 		System.out.println("Adding event...");
@@ -49,7 +47,7 @@ public class AddEventController implements ActionListener{
 	
 	public void addEventToModel(Event eve){
 		System.out.println("Event added.");
-		model.addEventFromCalendar(eve);
+		model.addEvent(eve);
 	}
 
 }

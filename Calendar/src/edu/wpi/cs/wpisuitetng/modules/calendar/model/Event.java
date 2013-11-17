@@ -14,8 +14,6 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 
-import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-
 
 public class Event extends DeletableAbstractModel {
 	// Required parameters
@@ -40,10 +38,7 @@ public class Event extends DeletableAbstractModel {
 	 * separate area above hours]
 	 */
 
-	public Event()
-	{
-		//huehueheuheuheuehueheuehuehuehue/EntityManager
-	}
+	public Event(){}
 	
 	public Event(String name, Date startDate, Date endDate) {
 		this.name = name;

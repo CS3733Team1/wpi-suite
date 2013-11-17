@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -24,8 +23,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -39,8 +36,7 @@ import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
 public class MonthCalendarView extends JPanel implements ICalendarView {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -482,45 +478,45 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		}
 	}
 	
-//	public void SetDate(){
-//		int setMonth;
-//		int day =0;
-//		int setYear = currentYear - 1900;
-//		
-//		if (currentMonth == 0){
-//			setMonth = 12;
-//		}
-//		else{
-//			setMonth = currentMonth-1;
-//		}
-//		
-//		for (int x = 0; x < panelList.size(); x ++){
-//			day = Integer.valueOf(dayLabel.get(x).getText());
-//			if (day == 1){
-//				if (setMonth == 12){
-//					setMonth = 1;
-//					setYear++;
-//				}
-//				else{
-//					setMonth++;
-//				}
-//			}
-//			panelList.get(x).setDate(new Date(setYear, setMonth, day));
-//			EventModel.getEventModel().addListDataListener(panelList.get(x));
-//		}
-//	}
-//	
-//	public void removeListeners(){
-//		for (int x = 0;x < panelList.size(); x++){
-//			EventModel.getEventModel().removeListDataListener(panelList.get(x));
-//		}
-//	}
-//
-//	public void updatePanels(){
-//		for (int x = 0;x < panelList.size(); x++){
-//			panelList.get(x).updatePanel();
-//		}
-//	}
+	public void SetDate(){
+		int setMonth;
+		int day =0;
+		int setYear = currentYear - 1900;
+		
+		if (currentMonth == 0){
+			setMonth = 12;
+		}
+		else{
+			setMonth = currentMonth-1;
+		}
+		
+		for (int x = 0; x < panelList.size(); x ++){
+			day = Integer.valueOf(dayLabel.get(x).getText());
+			if (day == 1){
+				if (setMonth == 12){
+					setMonth = 1;
+					setYear++;
+				}
+				else{
+					setMonth++;
+				}
+			}
+			panelList.get(x).setDate(new Date(setYear, setMonth, day));
+			EventListModel.getEventListModel().addListDataListener(panelList.get(x));
+		}
+	}
+	
+	public void removeListeners(){
+		for (int x = 0;x < panelList.size(); x++){
+			EventListModel.getEventListModel().removeListDataListener(panelList.get(x));
+		}
+	}
+
+	public void updatePanels(){
+		for (int x = 0;x < panelList.size(); x++){
+			panelList.get(x).updatePanel();
+		}
+	}
 	
 	@Override
 	public String getTitle() {

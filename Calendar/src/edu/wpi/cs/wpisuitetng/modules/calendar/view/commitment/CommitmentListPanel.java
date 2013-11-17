@@ -20,16 +20,19 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 //import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 
 public class CommitmentListPanel extends JPanel {
 
+	private CommitmentListModel model;
 	private JList commitmentList;
 	
-	public CommitmentListPanel(CommitmentModel commitmentModel) {
+	public CommitmentListPanel() {
+		this.model = CommitmentListModel.getCommitmentListModel();
+		
 		this.setLayout(new BorderLayout());
 		
-		commitmentList = new JList<Object>(commitmentModel);
+		commitmentList = new JList<Object>(model);
 		
 		commitmentList.setCellRenderer(new CommitmentListCellRenderer());
 		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);

@@ -30,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.ProjectManager;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.UserManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -79,9 +80,10 @@ public class ManagerLayer {
 				new RequirementEntityManager(data));
 		map.put("requirementmanager" + "iteration", new IterationEntityManager(
 				data));
-		map.put("calendar"+"commitment",CommitmentEntityManager.getCommitmentEntityManager(data));
-		map.put("calendar"+"event",EventEntityManager.getEventEntityManager(data));
+		map.put("calendar"+"commitment", CommitmentEntityManager.getCommitmentEntityManager(data));
+		map.put("calendar"+"event", EventEntityManager.getEventEntityManager(data));
 		map.put("calendar"+"category", CategoryEntityManager.getCategoryEntityManager(data));
+		map.put("calendar"+"filter", FilterEntityManager.getFilterEntityManager(data));
 		// add just your module to this list
 		String[] fullModuleList = { "core", "defecttracker", "postboard",
 				"requirementmanager", "calendar" };

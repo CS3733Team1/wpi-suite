@@ -61,10 +61,10 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		
 		if (newMessage.isMarkedForDeletion())
 		{
+			newMessage.unmarkForDeletion();
 			deleteCategory(newMessage);
 			return newMessage;
 		}
-		System.out.println("spooky copyright ghosts");
 		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to

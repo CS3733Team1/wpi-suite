@@ -22,11 +22,11 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * @author Chris Casola
  *
  */
-public class RemoveEventObserver implements RequestObserver {
+public class DeleteEventObserver implements RequestObserver {
 	
-	private final RemoveEventController controller;
+	private final DeleteEventController controller;
 	
-	public RemoveEventObserver(RemoveEventController controller) {
+	public DeleteEventObserver(DeleteEventController controller) {
 		this.controller = controller;
 	}
 	

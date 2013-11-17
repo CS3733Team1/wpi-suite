@@ -10,21 +10,30 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.SpringLayout;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 
 
 public class DayCalendarView extends JPanel implements ICalendarView {
@@ -35,9 +44,8 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 	private ArrayList<JPanel> panelList = new ArrayList<JPanel>();
 	private ArrayList<JLabel> nameLabelList = new ArrayList<JLabel>();
 	private ArrayList<JPanel> nameList = new ArrayList<JPanel>();
-	private ArrayList<GridBagConstraints> nameGridBagList = new ArrayList<GridBagConstraints>();
-	private ArrayList<GridBagConstraints> gridBagList = new ArrayList<GridBagConstraints>();
-	private JPanel panel = new JPanel();
+	private GridLayout gLay = new GridLayout(48, 1, 5, 5);
+	private JPanel contentPane = new JPanel();
 
 	private Calendar mycal;
 	private int currentMonth;
@@ -46,8 +54,23 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 	private int currentYear;
 
 	public DayCalendarView() {
+		contentPane.setLayout(gLay);
 		
-		int gridWidth = 110;
+		JButton b = new JButton("Fake");
+		Dimension buttonSize = b.getPreferredSize();
+		contentPane.setPreferredSize(new Dimension(200, 1000));
+		
+		for(int i = 0; i < 97; i++) {
+			JPanel temp = new JPanel();
+			temp.setBackground(Color.white);
+			contentPane.add(temp);
+		}
+		
+		contentPane.setVisible(true);
+		
+		this.add(contentPane);
+		
+		/*int gridWidth = 110;
 		int gridHeight = 100;
 		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
@@ -70,7 +93,7 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 //		addDays(mycal);
 		panel.setVisible(true);
 		// TODO Auto-generated constructor stub
-	}
+*/	}
 	public void addHourLabels()
 	{
 		ArrayList<String> hours = new ArrayList<String>();
@@ -108,7 +131,7 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 		dayGridBagConstraint.weighty = 1;
 		dayGridBagConstraint.gridx = 1;
 		dayGridBagConstraint.gridy = 0;
-		panel.add(dayPanelLabel,dayGridBagConstraint);
+		contentPane.add(dayPanelLabel,dayGridBagConstraint);
 		dayPanelLabel.add(dayJLabel);
 		
 	}

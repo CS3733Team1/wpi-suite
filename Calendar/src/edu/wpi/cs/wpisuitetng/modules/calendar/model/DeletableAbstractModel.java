@@ -10,8 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import java.util.Date;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 public abstract class DeletableAbstractModel extends AbstractModel{
@@ -22,6 +20,12 @@ public abstract class DeletableAbstractModel extends AbstractModel{
 	{
 		return this.MarkedForDeletion;
 	}
+	
+	public void unmarkForDeletion()
+	{
+		this.MarkedForDeletion = false;
+	}
+	
 	public void markForDeletion()
 	{
 		this.MarkedForDeletion = true;

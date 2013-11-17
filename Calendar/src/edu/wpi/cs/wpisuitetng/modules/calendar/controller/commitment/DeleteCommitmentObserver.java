@@ -22,11 +22,11 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * @author Chris Casola
  *
  */
-public class RemoveCommitmentObserver implements RequestObserver {
+public class DeleteCommitmentObserver implements RequestObserver {
 
-	private final RemoveCommitmentController controller;
+	private final DeleteCommitmentController controller;
 
-	public RemoveCommitmentObserver(RemoveCommitmentController controller) {
+	public DeleteCommitmentObserver(DeleteCommitmentController controller) {
 		this.controller = controller;
 	}
 
@@ -45,7 +45,7 @@ public class RemoveCommitmentObserver implements RequestObserver {
 		final Commitment commit = Commitment.fromJSON(response.getBody());
 
 		// Pass the messages back to the controller
-		controller.removeCommitmentToModel(commit);
+		controller.removeCommitmentFromModel(commit);
 	}
 
 	@Override

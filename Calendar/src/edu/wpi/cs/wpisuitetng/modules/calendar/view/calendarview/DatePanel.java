@@ -17,7 +17,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
 public class DatePanel extends JScrollPane implements ListDataListener{
 	private Date paneldate;
@@ -106,7 +106,7 @@ public class DatePanel extends JScrollPane implements ListDataListener{
 	
 	public void updatePanel(){
 		removeEventPanel();
-		ListIterator<Event> event = EventModel.getEventModel().getList().listIterator();
+		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
 		while(event.hasNext()){
 			Event eve = event.next();
 			Date evedate = eve.getStartDate();

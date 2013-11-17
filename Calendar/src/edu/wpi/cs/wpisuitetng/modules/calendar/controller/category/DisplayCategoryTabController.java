@@ -8,14 +8,13 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
+package edu.wpi.cs.wpisuitetng.modules.calendar.controller.category;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.AddEventTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 
 /**
  * This Controller is based largely off of DisplayCommitmentController 
@@ -24,20 +23,18 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.AddEventTabPanel;
  * @author rbansal
  */
 
-public class DisplayEventController implements ActionListener{
-	MainModel model;
-	MainView view;
+public class DisplayCategoryTabController implements ActionListener {
+	CalendarPanel calendarPanel;
 	
-	public DisplayEventController(MainView view, MainModel model){
-		this.model = model;
-		this.view = view;
+	public DisplayCategoryTabController(CalendarPanel calendarPanel) {
+		this.calendarPanel = calendarPanel;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AddEventTabPanel pan = new AddEventTabPanel(view, model);
-		view.getCalendarPanel().addTab("Add Event",pan);
-		view.getCalendarPanel().setSelectedComponent(pan);
+		CategoryTabPanel pan = new CategoryTabPanel();
+		calendarPanel.addTab("Categories", pan);
+		calendarPanel.setSelectedComponent(pan);
 	}
 	
 

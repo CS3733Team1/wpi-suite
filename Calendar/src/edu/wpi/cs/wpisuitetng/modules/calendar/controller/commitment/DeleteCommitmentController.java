@@ -14,20 +14,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class RemoveCommitmentController implements ActionListener{
-	MainModel model;
-	MainView view;
+public class DeleteCommitmentController implements ActionListener{
+	private CommitmentListModel model;
+	private CalendarPanel calendarPanel;
 	
-	public RemoveCommitmentController(MainView view, MainModel model){
-		this.model = model;
-		this.view = view;
+	public DeleteCommitmentController(CalendarPanel calendarPanel){
+		this.model = CommitmentListModel.getCommitmentListModel();
+		this.calendarPanel = calendarPanel;
 	}
 	
 	/**
@@ -36,39 +35,36 @@ public class RemoveCommitmentController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		System.out.println("Attempt Delete 2");
+		System.out.println("Called Delete Commitments...");
 		
-		int[] index = view.getCalendarPanel().getSelectedCommitmentsInList().getSelectedIndices();
+		int[] index = calendarPanel.getSelectedCommitmentsInList().getSelectedIndices();
 		
-		if(index.length == 0)
-		{
-			System.out.println("YA DUN GOOFED");
+		if(index.length == 0) {
+			System.out.println("Selected Commitments to delete is 0!");
 			return;
 		}
 		
 		for (int x = index.length-1; x >= 0; x--){
 			System.out.println("index: " + index[x]);
 
-			Commitment commit = (Commitment) model.getCommitmentModel().getElement(index[x]);
-			//remove this later
+			Commitment commit = (Commitment) model.getElement(index[x]);
 			
 			commit.markForDeletion();
-			
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
 			final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
 			request.setBody(commit.toJSON()); // put the new message in the body of the request
-			request.addObserver(new RemoveCommitmentObserver(this)); // add an observer to process the response
+			//System.out.println("controller: sending this for deletion: " + commit.toJSON());
+			request.addObserver(new DeleteCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
 		
-		view.getCalendarPanel().refreshSelectedPanel();
+		calendarPanel.refreshSelectedPanel();
 		
 	}
 	
-	public void removeCommitmentToModel(Commitment commit){
-		System.out.println("Deleting");
+	public void removeCommitmentFromModel(Commitment commit){
+		System.out.println("Deleting Commitment");
 		model.removeCommitment(commit);
 	}
-
 }
