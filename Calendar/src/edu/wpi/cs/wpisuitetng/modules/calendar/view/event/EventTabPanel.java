@@ -409,7 +409,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener{
 				endTimeErrorLabel.setText(START_AFTER_END_ERROR);
 				enableAdd = false;
 			}
-			else if(startTimeDayNightComboBox.getSelectedItem() == startTimeDayNightComboBox.getSelectedItem())
+			else if(startTimeDayNightComboBox.getSelectedItem() == endTimeDayNightComboBox.getSelectedItem())
 			{
 				if(startHours > endHours)
 				{
