@@ -19,7 +19,7 @@ import javax.swing.event.ListDataListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
-public class DatePanel extends JScrollPane implements ListDataListener{
+public class DatePanel extends JPanel implements ListDataListener{
 	private Date paneldate;
 	private ArrayList<JPanel> eventlist;
 	private JScrollPane showMEdaMONEY;
@@ -28,18 +28,18 @@ public class DatePanel extends JScrollPane implements ListDataListener{
 	
 	private boolean temp;
 	
-	public DatePanel(int day, Color text){
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append("");
-		sb.append(day);
-		
-		JLabel date = new JLabel(sb.toString());
-		date.setForeground(text);
+	public DatePanel(){
+//		StringBuilder sb = new StringBuilder();
+//		
+//		sb.append("");
+//		sb.append(day);
+//		
+//		JLabel date = new JLabel(sb.toString());
+//		date.setForeground(text);
 	
 		
 		this.setLayout(new BorderLayout());
-		this.add(date, BorderLayout.NORTH);
+//		this.add(date, BorderLayout.NORTH);
 //		grid = new GridLayout(0,1);
 //		eventlist = new ArrayList<JPanel>();
 //		showMEdaMONEY = new JScrollPane();
