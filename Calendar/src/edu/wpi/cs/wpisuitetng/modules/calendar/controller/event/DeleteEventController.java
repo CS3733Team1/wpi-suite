@@ -14,58 +14,53 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventEntityManager;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class RemoveEventController implements ActionListener{
-	MainModel model;
-	MainView view;
+public class DeleteEventController implements ActionListener {
+	EventListModel model;
+	CalendarPanel calendarPanel;
 	
-	public RemoveEventController(MainView view, MainModel model){
-		this.model = model;
-		this.view = view;
+	public DeleteEventController(CalendarPanel calendarPanel){
+		this.model = EventListModel.getEventListModel();
+		this.calendarPanel = calendarPanel;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		int[] index = view.getCalendarPanel().getSelectedEventsInList().getSelectedIndices();
+		int[] index = calendarPanel.getSelectedEventsInList().getSelectedIndices();
 		
-		if(index.length == 0)
-		{
-			System.out.println("YA DUN GOOFED");
+		if(index.length == 0) {
+			System.out.println("Selected Events to delete is 0!");
 			return;
 		}
 		
 		for (int x = index.length-1; x >= 0; x--){
 			System.out.println("index: " + index[x]);
 
-			Event event = (Event) model.getEventModel().getElement(index[x]);
+			Event event = (Event) model.getElement(index[x]);
 			//remove this later
 			
 			event.markForDeletion();
-			
-			//System.out.println(EventEntityManager.DELETESYMBOL);
 			
 			model.removeEvent(event);
 			// Send a request to the core to save this message 
 			final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT); // PUT == create
 			request.setBody(event.toJSON()); // put the new message in the body of the request
-			request.addObserver(new RemoveEventObserver(this)); // add an observer to process the response
+			request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
 		
-		view.getCalendarPanel().refreshSelectedPanel();
+		calendarPanel.refreshSelectedPanel();
 		
 	}
 	
 	public void removeEventToModel(Event eve){
-		System.out.println("Deleting");
+		System.out.println("Deleting Event");
 		model.removeEvent(eve);
 	}
-
 }

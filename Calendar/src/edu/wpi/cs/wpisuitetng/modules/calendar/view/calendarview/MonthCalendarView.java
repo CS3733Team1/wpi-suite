@@ -12,28 +12,20 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
 public class MonthCalendarView extends JPanel implements ICalendarView {
 	public static final String[] weekNames = {"Saturday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -559,13 +551,13 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 				}
 			}
 			panelList.get(x).setDate(new Date(setYear, setMonth, day));
-			EventModel.getEventModel().addListDataListener(panelList.get(x));
+			EventListModel.getEventListModel().addListDataListener(panelList.get(x));
 		}
 	}
 	
 	public void removeListeners(){
 		for (int x = 0;x < panelList.size(); x++){
-			EventModel.getEventModel().removeListDataListener(panelList.get(x));
+			EventListModel.getEventListModel().removeListDataListener(panelList.get(x));
 		}
 	}
 

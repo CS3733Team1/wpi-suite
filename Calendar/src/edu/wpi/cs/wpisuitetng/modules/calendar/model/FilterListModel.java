@@ -1,8 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
 import javax.swing.AbstractListModel;
 
 /**
@@ -14,9 +14,9 @@ import javax.swing.AbstractListModel;
  * 
  */
 
-public class FilterModel extends AbstractListModel<Object>
+public class FilterListModel extends AbstractListModel<Object>
 {
-	private static FilterModel filterModel;
+	private static FilterListModel filterListModel;
 	
 	/** The list of filter */
 	private List<Filter> filters;
@@ -28,16 +28,16 @@ public class FilterModel extends AbstractListModel<Object>
 	private Filter activeCommitmentFilter;
 	
 	
-	private FilterModel() 
+	private FilterListModel() 
 	{
 		this.filters = new ArrayList<Filter>();
 	}
 	
-	static public FilterModel getFilterModel() 
+	static public FilterListModel getFilterListModel() 
 	{
-		if (filterModel == null)
-			filterModel = new FilterModel();
-		return filterModel;
+		if (filterListModel == null)
+			filterListModel = new FilterListModel();
+		return filterListModel;
 	}
 	
 	public void createFilter(String name, ArrayList<Category> categories)
@@ -57,7 +57,7 @@ public class FilterModel extends AbstractListModel<Object>
 	
 	public ArrayList<Event> applyEventFilter()
 	{
-		List<Event> eventList = EventModel.getEventModel().getList();
+		List<Event> eventList = EventListModel.getEventListModel().getList();
 		Event[] eventArray = eventList.toArray(new Event[eventList.size()]);
 		
 		return this.activeEventFilter.apply(eventArray);
@@ -65,7 +65,7 @@ public class FilterModel extends AbstractListModel<Object>
 	
 	public ArrayList<Event> applyFilter()
 	{
-		List<Event> eventList = EventModel.getEventModel().getList();
+		List<Event> eventList = EventListModel.getEventListModel().getList();
 		Event[] eventArray = eventList.toArray(new Event[eventList.size()]);
 		
 		return this.activeEventFilter.apply(eventArray);
@@ -82,11 +82,9 @@ public class FilterModel extends AbstractListModel<Object>
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-}//end class
-	
 
-	/**
-	 * Constructs a new calendar with no commitments.
-	 */
-	
+	public void setFilters(Filter[] fil) {
+		// TODO Auto-generated method stub
+		
+	}
+}

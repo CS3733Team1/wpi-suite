@@ -11,56 +11,43 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CalendarObjectModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-
 public class CalendarPanel extends JTabbedPane {
-
-	private ArrayList<JPanel> p;
-	private JList<Object> commitments;
-	private MainModel model;
-
 	private CalendarTabPanel teamCalendarPanel;
 	private CalendarTabPanel personalCalendarPanel;
 
-	public CalendarPanel(MainModel model) {
-
-		this.model = model;
-		// Initially Empty
+	public CalendarPanel() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
 
 	// Create TeamCalendar
-	public void createTeamCalendar(CalendarObjectModel c) {
-		teamCalendarPanel = new CalendarTabPanel(model);
+	public void createTeamCalendar() {
+		teamCalendarPanel = new CalendarTabPanel();
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
 			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/team_calendar.png")));
 		} catch (IOException e) {}
 
-		this.addTab(c.getTitle(), calIcon, teamCalendarPanel, "Team Calendar");
+		this.addTab("Team Calendar", calIcon, teamCalendarPanel, "Team Calendar");
 	}
 	
 
 	// Create PersonalCalendar
-	public void createPersonalCalendar(CalendarObjectModel c) {
-		personalCalendarPanel = new CalendarTabPanel(model);
+	public void createPersonalCalendar() {
+		personalCalendarPanel = new CalendarTabPanel();
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
 			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/personal_calendar.png")));
 		} catch (IOException e) {}
 
-		this.addTab(c.getTitle(), calIcon, personalCalendarPanel, "Personal Calendar");
+		this.addTab("Personal Calendar", calIcon, personalCalendarPanel, "Personal Calendar");
 	}
 
 	public CalendarTabPanel getCurrentPanel(){

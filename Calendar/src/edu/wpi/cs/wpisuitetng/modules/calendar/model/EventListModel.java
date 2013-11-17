@@ -16,7 +16,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-public class EventModel extends AbstractListModel<Object> { 
+public class EventListModel extends AbstractListModel<Object> { 
 
 	/**
 	 * This is a model for events. It contains all of the events to be
@@ -27,7 +27,7 @@ public class EventModel extends AbstractListModel<Object> {
 	 * 
 	 */
 
-	private static EventModel eventModel;
+	private static EventListModel eventModel;
 
 	/** The list of events on the calendar */
 	private List<Event> events;
@@ -35,14 +35,14 @@ public class EventModel extends AbstractListModel<Object> {
 	/**
 	 * Constructs a new calendar with no events.
 	 */
-	private EventModel() {
+	private EventListModel() {
 		events = new ArrayList<Event>();
 	}
 
-	public static EventModel getEventModel()
+	public static EventListModel getEventListModel()
 	{
 		if( eventModel == null)
-			eventModel = new EventModel();
+			eventModel = new EventListModel();
 		return eventModel;
 	}
 
@@ -138,7 +138,7 @@ public class EventModel extends AbstractListModel<Object> {
 
 	public List<Event> getList(){
 		List<Event> rtnEventList = new ArrayList<Event>();
-		rtnEventList.addAll(getEventModel().events);
+		rtnEventList.addAll(getEventListModel().events);
 		return rtnEventList;
 	}
 }
