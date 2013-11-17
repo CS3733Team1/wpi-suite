@@ -140,20 +140,20 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 *  the return value decides if this commitment begins before, after,
 	 *  or at the same time.
 	 *  
-	 *  @return Returns 1 if this commitment begins after the given commitment
+	 *  @return Returns -1 if this commitment begins after the given commitment
 	 *          Returns 0 if the commitments begin at the same time.
-	 *          Returns -1 if this commitment begins before the given commitment
+	 *          Returns 1 if this commitment begins before the given commitment
 	 */
 	@Override
 	public int compareTo(Commitment commitment) 
 	{
 		if (this.dueDate.after(commitment.getDueDate()) == true)
 		{
-			return 1;
+			return -1;
 		}//end if
 		else if (this.dueDate.before(commitment.getDueDate()) == true)
 		{
-			return -1;
+			return 1;
 		}//end else if
 		else 
 		{

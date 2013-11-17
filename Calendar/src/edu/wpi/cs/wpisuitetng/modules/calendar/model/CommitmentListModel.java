@@ -59,7 +59,7 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 		System.out.println("Hello?");
 
 		// Notify the model that it has changed so the GUI will be udpated
-		//this.fireIntervalAdded(this, 0, 0);
+		this.fireIntervalAdded(this, 0, 0);
 		this.fireContentsChanged(this, 0, commitments.size()-1);
 	}
 
