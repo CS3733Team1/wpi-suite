@@ -40,8 +40,6 @@ import com.toedter.calendar.JCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
 
 /**
@@ -50,11 +48,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
  * @version $Revision: 1.0 $
  * @author djfitzgerald
  */
-public class AddCommitmentTabPanel extends JPanel  implements KeyListener, MouseListener {
-	MainView view;
-	MainModel model;
-	
-	
+public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseListener {	
 	//errors thrown for improper input
 	private final String START_AFTER_END_ERROR = 	"Start date cannot be after end date.";
 	private final String INVALID_NAME_ERROR = 		"Iteration exists with given name.";
@@ -93,10 +87,7 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 	/**
 	 * The constructor for the commitment panel when creating a new commitment.
 	 */
-	public AddCommitmentTabPanel(MainView view, MainModel model) {
-		this.view=view;
-		this.model=model;
-		
+	public CommitmentTabPanel() {
 		//this.vm = ViewMode.CREATING;
 		displayCommitment = new Commitment();	//start by displaying an empy commitment
 		buildLayout();
@@ -107,10 +98,7 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 	 * Constructor for the iteration panel when editing an iteration
 	 * @param iter the iteration to edit.
 	 */
-	public AddCommitmentTabPanel(Commitment commitment, MainView view, MainModel model) {
-		this.view=view;
-		this.model=model;
-		
+	public CommitmentTabPanel(Commitment commitment) {
 		//this.vm = ViewMode.EDITING;
 		displayCommitment = commitment;
 		buildLayout();
@@ -149,7 +137,7 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 		buttonPanel.add(buttonCancel);
 		
 		//Action Listener for Add Commitment Button
-		buttonAdd.addActionListener(new AddCommitmentController(this, this.model));
+		buttonAdd.addActionListener(new AddCommitmentController(this));
 
 		//Action Listener for Undo Changes Button
 		buttonUndoChanges.addActionListener(new ActionListener(){
@@ -241,7 +229,7 @@ public class AddCommitmentTabPanel extends JPanel  implements KeyListener, Mouse
 	
 	// Kills the current tab
 	public void killPanel(){
-		view.getCalendarPanel().remove(this);
+		this.getParent().remove(this);
 	}
 	
 	/**

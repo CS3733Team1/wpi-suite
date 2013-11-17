@@ -16,7 +16,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-public class CommitmentModel extends AbstractListModel<Object> { 
+public class CommitmentListModel extends AbstractListModel<Object> { 
 
 	/**
 	 * This is a model for the commitment list. It contains all of the commitments to be
@@ -27,7 +27,7 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	 * 
 	 */
 
-	private static CommitmentModel commitmentModel;
+	private static CommitmentListModel commitmentListModel;
 
 	/** The list of commitments on the calendar */
 	private List<Commitment> commitments;
@@ -35,14 +35,14 @@ public class CommitmentModel extends AbstractListModel<Object> {
 	/**
 	 * Constructs a new calendar with no commitments.
 	 */
-	private CommitmentModel() {
+	private CommitmentListModel() {
 		commitments = new ArrayList<Commitment>();
 	}
 
-	static public CommitmentModel getCommitmentModel() {
-		if (commitmentModel == null)
-			commitmentModel = new CommitmentModel();
-		return commitmentModel;
+	static public CommitmentListModel getCommitmentListModel() {
+		if (commitmentListModel == null)
+			commitmentListModel = new CommitmentListModel();
+		return commitmentListModel;
 	}
 	/**
 	 * Adds the given commitment to the calendar
@@ -136,7 +136,7 @@ public class CommitmentModel extends AbstractListModel<Object> {
 
 	static public List<Commitment> getList(){
 		List<Commitment> rtnCommitmentList = new ArrayList<Commitment>();
-		rtnCommitmentList.addAll(getCommitmentModel().commitments);
+		rtnCommitmentList.addAll(getCommitmentListModel().commitments);
 		return rtnCommitmentList;
 	}
 }

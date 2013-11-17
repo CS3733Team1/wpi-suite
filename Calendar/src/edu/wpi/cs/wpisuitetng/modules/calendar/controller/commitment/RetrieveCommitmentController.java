@@ -10,11 +10,14 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -27,11 +30,11 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @author Chris Casola
  *
  */
-public class RetrieveCommitmentController implements AncestorListener {
-	MainModel model;
+public class RetrieveCommitmentController implements AncestorListener, ActionListener {
+	CommitmentListModel model;
 
-	public RetrieveCommitmentController(MainModel model) {
-		this.model = model;
+	public RetrieveCommitmentController() {
+		this.model = CommitmentListModel.getCommitmentListModel();
 	}
 
 	public void retrieveMessages(){
@@ -52,7 +55,7 @@ public class RetrieveCommitmentController implements AncestorListener {
 		// Make sure the response was not null
 		if (commitments != null) {
 			// set the messages to the local model
-			model.getCommitmentModel().setCommitments(commitments);
+			model.setCommitments(commitments);
 		}
 	}
 
@@ -70,4 +73,9 @@ public class RetrieveCommitmentController implements AncestorListener {
 
 	@Override
 	public void ancestorRemoved(AncestorEvent e) {}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		this.retrieveMessages();
+	}
 }

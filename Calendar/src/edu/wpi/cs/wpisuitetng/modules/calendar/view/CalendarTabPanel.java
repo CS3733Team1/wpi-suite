@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.io.IOException;
 
@@ -30,7 +29,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayDa
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayMonthViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWeekViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.MainModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
@@ -39,9 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarVie
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
 
-public class CalendarTabPanel extends JPanel{
-	private MainModel model;
-
+public class CalendarTabPanel extends JPanel {
 	private JButton prevButton, homeButton, nextButton;
 	private JButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
 
@@ -60,9 +56,7 @@ public class CalendarTabPanel extends JPanel{
 
 	private JLabel calendarViewTitleLabel;
 
-	public CalendarTabPanel(MainModel model){
-		this.model = model;
-
+	public CalendarTabPanel() {
 		this.setLayout(new BorderLayout());
 
 		try {
@@ -122,8 +116,8 @@ public class CalendarTabPanel extends JPanel{
 
 		add(calendarViewPanel, BorderLayout.CENTER);
 
-		commitmentListPanel = new CommitmentListPanel(model.getCommitmentModel());
-		eventListPanel = new EventListPanel(model.getEventModel());
+		commitmentListPanel = new CommitmentListPanel();
+		eventListPanel = new EventListPanel();
 
 //		add(eventListPanel, BorderLayout.WEST);
 		add(commitmentListPanel, BorderLayout.EAST);

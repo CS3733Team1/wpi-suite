@@ -57,6 +57,7 @@ public class EventEntityManager implements EntityManager<Event> {
 		final Event newMessage = Event.fromJSON(content);
 
 		if (newMessage.isMarkedForDeletion()){
+			newMessage.unmarkForDeletion();
 			deleteEvent(newMessage);
 			return newMessage;
 		}
