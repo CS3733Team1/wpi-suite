@@ -22,9 +22,9 @@ public class DeleteFilterController implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		//TODO: make this work once the view exists
 		System.out.println("Attempt Delete 2");
-		Filter fil;
+		Filter filt;
 
 		//System.out.println("controller: marking for deletion");
 		//filt.markForDeletion();
@@ -40,5 +40,6 @@ public class DeleteFilterController implements ActionListener{
 	
 	public void removeFilterToModel(Filter filt){
 		System.out.println("Deleting");
+		model.removeFilter(filt);
 	}
 }

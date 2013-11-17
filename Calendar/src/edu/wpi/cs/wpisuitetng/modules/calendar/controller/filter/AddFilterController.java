@@ -36,5 +36,6 @@ public class AddFilterController implements ActionListener{
 	
 	public void addFilterToModel(Filter filt){
 		System.out.println("Filter added.");
+		model.addFilter(filt);
 	}
 }
