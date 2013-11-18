@@ -31,20 +31,7 @@ public class DeleteEventController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		int[] index = calendarPanel.getSelectedEventsInList().getSelectedIndices();
-		
-		if(index.length == 0) {
-			System.out.println("Selected Events to delete is 0!");
-			return;
-		}
-		
-		for (int x = index.length-1; x >= 0; x--){
-			System.out.println("index: " + index[x]);
-
-			Event event = (Event) model.getElement(index[x]);
-			//remove this later
-			
+		for (Event event: calendarPanel.getCalendarTabPanel().getSelectedEventList()) {
 			event.markForDeletion();
 			
 			model.removeEvent(event);
@@ -56,7 +43,6 @@ public class DeleteEventController implements ActionListener {
 		}
 		
 		calendarPanel.refreshSelectedPanel();
-		
 	}
 	
 	public void removeEventToModel(Event eve){

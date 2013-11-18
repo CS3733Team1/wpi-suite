@@ -15,12 +15,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Insets;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
@@ -31,6 +31,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayDa
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayMonthViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWeekViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
@@ -148,17 +150,17 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewPanel.repaint();
 	}
 
-	public JList<Object> getCommitmentJList(){
-		return commitmentListPanel.getCommitmentList();
-	}
-
 	public void resetSelection() {
 		commitmentListPanel.getCommitmentList().clearSelection();
 		eventListPanel.getEventList().clearSelection();
 	}
+	
+	public List<Commitment> getSelectedCommitmentList(){
+		return commitmentListPanel.getCommitmentList().getSelectedValuesList();
+	}
 
-	public JList<Object> getEventJList(){
-		return eventListPanel.getEventList();
+	public List<Event> getSelectedEventList(){
+		return eventListPanel.getEventList().getSelectedValuesList();
 	}
 
 	public void setCalendarViewTitle(String title) {

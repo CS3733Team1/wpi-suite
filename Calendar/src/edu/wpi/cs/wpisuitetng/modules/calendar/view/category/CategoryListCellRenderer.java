@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -24,7 +24,7 @@ import javax.swing.border.LineBorder;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 
-public class CommitmentListCellRenderer extends JPanel implements ListCellRenderer<Commitment> {
+public class CategoryListCellRenderer extends JPanel implements ListCellRenderer<Commitment> {
 
 	private JLabel commitmentName;
 	private JLabel dueDate;
@@ -32,7 +32,7 @@ public class CommitmentListCellRenderer extends JPanel implements ListCellRender
 	
 	private static final String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
-	public CommitmentListCellRenderer() {
+	public CategoryListCellRenderer() {
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		commitmentName = new JLabel();
 		dueDate = new JLabel();

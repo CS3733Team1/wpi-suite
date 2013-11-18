@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -23,19 +23,19 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 //import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 
-public class CommitmentListPanel extends JPanel {
+public class CategoryListPanel extends JPanel {
 
 	private CommitmentListModel model;
 	private JList<Commitment> commitmentList;
 	
-	public CommitmentListPanel() {
+	public CategoryListPanel() {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		
 		this.setLayout(new BorderLayout());
 		
 		commitmentList = new JList<Commitment>(model);
 		
-		commitmentList.setCellRenderer(new CommitmentListCellRenderer());
+		commitmentList.setCellRenderer(new CategoryListCellRenderer());
 		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		commitmentList.setLayoutOrientation(JList.VERTICAL);

@@ -37,18 +37,7 @@ public class DeleteCommitmentController implements ActionListener{
 		
 		System.out.println("Called Delete Commitments...");
 		
-		int[] index = calendarPanel.getSelectedCommitmentsInList().getSelectedIndices();
-		
-		if(index.length == 0) {
-			System.out.println("Selected Commitments to delete is 0!");
-			return;
-		}
-		
-		for (int x = index.length-1; x >= 0; x--){
-			System.out.println("index: " + index[x]);
-
-			Commitment commit = (Commitment) model.getElement(index[x]);
-			
+		for (Commitment commit: calendarPanel.getCalendarTabPanel().getSelectedCommitmentList()) {
 			commit.markForDeletion();
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
