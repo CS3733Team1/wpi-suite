@@ -131,7 +131,12 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 	
 	@Override
 	public String getTitle() {
-		return monthNames[currentMonth] + " "+ currentDate + " - " + (currentDate+7) + ", " + currentYear;
+		Date datdate = new Date(currentYear-1900, currentMonth, currentDate+6);
+		int nextyear = datdate.getYear() + 1900;
+		int nextmonth = datdate.getMonth();
+		int nextdate = datdate.getDate();
+		
+		return monthNames[currentMonth] + " "+ currentDate + ", " + currentYear + " - " + monthNames[nextmonth] + " "+ nextdate + ", " + nextyear;
 	}
 
 	public void ClearEvents(){
@@ -165,6 +170,12 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		currentMonth = today.getMonth();
 		currentYear = today.getYear() + 1900;
 		
+		this.removeAll();
+		nameList = new ArrayList<DatePanel>();
+		paneltracker = new HashMap<Date, DatePanel>();
+		hourlist = new ArrayList<JPanel>();
+		fillDayView();
+		
 		ChangeTheWorld();
 	}
 
@@ -176,6 +187,12 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		currentMonth = today.getMonth();
 		currentYear = today.getYear() + 1900;
 		
+		this.removeAll();
+		nameList = new ArrayList<DatePanel>();
+		paneltracker = new HashMap<Date, DatePanel>();
+		hourlist = new ArrayList<JPanel>();
+		fillDayView();
+		
 		ChangeTheWorld();
 	}
 
@@ -186,6 +203,12 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		currentDate = today.getDate() - correctday;
 		currentMonth = today.getMonth();
 		currentYear = today.getYear() + 1900;
+		
+		this.removeAll();
+		nameList = new ArrayList<DatePanel>();
+		paneltracker = new HashMap<Date, DatePanel>();
+		hourlist = new ArrayList<JPanel>();
+		fillDayView();
 		
 		ChangeTheWorld();
 	}
