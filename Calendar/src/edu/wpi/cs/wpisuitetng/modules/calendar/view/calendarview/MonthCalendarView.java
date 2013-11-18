@@ -48,7 +48,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	private ArrayList<JLabel> nameLabelList = new ArrayList<JLabel>();
 	private ArrayList<DatePanel> nameList = new ArrayList<DatePanel>();
 	
-	private HashMap<Integer, DatePanel> paneltracker;
+	private HashMap<Date, DatePanel> paneltracker;
 
 	private Calendar mycal;
 	private int currentMonth;
@@ -61,7 +61,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	 * Create the frame.
 	 */
 	public MonthCalendarView() {
-		paneltracker = new HashMap<Integer, DatePanel>();
+		paneltracker = new HashMap<Date, DatePanel>();
 		
 		Date today = new Date();
 		
@@ -404,9 +404,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 					setMonth++;
 				}
 			}
-			nameList.get(x+7).setDate(new Date(setYear, setMonth, day));
-			System.out.println("value: " + (setYear * setMonth + day));
-			paneltracker.put(setYear * setMonth + day, nameList.get(x+7));
+			Date today = new Date(setYear, setMonth, day);
+			nameList.get(x+7).setDate(today);
+			paneltracker.put(today, nameList.get(x+7));
 		}
 	}
 	
@@ -417,7 +417,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	}
 
 	public void updatePanels(){
-		int key;
+		Date key;
 		
 		removeEvents();
 		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
@@ -425,7 +425,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		while(event.hasNext()){
 			Event eve = event.next();
 			Date evedate = eve.getStartDate();
-			key = evedate.getYear() * evedate.getMonth() + evedate.getDate();
+			key = new Date(evedate.getYear(),evedate.getMonth(), evedate.getDate());
 			
 			System.out.println(key);
 			if (paneltracker.containsKey(key)){
