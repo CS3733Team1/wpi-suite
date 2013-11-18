@@ -21,35 +21,23 @@ public class DeleteCategoryController implements ActionListener{
 	}
 
 	/**
-	 * Handles the pressing of the Remove Commitment button
+	 * Handles the pressing of the Remove Category button
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for (Category cat: ((CategoryTabPanel)calendarPanel.getSelectedComponent()).getSelectedCategories()) {
-			cat.markForDeletion();
-
-<<<<<<< HEAD
 			// Send a request to the core to save this message 
-			final Request request = Network.getInstance().makeRequest("calendar/category", HttpMethod.PUT); // PUT == create
-			request.setBody(cat.toJSON()); // put the new message in the body of the request
+			final Request request = Network.getInstance().makeRequest("calendar/category/"+cat.getUniqueID(), HttpMethod.GET); // PUT == create
+			request.addHeader("X-HTTP-Method-Override", "DELETE");
+			//request.setBody(cat.toJSON()); // put the new message in the body of the request
 			request.addObserver(new DeleteCategoryObserver(this)); // add an observer to process the response
 			request.send(); // send the request
-		}		
-=======
-		cat.markForDeletion();
-		
-		// Send a request to the core to save this message 
-		final Request request = Network.getInstance().makeRequest("calendar/commitment/"+cat.getUniqueID(), HttpMethod.GET); // PUT == create
-		request.addHeader("X-HTTP-Method-Override", "DELETE");
-		//request.setBody(cat.toJSON()); // put the new message in the body of the request
-		request.addObserver(new DeleteCategoryObserver(this)); // add an observer to process the response
-		request.send(); // send the request
-		model.removeCategory(cat);
-
-		
->>>>>>> 70ed76335347b12af1b021a4cd88d82f7a54775e
+			model.removeCategory(cat);
+		}
 	}
 
+	
+	// WHAT is the point of this method if it is removed above???
 	public void removeCategoryToModel(Category cat){
 		System.out.println("Deleting Category");
 		model.removeCategory(cat);

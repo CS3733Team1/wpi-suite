@@ -12,10 +12,10 @@ public class ColorSquare extends JToggleButton {
 	public ColorSquare(Color color) {
 		this.color = color;
 	}
-
+	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(color);
+		g.setColor(this.color);
         g.fillRect(0, 0, getSize().width, getSize().height);
 	}
 

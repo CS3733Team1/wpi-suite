@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewNextController;
@@ -59,6 +60,8 @@ public class CalendarTabPanel extends JPanel {
 	private YearCalendarView yearView;
 
 	private JLabel calendarViewTitleLabel;
+	
+	private JTabbedPane filterCategoryTabbedPane;
 
 	public CalendarTabPanel() {
 		this.setLayout(new BorderLayout());
@@ -125,6 +128,9 @@ public class CalendarTabPanel extends JPanel {
 		commitmentListPanel = new CommitmentListPanel();
 		eventListPanel = new EventListPanel();
 		
+		//filterCategoryTabbedPane = new JTabbedPane();
+		//filterCategoryTabbedPane.addTab("Categories", new CategoryTabPanel());
+		
 		calendarViewPanel.setLayout(new MigLayout("fill",
 				"[grow,push][][]", 
 				"[grow,push][][]"));
@@ -148,15 +154,15 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void refreshCalendarView(){
-		//calendarViewPanel.invalidate();
-		//calendarViewPanel.repaint();
+		calendarViewPanel.invalidate();
+		calendarViewPanel.repaint();
 	}
 
 	public void resetSelection() {
 		commitmentListPanel.getCommitmentList().clearSelection();
 		eventListPanel.getEventList().clearSelection();
 	}
-	
+
 	public List<Commitment> getSelectedCommitmentList(){
 		return commitmentListPanel.getCommitmentList().getSelectedValuesList();
 	}

@@ -1,73 +1,68 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.MatteBorder;
+
+import net.miginfocom.swing.MigLayout;
 
 public class ColorSwatch extends JPanel implements ActionListener {
 	private Color selectedColor;
-	JPanel centerPanel;
+	private JPanel centerPanel;
 
 	public ColorSwatch() {
 		selectedColor = Color.BLACK;
-		this.setMinimumSize(new Dimension(100, 100));
-		this.setMaximumSize(new Dimension(400, 400));
-		this.setPreferredSize(new Dimension(200, 200));
-		this.setLayout(new GridLayout(3, 3));
-		
-		Color colors[] = {Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE};
-		
-		for(int i = 0; i < 4; i++) {
-			JPanel p = new JPanel(new GridLayout(2, 2));
-			for(int j = 0; j < 4; j++) {
-				ColorSquare cs = new ColorSquare(generateRandomColor(colors[i]));
-				cs.addActionListener(this);
-				p.add(cs);
-			}
-			this.add(p);
-		}
+		this.setLayout(new MigLayout("", "[][][][][][]", "[][][][][][]"));
+
 		centerPanel = new JPanel();
 		centerPanel.setBackground(selectedColor);
-		centerPanel.setForeground(selectedColor);
-		this.add(centerPanel);
-		for(int i = 4; i < 8; i++) {
-			JPanel p = new JPanel(new GridLayout(2, 2));
-			for(int j = 0; j < 4; j++) {
-				ColorSquare cs = new ColorSquare(generateRandomColor(colors[i]));
-				cs.addActionListener(this);
-				p.add(cs);
+		centerPanel.setBorder(new MatteBorder(5, 5, 5, 5, UIManager.getDefaults().getColor("Panel.background")));
+
+		Color colors[] = {Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, null, Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE};
+
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < 3; j++) {
+				if(i == 1 && j == 1) {
+					this.add(centerPanel, "cell 2 2, span 2 2, grow");
+				} else {
+					for(int x = 0; x < 2; x++) {
+						for(int y = 0; y < 2; y++) {
+							ColorSquare cs = new ColorSquare(generateRandomColor(colors[3*j + i]));
+							cs.addActionListener(this);
+							this.add(cs, "cell " + (i*2+x) + " " + (j*2+y) + ", width 20, height 20");
+						}
+					}
+				}
 			}
-			this.add(p);
 		}
 	}
-	
+
 	public Color generateRandomColor(Color mix) {
-	    Random random = new Random();
-	    int red = random.nextInt(256);
-	    int green = random.nextInt(256);
-	    int blue = random.nextInt(256);
+		Random random = new Random();
+		int red = random.nextInt(256);
+		int green = random.nextInt(256);
+		int blue = random.nextInt(256);
 
-	    // mix the color
-	    if (mix != null) {
-	        red = (red + mix.getRed()) / 2;
-	        green = (green + mix.getGreen()) / 2;
-	        blue = (blue + mix.getBlue()) / 2;
-	    }
+		// mix the color
+		if (mix != null) {
+			red = (red + mix.getRed()) / 2;
+			green = (green + mix.getGreen()) / 2;
+			blue = (blue + mix.getBlue()) / 2;
+		}
 
-	    Color color = new Color(red, green, blue);
-	    return color;
+		Color color = new Color(red, green, blue);
+		return color;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		selectedColor = ((ColorSquare)e.getSource()).getColor();
 		centerPanel.setBackground(selectedColor);
-		centerPanel.setForeground(selectedColor);
 	}
 
 	public Color getSelectedColor() {
