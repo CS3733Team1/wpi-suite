@@ -35,6 +35,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 	public DayView(){
 		nameList = new ArrayList<DatePanel>();
 		paneltracker = new HashMap<Date, DatePanel>();
+		hourlist = new ArrayList<JPanel>();
 		
 		Date today = new Date();
 		
@@ -49,6 +50,10 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 				"[20%][80%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 		
+		this.setVisible(true);
+		
+		fillDayView();
+		
 		EventListModel.getEventListModel().addListDataListener(this);
 	}
 	
@@ -58,30 +63,30 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 			
 			StringBuilder hourbuilder = new StringBuilder();
 			hourbuilder.append("cell ");
-			hourbuilder.append(0);
+			hourbuilder.append("0");
 			hourbuilder.append(" ");
-			hourbuilder.append(currenthour);
+			hourbuilder.append(""+currenthour);
 			hourbuilder.append(",grow, push");
 			
 			hour.add(new JLabel(currenthour+":00"));
 			hour.setBackground(new Color(236,252,144));
-			this.add(hour, hourbuilder);
+			this.add(hour, hourbuilder.toString());
 			hourlist.add(hour);
 			
 			DatePanel thesecond = new DatePanel();
 			
 			StringBuilder datebuilder = new StringBuilder();
 			datebuilder.append("cell ");
-			datebuilder.append(1);
+			datebuilder.append("1");
 			datebuilder.append(" ");
-			datebuilder.append(currenthour);
+			datebuilder.append(""+currenthour);
 			datebuilder.append(",grow, push");
 			
 			Date hue = new Date(currentYear-1900, currentMonth, currentDate, currenthour, 0);
 			thesecond.setDate(hue);
 			thesecond.setBackground(Color.WHITE);
 			thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
-			this.add(thesecond, datebuilder);
+			this.add(thesecond, datebuilder.toString());
 			paneltracker.put(hue, thesecond);
 			nameList.add(thesecond);
 		}
