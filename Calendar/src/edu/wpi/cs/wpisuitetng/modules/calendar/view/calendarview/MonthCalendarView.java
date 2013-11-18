@@ -67,7 +67,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		
 		currentYear = today.getYear() + 1900;
 		currentMonth = today.getMonth();
-
+		
 		mycal = new GregorianCalendar(currentYear, currentMonth, 1);
 		this.setBackground(Color.white);
 		
@@ -229,7 +229,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		
 		nameList.add(new DatePanel());
 		nameList.get(gridIndex+7).setBackground(background);
-		nameList.get(gridIndex+7).setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
+		nameList.get(gridIndex+7).setBorder(new MatteBorder(1, 1, 1, 1, Color.gray));
 		nameList.get(gridIndex+7).add(dayLabel);
 		
 		this.add(nameList.get(gridIndex+7), sb.toString());

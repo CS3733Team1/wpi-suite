@@ -34,9 +34,11 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYe
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
@@ -51,8 +53,8 @@ public class CalendarTabPanel extends JPanel {
 	private EventListPanel eventListPanel;
 	
 	private ICalendarView calendarView;
-	private DayCalendarView dayView;
-	private WeekCalendarView weekView;
+	private DayView dayView;
+	private WeekView weekView;
 	private MonthCalendarView monthView;
 	private YearCalendarView yearView;
 
@@ -128,8 +130,8 @@ public class CalendarTabPanel extends JPanel {
 				"[grow,push][][]"));
 		calendarViewPanel.add(commitmentListPanel, "width 250:300:350, dock east, grow");
 
-		dayView = new DayCalendarView();
-		weekView = new WeekCalendarView();
+		dayView = new DayView();
+		weekView = new WeekView();
 		monthView = new MonthCalendarView();
 		yearView = new YearCalendarView();
 
