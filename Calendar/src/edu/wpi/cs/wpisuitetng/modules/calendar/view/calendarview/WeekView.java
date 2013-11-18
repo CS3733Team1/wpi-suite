@@ -165,6 +165,12 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		currentMonth = today.getMonth();
 		currentYear = today.getYear() + 1900;
 		
+		this.removeAll();
+		nameList = new ArrayList<DatePanel>();
+		paneltracker = new HashMap<Date, DatePanel>();
+		hourlist = new ArrayList<JPanel>();
+		fillDayView();
+		
 		ChangeTheWorld();
 	}
 
@@ -176,6 +182,12 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		currentMonth = today.getMonth();
 		currentYear = today.getYear() + 1900;
 		
+		this.removeAll();
+		nameList = new ArrayList<DatePanel>();
+		paneltracker = new HashMap<Date, DatePanel>();
+		hourlist = new ArrayList<JPanel>();
+		fillDayView();
+		
 		ChangeTheWorld();
 	}
 
@@ -186,6 +198,12 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		currentDate = today.getDate() - correctday;
 		currentMonth = today.getMonth();
 		currentYear = today.getYear() + 1900;
+		
+		this.removeAll();
+		nameList = new ArrayList<DatePanel>();
+		paneltracker = new HashMap<Date, DatePanel>();
+		hourlist = new ArrayList<JPanel>();
+		fillDayView();
 		
 		ChangeTheWorld();
 	}
