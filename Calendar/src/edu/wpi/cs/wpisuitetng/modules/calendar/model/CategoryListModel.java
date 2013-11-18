@@ -129,9 +129,7 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 		return categories.size();
 	}
 
-	static public List<Category> getList(){
-		List<Category> rtnCategoryList = new ArrayList<Category>();
-		rtnCategoryList.addAll(getCategoryListModel().categories);
-		return rtnCategoryList;
+	public List<Category> getList(){
+		return categories; 
 	}
 }

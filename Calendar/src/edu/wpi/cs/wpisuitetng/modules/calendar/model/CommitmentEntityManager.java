@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -78,16 +79,14 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	}
 
 	/*
-	 * Individual messages cannot be retrieved. This message always throws an exception.
+	 * Individual commitments can be retrieved. 
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public Commitment[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		// Throw an exception if an ID was specified, as this module does not support
-		// retrieving specific Commitments.
-		throw new WPISuiteException();
+		return (Commitment []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
 	}
 
 	/* 
@@ -107,7 +106,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	}
 
 	/*
-	 * Message cannot be updated. This method always throws an exception.
+	 * Commitment cannot be updated. This method always throws an exception.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
@@ -125,15 +124,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	@Override
 	public void save(Session s, Commitment model)
 			throws WPISuiteException {
-		//System.out.println("EM: save");
-		if (model.isMarkedForDeletion())
-		{
-			model.unmarkForDeletion();
-			deleteCommitment(model);
-			return;
-		}
-		// Save the given defect in the database
-		db.save(model);
+		db.save(model, s.getProject());
 	}
 
 	public void deleteCommitment(Commitment model){
@@ -148,21 +139,28 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-
-		// This module does not allow Commitments to be deleted, so throw an exception
-		throw new WPISuiteException();
+		System.out.println("commitment entiy manager delete entity id = " + id);
+		try
+		{
+			Commitment todelete= (Commitment) db.retrieve(Commitment.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+			deleteCommitment(todelete);
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/*
-	 * Messages cannot be deleted
+	 * Commitments can be deleted
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
 
-		// This module does not allow Commitments to be deleted, so throw an exception
-		throw new WPISuiteException();
+		db.deleteAll(new Commitment());
 	}
 
 	/*

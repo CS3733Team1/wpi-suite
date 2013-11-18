@@ -10,25 +10,39 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import java.util.UUID;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 public abstract class DeletableAbstractModel extends AbstractModel{
 	
+	//In the beginning it was described in Model.java
+	//that models shall have a Unique Identifier int
+	//and so it shall be 
+	public final int UniqueID = (int) UUID.randomUUID().getMostSignificantBits();
+	
+	public int getUniqueID()
+	{
+		return UniqueID;
+	}
+	@Deprecated
 	protected boolean MarkedForDeletion = false;
 	
+	@Deprecated
 	public boolean isMarkedForDeletion()
 	{
 		return this.MarkedForDeletion;
 	}
 	
+	@Deprecated
 	public void unmarkForDeletion()
 	{
 		this.MarkedForDeletion = false;
 	}
 	
+	@Deprecated 
 	public void markForDeletion()
 	{
 		this.MarkedForDeletion = true;
 	}
-
 }

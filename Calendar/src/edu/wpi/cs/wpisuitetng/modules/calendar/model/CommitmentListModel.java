@@ -143,9 +143,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments.size();
 	}
 
-	static public List<Commitment> getList(){
-		List<Commitment> rtnCommitmentList = new ArrayList<Commitment>();
-		rtnCommitmentList.addAll(getCommitmentListModel().commitments);
-		return rtnCommitmentList;
+	public List<Commitment> getList(){
+		return commitments;
 	}
 }
