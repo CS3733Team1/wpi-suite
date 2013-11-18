@@ -112,17 +112,17 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		}
 		
 		
-		for (int day = 0; day < 7; day++){
+		for (int day = 1; day < 8; day++){
 			JPanel event = new JPanel();
 
 			StringBuilder eventbuilder = new StringBuilder();
 			eventbuilder.append("cell ");
-			eventbuilder.append(""+day+1);
+			eventbuilder.append(""+day);
 			eventbuilder.append(" ");
 			eventbuilder.append("0");
 			eventbuilder.append(",grow, push");
 
-			event.add(new JLabel(weekNames[day]));
+			event.add(new JLabel(weekNames[day-1]));
 			event.setBackground(Color.blue);
 			this.add(event, eventbuilder.toString());
 
