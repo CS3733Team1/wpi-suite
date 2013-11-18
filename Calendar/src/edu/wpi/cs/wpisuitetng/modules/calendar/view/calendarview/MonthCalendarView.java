@@ -67,7 +67,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		
 		currentYear = today.getYear() + 1900;
 		currentMonth = today.getMonth();
-
+		
 		mycal = new GregorianCalendar(currentYear, currentMonth, 1);
 		this.setBackground(Color.white);
 		
