@@ -108,6 +108,7 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 	
 	/**
 	 * Builds the GUI layout for the iteration panel
+	 * @return void
 	 */
 	private void buildLayout(){
 		
@@ -234,6 +235,7 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 	
 	/**
 	 * Updates the display commitment
+	 * @return void
 	 */
 	private void updateDisplayCommitment()
 	{
@@ -261,6 +263,7 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 	/**
 	 * Populate the information in the iteration panel for
 	 * the display requirement.
+	 * @return void
 	 */
 	private void populateInformation()
 	{
@@ -272,6 +275,7 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 	
 	/**
 	 * Refreshes the panel
+	 * @return void
 	 */
 	private void refreshPanel()
 	{
@@ -281,7 +285,8 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 	}
 	
 	/**
-	 * Validates the options of the fields inputted.
+	 * Validates the options of the fields inputed.
+	 * @return void
 	 */
 	private void validateFields() {
 		boolean enableAdd = true;
@@ -307,8 +312,8 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 	
 	/**
 	 * Checks whether anything changed and updates buttons as needed.
-	
-	 * @return boolean */
+	 * @return Boolean: (Not yet implemented only returns false)
+	 */
 	private boolean checkForChanges()
 	{
 		//TODO: Implement this function
@@ -316,17 +321,18 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 	}
 
 	/**
-	 * 
-	
-	 * @return the display commitment */
+	 * Returns the current display commitment
+	 * @return Commitment: The current Display commitment
+	 */
 	public Commitment getDisplayCommitment() {
 		updateDisplayCommitment();
 		return displayCommitment;
 	}
 
 	/**
-	
-	 * @return whether the iteration panel as a whole is ready to be removed. */
+	 * Checks if the panel is ready to be removed.
+	 * @return Boolean: whether the iteration panel as a whole is ready to be removed.
+	 */
 	public boolean readyToRemove() {
 		boolean readyToRemove;
 		

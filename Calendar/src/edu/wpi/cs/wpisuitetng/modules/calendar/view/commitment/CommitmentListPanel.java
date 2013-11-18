@@ -23,11 +23,21 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 //import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 
+/**
+ * This is the view where the list of commitments are displayed.
+ * Creates both a scroll pane and JList which stores all of the commitments.
+ * @version Revision: 1.0
+ * @author
+ */
+@SuppressWarnings("serial")
 public class CommitmentListPanel extends JPanel {
 
 	private CommitmentListModel model;
 	private JList<Commitment> commitmentList;
-	
+	/**
+	 * Constructor for the CommitmentListPanel creates both the list of commitments
+	 * and the scroll pane that they are displayed on.
+	 */
 	public CommitmentListPanel() {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		
@@ -48,7 +58,11 @@ public class CommitmentListPanel extends JPanel {
 
 		this.setPreferredSize(new Dimension(300, 1));
 	}
-
+	
+	/**
+	 * Public accsesor for the JList of commitments
+	 * @return JList<Commitment>: The list of Commitments.
+	 */
 	public JList<Commitment> getCommitmentList() {
 		return commitmentList;
 	}

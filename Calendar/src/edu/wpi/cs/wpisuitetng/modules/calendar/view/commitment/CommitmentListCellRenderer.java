@@ -24,6 +24,13 @@ import javax.swing.border.LineBorder;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 
+/**
+ * This class is in charge of how the commitments display in the list.
+ * It creates a template and then uses that to print out every commitment
+ *@version 1.0
+ *@author 
+ */
+@SuppressWarnings("serial")
 public class CommitmentListCellRenderer extends JPanel implements ListCellRenderer<Commitment> {
 
 	private JLabel commitmentName;
@@ -32,6 +39,10 @@ public class CommitmentListCellRenderer extends JPanel implements ListCellRender
 	
 	private static final String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
+	/**
+	 * Default constructor for CommitmentListCellRenderer
+	 * Sets up the general view and prepares it to have commitments placed in it
+	 */
 	public CommitmentListCellRenderer() {
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		commitmentName = new JLabel();
