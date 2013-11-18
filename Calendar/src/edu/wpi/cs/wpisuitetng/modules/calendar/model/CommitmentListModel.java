@@ -11,6 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 	private static CommitmentListModel commitmentListModel;
 
 	/** The list of commitments on the calendar */
-	private List<Commitment> commitments;
+	private ArrayList<Commitment> commitments;
 
 	/**
 	 * Constructs a new calendar with no commitments.
@@ -52,10 +54,13 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 	 */
 	public void addCommitment(Commitment newCommitment) {
 		// Add the commitment
-		commitments.add(newCommitment);
+		this.commitments.add(newCommitment);
+		Collections.sort(this.commitments);
+		System.out.println("Hello?");
 
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
+		this.fireContentsChanged(this, 0, commitments.size()-1);
 	}
 
 	/**
@@ -68,7 +73,11 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
-		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
+		Collections.sort(this.commitments);
+		System.out.println(this.commitments);
+		System.out.println("Hello2?");
+		//this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
+		this.fireContentsChanged(this, 0, this.commitments.size()-1);
 	}
 	
 	public void setCommitments(Commitment[] commitments) {
@@ -76,6 +85,9 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
+		Collections.sort(this.commitments);
+		System.out.println(this.commitments);
+		System.out.println("Hello3?");
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -113,12 +125,14 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 	}
 
 	public void removeCommitment(int index) {
-		commitments.remove(index);
+		this.commitments.remove(index);
+		Collections.sort(this.commitments);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
 	public void removeCommitment(Commitment commitment) {
-		commitments.remove(commitment);
+		this.commitments.remove(commitment);
+		Collections.sort(this.commitments);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
