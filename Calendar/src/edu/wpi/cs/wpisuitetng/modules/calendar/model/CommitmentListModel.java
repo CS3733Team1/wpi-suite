@@ -72,7 +72,6 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 			this.commitments.add(commitments[i]);
 		}
 		Collections.sort(this.commitments);
-		System.out.println(this.commitments);
 		
 		this.fireContentsChanged(this, 0, this.commitments.size()-1);
 	}
@@ -83,7 +82,6 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 			this.commitments.add(commitments[i]);
 		}
 		Collections.sort(this.commitments);
-		System.out.println(this.commitments);
 		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}

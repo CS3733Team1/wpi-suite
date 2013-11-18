@@ -55,7 +55,6 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	public Category makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 
-		System.out.println("Retrieve Shots");
 		// Parse the message from JSON
 		final Category newMessage = Category.fromJSON(content);
 		

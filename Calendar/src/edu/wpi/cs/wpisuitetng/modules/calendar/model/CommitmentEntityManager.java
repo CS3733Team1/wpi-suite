@@ -55,7 +55,6 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	public Commitment makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 
-		System.out.println("Retrieve Shots");
 		// Parse the message from JSON
 		final Commitment newMessage = Commitment.fromJSON(content);
 		
