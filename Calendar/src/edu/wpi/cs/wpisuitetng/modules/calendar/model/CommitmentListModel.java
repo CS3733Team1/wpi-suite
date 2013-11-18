@@ -121,13 +121,13 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 
 	public void removeCommitment(int index) {
 		this.commitments.remove(index);
-		Collections.sort(this.commitments);
+		//Collections.sort(this.commitments);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
 	public void removeCommitment(Commitment commitment) {
 		this.commitments.remove(commitment);
-		Collections.sort(this.commitments);
+		//Collections.sort(this.commitments);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 

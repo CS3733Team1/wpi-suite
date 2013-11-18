@@ -19,37 +19,36 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-//import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 
 public class CategoryListPanel extends JPanel {
 
-	private CommitmentListModel model;
-	private JList<Commitment> commitmentList;
+	private CategoryListModel model;
+	private JList<Category> categoryList;
 	
 	public CategoryListPanel() {
-		this.model = CommitmentListModel.getCommitmentListModel();
+		this.model = CategoryListModel.getCategoryListModel();
 		
 		this.setLayout(new BorderLayout());
 		
-		commitmentList = new JList<Commitment>(model);
+		categoryList = new JList<Category>(model);
 		
-		commitmentList.setCellRenderer(new CategoryListCellRenderer());
-		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		categoryList.setCellRenderer(new CategoryListCellRenderer());
+		categoryList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-		commitmentList.setLayoutOrientation(JList.VERTICAL);
-		commitmentList.setVisibleRowCount(-1);
+		categoryList.setLayoutOrientation(JList.VERTICAL);
+		categoryList.setVisibleRowCount(-1);
 
-		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scrollPane = new JScrollPane(categoryList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(new JLabel("Commitments"), BorderLayout.NORTH);
+		this.add(new JLabel("Categories"), BorderLayout.NORTH);
 		this.add(scrollPane, BorderLayout.CENTER);
 
 		this.setPreferredSize(new Dimension(300, 1));
 	}
 
-	public JList<Commitment> getCommitmentList() {
-		return commitmentList;
+	public JList<Category> getCategoryList() {
+		return categoryList;
 	}
 }

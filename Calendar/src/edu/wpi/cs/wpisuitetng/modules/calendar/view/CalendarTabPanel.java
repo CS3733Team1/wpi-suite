@@ -148,8 +148,8 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void refreshCalendarView(){
-		calendarViewPanel.invalidate();
-		calendarViewPanel.repaint();
+		//calendarViewPanel.invalidate();
+		//calendarViewPanel.repaint();
 	}
 
 	public void resetSelection() {

@@ -87,14 +87,12 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 	 * remove each commitment from the model.
 	 */
 	public void emptyModel() {
-		int oldSize = getSize();
 		Iterator<Category> iterator = categories.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
-
 	}
 
 	/**
