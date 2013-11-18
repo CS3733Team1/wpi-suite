@@ -14,7 +14,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.JTabbedPane;
 
 public class CalendarPanel extends JTabbedPane {
@@ -50,22 +49,10 @@ public class CalendarPanel extends JTabbedPane {
 		this.addTab("Personal Calendar", calIcon, personalCalendarPanel, "Personal Calendar");
 	}
 
-	public CalendarTabPanel getCurrentPanel(){
+	public CalendarTabPanel getCalendarTabPanel() {
 		return (CalendarTabPanel)this.getSelectedComponent();
 	}
-
-	public JList<Object> getSelectedCommitmentsInList(){
-		if(this.getSelectedComponent() instanceof CalendarTabPanel)
-			return ((CalendarTabPanel)this.getSelectedComponent()).getCommitmentJList();
-		else return new JList<Object>();
-	}
-
-	public JList<Object> getSelectedEventsInList(){
-		if(this.getSelectedComponent() instanceof CalendarTabPanel)
-			return ((CalendarTabPanel)this.getSelectedComponent()).getEventJList();
-		else return new JList<Object>();
-	}
-
+	
 	public void refreshSelectedPanel(){
 		if(this.getSelectedComponent() instanceof CalendarTabPanel)
 			((CalendarTabPanel)this.getSelectedComponent()).resetSelection();

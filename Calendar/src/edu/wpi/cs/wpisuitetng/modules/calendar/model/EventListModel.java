@@ -16,7 +16,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-public class EventListModel extends AbstractListModel<Object> { 
+public class EventListModel extends AbstractListModel<Event> { 
 
 	/**
 	 * This is a model for events. It contains all of the events to be
@@ -106,14 +106,10 @@ public class EventListModel extends AbstractListModel<Object> {
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	@Override
-	public Object getElementAt(int index) {
-		return events.get(events.size() - 1 - index);
+	public Event getElementAt(int index) {
+		return events.get(index);
 	}
-
-	public Object getElement(int index){
-		return events.get(events.size() - 1 - index);
-	}
-
+	
 	public void removeEvent(int index) {
 		events.remove(index);
 		this.fireIntervalAdded(this, 0, 0);

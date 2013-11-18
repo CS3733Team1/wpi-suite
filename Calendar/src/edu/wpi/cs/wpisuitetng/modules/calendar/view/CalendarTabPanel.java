@@ -13,17 +13,15 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewNextController;
@@ -33,11 +31,14 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayDa
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayMonthViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWeekViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
@@ -47,15 +48,13 @@ public class CalendarTabPanel extends JPanel {
 	private JButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
 
 	private JPanel calendarViewPanel;
-
+	
 	private CommitmentListPanel commitmentListPanel;
 	private EventListPanel eventListPanel;
-
-	private JScrollPane currentViewScrollPane;
-
+	
 	private ICalendarView calendarView;
-	private DayCalendarView dayView;
-	private WeekCalendarView weekView;
+	private DayView dayView;
+	private WeekView weekView;
 	private MonthCalendarView monthView;
 	private YearCalendarView yearView;
 
@@ -106,7 +105,6 @@ public class CalendarTabPanel extends JPanel {
 		p2.add(p3, BorderLayout.WEST);
 		p2.setBackground(Color.red);
 		p2.add(calendarViewTitleLabel, BorderLayout.CENTER);
-//		p2.setPreferredSize(new Dimension(250, 1));
 
 		JPanel calendarViewButtonsPanel = new JPanel();
 
@@ -119,23 +117,30 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewToolBar.add(calendarViewButtonsPanel, BorderLayout.EAST);
 
 		
-		calendarViewPanel = new JPanel(new BorderLayout());
-		calendarViewPanel.add(calendarViewToolBar, BorderLayout.NORTH);
+		calendarViewPanel = new JPanel();
+		add(calendarViewToolBar, BorderLayout.NORTH);
 
 		add(calendarViewPanel, BorderLayout.CENTER);
 
 		commitmentListPanel = new CommitmentListPanel();
 		eventListPanel = new EventListPanel();
+		
+		calendarViewPanel.setLayout(new MigLayout("fill",
+				"[grow,push][][]", 
+				"[grow,push][][]"));
+		calendarViewPanel.add(commitmentListPanel, "width 250:300:350, dock east, grow");
 
-//		add(eventListPanel, BorderLayout.WEST);
-//		add(commitmentListPanel, BorderLayout.EAST);
-
-		dayView = new DayCalendarView();
-		weekView = new WeekCalendarView();
+		dayView = new DayView();
+		weekView = new WeekView();
 		monthView = new MonthCalendarView();
 		yearView = new YearCalendarView();
 
-		displayMonthView();
+		// Set the default view to month view
+		calendarView = monthView;
+		calendarViewPanel.add(monthView, "width 1000, dock west, grow");
+
+		this.setCalendarViewTitle(monthView.getTitle());
+
 	}
 
 	public ICalendarView getCalendarView(){
@@ -147,17 +152,17 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewPanel.repaint();
 	}
 
-	public JList<Object> getCommitmentJList(){
-		return commitmentListPanel.getCommitmentList();
-	}
-
 	public void resetSelection() {
 		commitmentListPanel.getCommitmentList().clearSelection();
 		eventListPanel.getEventList().clearSelection();
 	}
+	
+	public List<Commitment> getSelectedCommitmentList(){
+		return commitmentListPanel.getCommitmentList().getSelectedValuesList();
+	}
 
-	public JList<Object> getEventJList(){
-		return eventListPanel.getEventList();
+	public List<Event> getSelectedEventList(){
+		return eventListPanel.getEventList().getSelectedValuesList();
 	}
 
 	public void setCalendarViewTitle(String title) {
@@ -183,31 +188,20 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void displayDayView() {
-		if(!(calendarView instanceof DayCalendarView)){
-			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
-
+		if(!(calendarView instanceof DayCalendarView)) {
+			calendarViewPanel.remove((Component)calendarView);
 			calendarView = dayView;
-			currentViewScrollPane = new JScrollPane(dayView);
-			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
-
-			dayView.setVisible(true);
-			currentViewScrollPane.setVisible(true);
+			calendarViewPanel.add(dayView, "width 1000, dock west, grow");
 
 			this.setCalendarViewTitle(dayView.getTitle());
 			this.refreshCalendarView();
 		}
 	}
-
 	public void displayWeekView() {
 		if(!(calendarView instanceof WeekCalendarView)){
-			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
-
+			calendarViewPanel.remove((Component)calendarView);
 			calendarView = weekView;
-			currentViewScrollPane = new JScrollPane(weekView);
-			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
-
-			weekView.setVisible(true);
-			currentViewScrollPane.setVisible(true);
+			calendarViewPanel.add(weekView, "width 1000, dock west, grow");
 
 			this.setCalendarViewTitle(weekView.getTitle());
 			this.refreshCalendarView();
@@ -215,35 +209,10 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void displayMonthView() {
-		if(!(calendarView instanceof MonthCalendarView)){
-//			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
-
-			
-			JPanel viewTest = new JPanel();
-			viewTest.setBackground(Color.green);
-//			viewTest.setPreferredSize(new Dimension(800,800));
-			viewTest.setLayout(new MigLayout("fill",
-					"[grow,push][][]", "[grow,push][][]"));
-			
-			
-			
-			
-			commitmentListPanel = new CommitmentListPanel();
-			eventListPanel = new EventListPanel();	
-			
+		if(!(calendarView instanceof MonthCalendarView)) {
+			calendarViewPanel.remove((Component)calendarView);
 			calendarView = monthView;
-//			currentViewScrollPane = new JScrollPane(monthView, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-			
-			viewTest.add((Component) calendarView, "width 1000, dock west, grow");
-			viewTest.add(commitmentListPanel, "width 250:300:350, dock east, grow");
-		
-			
-			
-//			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
-			calendarViewPanel.add((Component)viewTest, BorderLayout.CENTER);
-			monthView.setVisible(true);
-//			currentViewScrollPane.setVisible(true);
+			calendarViewPanel.add(monthView, "width 1000, dock west, grow");
 
 			this.setCalendarViewTitle(monthView.getTitle());
 			this.refreshCalendarView();
@@ -252,14 +221,9 @@ public class CalendarTabPanel extends JPanel {
 
 	public void displayYearView() {
 		if(!(calendarView instanceof YearCalendarView)){
-			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
-
+			calendarViewPanel.remove((Component)calendarView);
 			calendarView = yearView;
-			currentViewScrollPane = new JScrollPane(yearView);
-			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
-
-			yearView.setVisible(true);
-			currentViewScrollPane.setVisible(true);
+			calendarViewPanel.add(yearView, "width 1000, dock west, grow");
 
 			this.setCalendarViewTitle(yearView.getTitle());
 			this.refreshCalendarView();

@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -38,20 +40,15 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
-public class MonthCalendarView extends JPanel implements ICalendarView {
+public class MonthCalendarView extends JPanel implements ICalendarView, ListDataListener {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	private ArrayList<JLabel> dayLabel = new ArrayList<JLabel>();
 	private ArrayList<DatePanel> panelList = new ArrayList<DatePanel>();
 	private ArrayList<JLabel> nameLabelList = new ArrayList<JLabel>();
-	private ArrayList<JPanel> nameList = new ArrayList<JPanel>();
-	private ArrayList<GridBagConstraints> nameGridBagList = new ArrayList<GridBagConstraints>();
-	private ArrayList<GridBagConstraints> gridBagList = new ArrayList<GridBagConstraints>();
-	private JPanel panel = new JPanel();
-	private JPanel panel2 = new JPanel();
+	private ArrayList<DatePanel> nameList = new ArrayList<DatePanel>();
 	
-	private JPanel[] dayJPanelArrary = new JPanel[7];
-	private DatePanel [][] monthJDatePanelArray = new DatePanel[6][7];
+	private HashMap<Date, DatePanel> paneltracker;
 
 	private Calendar mycal;
 	private int currentMonth;
@@ -64,22 +61,27 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 	 * Create the frame.
 	 */
 	public MonthCalendarView() {
-
+		paneltracker = new HashMap<Date, DatePanel>();
+		
+		Date today = new Date();
+		
+		currentYear = today.getYear() + 1900;
+		currentMonth = today.getMonth();
+		
 		mycal = new GregorianCalendar(currentYear, currentMonth, 1);
 		this.setBackground(Color.white);
-//		contentPane.setBackground(Color.pink);
+		
 		this.setLayout(new MigLayout("fill", 
 				"[14%][14%][14%][14%][14%][14%][14%]", 
 				"[14%][14%][14%][14%][14%][14%][14%]"));
-//		JPanel test = new JPanel();
-//		test.setBackground(Color.BLACK);
-//		this.add(test,"grow");
+		
+		
 		addDayLabels();
 		addDays(mycal);
-//		makeGridPanels(mycal);
 		this.setVisible(true);
 		
-
+		SetDate();
+		EventListModel.getEventListModel().addListDataListener(this);
 	}
 	
 	public void makeGridPanels(Calendar c)
@@ -99,7 +101,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 				sb.append(i);
 				sb.append(",grow, push");
 				
-				nameList.add(new JPanel());
+				nameList.add(new DatePanel());
 				nameList.get(temp).setBackground(Color.white);
 				nameList.get(temp).add(dayLabel);
 				
@@ -112,27 +114,13 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 	
 	
 	
-	
-	public void makeGridLayoutDayOfWeek()
-	{
-		for(int i = 0; i < 7; i++)
-		{
-				dayJPanelArrary[i] = new JPanel();
-				dayJPanelArrary[i].setBorder(new MatteBorder(1, 0, 1, 0, (Color) new Color(0, 0, 0)));
-				dayJPanelArrary[i].setBackground(Color.WHITE);
-				panel2.add(dayJPanelArrary[i]);
-				dayJPanelArrary[i].add(new JLabel(weekNames[i]));
-		}
-	}
-	
-	
+
 	
 
 	public void addDayLabels()
 	{
 		nameLabelList = new ArrayList<JLabel>();
-		nameList = new ArrayList<JPanel>();
-		nameGridBagList = new ArrayList<GridBagConstraints>();
+		nameList = new ArrayList<DatePanel>();
 		for(int i = 0; i < weekNames.length; i++)
 		{	
 			StringBuilder sb = new StringBuilder();
@@ -142,7 +130,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 			sb.append(0);
 			sb.append(",grow, push");
 			
-			nameList.add(new JPanel());
+			nameList.add(new DatePanel());
 			nameList.get(i).setBackground(new Color(138,173,209));
 			nameLabelList.add(new JLabel(weekNames[i]));
 			nameList.get(i).add(nameLabelList.get(i));
@@ -239,9 +227,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		sb.append(y);
 		sb.append(",grow, push");
 		
-		nameList.add(new JPanel());
+		nameList.add(new DatePanel());
 		nameList.get(gridIndex+7).setBackground(background);
-		nameList.get(gridIndex+7).setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
+		nameList.get(gridIndex+7).setBorder(new MatteBorder(1, 1, 1, 1, Color.gray));
 		nameList.get(gridIndex+7).add(dayLabel);
 		
 		this.add(nameList.get(gridIndex+7), sb.toString());
@@ -292,28 +280,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		}
 	}
 
-	
-	public JPanel getDayPanel(Date d)
-	{
-		int month = d.getMonth();
-		int day = d.getDay();
-		int year = d.getYear();
-		
-		
-		
-		
-		
-		return null;
-	}
-	
-	
-
-
-
 
 	@Override
 	public void next() {
-//		removeListeners();
 		
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH);
@@ -327,34 +296,23 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		}
 		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 		mycal = next;
-
-		this.remove(panel);
-
+		
 		dayLabel = new ArrayList<JLabel>();
 		panelList = new ArrayList<DatePanel>();
-		gridBagList = new ArrayList<GridBagConstraints>();
-		panel = new JPanel();
-
-		int gridSize = 100;
-
-		add(panel, BorderLayout.NORTH);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-		gbl_panel.rowHeights = new int[]{30, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-		gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-		gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-		panel.setLayout(gbl_panel);
+		nameLabelList = new ArrayList<JLabel>();
+		nameList = new ArrayList<DatePanel>();
+		
+		this.removeAll();
 
 		addDayLabels();
 		addDays(next);
 		
-//		SetDate();
-//		updatePanels();
+		SetDate();
+		updatePanels();
 	}
 
 	@Override
 	public void previous() {
-//		removeListeners();
 		
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH);
@@ -374,71 +332,23 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
 		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
 
-		this.remove(panel);
-
 		dayLabel = new ArrayList<JLabel>();
 		panelList = new ArrayList<DatePanel>();
-		gridBagList = new ArrayList<GridBagConstraints>();
-		panel = new JPanel();
-
-		int gridSize = 100;
-
-		add(panel, BorderLayout.NORTH);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-		gbl_panel.rowHeights = new int[]{30, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-		gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-		gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-		panel.setLayout(gbl_panel);
+		nameLabelList = new ArrayList<JLabel>();
+		nameList = new ArrayList<DatePanel>();
+		
+		this.removeAll();
 
 		addDayLabels();
 		addDays(next);
 
-//		SetDate();
-//		updatePanels();
+		SetDate();
+		updatePanels();
 	}
 
-	public void addEvent(Event e)
-	{
-		Date today = new Date();
-		if(currentMonth != today.getMonth()) {
-			currentMonth = today.getMonth();
-			currentYear = today.getYear() + 1900;
-
-			Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
-			mycal = next;
-
-			int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
-			int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
-			mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
-			int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-
-			this.remove(panel);
-
-			dayLabel = new ArrayList<JLabel>();
-			panelList = new ArrayList<DatePanel>();
-			gridBagList = new ArrayList<GridBagConstraints>();
-			panel = new JPanel();
-
-			int gridSize = 100;
-
-			add(panel, BorderLayout.NORTH);
-			GridBagLayout gbl_panel = new GridBagLayout();
-			gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-			gbl_panel.rowHeights = new int[]{30, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-			gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-			gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-			panel.setLayout(gbl_panel);
-
-
-			addDayLabels();
-			addDays(next);
-		}
-	}
 
 	@Override
 	public void today() {
-//		removeListeners();
 		
 		Date today = new Date();
 		if(currentMonth != today.getMonth()) {
@@ -453,28 +363,17 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 			mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
 			int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
 
-			this.remove(panel);
-
 			dayLabel = new ArrayList<JLabel>();
 			panelList = new ArrayList<DatePanel>();
-			gridBagList = new ArrayList<GridBagConstraints>();
-			panel = new JPanel();
-
-			int gridSize = 100;
-
-			add(panel, BorderLayout.NORTH);
-			GridBagLayout gbl_panel = new GridBagLayout();
-			gbl_panel.columnWidths = new int[]{gridSize, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-			gbl_panel.rowHeights = new int[]{30, gridSize, gridSize, gridSize, gridSize, gridSize, gridSize};
-			gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-			gbl_panel.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-			panel.setLayout(gbl_panel);
+			nameLabelList = new ArrayList<JLabel>();
+			nameList = new ArrayList<DatePanel>();
+			
+			this.removeAll();
 
 			addDayLabels();
 			addDays(next);
-
-//			SetDate();
-//			updatePanels();
+			SetDate();
+			updatePanels();
 		}
 	}
 	
@@ -483,6 +382,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 		int day =0;
 		int setYear = currentYear - 1900;
 		
+		ArrayList<Integer> listOfDays = makeListOfDays(mycal);
+		
+		System.out.println(listOfDays.size());
+		
 		if (currentMonth == 0){
 			setMonth = 12;
 		}
@@ -490,8 +393,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 			setMonth = currentMonth-1;
 		}
 		
-		for (int x = 0; x < panelList.size(); x ++){
-			day = Integer.valueOf(dayLabel.get(x).getText());
+		for (int x = 0; x < nameList.size()-7; x ++){
+			day = listOfDays.get(x);
 			if (day == 1){
 				if (setMonth == 12){
 					setMonth = 1;
@@ -501,26 +404,55 @@ public class MonthCalendarView extends JPanel implements ICalendarView {
 					setMonth++;
 				}
 			}
-			panelList.get(x).setDate(new Date(setYear, setMonth, day));
-			EventListModel.getEventListModel().addListDataListener(panelList.get(x));
+			Date today = new Date(setYear, setMonth, day);
+			nameList.get(x+7).setDate(today);
+			paneltracker.put(today, nameList.get(x+7));
 		}
 	}
 	
-	public void removeListeners(){
-		for (int x = 0;x < panelList.size(); x++){
-			EventListModel.getEventListModel().removeListDataListener(panelList.get(x));
+	public void removeEvents(){
+		for (int x = 0;x < nameList.size(); x++){
+			nameList.get(x).removeEventPanel();
 		}
 	}
 
 	public void updatePanels(){
-		for (int x = 0;x < panelList.size(); x++){
-			panelList.get(x).updatePanel();
+		Date key;
+		
+		removeEvents();
+		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
+		
+		while(event.hasNext()){
+			Event eve = event.next();
+			Date evedate = eve.getStartDate();
+			key = new Date(evedate.getYear(),evedate.getMonth(), evedate.getDate());
+			
+			System.out.println(key);
+			if (paneltracker.containsKey(key)){
+				
+				paneltracker.get(key).addEventPanel(eve);
+			}
 		}
 	}
 	
 	@Override
 	public String getTitle() {
 		return monthNames[currentMonth] + ", " + currentYear;
+	}
+
+	@Override
+	public void intervalAdded(ListDataEvent e) {
+		updatePanels();
+	}
+
+	@Override
+	public void intervalRemoved(ListDataEvent e) {
+		updatePanels();
+	}
+
+	@Override
+	public void contentsChanged(ListDataEvent e) {
+		updatePanels();
 	}
 
 	
