@@ -131,7 +131,12 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 	
 	@Override
 	public String getTitle() {
-		return monthNames[currentMonth] + " "+ currentDate + " - " + (currentDate+7) + ", " + currentYear;
+		Date datdate = new Date(currentYear-1900, currentMonth, currentDate+6);
+		int nextyear = datdate.getYear() + 1900;
+		int nextmonth = datdate.getMonth();
+		int nextdate = datdate.getDate();
+		
+		return monthNames[currentMonth] + " "+ currentDate + ", " + currentYear + " - " + monthNames[nextmonth] + " "+ nextdate + ", " + nextyear;
 	}
 
 	public void ClearEvents(){
