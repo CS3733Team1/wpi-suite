@@ -48,7 +48,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		
 		this.setLayout(new MigLayout("fill", 
 				"[20%][80%]", 
-				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
+				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 		
 		this.setVisible(true);
 		
@@ -58,6 +58,32 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 	}
 	
 	public void fillDayView(){
+		JPanel event = new JPanel();
+		
+		StringBuilder eventbuilder = new StringBuilder();
+		eventbuilder.append("cell ");
+		eventbuilder.append("1");
+		eventbuilder.append(" ");
+		eventbuilder.append("0");
+		eventbuilder.append(",grow, push");
+		
+		event.add(new JLabel("Events"));
+		event.setBackground(Color.blue);
+		this.add(event, eventbuilder.toString());
+		
+		JPanel time = new JPanel();
+		
+		StringBuilder timebuilder = new StringBuilder();
+		timebuilder.append("cell ");
+		timebuilder.append("0");
+		timebuilder.append(" ");
+		timebuilder.append("0");
+		timebuilder.append(",grow, push");
+		
+		time.add(new JLabel("Time"));
+		time.setBackground(Color.blue);
+		this.add(time, timebuilder.toString());
+		
 		for (int currenthour=0; currenthour < 24; currenthour++){
 			JPanel hour = new JPanel();
 			
@@ -65,7 +91,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 			hourbuilder.append("cell ");
 			hourbuilder.append("0");
 			hourbuilder.append(" ");
-			hourbuilder.append(""+currenthour);
+			hourbuilder.append(""+currenthour+1);
 			hourbuilder.append(",grow, push");
 			
 			hour.add(new JLabel(currenthour+":00"));
@@ -79,7 +105,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 			datebuilder.append("cell ");
 			datebuilder.append("1");
 			datebuilder.append(" ");
-			datebuilder.append(""+currenthour);
+			datebuilder.append(""+currenthour+1);
 			datebuilder.append(",grow, push");
 			
 			Date hue = new Date(currentYear-1900, currentMonth, currentDate, currenthour, 0);
