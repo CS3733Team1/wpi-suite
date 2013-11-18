@@ -99,7 +99,10 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		// Ask the database to retrieve all objects of the type Commitment.
 		// Passing a dummy Commitment lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		return (Commitment []) (db.retrieveAll(new Commitment()).toArray());
+		List<Model> messages = db.retrieveAll(new Commitment(), s.getProject());
+
+		// Return the list of messages as an array
+		return messages.toArray(new Commitment[0]);
 	}
 
 	/*
@@ -138,7 +141,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 
 		try {
-		Commitment todelete = (Commitment) db.retrieve(Commitment.class, "UniqueID", id, s.getProject()).get(0);
+		Commitment todelete = (Commitment) (db.retrieve(Commitment.class, "UniqueID", id, s.getProject()).get(0));
 		this.deleteCommitment(todelete);
 		}
 		catch (Exception e) {
