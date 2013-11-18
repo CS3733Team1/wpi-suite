@@ -131,6 +131,7 @@ public class WPICoreServlet extends HttpServlet
 	public void doDelete (HttpServletRequest req,
             HttpServletResponse res) throws ServletException, IOException
     {
+		System.out.println("In doDelete");
 		PrintWriter out = res.getWriter();
 		String delims = "[/]+";
         String[] path = req.getPathInfo().split(delims);
@@ -149,4 +150,15 @@ public class WPICoreServlet extends HttpServlet
         
         out.close();
     }
+	
+	public void service(HttpServletRequest req,HttpServletResponse resp) throws ServletException,java.io.IOException
+	{	
+		String override = (req == null) ? " " : req.getHeader("X-HTTP-Method-Override");
+		if (override != null && override.equals("DELETE"))
+		{
+			this.doDelete(req, resp);
+			return;
+		}
+		super.service(req,resp);
+	}
 }

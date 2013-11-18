@@ -49,9 +49,11 @@ public class DeleteEventController implements ActionListener {
 			
 			model.removeEvent(event);
 			// Send a request to the core to save this message 
-			final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.DELETE); // DELETE == Delete it, go figure huh?
-			request.setBody(event.toJSON()); // put the new message in the body of the request
-			request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
+			final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.GET); 
+			request.addHeader("X-HTTP-Method-Override", "DELETE");
+			//the following is unnecessary, we're deleting so there is no reason to serialize the object....
+			//request.setBody(event.toJSON()); // put the new message in the body of the request
+			//request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
 		

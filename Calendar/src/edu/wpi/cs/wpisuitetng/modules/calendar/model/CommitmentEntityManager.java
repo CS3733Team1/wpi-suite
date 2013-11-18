@@ -139,13 +139,23 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-
-		try {
-		Commitment todelete = (Commitment) (db.retrieve(Commitment.class, "UniqueID", id, s.getProject()).get(0));
-		this.deleteCommitment(todelete);
+		System.out.println("commitment entiy manager delete entity id = " + id);
+		try
+		{
+			List<Model> commitments= db.retrieve(Commitment.class, "UniqueID", Integer.parseInt(id), s.getProject());
+			for (Model m : commitments)
+			{	
+				Commitment c = (Commitment) m;
+				if (c.getUniqueID() == Integer.parseInt(id))
+				{
+					deleteCommitment(c);
+					return true;
+				}
+			} 
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			List<Model> commitments= db.retrieve(Commitment.class, "UniqueID", Integer.parseInt(id), s.getProject());
 			return false;
 		}
 		
