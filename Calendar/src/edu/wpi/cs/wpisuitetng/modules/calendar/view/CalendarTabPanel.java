@@ -47,7 +47,7 @@ public class CalendarTabPanel extends JPanel {
 	private JButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
 
 	private JPanel calendarViewPanel;
-
+	private JPanel calendarViewChildPanel;
 	private CommitmentListPanel commitmentListPanel;
 	private EventListPanel eventListPanel;
 
@@ -119,16 +119,19 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewToolBar.add(calendarViewButtonsPanel, BorderLayout.EAST);
 
 		
-		calendarViewPanel = new JPanel(new BorderLayout());
-		calendarViewPanel.add(calendarViewToolBar, BorderLayout.NORTH);
+		calendarViewPanel = new JPanel();
+		add(calendarViewToolBar, BorderLayout.NORTH);
 
 		add(calendarViewPanel, BorderLayout.CENTER);
 
 		commitmentListPanel = new CommitmentListPanel();
 		eventListPanel = new EventListPanel();
-
-//		add(eventListPanel, BorderLayout.WEST);
-//		add(commitmentListPanel, BorderLayout.EAST);
+		
+		
+		calendarViewPanel.setLayout(new MigLayout("fill",
+				"[grow,push][][]", 
+				"[grow,push][][]"));
+		calendarViewPanel.add(commitmentListPanel, "width 250:300:350, dock east, grow");
 
 		dayView = new DayCalendarView();
 		weekView = new WeekCalendarView();
@@ -184,67 +187,61 @@ public class CalendarTabPanel extends JPanel {
 
 	public void displayDayView() {
 		if(!(calendarView instanceof DayCalendarView)){
-			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
+//			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
 
 			calendarView = dayView;
-			currentViewScrollPane = new JScrollPane(dayView);
-			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
+//			currentViewScrollPane = new JScrollPane(dayView);
+//			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
+				
+			JPanel viewTest = new JPanel();
+			viewTest.setLayout(new MigLayout("fill",
+					"[grow,push][][]", "[grow,push][][]"));
+			
+			commitmentListPanel = new CommitmentListPanel();
+			eventListPanel = new EventListPanel();	
+			
+			calendarView = dayView;
+			viewTest.add((Component) calendarView, "width 1000, dock west, grow");
+			viewTest.add(commitmentListPanel, "width 250:300:350, dock east, grow");
 
+			calendarViewPanel.add((Component)viewTest, BorderLayout.CENTER);
+			viewTest.setVisible(true);
 			dayView.setVisible(true);
-			currentViewScrollPane.setVisible(true);
-
+//			currentViewScrollPane.setVisible(true);
 			this.setCalendarViewTitle(dayView.getTitle());
 			this.refreshCalendarView();
 		}
 	}
-
 	public void displayWeekView() {
 		if(!(calendarView instanceof WeekCalendarView)){
-			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
-
+			JPanel viewTest = new JPanel();
+			viewTest.setLayout(new MigLayout("fill",
+					"[grow,push][][]", "[grow,push][][]"));
+			
+			commitmentListPanel = new CommitmentListPanel();
+			eventListPanel = new EventListPanel();	
+			
 			calendarView = weekView;
-			currentViewScrollPane = new JScrollPane(weekView);
-			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
+			viewTest.add((Component) calendarView, "width 1000, dock west, grow");
+			
 
+			calendarViewPanel.add((Component)viewTest, BorderLayout.CENTER);
 			weekView.setVisible(true);
-			currentViewScrollPane.setVisible(true);
-
+			
+			System.out.println("WEEK");
+			
 			this.setCalendarViewTitle(weekView.getTitle());
 			this.refreshCalendarView();
 		}
 	}
 
 	public void displayMonthView() {
-		if(!(calendarView instanceof MonthCalendarView)){
-//			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
-
-			
-			JPanel viewTest = new JPanel();
-			viewTest.setBackground(Color.green);
-//			viewTest.setPreferredSize(new Dimension(800,800));
-			viewTest.setLayout(new MigLayout("fill",
-					"[grow,push][][]", "[grow,push][][]"));
-			
-			
-			
-			
-			commitmentListPanel = new CommitmentListPanel();
-			eventListPanel = new EventListPanel();	
-			
+		if(!(calendarView instanceof MonthCalendarView)) {
+			if(calendarViewPanel.getComponentCount() == 2) calendarViewPanel.remove((Component)calendarView);
 			calendarView = monthView;
-//			currentViewScrollPane = new JScrollPane(monthView, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
+			calendarViewPanel.add(monthView, "width 1000, dock west, grow");
 			
-			viewTest.add((Component) calendarView, "width 1000, dock west, grow");
-			viewTest.add(commitmentListPanel, "width 250:300:350, dock east, grow");
-		
-			
-			
-//			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
-			calendarViewPanel.add((Component)viewTest, BorderLayout.CENTER);
-			monthView.setVisible(true);
-//			currentViewScrollPane.setVisible(true);
-
+			System.out.println("MONTH");
 			this.setCalendarViewTitle(monthView.getTitle());
 			this.refreshCalendarView();
 		}
@@ -252,15 +249,10 @@ public class CalendarTabPanel extends JPanel {
 
 	public void displayYearView() {
 		if(!(calendarView instanceof YearCalendarView)){
-			if (currentViewScrollPane != null) calendarViewPanel.remove(currentViewScrollPane);
+			if(calendarViewPanel.getComponentCount() == 2) calendarViewPanel.remove((Component)calendarView);calendarView = yearView;
+			calendarViewPanel.add(yearView, "width 1000, dock west, grow");
 
-			calendarView = yearView;
-			currentViewScrollPane = new JScrollPane(yearView);
-			calendarViewPanel.add(currentViewScrollPane, BorderLayout.CENTER);
-
-			yearView.setVisible(true);
-			currentViewScrollPane.setVisible(true);
-
+			System.out.println("YEAR");
 			this.setCalendarViewTitle(yearView.getTitle());
 			this.refreshCalendarView();
 		}
