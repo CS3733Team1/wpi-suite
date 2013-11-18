@@ -39,13 +39,8 @@ public class DeleteCommitmentObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request
-		final ResponseModel response = iReq.getResponse();
+		System.out.println("The request to remove a commitment succeded");
 
-		// Parse the message out of the response body
-		final Commitment commit = Commitment.fromJSON(response.getBody());
-
-		// Pass the messages back to the controller
-		controller.removeCommitmentFromModel(commit);
 	}
 
 	@Override
