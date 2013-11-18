@@ -41,10 +41,10 @@ public class CategoryListPanel extends JPanel {
 		commitmentList.setLayoutOrientation(JList.VERTICAL);
 		commitmentList.setVisibleRowCount(-1);
 
-		JScrollPane scrollPane2 = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		this.add(new JLabel("Commitments"), BorderLayout.NORTH);
-		this.add(scrollPane2, BorderLayout.CENTER);
+		this.add(scrollPane, BorderLayout.CENTER);
 
 		this.setPreferredSize(new Dimension(300, 1));
 	}
