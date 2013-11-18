@@ -57,10 +57,10 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 
 	public DayCalendarView() {
 		mycal = new GregorianCalendar();
-		currentDay = 1; //mycal.get(Calendar.DAY_OF_MONTH);
-		currentMonth = 3; //mycal.get(Calendar.MONTH);
-		currentYear = 2013; //mycal.get(Calendar.YEAR) + 1900;
-		currentDayOfWeek = 3; // mycal.get(Calendar.DAY_OF_WEEK);
+		currentDay = mycal.get(Calendar.DAY_OF_MONTH);
+		currentMonth = mycal.get(Calendar.MONTH);
+		currentYear = mycal.get(Calendar.YEAR) + 1900;
+		currentDayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 		
 		grid1.setLayout(new GridLayout(0, 1));
 		grid2.setLayout(new GridLayout(0, 1));
@@ -80,7 +80,7 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 		grid1.add(header1);
 		grid2.add(header2);
 		
-		grid2.add(new JLabel("0:00 AM"), BorderLayout.PAGE_START);
+		grid2.add(new JLabel("12:00 AM"), BorderLayout.PAGE_START);
 		grid2.add(new JLabel());
 		//grid2.add(new JLabel("0:30 AM"));
 		grid2.add(new JLabel("1:00 AM"), BorderLayout.PAGE_START);
@@ -261,6 +261,7 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 	public void previous() {
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH);
+		//int day = current.get(Calendar.DATE);
 
 		if (currentMonth == 0 && currentDay == 1){
 			currentMonth = 11;
@@ -276,11 +277,19 @@ public class DayCalendarView extends JPanel implements ICalendarView {
 		}
 		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 		mycal = next;
+		
 	}
 
 	@Override
 	public void today() {
-		// TODO Auto-generated method stub
+		Date today = new Date();
+		if(currentDay != today.getDate()) {
+			currentDay = today.getDate();
+			currentYear = today.getYear() + 1900;
+		}
+		
+		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
+		mycal = next;
 
 	}
 
