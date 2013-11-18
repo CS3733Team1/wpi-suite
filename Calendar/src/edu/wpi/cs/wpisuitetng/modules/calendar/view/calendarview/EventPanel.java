@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Font;
+import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -11,6 +12,10 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
 public class EventPanel extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextArea titleTextArea;
 	private JTextArea dataTextArea;
 	
@@ -23,7 +28,7 @@ public class EventPanel extends JPanel{
 		titleTextArea = new JTextArea(eve.getName());
 		titleTextArea.setEditable(false);
 		titleTextArea.setFont(new Font(null, Font.PLAIN, 20));
-		titleTextArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		titleTextArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		
 		StringBuilder titlebuilder = new StringBuilder();
 		titlebuilder.append("cell ");
@@ -37,7 +42,7 @@ public class EventPanel extends JPanel{
 		dataTextArea = new JTextArea("Description: " + eve.getDescription() +"\nCategory:" + eve.getCategory());
 		dataTextArea.setEditable(false);
 		dataTextArea.setFont(new Font(null, Font.PLAIN, 10));
-		dataTextArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		dataTextArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		
 		StringBuilder databuilder = new StringBuilder();
 		databuilder.append("cell ");
@@ -50,6 +55,20 @@ public class EventPanel extends JPanel{
 		
 		this.setVisible(true);
 		
+	}
+	
+	public void fitText(){
+		int start = titleTextArea.getText().length() - 1;
+	    while(titleTextArea.getWidth() > titleTextArea.getPreferredSize().width && start>0) {  
+	        titleTextArea.setText(titleTextArea.getText().substring(0,start) + "...");
+	        start--;
+	    }
+	}
+	
+	public void paint(Graphics g){
+		fitText();
+		
+		super.paint(g);
 	}
 	
 }
