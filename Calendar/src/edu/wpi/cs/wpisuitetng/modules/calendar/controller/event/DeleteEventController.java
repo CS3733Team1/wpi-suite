@@ -40,6 +40,7 @@ public class DeleteEventController implements ActionListener {
 			request.addHeader("X-HTTP-Method-Override", "DELETE");
 			request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
 			request.send(); // send the request
+			
 		}
 		
 		calendarPanel.refreshSelectedPanel();
