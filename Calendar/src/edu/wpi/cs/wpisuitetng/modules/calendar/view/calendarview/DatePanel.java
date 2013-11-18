@@ -22,42 +22,21 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 public class DatePanel extends JPanel implements ListDataListener{
 	private Date paneldate;
 	private ArrayList<JPanel> eventlist;
-	private JScrollPane showMEdaMONEY;
 	private JPanel layout;
 	private GridLayout grid;
 	
-	private boolean temp;
-	
 	public DatePanel(){
-//		StringBuilder sb = new StringBuilder();
-//		
-//		sb.append("");
-//		sb.append(day);
-//		
-//		JLabel date = new JLabel(sb.toString());
-//		date.setForeground(text);
-	
+
+		grid = new GridLayout(0,1);
+		eventlist = new ArrayList<JPanel>();
+		layout = new JPanel();
+		layout.setLayout(grid);
+		layout.setVisible(true);
 		
-		this.setLayout(new BorderLayout());
-//		this.add(date, BorderLayout.NORTH);
-//		grid = new GridLayout(0,1);
-//		eventlist = new ArrayList<JPanel>();
-//		showMEdaMONEY = new JScrollPane();
-//		layout = new JPanel();
-//		
-////		this.setLayout(grid);
-//		layout.setLayout(grid);
-//		showMEdaMONEY.setVisible(true);
-//		layout.setVisible(true);
-//		
-//		showMEdaMONEY.getViewport().add(layout);
-//		showMEdaMONEY.setOpaque(false);
-//		
-//		this.add(layout,BorderLayout.SOUTH);
 		this.setVisible(true);
-		//showMEdaMONEY.setViewportView(layout);
 		
-		temp = false;
+		this.add(layout);
+
 		
 	}
 	
@@ -85,23 +64,13 @@ public class DatePanel extends JPanel implements ListDataListener{
 		this.updateUI();
 		eventlist.add(eventpan);
 		
-		if (temp == false){
-			showMEdaMONEY.getViewport().setOpaque(false);
-			
-			add(showMEdaMONEY);
-			temp = true;
-		}
-		
 	}
 	
 	public void removeEventPanel(){
 		for (int x = 0; x < eventlist.size(); x++){
 			layout.remove(eventlist.get(x));
 		}
-		if (temp == true){
-			remove(showMEdaMONEY);
-		}
-		temp = false;
+
 	}
 	
 	public void updatePanel(){
