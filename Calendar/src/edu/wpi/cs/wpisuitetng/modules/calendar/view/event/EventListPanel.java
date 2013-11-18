@@ -19,18 +19,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
 public class EventListPanel extends JPanel {
 
 	private EventListModel model;
-	private JList eventList;
+	private JList<Event> eventList;
 	
 	public EventListPanel() {
 		this.model = EventListModel.getEventListModel();
 		this.setLayout(new BorderLayout());
 		
-		eventList = new JList<Object>(model);
+		eventList = new JList<Event>(model);
 		
 		eventList.setCellRenderer(new EventListCellRenderer());
 		eventList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -46,7 +47,7 @@ public class EventListPanel extends JPanel {
 		this.setPreferredSize(new Dimension(300, 1));
 	}
 
-	public JList<Object> getEventList() {
+	public JList<Event> getEventList() {
 		return eventList;
 	}
 }

@@ -77,6 +77,9 @@ public class WPICoreServlet extends HttpServlet
 		PrintWriter out = res.getWriter();
 		String delims = "[/]+";
         String[] path = req.getPathInfo().split(delims);
+        System.out.println("Path \n");
+        for (String part : path)
+        	System.out.println(part);
         
         System.arraycopy(path, 1, path, 0, path.length-1);
         path[path.length-1] = null;
@@ -146,4 +149,18 @@ public class WPICoreServlet extends HttpServlet
         
         out.close();
     }
+	
+	/**
+	 *  This simple processes the X-HTTP-Method-Override header for DELETE but otherwise always uses super.severice() like normal.
+	 */
+	public void service(HttpServletRequest req,HttpServletResponse resp) throws ServletException,java.io.IOException
+	{	
+		String override = (req == null) ? " " : req.getHeader("X-HTTP-Method-Override");
+		if (override != null && override.equals("DELETE"))
+		{
+			this.doDelete(req, resp);
+			return;
+		}
+		super.service(req,resp);
+	}
 }

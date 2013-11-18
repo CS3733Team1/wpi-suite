@@ -26,7 +26,6 @@ public class Event extends DeletableAbstractModel {
 	private String description;
 	private Category category;
 	
-	
 
 	/*
 	 * TO DO:

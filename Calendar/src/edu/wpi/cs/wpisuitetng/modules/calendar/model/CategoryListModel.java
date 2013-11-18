@@ -106,13 +106,9 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 	 */
 	@Override
 	public Category getElementAt(int index) {
-		return categories.get(categories.size() - 1 - index);
+		return categories.get(index);
 	}
-
-	public Object getElement(int index){
-		return categories.get(categories.size() - 1 - index);
-	}
-
+	
 	public void removeCategory(int index) {
 		categories.remove(index);
 		this.fireIntervalAdded(this, 0, 0);
@@ -135,9 +131,7 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 		return categories.size();
 	}
 
-	static public List<Category> getList(){
-		List<Category> rtnCategoryList = new ArrayList<Category>();
-		rtnCategoryList.addAll(getCategoryListModel().categories);
-		return rtnCategoryList;
+	public List<Category> getList(){
+		return categories; 
 	}
 }

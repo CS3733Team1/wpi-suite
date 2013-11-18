@@ -38,14 +38,7 @@ public class DeleteEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		// Get the response to the given request
-		final ResponseModel response = iReq.getResponse();
-		
-		// Parse the message out of the response body
-		final Event eve = Event.fromJSON(response.getBody());
-		
-		// Pass the messages back to the controller
-		controller.removeEventToModel(eve);
+		System.out.println("The request to remove an event succeeded");
 	}
 
 	@Override

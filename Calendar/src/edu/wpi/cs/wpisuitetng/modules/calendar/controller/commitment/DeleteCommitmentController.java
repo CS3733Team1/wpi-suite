@@ -37,24 +37,12 @@ public class DeleteCommitmentController implements ActionListener{
 		
 		System.out.println("Called Delete Commitments...");
 		
-		int[] index = calendarPanel.getSelectedCommitmentsInList().getSelectedIndices();
-		
-		if(index.length == 0) {
-			System.out.println("Selected Commitments to delete is 0!");
-			return;
-		}
-		
-		for (int x = index.length-1; x >= 0; x--){
-			System.out.println("index: " + index[x]);
-
-			Commitment commit = (Commitment) model.getElement(index[x]);
-			
+		for (Commitment commit: calendarPanel.getCalendarTabPanel().getSelectedCommitmentList()) {
 			commit.markForDeletion();
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
-			final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
-			request.setBody(commit.toJSON()); // put the new message in the body of the request
-			//System.out.println("controller: sending this for deletion: " + commit.toJSON());
+			final Request request = Network.getInstance().makeRequest("calendar/commitment/" + commit.getUniqueID(), HttpMethod.GET); // PUT == create
+			request.addHeader("X-HTTP-Method-Override", "DELETE");
 			request.addObserver(new DeleteCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}

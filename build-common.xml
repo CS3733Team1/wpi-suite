@@ -3,7 +3,7 @@
 	<import file="dependencies.xml"/>
 
 	<property name="core-lib" location="${dependencies.basedir}/Core/WPISuite/WebContent/WEB-INF/lib"/>
-	<property name="junit-jar" location="${dependencies.basedir}/junit-4.8.2.jar"/>
+	<property name="junit-jar" location="${dependencies.basedir}/junit.jar"/>
 	<property name="janeway-lib" location="${dependencies.basedir}/Janeway/lib"/>
 	<property name="calendar-lib" location="${dependencies.basedir}/Calendar/lib"/>
 	<property name="java-version" value="1.7"/>

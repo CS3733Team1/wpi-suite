@@ -130,15 +130,22 @@ public class EventEntityManager implements EntityManager<Event> {
 	}
 	
 	/*
-	 * Messages cannot be deleted
+	 * Events totally can be deleted
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-
-		// This module does not allow Events to be deleted, so throw an exception
-		throw new WPISuiteException();
+				try {
+				Event todelete = (Event) db.retrieve(Event.class, "UniqueID", id, s.getProject()).get(0);
+				this.deleteEvent(todelete);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+				
+				return true;
 	}
 
 	/*

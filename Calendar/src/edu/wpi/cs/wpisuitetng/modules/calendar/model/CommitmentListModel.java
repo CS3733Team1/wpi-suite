@@ -11,26 +11,27 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-public class CommitmentListModel extends AbstractListModel<Object> { 
+public class CommitmentListModel extends AbstractListModel<Commitment> { 
 
 	/**
 	 * This is a model for the commitment list. It contains all of the commitments to be
 	 * displayed on the calendar. It extends AbstractListModel so that it can provide
 	 * the model data to the JList component in the CalendarPanel.
 	 * 
-	 * @author Thomas DeSilva, Zach Estep
+	 * @author Team TART
 	 * 
 	 */
 
 	private static CommitmentListModel commitmentListModel;
 
 	/** The list of commitments on the calendar */
-	private List<Commitment> commitments;
+	private ArrayList<Commitment> commitments;
 
 	/**
 	 * Constructs a new calendar with no commitments.
@@ -52,10 +53,12 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 	 */
 	public void addCommitment(Commitment newCommitment) {
 		// Add the commitment
-		commitments.add(newCommitment);
-
+		this.commitments.add(newCommitment);
+		Collections.sort(this.commitments);
+		
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
+		this.fireContentsChanged(this, 0, commitments.size()-1);
 	}
 
 	/**
@@ -68,7 +71,9 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
-		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
+		Collections.sort(this.commitments);
+		
+		this.fireContentsChanged(this, 0, this.commitments.size()-1);
 	}
 	
 	public void setCommitments(Commitment[] commitments) {
@@ -76,6 +81,8 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
+		Collections.sort(this.commitments);
+		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -104,21 +111,23 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	@Override
-	public Object getElementAt(int index) {
+	public Commitment getElementAt(int index) {
 		return commitments.get(commitments.size() - 1 - index);
 	}
 
-	public Object getElement(int index){
+	public Commitment getElement(int index){
 		return commitments.get(commitments.size() - 1 - index);
 	}
 
 	public void removeCommitment(int index) {
-		commitments.remove(index);
+		this.commitments.remove(index);
+		Collections.sort(this.commitments);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
 	public void removeCommitment(Commitment commitment) {
-		commitments.remove(commitment);
+		this.commitments.remove(commitment);
+		Collections.sort(this.commitments);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
@@ -134,9 +143,7 @@ public class CommitmentListModel extends AbstractListModel<Object> {
 		return commitments.size();
 	}
 
-	static public List<Commitment> getList(){
-		List<Commitment> rtnCommitmentList = new ArrayList<Commitment>();
-		rtnCommitmentList.addAll(getCommitmentListModel().commitments);
-		return rtnCommitmentList;
+	public List<Commitment> getList(){
+		return commitments;
 	}
 }

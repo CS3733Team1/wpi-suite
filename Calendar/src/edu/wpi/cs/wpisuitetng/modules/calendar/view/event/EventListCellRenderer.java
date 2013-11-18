@@ -13,7 +13,7 @@ import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
-public class EventListCellRenderer extends JPanel implements ListCellRenderer {
+public class EventListCellRenderer extends JPanel implements ListCellRenderer<Event> {
 
 	private JLabel eventName;
 	private JLabel startDate;
@@ -30,11 +30,8 @@ public class EventListCellRenderer extends JPanel implements ListCellRenderer {
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList list, Object object,
+	public Component getListCellRendererComponent(JList<? extends Event> list, Event event,
 			int index, boolean isSelected, boolean cellHasFocus) {
-		
-		Event event = (Event)object;
-
 		eventName.setText("Name: " + event.getName());
 		startDate.setText("Date Start: " + event.getStartDate().toString());
 		endDate.setText("Date End: " + event.getEndDate().toString());
