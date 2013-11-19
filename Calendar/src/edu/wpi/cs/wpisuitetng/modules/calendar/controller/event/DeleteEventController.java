@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
@@ -31,7 +32,8 @@ public class DeleteEventController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for (Event event: calendarPanel.getCalendarTabPanel().getSelectedEventList()) {
+		//calendarPanel.getCalendarTabPanel().getSelectedEventList()
+		for (Event event: new ArrayList<Event>()) {
 			event.markForDeletion();
 			
 			model.removeEvent(event);

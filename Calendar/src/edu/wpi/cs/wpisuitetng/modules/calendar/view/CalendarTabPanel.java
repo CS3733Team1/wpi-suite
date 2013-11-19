@@ -31,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayMo
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWeekViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
@@ -40,9 +39,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarVie
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 
 public class CalendarTabPanel extends JPanel {
@@ -50,9 +47,6 @@ public class CalendarTabPanel extends JPanel {
 	private JButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
 
 	private JPanel calendarViewPanel;
-	
-	private CommitmentListPanel commitmentListPanel;
-	private EventListPanel eventListPanel;
 	
 	private ICalendarView calendarView;
 	private DayView dayView;
@@ -125,10 +119,7 @@ public class CalendarTabPanel extends JPanel {
 		this.add(filterCategoryTabbedPane, "growy, wmin 272, span 1 2, wrap");
 		
 		calendarViewPanel = new JPanel(new MigLayout("fill"));
-		this.add(calendarViewPanel, "wmin 1, span 2");
-
-		commitmentListPanel = new CommitmentListPanel();
-		eventListPanel = new EventListPanel();
+		this.add(calendarViewPanel, "grow, push, span 2");
 		
 		dayView = new DayView();
 		weekView = new WeekView();
@@ -156,12 +147,7 @@ public class CalendarTabPanel extends JPanel {
 			return commitmentSubTabPanel.getCommitmentsList().getSelectedValuesList();
 		else return new ArrayList<Commitment>();
 	}
-
-	public List<Event> getSelectedEventList() {
-		// TODO: Get selected events from visible Calendar View!
-		return eventListPanel.getEventList().getSelectedValuesList();
-	}
-
+	
 	public void setCalendarViewTitle(String title) {
 		calendarViewTitleLabel.setText(title);
 	}
