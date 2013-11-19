@@ -18,18 +18,17 @@ public class DeleteCategoryController implements ActionListener{
 	}
 	
 	/**
-	 * Handles the pressing of the Remove Commitment button
+	 * Handles the pressing of the Remove category button
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		Category cat = new Category();
-		System.out.println("Attempt Delete 2");
 
-		cat.markForDeletion();
+		
 		
 		// Send a request to the core to save this message 
-		final Request request = Network.getInstance().makeRequest("calendar/commitment/"+cat.getUniqueID(), HttpMethod.GET); // PUT == create
+		final Request request = Network.getInstance().makeRequest("calendar/category/"+cat.getUniqueID(), HttpMethod.GET); // PUT == create
 		request.addHeader("X-HTTP-Method-Override", "DELETE");
 		//request.setBody(cat.toJSON()); // put the new message in the body of the request
 		request.addObserver(new DeleteCategoryObserver(this)); // add an observer to process the response

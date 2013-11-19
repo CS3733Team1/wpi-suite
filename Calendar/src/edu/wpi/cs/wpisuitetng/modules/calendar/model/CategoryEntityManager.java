@@ -86,7 +86,8 @@ public class CategoryEntityManager implements EntityManager<Category> {
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific Commitments.
-		throw new WPISuiteException();
+		return (Category []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
+		//throw new WPISuiteException();
 	}
 
 	/* 
@@ -137,18 +138,26 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	public void deleteCategory(Category model){
 		db.delete(model);
 	}
-	
+	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
+		System.out.println("category entiy manager delete entity id = " + id);
+		try
+		{
+			Category todelete= (Category) db.retrieve(Category.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+			deleteCategory(todelete);
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	/*
 	 * Messages cannot be deleted
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
-	@Override
-	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-
-		// This module does not allow Commitments to be deleted, so throw an exception
-		throw new WPISuiteException();
-	}
+	
 
 	/*
 	 * Messages cannot be deleted
@@ -168,7 +177,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	@Override
 	public int Count() throws WPISuiteException {
 		// Return the number of Commitments currently in the database
-		return db.retrieveAll(new Commitment()).size();
+		return db.retrieveAll(new Category()).size();
 	}
 
 	@Override
