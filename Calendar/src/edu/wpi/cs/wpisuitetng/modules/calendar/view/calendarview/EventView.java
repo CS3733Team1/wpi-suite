@@ -26,6 +26,7 @@ public class EventView extends JPanel {
 	 */
 	public void showEvent()
 	{
+		System.out.println(e.toString());
 		int height;
 		int width;
 		double length;
@@ -41,7 +42,30 @@ public class EventView extends JPanel {
 		
 		this.setLayout(new MigLayout("fill", 
 				"[22%][76%][2%]", 
-				"[4%][" + loc + "%][" + length + "%][" + (100 - loc - length - 4) + "%]"));
+				"[5%][" + loc + "%][" + length + "%][" + (100 - loc - length - 4) + "%]"));
+		
+		
+		StringBuilder fill1 = new StringBuilder();
+		fill1.append("cell ");
+		fill1.append("1");
+		fill1.append(" ");
+		fill1.append("0");
+		fill1.append(",grow, push");
+		
+		JPanel panelfiller = new JPanel();
+		panelfiller.setOpaque(false);
+		this.add(panelfiller, fill1.toString());
+		
+		StringBuilder fill2 = new StringBuilder();
+		fill2.append("cell ");
+		fill2.append("1");
+		fill2.append(" ");
+		fill2.append("1");
+		fill2.append(",grow, push");
+		
+		panelfiller.setOpaque(false);
+		this.add(panelfiller, fill2.toString());
+		
 		
 		panelbuilder.append("cell ");
 		panelbuilder.append("1");
@@ -50,7 +74,7 @@ public class EventView extends JPanel {
 		panelbuilder.append(",grow, push");
 		
 		panel.add(new JLabel(e.getName()));
-		panel.setBackground(Color.blue);
+		panel.setBackground(Color.GREEN);
 		panel.setVisible(true);
 		this.add(panel, panelbuilder.toString());
 	}

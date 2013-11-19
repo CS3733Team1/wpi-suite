@@ -93,7 +93,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 			hourbuilder.append("cell ");
 			hourbuilder.append("0");
 			hourbuilder.append(" ");
-			hourbuilder.append(""+currenthour+1);
+			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 			
 			hour.add(new JLabel(currenthour+":00"));
@@ -107,7 +107,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 			datebuilder.append("cell ");
 			datebuilder.append("1");
 			datebuilder.append(" ");
-			datebuilder.append(""+currenthour+1);
+			datebuilder.append((new Integer(currenthour+1)).toString());
 			datebuilder.append(",grow, push");
 			
 			Date hue = new Date(currentYear-1900, currentMonth, currentDate, currenthour, 0);

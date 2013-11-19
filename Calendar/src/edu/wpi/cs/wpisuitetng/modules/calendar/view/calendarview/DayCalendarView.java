@@ -30,7 +30,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
@@ -45,25 +47,27 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
 
-public class DayCalendarView extends JLayeredPane implements ICalendarView, ListDataListener {
-	DayView dayview;
-	ArrayList<EventView> eventviewlist;
+public class DayCalendarView extends JPanel implements ICalendarView, ListDataListener {
+	private DayView dayview;
+	private ArrayList<EventView> eventviewlist;
+	private JLayeredPane calendar;
+	private Integer layer;
 	
 	public DayCalendarView()
 	{
+		layer = 0;
 		dayview = new DayView();
 		eventviewlist = new ArrayList<EventView>();
+		calendar = new JLayeredPane();
 		
-		this.setPreferredSize(new Dimension(500,500));
-		//this.setLayout(new GridLayout());
 		
-		//Dimension d = dayview.getPreferredSize();
-		dayview.setBounds(0,0,1000,1000);
+		calendar.add(dayview, layer, -1);
+		layer++;
 		
-		this.add(dayview,new Integer(2), -1);
-		//this.setLayer(dayview, 10);
-		//this.moveToBack(dayview);
+		ChangeTheWorld();
 		
+		this.add(calendar);
+		calendar.setVisible(true);
 		this.setVisible(true);
 	}
 	
@@ -79,17 +83,13 @@ public class DayCalendarView extends JLayeredPane implements ICalendarView, List
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){
 				eventviewlist.add(new EventView(eve));
-				//paneltracker.get(key).addEventPanel(eve);
 			}
 		}
 		
-		System.out.println(this.getLayer(dayview));
 		for(EventView e: eventviewlist)
 		{
-			e.setBounds(0,10,1000,1000);
-			this.add(e, new Integer(3), -1);
-			//this.setLayer(e, 0);
-			this.moveToFront(e);
+			calendar.add(e, layer,-1);
+			layer++;
 		}
 	}
 	
@@ -97,10 +97,53 @@ public class DayCalendarView extends JLayeredPane implements ICalendarView, List
 	{
 		for(EventView e: eventviewlist)
 		{
-			this.remove(e);
+			calendar.remove(e);
 		}
 		
 		eventviewlist = new ArrayList<EventView>();
+	}
+	
+	public void update(Graphics g){
+		dayview.setBounds(0,0,this.getWidth(),this.getHeight());
+		dayview.setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
+		dayview.setSize(this.getWidth(), this.getHeight());
+		
+		for (int x = 0; x < eventviewlist.size();x++){
+			eventviewlist.get(x).setBounds(0,12,this.getWidth(), this.getHeight());
+			eventviewlist.get(x).setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
+			eventviewlist.get(x).setSize(this.getWidth(), this.getHeight());
+		}
+		
+		super.update(g);
+	}
+	
+	public void repaint(){
+		dayview.setBounds(0,0,this.getWidth(),this.getHeight());
+		dayview.setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
+		dayview.setSize(this.getWidth(), this.getHeight());
+		
+		for (int x = 0; x < eventviewlist.size();x++){
+			eventviewlist.get(x).setBounds(0,12,this.getWidth(), this.getHeight());
+			eventviewlist.get(x).setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
+			eventviewlist.get(x).setSize(this.getWidth(), this.getHeight());
+		}
+		
+		super.repaint();
+	}
+	
+	public void paint(Graphics g){
+		dayview.setBounds(0,0,this.getWidth(),this.getHeight());
+		dayview.setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
+		dayview.setSize(this.getWidth(), this.getHeight());
+		
+		for (int x = 0; x < eventviewlist.size();x++){
+			eventviewlist.get(x).setBounds(0,12,this.getWidth(), this.getHeight());
+			eventviewlist.get(x).setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
+			eventviewlist.get(x).setSize(this.getWidth(), this.getHeight());
+		}
+		
+		
+		super.paint(g);
 	}
 	
 	@Override
@@ -111,16 +154,19 @@ public class DayCalendarView extends JLayeredPane implements ICalendarView, List
 	public void next() {
 		dayview.next();
 		ChangeTheWorld();
+		repaint();
 	}
 	@Override
 	public void previous() {
 		dayview.previous();
 		ChangeTheWorld();
+		repaint();
 	}
 	@Override
 	public void today() {
 		dayview.today();
 		ChangeTheWorld();
+		repaint();
 	}
 	@Override
 	public void contentsChanged(ListDataEvent arg0) {
@@ -134,4 +180,5 @@ public class DayCalendarView extends JLayeredPane implements ICalendarView, List
 	public void intervalRemoved(ListDataEvent arg0) {
 		ChangeTheWorld();
 	}
+	
 }
