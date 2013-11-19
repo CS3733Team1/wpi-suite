@@ -10,8 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +17,6 @@ import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.ChangeToolBarController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.DeleteCategoryController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.DisplayCategoryTabController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.RetrieveCategoryController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.DeleteCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.DisplayCommitmentTabController;
@@ -28,11 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.RetrieveCom
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DeleteEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventTabController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.AddFilterController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.DeleteFilterController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.DisplayFilterTabController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 
 public class MainView {
 
@@ -60,22 +52,6 @@ public class MainView {
 		calendarToolBar.refreshButtonListener(revec);
 		calendarToolBar.refreshButtonListener(rcatc);
 		calendarToolBar.refreshButtonListener(rfilc);
-		
-		calendarToolBar.categoryButtonListener(new DisplayCategoryTabController(calendarPanel));
-		
-		calendarToolBar.addCategoryButtonListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				((CategoryTabPanel) calendarPanel.getSelectedComponent()).displayAddCategory();
-			}
-		});
-		
-		calendarToolBar.deleteCategoryButtonListener(new DeleteCategoryController(calendarPanel));
-		
-		calendarToolBar.filterButtonListener(new DisplayFilterTabController(calendarPanel));
-		
-		calendarToolBar.addFilterButtonListener(new AddFilterController(calendarPanel));
-		calendarToolBar.deleteFilterButtonListener(new DeleteFilterController(calendarPanel));
 		
 		calendarToolBar.addEventButtonListener(new DisplayEventTabController(calendarPanel));
 		calendarToolBar.deleteEventButtonListener(new DeleteEventController(calendarPanel));

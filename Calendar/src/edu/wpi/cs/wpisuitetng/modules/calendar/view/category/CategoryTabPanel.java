@@ -1,38 +1,54 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.AddCategoryController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.DeleteCategoryController;
 
-public class CategoryTabPanel extends JPanel {
+public class CategoryTabPanel extends JPanel implements ActionListener {
 
+	private CategoryPanel categoryPanel;
+	private AddCategoryController addControl;
+	private DeleteCategoryController delControl;
+	private AddCategoryPanel addCatPanel;
+	
 	public CategoryTabPanel() {
-		this.add(new CategoryPanel());
-	}
-	public void displayAddCategory() {
-		this.removeAll();
-
-		this.setLayout(new MigLayout("", "[120]", "[][][120][]"));
-		JPanel p = new JPanel();
-		p.add(new JLabel("Name:"));
-		p.add(new JTextField(20));
-		ColorSwatch cs = new ColorSwatch();
-		this.add(p, "cell 0 0");
-		this.add(cs, "cell 0 2");
-		JPanel p2 = new JPanel();
-		p2.add(new JButton("Ref"));
-		p2.add(new JButton("Ok"));
-		p2.add(new JButton("Cancel"));
-		this.add(p2, "cell 0 3, alignx center");
+		addControl = new AddCategoryController();
+		delControl = new DeleteCategoryController();
+		categoryPanel = new CategoryPanel();
+		categoryPanel.setAddCategoryListener(this);
+		categoryPanel.setDeleteCategoryListener(this);
+		
+		this.setViewCategoryPanel();
 	}
 	
-	public List<Category> getSelectedCategories() {
-		return null;// categoryListPanel.getCategoryList().getSelectedValuesList();
+	public void setViewCategoryPanel() {
+		this.removeAll();
+		this.add(categoryPanel);
+	}
+	
+	public void setViewAddCategoryPanel() {
+		this.removeAll();
+		addCatPanel = new AddCategoryPanel();
+		addCatPanel.setOkListener(this);
+		addCatPanel.setCancelListener(this);
+		this.add(addCatPanel);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("add")) {
+			setViewAddCategoryPanel();
+		} else if(e.getActionCommand().equals("delete")) {
+			delControl.deleteCategories(categoryPanel.getSelectedCategories());
+		} else if(e.getActionCommand().equals("addok")) {
+			addControl.addCategory(addCatPanel.getCategory());
+			this.setViewCategoryPanel();
+		} else if(e.getActionCommand().equals("addcancel")) {
+			this.setViewCategoryPanel();
+		}
 	}
 }

@@ -24,12 +24,6 @@ public class CalendarToolBar extends JPanel {
 	// Always visible
 	private JButton refreshButton;
 
-	// Visible always except while user is focused on Manage Categories Tab
-	private JButton categoryButton;
-
-	// Visible only while user is focused on Manage Categories Tab
-	private JButton addCategoryButton, deleteCategoryButton;
-
 	// Visible always except while user is focused on Manage Filters Tab
 	private JButton filterButton;
 
@@ -47,13 +41,6 @@ public class CalendarToolBar extends JPanel {
 	public CalendarToolBar() {
 		try {
 			refreshButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
-
-			categoryButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))));
-
-			addCategoryButton = new JButton("<html>New<br/>Category</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_category.png"))));
-			deleteCategoryButton = new JButton("<html>Delete<br/>Category</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_category.png"))));
 
 			filterButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))));
 
@@ -87,7 +74,6 @@ public class CalendarToolBar extends JPanel {
 
 		this.add(Box.createHorizontalStrut(25));
 
-		this.add(categoryButton);
 		this.add(filterButton);
 
 		this.add(Box.createHorizontalStrut(25));
@@ -110,70 +96,7 @@ public class CalendarToolBar extends JPanel {
 
 		this.add(Box.createHorizontalStrut(25));
 
-		this.add(categoryButton);
 		this.add(filterButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		this.add(addCommitmentButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		this.add(addEventButton);
-	}
-
-	// Notifies CalendarToolBar that the buttons should switch to the CategoryTab button arrangement.
-	// Delete Event and Commitment removed.
-	// Category button replaced by add and remove category.
-	public void setToolBarCategory() {
-		this.removeAll();
-
-		this.add(refreshButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		JPanel categoryButtonPanel = new JPanel();
-		categoryButtonPanel.setLayout(new BoxLayout(categoryButtonPanel, BoxLayout.PAGE_AXIS));
-
-		categoryButtonPanel.add(addCategoryButton);
-		categoryButtonPanel.add(deleteCategoryButton);
-
-		this.add(categoryButtonPanel);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		this.add(filterButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		this.add(addCommitmentButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		this.add(addEventButton);
-	}
-
-	// Notifies CalendarToolBar that the buttons should switch to the FilterTab button arrangement.
-	// Delete Event and Commitment removed.
-	// Filter button replaced by add and remove filter.
-	public void setToolBarFilter() {
-		this.removeAll();
-
-		this.add(refreshButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		this.add(categoryButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		JPanel filterButtonPanel = new JPanel();
-		filterButtonPanel.setLayout(new BoxLayout(filterButtonPanel, BoxLayout.PAGE_AXIS));
-
-		filterButtonPanel.add(addFilterButton);
-		filterButtonPanel.add(deleteFilterButton);
-
-		this.add(filterButtonPanel);
 
 		this.add(Box.createHorizontalStrut(25));
 
@@ -188,30 +111,6 @@ public class CalendarToolBar extends JPanel {
 
 	public void refreshButtonListener(ActionListener l) {
 		refreshButton.addActionListener(l);
-	}
-
-	public void categoryButtonListener(ActionListener l) {
-		categoryButton.addActionListener(l);
-	}
-
-	public void addCategoryButtonListener(ActionListener l) {
-		addCategoryButton.addActionListener(l);
-	}
-
-	public void deleteCategoryButtonListener(ActionListener l) {
-		deleteCategoryButton.addActionListener(l);
-	}
-
-	public void filterButtonListener(ActionListener l) {
-		filterButton.addActionListener(l);
-	}
-
-	public void addFilterButtonListener(ActionListener l) {
-		addFilterButton.addActionListener(l);
-	}
-
-	public void deleteFilterButtonListener(ActionListener l) {
-		deleteFilterButton.addActionListener(l);
 	}
 
 	public void addEventButtonListener(ActionListener l) {

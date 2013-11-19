@@ -33,7 +33,6 @@ public class AddCommitmentController implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		Commitment commit = view.getDisplayCommitment();
-		
 	
 		System.out.println("Adding commitment...");
 		

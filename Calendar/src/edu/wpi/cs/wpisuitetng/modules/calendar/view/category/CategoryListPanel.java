@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -44,8 +43,6 @@ public class CategoryListPanel extends JPanel {
 
 		this.add(new JLabel("Categories"), BorderLayout.NORTH);
 		this.add(scrollPane, BorderLayout.CENTER);
-
-		this.setPreferredSize(new Dimension(300, 1));
 	}
 
 	public JList<Category> getCategoryList() {
