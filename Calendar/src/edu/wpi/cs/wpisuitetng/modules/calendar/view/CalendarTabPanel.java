@@ -32,12 +32,12 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWe
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
@@ -49,8 +49,8 @@ public class CalendarTabPanel extends JPanel {
 	private JPanel calendarViewPanel;
 	
 	private ICalendarView calendarView;
-	private DayView dayView;
-	private WeekView weekView;
+	private DayCalendarPanel dayView;
+	private WeekCalendarPanel weekView;
 	private MonthCalendarView monthView;
 	private YearCalendarView yearView;
 
@@ -121,8 +121,8 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewPanel = new JPanel(new MigLayout("fill"));
 		this.add(calendarViewPanel, "grow, push, span 2");
 		
-		dayView = new DayView();
-		weekView = new WeekView();
+		dayView = new DayCalendarPanel();
+		weekView = new WeekCalendarPanel();
 		monthView = new MonthCalendarView();
 		yearView = new YearCalendarView();
 

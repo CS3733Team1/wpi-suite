@@ -25,7 +25,7 @@ public class AddEventController implements ActionListener{
 	EventListModel model;
 	
 	public AddEventController(EventTabPanel view){
-		this.model = EventListModel.getEventListModel();;
+		this.model = EventListModel.getEventListModel();
 		this.view = view;
 	}
 	

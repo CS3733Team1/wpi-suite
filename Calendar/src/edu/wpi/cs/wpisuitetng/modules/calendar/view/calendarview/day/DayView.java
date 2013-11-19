@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -31,6 +33,8 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 	private int currentMonth;
 	private int currentYear;
 	private int currentDate;
+	
+	private ArrayList<Event> eventlist = new ArrayList();
 	
 	public DayView(){
 		nameList = new ArrayList<DatePanel>();
@@ -67,8 +71,8 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		eventbuilder.append("0");
 		eventbuilder.append(",grow, push");
 		
-		event.add(new JLabel("Events"));
-		event.setBackground(Color.blue);
+		event.add(new JLabel(weekNames[(new Date(currentYear-1900, currentMonth, currentDate).getDay())]));
+		event.setBackground(new Color(138,173,209));
 		this.add(event, eventbuilder.toString());
 		
 		JPanel time = new JPanel();
@@ -81,7 +85,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		timebuilder.append(",grow, push");
 		
 		time.add(new JLabel("Time"));
-		time.setBackground(Color.blue);
+		time.setBackground(new Color(138,173,209));
 		this.add(time, timebuilder.toString());
 		
 		for (int currenthour=0; currenthour < 24; currenthour++){
@@ -91,7 +95,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 			hourbuilder.append("cell ");
 			hourbuilder.append("0");
 			hourbuilder.append(" ");
-			hourbuilder.append(""+currenthour+1);
+			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 			
 			hour.add(new JLabel(currenthour+":00"));
@@ -105,7 +109,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 			datebuilder.append("cell ");
 			datebuilder.append("1");
 			datebuilder.append(" ");
-			datebuilder.append(""+currenthour+1);
+			datebuilder.append((new Integer(currenthour+1)).toString());
 			datebuilder.append(",grow, push");
 			
 			Date hue = new Date(currentYear-1900, currentMonth, currentDate, currenthour, 0);
@@ -129,23 +133,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		}
 	}
 	
-	public void ChangeTheWorld(){
-		Date key;
-		
-		ClearEvents();
-		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
-		
-		while(event.hasNext()){
-			Event eve = event.next();
-			Date evedate = eve.getStartDate();
-			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
-			
-			if (paneltracker.containsKey(key)){
-				paneltracker.get(key).addEventPanel(eve);
-			}
-		}
-	}
-	
 	@Override
 	public void next() {
 		currentDate++;
@@ -159,8 +146,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
-		
-		ChangeTheWorld();
 	}
 
 	@Override
@@ -177,7 +162,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
 		
-		ChangeTheWorld();
+		
 	}
 
 	@Override
@@ -193,22 +178,27 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
 		
-		ChangeTheWorld();
+		
+	}
+	
+	public HashMap<Date,DatePanel> getMap()
+	{
+		return paneltracker;
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		ChangeTheWorld();
+		
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		ChangeTheWorld();
+		
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		ChangeTheWorld();
+		
 	}
 
 }
