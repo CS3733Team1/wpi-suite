@@ -34,19 +34,15 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWe
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
-<<<<<<< HEAD
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekView;
-=======
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
->>>>>>> origin/dev
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
 
@@ -139,25 +135,14 @@ public class CalendarTabPanel extends JPanel {
 		eventListPanel = new EventListPanel();		
 		
 		calendarViewPanel.setLayout(new MigLayout("fill",
-<<<<<<< HEAD
-				"[grow,push][][]", 
-				"[grow,push][][]"));
-		calendarViewPanel.add(commitmentListPanel, "width 250:300:350, dock east, grow");
-
-		System.out.println("cal: "+calendarViewPanel.getSize());
-		
-		dayView = new DayCalendarPanel();
-		weekView = new WeekCalendarPanel();
-=======
 				"[grow,push][]", 
 				"[grow,push][]"));
 		calendarViewPanel.add(commitmentListPanel, 		"cell 1 0, width 250:300:350, grow");
 		calendarViewPanel.add(filterCategoryTabbedPane, "cell 1 1, width 250:300:350, grow");
 		
 		
-		dayView = new DayView();
-		weekView = new WeekView();
->>>>>>> origin/dev
+		dayView = new DayCalendarPanel();
+		weekView = new WeekCalendarPanel();
 		monthView = new MonthCalendarView();
 		yearView = new YearCalendarView();
 
@@ -214,15 +199,10 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void displayDayView() {
-		if(!(calendarView instanceof DayCalendarView)) {
+		if(!(calendarView instanceof DayCalendarPanel)) {
 			calendarViewPanel.remove((Component)calendarView);
 			calendarView = dayView;
-<<<<<<< HEAD
-			calendarViewPanel.add(dayView, "width 1000, dock west, grow");
-			dayView.repaint();
-=======
 			calendarViewPanel.add(dayView, "width 1000, cell 0 0, span 1 2, grow");
->>>>>>> origin/dev
 
 			this.setCalendarViewTitle(dayView.getTitle());
 			this.refreshCalendarView();

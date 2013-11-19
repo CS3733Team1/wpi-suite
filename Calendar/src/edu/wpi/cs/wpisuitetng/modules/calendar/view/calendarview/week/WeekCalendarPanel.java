@@ -51,7 +51,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView {
 		
 		super.paint(g);
 	}
-	
+	 
 	public void repaint(){
 		if (weeklayer != null){
 			weeklayer.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*3));
