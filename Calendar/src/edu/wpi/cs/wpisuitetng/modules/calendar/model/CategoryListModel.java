@@ -47,13 +47,13 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 	/**
 	 * Adds the given commitment to the calendar
 	 * 
-	 * @param newCommitment
-	 *            the new commitment to add
+	 * @param newCategory
+	 *            the new category to add
 	 */
 	public void addCategory(Category newCategory) {
-		// Add the commitment
+		// Add the category
 		categories.add(newCategory);
-
+		this.fireIntervalAdded(this, 0, 0);
 	}
 
 	/**
@@ -66,8 +66,7 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 		for (int i = 0; i < categories.length; i++) {
 			this.categories.add(categories[i]);
 		}
-		this.fireIntervalAdded(this, 0, 0);
-
+		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
 	public void setCategories(Category[] commitments) {
@@ -76,7 +75,6 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 			this.categories.add(commitments[i]);
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
-
 	}
 
 	/**
@@ -87,14 +85,12 @@ public class CategoryListModel extends AbstractListModel<Category>  {
 	 * remove each commitment from the model.
 	 */
 	public void emptyModel() {
-		int oldSize = getSize();
 		Iterator<Category> iterator = categories.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
-
 	}
 
 	/**

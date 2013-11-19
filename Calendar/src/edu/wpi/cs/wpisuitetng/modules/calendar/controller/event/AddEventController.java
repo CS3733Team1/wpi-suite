@@ -34,7 +34,6 @@ public class AddEventController implements ActionListener{
 
 		Event eve = view.getEvent();
 		
-		
 		System.out.println("Adding event...");
 		
 		// Send a request to the core to save this message
