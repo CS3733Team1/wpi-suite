@@ -45,6 +45,8 @@ import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.EventView;
 
 
 public class DayCalendarView extends JPanel implements ICalendarView, ListDataListener {
@@ -82,7 +84,7 @@ public class DayCalendarView extends JPanel implements ICalendarView, ListDataLi
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){
-				eventviewlist.add(new EventView(eve));
+				//eventviewlist.add(new EventView(eve));
 			}
 		}
 		

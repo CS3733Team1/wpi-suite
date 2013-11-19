@@ -1,19 +1,26 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 
 public class EventView extends JPanel {
 
 	private Event e;
 	
-	public EventView(Event e)
+	public EventView(Event e, Dimension size)
 	{
+		this.setSize(size);
+		this.setPreferredSize(size);
+		
 		this.e = e;
 		showEvent();
 		this.setOpaque(false);
@@ -42,41 +49,43 @@ public class EventView extends JPanel {
 		
 		this.setLayout(new MigLayout("fill", 
 				"[22%][76%][2%]", 
-				"[5%][" + loc + "%][" + length + "%][" + (100 - loc - length - 4) + "%]"));
+				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 		
+		System.out.println(loc);
 		
-		StringBuilder fill1 = new StringBuilder();
-		fill1.append("cell ");
-		fill1.append("1");
-		fill1.append(" ");
-		fill1.append("0");
-		fill1.append(",grow, push");
-		
-		JPanel panelfiller = new JPanel();
-		panelfiller.setOpaque(false);
-		this.add(panelfiller, fill1.toString());
-		
-		StringBuilder fill2 = new StringBuilder();
-		fill2.append("cell ");
-		fill2.append("1");
-		fill2.append(" ");
-		fill2.append("1");
-		fill2.append(",grow, push");
-		
-		panelfiller.setOpaque(false);
-		this.add(panelfiller, fill2.toString());
-		
-		
-		panelbuilder.append("cell ");
-		panelbuilder.append("1");
-		panelbuilder.append(" ");
-		panelbuilder.append("2");
-		panelbuilder.append(",grow, push");
-		
-		panel.add(new JLabel(e.getName()));
-		panel.setBackground(Color.GREEN);
-		panel.setVisible(true);
-		this.add(panel, panelbuilder.toString());
+		for (int currenthour=0; currenthour < 25; currenthour++){
+			if (currenthour-1 == loc/4){
+				JPanel event = new JPanel();
+				StringBuilder evebuilder = new StringBuilder();
+				evebuilder.append("cell ");
+				evebuilder.append("1");
+				evebuilder.append(" ");
+				evebuilder.append((new Integer(currenthour)).toString());
+				evebuilder.append(" ");
+				evebuilder.append("0");
+				evebuilder.append(" ");
+				evebuilder.append((new Integer((int)length)).toString());
+				evebuilder.append(",grow, push");
+
+				event.add(new JLabel(e.getName()));
+				event.setBackground(Color.GREEN);
+				event.setFocusable(true);
+				this.add(event, evebuilder.toString());
+			}
+			else{
+				DatePanel thesecond = new DatePanel();
+
+				StringBuilder datebuilder = new StringBuilder();
+				datebuilder.append("cell ");
+				datebuilder.append("1");
+				datebuilder.append(" ");
+				datebuilder.append((new Integer(currenthour)).toString());
+				datebuilder.append(",grow, push");
+
+				thesecond.setOpaque(false);
+				this.add(thesecond, datebuilder.toString());
+			}
+		}
 	}
 	
 }

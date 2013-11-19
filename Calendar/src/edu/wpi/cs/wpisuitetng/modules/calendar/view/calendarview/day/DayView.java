@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 import net.miginfocom.swing.MigLayout;
 

@@ -34,13 +34,13 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYe
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
 

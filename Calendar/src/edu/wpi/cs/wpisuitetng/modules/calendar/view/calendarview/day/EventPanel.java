@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Font;
 import java.awt.Graphics;

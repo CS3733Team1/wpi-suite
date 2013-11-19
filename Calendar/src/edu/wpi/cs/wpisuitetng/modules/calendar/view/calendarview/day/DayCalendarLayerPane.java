@@ -14,8 +14,6 @@ import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventView;
 
 public class DayCalendarLayerPane extends JLayeredPane implements ListDataListener{
 	private DayView dayview;
@@ -54,14 +52,12 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){
-				eventviewlist.add(new EventView(eve));
+				eventviewlist.add(new EventView(eve, this.getSize()));
 			}
 		}
 		
 		for(EventView e: eventviewlist)
 		{
-			e.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-			e.setSize(this.getWidth(), this.getHeight());
 			this.add(e, layer,-1);
 			layer++;
 		}
