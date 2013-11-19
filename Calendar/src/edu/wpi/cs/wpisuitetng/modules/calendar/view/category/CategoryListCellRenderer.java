@@ -24,6 +24,13 @@ import javax.swing.border.LineBorder;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 
+/**
+ * This class is in charge of how the categories display in the list.
+ * It creates a template and then uses that to print out every categories
+ *@version 1.0
+ *@author 
+ */
+@SuppressWarnings("serial")
 public class CategoryListCellRenderer extends JPanel implements ListCellRenderer<Commitment> {
 
 	private JLabel commitmentName;

@@ -23,6 +23,12 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 //import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 
+/**
+ * This is the view where the list of categories are displayed.
+ * Creates both a scroll pane and JList which stores all of the categories.
+ * @version Revision: 1.0
+ * @author
+ */
 public class CategoryListPanel extends JPanel {
 
 	private CommitmentListModel model;
