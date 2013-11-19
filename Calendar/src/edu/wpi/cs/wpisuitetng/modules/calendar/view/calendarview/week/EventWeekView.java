@@ -51,6 +51,21 @@ public class EventWeekView extends JPanel{
 		return weekevents;
 	}
 	
+	public int calculateLength(Event e){
+		int height;
+		int width;
+		double length;
+		int loc;
+		
+		length = (e.getEndDate().getHours() + ((double)e.getEndDate().getMinutes())/60.0) - (e.getStartDate().getHours() + ((double)e.getStartDate().getMinutes())/60.0);
+		
+		width = 79;
+		height = (int)Math.round(length*4) - 1; //each hour is 4%, leave 1% for border
+		loc = (int)Math.round((e.getStartDate().getHours() + e.getStartDate().getMinutes()/60.0)*4);
+		
+		return (int) length;
+	}
+	
 	/**
 	 * Creates a Mig-Layout panel to be displayed on the day view
 	 * @param e Event to be displayed
@@ -112,7 +127,7 @@ public class EventWeekView extends JPanel{
 
 					StringBuilder datebuilder = new StringBuilder();
 					datebuilder.append("cell ");
-					datebuilder.append("1");
+					datebuilder.append(new Integer(currentday+1).toString());
 					datebuilder.append(" ");
 					datebuilder.append((new Integer(currenthour)).toString());
 					datebuilder.append(",grow, push");
