@@ -14,7 +14,10 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 
-
+/**
+ * Data class for Events
+ * An event has a name, a start Date, and an end Date
+ */
 public class Event extends DeletableAbstractModel {
 	// Required parameters
 	private String name;
