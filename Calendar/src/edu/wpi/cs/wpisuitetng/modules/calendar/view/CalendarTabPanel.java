@@ -53,7 +53,7 @@ public class CalendarTabPanel extends JPanel {
 	private EventListPanel eventListPanel;
 	
 	private ICalendarView calendarView;
-	private DayView dayView;
+	private DayCalendarView dayView;
 	private WeekView weekView;
 	private MonthCalendarView monthView;
 	private YearCalendarView yearView;
@@ -130,7 +130,7 @@ public class CalendarTabPanel extends JPanel {
 				"[grow,push][][]"));
 		calendarViewPanel.add(commitmentListPanel, "width 250:300:350, dock east, grow");
 
-		dayView = new DayView();
+		dayView = new DayCalendarView();
 		weekView = new WeekView();
 		monthView = new MonthCalendarView();
 		yearView = new YearCalendarView();

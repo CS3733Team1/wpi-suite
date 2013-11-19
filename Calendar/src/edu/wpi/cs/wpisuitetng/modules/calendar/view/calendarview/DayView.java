@@ -32,6 +32,8 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 	private int currentYear;
 	private int currentDate;
 	
+	private ArrayList<Event> eventlist = new ArrayList();
+	
 	public DayView(){
 		nameList = new ArrayList<DatePanel>();
 		paneltracker = new HashMap<Date, DatePanel>();
@@ -129,23 +131,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		}
 	}
 	
-	public void ChangeTheWorld(){
-		Date key;
-		
-		ClearEvents();
-		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
-		
-		while(event.hasNext()){
-			Event eve = event.next();
-			Date evedate = eve.getStartDate();
-			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
-			
-			if (paneltracker.containsKey(key)){
-				paneltracker.get(key).addEventPanel(eve);
-			}
-		}
-	}
-	
 	@Override
 	public void next() {
 		currentDate++;
@@ -159,8 +144,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
-		
-		ChangeTheWorld();
 	}
 
 	@Override
@@ -177,7 +160,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
 		
-		ChangeTheWorld();
+		
 	}
 
 	@Override
@@ -193,22 +176,27 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
 		
-		ChangeTheWorld();
+		
+	}
+	
+	public HashMap<Date,DatePanel> getMap()
+	{
+		return paneltracker;
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		ChangeTheWorld();
+		
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		ChangeTheWorld();
+		
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		ChangeTheWorld();
+		
 	}
 
 }
