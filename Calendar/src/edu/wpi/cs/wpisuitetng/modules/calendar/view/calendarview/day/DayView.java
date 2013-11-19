@@ -71,8 +71,8 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		eventbuilder.append("0");
 		eventbuilder.append(",grow, push");
 		
-		event.add(new JLabel("Events"));
-		event.setBackground(Color.blue);
+		event.add(new JLabel(weekNames[(new Date(currentYear-1900, currentMonth, currentDate).getDay())]));
+		event.setBackground(new Color(138,173,209));
 		this.add(event, eventbuilder.toString());
 		
 		JPanel time = new JPanel();
@@ -85,7 +85,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener{
 		timebuilder.append(",grow, push");
 		
 		time.add(new JLabel("Time"));
-		time.setBackground(Color.blue);
+		time.setBackground(new Color(138,173,209));
 		this.add(time, timebuilder.toString());
 		
 		for (int currenthour=0; currenthour < 24; currenthour++){

@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,16 +9,18 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarLayerPane;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarScrollPane;
 
-public class DayCalendarPanel extends JPanel implements ICalendarView{
-	private DayCalendarScrollPane dayscroll;
-	private DayCalendarLayerPane daylayer;
+public class WeekCalendarPanel extends JPanel implements ICalendarView {
+
+	private WeekCalendarScrollPane weekscroll;
+	private WeekCalendarLayerPane weeklayer;
 	
-	public DayCalendarPanel(){
+	public WeekCalendarPanel(){
 		this.setBorder(BorderFactory.createTitledBorder(null,
-	            "Day View", TitledBorder.LEFT, TitledBorder.TOP,
+	            "Week View", TitledBorder.LEFT, TitledBorder.TOP,
 	            new Font("null", Font.BOLD, 12), Color.BLUE));
 		
 		
@@ -26,9 +28,9 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 				"[100%]", 
 				"[100%]"));
 		
-		daylayer = new DayCalendarLayerPane();
+		weeklayer = new WeekCalendarLayerPane();
 		
-		dayscroll = new DayCalendarScrollPane(daylayer);
+		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		
 		StringBuilder scrollbuilder = new StringBuilder();
 		scrollbuilder.append("cell ");
@@ -37,21 +39,22 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		scrollbuilder.append("0");
 		scrollbuilder.append(",grow, push");
 		
-		this.add(dayscroll, scrollbuilder.toString());
+		this.add(weekscroll, scrollbuilder.toString());
 		
+		repaint();
 	}
 	
 	public void paint(Graphics g){
-		if (daylayer != null){
-			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+		if (weeklayer != null){
+			weeklayer.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*3));
 		}
 		
 		super.paint(g);
 	}
 	
 	public void repaint(){
-		if (daylayer != null){
-			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+		if (weeklayer != null){
+			weeklayer.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*3));
 		}
 		
 		super.repaint();
@@ -60,25 +63,25 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
-		return daylayer.getTitle();
+		return weeklayer.getTitle();
 	}
 
 	@Override
 	public void next() {
 		// TODO Auto-generated method stub
-		daylayer.next();
+		weeklayer.next();
 	}
 
 	@Override
 	public void previous() {
 		// TODO Auto-generated method stub
-		daylayer.previous();
+		weeklayer.previous();
 	}
 
 	@Override
 	public void today() {
 		// TODO Auto-generated method stub
-		daylayer.today();
+		weeklayer.today();
 	}
 
 }

@@ -1,39 +1,40 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ListIterator;
 
 import javax.swing.JLayeredPane;
-import javax.swing.Scrollable;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.EventView;
 
-public class DayCalendarLayerPane extends JLayeredPane implements ListDataListener{
-	private DayView dayview;
-	private ArrayList<EventView> eventviewlist;
+public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListener{
+	private WeekView weekview;
+	private EventWeekView eventview;
+	
+	private ArrayList<Event> eventlist;
 	private Integer layer;
 	
-	public DayCalendarLayerPane()
+	public WeekCalendarLayerPane()
 	{
 		layer = 0;
-		dayview = new DayView();
-		eventviewlist = new ArrayList<EventView>();
+		weekview = new WeekView();
+		eventlist = new ArrayList<Event>();
 		
-		int height = dayview.getPreferredSize().getSize().height;
+		int height = weekview.getPreferredSize().getSize().height;
 		int width = 950;
 		
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
 		
-		dayview.setSize(width,height);
-		this.add(dayview, layer, -1);
+		weekview.setSize(width,height);
+		this.add(weekview, layer, -1);
 		layer++;
 		
 		ChangeTheWorld();
@@ -52,69 +53,62 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 			Event eve = event.next();
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
-			if (dayview.getMap().containsKey(key)){
-				eventviewlist.add(new EventView(eve, this.getSize()));
+			if (weekview.getMap().containsKey(key)){
+				eventlist.add(eve);
 			}
 		}
+		eventview = new EventWeekView(eventlist, this.getSize(), weekview.getStart());
 		
-		for(EventView e: eventviewlist)
-		{
-			this.add(e, layer,-1);
-			layer++;
-		}
+		
+		this.add(eventview, layer,-1);
+		layer++;
 	}
 	
 	public void reSize(int width){
 		this.setSize(width, this.getHeight());
 		this.setPreferredSize(new Dimension(width, this.getHeight()));
 		
-		dayview.setSize(this.getSize());
-		for (EventView e: eventviewlist){
-			e.setSize(this.getSize());
-		}
+		weekview.setSize(this.getSize());
+		eventview.setSize(this.getSize());
 		
 		repaint();
 	}
 	
 	public void repaint(){
-		dayview.repaint();
-		for(EventView e: eventviewlist)
-		{
-			e.repaint();
-		}
+		weekview.repaint();
+		eventview.repaint();
 		
 		super.repaint();
 	}
 	
 	public void ClearEvents()
 	{
-		for(EventView e: eventviewlist)
-		{
-			this.remove(e);
+		if (eventview != null){
+			this.remove(eventview);
 			layer--;
 		}
-		
-		eventviewlist = new ArrayList<EventView>();
+
+		eventlist = new ArrayList<Event>();
 	}
 	
 	public String getTitle() {
-		return dayview.getTitle();
+		return weekview.getTitle();
 	}
 	
 	public void next() {
-		dayview.next();
+		weekview.next();
 		ChangeTheWorld();
 		repaint();
 	}
 	
 	public void previous() {
-		dayview.previous();
+		weekview.previous();
 		ChangeTheWorld();
 		repaint();
 	}
 	
 	public void today() {
-		dayview.today();
+		weekview.today();
 		ChangeTheWorld();
 		repaint();
 	}

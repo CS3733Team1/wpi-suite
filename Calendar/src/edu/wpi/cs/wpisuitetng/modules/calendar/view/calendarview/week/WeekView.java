@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -17,8 +17,10 @@ import javax.swing.event.ListDataListener;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
-public class WeekView extends JPanel implements ICalendarView, ListDataListener {
+public class WeekView extends JPanel implements ICalendarView {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	
@@ -53,8 +55,6 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		this.setVisible(true);
 		
 		fillDayView();
-		
-		EventListModel.getEventListModel().addListDataListener(this);
 	}
 	
 	public void fillDayView(){
@@ -70,7 +70,7 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		timebuilder.append(",grow, push");
 		
 		time.add(new JLabel("Time"));
-		time.setBackground(Color.blue);
+		time.setBackground(new Color(138,173,209));
 		this.add(time, timebuilder.toString());
 		
 		for (int currenthour=0; currenthour < 24; currenthour++){
@@ -80,7 +80,7 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 			hourbuilder.append("cell ");
 			hourbuilder.append("0");
 			hourbuilder.append(" ");
-			hourbuilder.append(""+currenthour+1);
+			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 
 			hour.add(new JLabel(currenthour+":00"));
@@ -96,9 +96,9 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 
 				StringBuilder datebuilder = new StringBuilder();
 				datebuilder.append("cell ");
-				datebuilder.append(""+currentday);
+				datebuilder.append((new Integer(currentday)).toString());
 				datebuilder.append(" ");
-				datebuilder.append(""+currenthour+1);
+				datebuilder.append((new Integer(currenthour+1)).toString());
 				datebuilder.append(",grow, push");
 
 				Date hue = new Date(currentYear-1900, currentMonth, currentDate + (currentday - 1), currenthour, 0);
@@ -117,13 +117,13 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 
 			StringBuilder eventbuilder = new StringBuilder();
 			eventbuilder.append("cell ");
-			eventbuilder.append(""+day);
+			eventbuilder.append((new Integer(day)).toString());
 			eventbuilder.append(" ");
 			eventbuilder.append("0");
 			eventbuilder.append(",grow, push");
 
 			event.add(new JLabel(weekNames[day-1]));
-			event.setBackground(Color.blue);
+			event.setBackground(new Color(138,173,209));
 			this.add(event, eventbuilder.toString());
 
 		}
@@ -137,29 +137,6 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		int nextdate = datdate.getDate();
 		
 		return monthNames[currentMonth] + " "+ currentDate + ", " + currentYear + " - " + monthNames[nextmonth] + " "+ nextdate + ", " + nextyear;
-	}
-
-	public void ClearEvents(){
-		for (int x = 0;x < nameList.size(); x++){
-			nameList.get(x).removeEventPanel();
-		}
-	}
-	
-	public void ChangeTheWorld(){
-		Date key;
-		
-		ClearEvents();
-		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
-		
-		while(event.hasNext()){
-			Event eve = event.next();
-			Date evedate = eve.getStartDate();
-			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
-			
-			if (paneltracker.containsKey(key)){
-				paneltracker.get(key).addEventPanel(eve);
-			}
-		}
 	}
 	
 	@Override
@@ -175,8 +152,6 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
-		
-		ChangeTheWorld();
 	}
 
 	@Override
@@ -192,8 +167,6 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
-		
-		ChangeTheWorld();
 	}
 
 	@Override
@@ -209,23 +182,15 @@ public class WeekView extends JPanel implements ICalendarView, ListDataListener 
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
-		
-		ChangeTheWorld();
 	}
 
-	@Override
-	public void intervalAdded(ListDataEvent e) {
-		ChangeTheWorld();
+	
+	public HashMap<Date, DatePanel> getMap(){
+		return paneltracker;
 	}
-
-	@Override
-	public void intervalRemoved(ListDataEvent e) {
-		ChangeTheWorld();
-	}
-
-	@Override
-	public void contentsChanged(ListDataEvent e) {
-		ChangeTheWorld();
+	
+	public Date getStart(){
+		return new Date(currentYear-1900, currentMonth, currentDate);
 	}
 
 }
