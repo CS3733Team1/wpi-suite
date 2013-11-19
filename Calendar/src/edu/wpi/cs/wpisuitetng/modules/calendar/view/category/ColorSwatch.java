@@ -16,7 +16,7 @@ public class ColorSwatch extends JPanel implements ActionListener {
 
 	public ColorSwatch() {
 		selectedColor = Color.BLACK;
-		this.setLayout(new MigLayout("fill", "[][][][][][]", "[][][][][][]"));
+		this.setLayout(new MigLayout("fill", "[10]2[10]2[10]2[10]2[10]2[10]", "[10]2[10]2[10]2[10]2[10]2[10]"));
 
 		centerPanel = new JPanel();
 		centerPanel.setBackground(selectedColor);

@@ -18,7 +18,7 @@ public class CategoryPanel extends JPanel{
 	private JButton addCategoryButton, deleteCategoryButton;
 
 	public CategoryPanel() {
-		this.setLayout(new MigLayout("fill"));
+		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][grow, fill]"));
 
 		try {
 			addCategoryButton = new JButton("<html>New<br/>Category</html>",
@@ -38,7 +38,7 @@ public class CategoryPanel extends JPanel{
 		p.add(deleteCategoryButton);
 		
 		this.add(p, "wrap");
-		this.add(categoryListPanel, "grow");
+		this.add(categoryListPanel, "grow, push, wrap");
 	}
 	
 	public void setAddCategoryListener(ActionListener al) {

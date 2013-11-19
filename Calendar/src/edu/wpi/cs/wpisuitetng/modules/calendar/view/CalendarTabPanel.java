@@ -81,7 +81,7 @@ public class CalendarTabPanel extends JPanel {
 			yearViewButton = new JButton("Year",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png"))));
 			
-			filterCategoryTabbedPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
+			filterCategoryTabbedPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
 					new CommitmentListPanel());
 			
 			filterCategoryTabbedPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
@@ -114,9 +114,9 @@ public class CalendarTabPanel extends JPanel {
 		this.add(yearViewButton, "align right, split 4");
 		this.add(monthViewButton);
 		this.add(weekViewButton);
-		this.add(dayViewButton, "gapright 100");
+		this.add(dayViewButton);
 
-		this.add(filterCategoryTabbedPane, "growy, span 1 2, wrap");
+		this.add(filterCategoryTabbedPane, "growy, wmin 272, span 1 2, wrap");
 		
 		calendarViewPanel = new JPanel(new MigLayout("fill"));
 		this.add(calendarViewPanel, "wmin 1, span 2");

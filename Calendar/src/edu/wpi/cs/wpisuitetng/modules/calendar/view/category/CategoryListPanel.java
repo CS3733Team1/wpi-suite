@@ -10,7 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,7 +33,7 @@ public class CategoryListPanel extends JPanel {
 	public CategoryListPanel() {
 		this.model = CategoryListModel.getCategoryListModel();
 		
-		this.setLayout(new MigLayout("fill"));
+		this.setLayout(new MigLayout("fill, insets 0"));
 		
 		categoryList = new JList<Category>(model);
 		
@@ -43,10 +42,11 @@ public class CategoryListPanel extends JPanel {
 
 		categoryList.setLayoutOrientation(JList.VERTICAL);
 
+		categoryList.setVisibleRowCount(0);
+		
 		JScrollPane scrollPane = new JScrollPane(categoryList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-		this.add(new JLabel("Categories"), "wrap");
-		this.add(scrollPane, "grow");
+		
+		this.add(scrollPane, "grow, push");
 	}
 
 	public JList<Category> getCategoryList() {
