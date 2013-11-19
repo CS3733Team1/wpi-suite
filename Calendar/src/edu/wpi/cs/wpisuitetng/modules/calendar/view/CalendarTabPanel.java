@@ -38,13 +38,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
-<<<<<<< HEAD
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekView;
-=======
->>>>>>> origin/dev
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
@@ -144,13 +141,8 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewPanel.add(filterCategoryTabbedPane, "cell 1 1, width 250:300:350, grow");
 		
 		
-<<<<<<< HEAD
 		dayView = new DayCalendarPanel();
 		weekView = new WeekCalendarPanel();
-=======
-		dayView = new DayView();
-		weekView = new WeekView();
->>>>>>> origin/dev
 		monthView = new MonthCalendarView();
 		yearView = new YearCalendarView();
 
