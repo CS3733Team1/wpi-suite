@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -55,8 +54,6 @@ public class CommitmentListPanel extends JPanel {
 
 		this.add(new JLabel("Commitments"), BorderLayout.NORTH);
 		this.add(scrollPane2, BorderLayout.CENTER);
-
-		this.setPreferredSize(new Dimension(300, 1));
 	}
 	
 	/**
