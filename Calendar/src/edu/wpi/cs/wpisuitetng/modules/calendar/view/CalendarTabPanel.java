@@ -108,13 +108,11 @@ public class CalendarTabPanel extends JPanel {
 		JPanel p2 = new JPanel(new BorderLayout());
 		JPanel p3 = new JPanel();
 		
-		p3.setBackground(Color.orange);
 		p3.add(prevButton);
 		p3.add(homeButton);
 		p3.add(nextButton);
 
 		p2.add(p3, BorderLayout.WEST);
-		p2.setBackground(Color.red);
 		p2.add(calendarViewTitleLabel, BorderLayout.CENTER);
 
 		JPanel calendarViewButtonsPanel = new JPanel();
@@ -123,7 +121,6 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewButtonsPanel.add(monthViewButton);
 		calendarViewButtonsPanel.add(weekViewButton);
 		calendarViewButtonsPanel.add(dayViewButton);
-		calendarViewButtonsPanel.setBackground(Color.yellow);
 		calendarViewToolBar.add(p2, BorderLayout.WEST);
 		calendarViewToolBar.add(calendarViewButtonsPanel, BorderLayout.EAST);
 
