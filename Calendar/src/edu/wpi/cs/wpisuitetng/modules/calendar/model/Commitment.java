@@ -29,8 +29,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	
 	/**
 	 * Constructs a Commitment object
-	 * @param name name of commitment as String
-	 * @param dueDate due date of commitment as Date object
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
 	 */
 	public Commitment(String name, Date dueDate) {
 		this.name = name;
@@ -39,9 +39,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 
 	/**
 	 * Constructs a Commitment object
-	 * @param name name of commitment as String
-	 * @param dueDate due date of commitment as Date object
-	 * @param description description of commitment as String
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param description description of Commitment
 	 */
 	public Commitment(String name, Date dueDate, String description) {
 		this(name, dueDate);
@@ -50,9 +50,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 
 	/**
 	 * Constructs a Commitment
-	 * @param name name of commitment as String
-	 * @param dueDate due date of commitment as Date object
-	 * @param category category of commitment as Category object
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param category Category of Commitment
 	 */
 	public Commitment(String name, Date dueDate, Category category) {
 		this(name, dueDate);
@@ -60,11 +60,11 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 
 	/**
-	 * Constructs a commitment
-	 * @param name name of commitment as String
-	 * @param dueDate due date of commitment as Date object
-	 * @param description description of commitment as String
-	 * @param category category of commitment as Category object
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param description description of Commitment
+	 * @param category Category of Commitment
 	 */
 	public Commitment(String name, Date dueDate, String description,
 			Category category) {
@@ -74,28 +74,28 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 
 	/**
-	 * @return the name of the commitment as a String
+	 * @return the name of the Commitment as a String
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @param name a String holding the new name for the commitment
+	 * @param name a String holding the new name for the Commitment
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return a Date object indicating when the commitment is due
+	 * @return a Date object indicating when the Commitment is due
 	 */
 	public Date getDueDate() {
 		return dueDate;
 	}
 
 	/**
-	 * @param dueDate the date when the commitment is due, as a Date object
+	 * @param dueDate the date when the Commitment is due, as a Date object
 	 */
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
@@ -109,21 +109,21 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 
 	/**
-	 * @param description a String to set the commitment's description to
+	 * @param description a String to set the Commitment's description to
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
 	/**
-	 * @return the Category object representing the commitment's category
+	 * @return the Category object representing the Commitment's Category
 	 */
 	public Category getCategory() {
 		return category;
 	}
 
 	/**
-	 * @param category the Category object to set the commitment's category to
+	 * @param category the Category object to set the Commitment's Category to
 	 */
 	public void setCategory(Category category) {
 		this.category = category;
@@ -150,10 +150,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 	
 	/**
-	 * Generates an array of commitments from a json String that represents
-	 * an array of commitments
-	 * @param input json String representing a commitment
-	 * @return Commitment built from json String
+	 * Generates an array of Commitments from a json String
+	 * @param input json String representing an array of Commitments
+	 * @return Commitments built from json String
 	 */
 	public static Commitment[] fromJSONArray(String input)
 	{
@@ -162,8 +161,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 	
 	/**
-	 * Generates a commitment from a json String that represents a commitment
-	 * @param input json String representing a commitment
+	 * Generates a Commitment from a json String
+	 * @param input json String representing a Commitment
 	 * @return Commitment built from json String
 	 */
 	public static Commitment fromJSON(String input)
