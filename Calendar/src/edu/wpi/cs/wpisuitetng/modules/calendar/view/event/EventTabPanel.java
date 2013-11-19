@@ -20,6 +20,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -287,7 +289,6 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener{
 		displayEvent.setStartDate(dateCalendar.getStartDate());
 		displayEvent.setEndDate(dateCalendar.getEndDate());
 
-
 		if(vm == ViewMode.CREATING)
 		{
 			//TODO: create this event based on the current information of the UI components and add it to the model
@@ -526,8 +527,34 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener{
 		return readyToRemove;
 	}
 
+	@SuppressWarnings("deprecation")
 	public Event getEvent() {
-		Event thisEvent = new Event(nameTextField.getText(), dateCalendar.getStartDate(), dateCalendar.getEndDate());
+		Date startDate=new Date(dateCalendar.getStartDate().getTime());
+		Date endDate=new Date(dateCalendar.getEndDate().getTime());
+		int startHours = Integer.parseInt(startTimeHoursTextField.getText());  
+		int startMin =  Integer.parseInt(startTimeMinutesTextField.getText());
+		int endHours = Integer.parseInt(endTimeHoursTextField.getText());
+		int endMin =  Integer.parseInt(endTimeMinutesTextField.getText());
+		
+		if(startTimeDayNightComboBox.getSelectedItem()=="PM" && startHours!=12){
+			startHours+=12;
+		}
+		if(startTimeDayNightComboBox.getSelectedItem()=="AM" && startHours==12){
+			startHours=0;
+		}
+		if(endTimeDayNightComboBox.getSelectedItem()=="PM" && endHours!=12){
+			endHours+=12;
+		}
+		if(endTimeDayNightComboBox.getSelectedItem()=="AM" && endHours==12){
+			endHours=0;
+		}
+		
+		startDate.setHours(startHours);
+		startDate.setMinutes(startMin);
+		endDate.setHours(endHours);
+		endDate.setMinutes(endMin);
+		
+		Event thisEvent = new Event(nameTextField.getText(), startDate, endDate);
 		return thisEvent;
 	}
 
