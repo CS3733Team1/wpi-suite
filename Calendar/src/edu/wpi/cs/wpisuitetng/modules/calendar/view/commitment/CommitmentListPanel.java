@@ -10,16 +10,13 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-//import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 
 /**
@@ -28,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
  * @version Revision: 1.0
  * @author
  */
-@SuppressWarnings("serial")
+
 public class CommitmentListPanel extends JPanel {
 
 	private CommitmentListModel model;
@@ -40,7 +37,7 @@ public class CommitmentListPanel extends JPanel {
 	public CommitmentListPanel() {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		
-		this.setLayout(new BorderLayout());
+		this.setLayout(new MigLayout("fill, insets 0"));
 		
 		commitmentList = new JList<Commitment>(model);
 		
@@ -48,16 +45,16 @@ public class CommitmentListPanel extends JPanel {
 		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		commitmentList.setLayoutOrientation(JList.VERTICAL);
-		commitmentList.setVisibleRowCount(-1);
+		
+		commitmentList.setVisibleRowCount(0);
 
-		JScrollPane scrollPane2 = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(new JLabel("Commitments"), BorderLayout.NORTH);
-		this.add(scrollPane2, BorderLayout.CENTER);
+		this.add(scrollPane, "grow, push");
 	}
 	
 	/**
-	 * Public accsesor for the JList of commitments
+	 * Public accessor for the JList of commitments
 	 * @return JList<Commitment>: The list of Commitments.
 	 */
 	public JList<Commitment> getCommitmentList() {

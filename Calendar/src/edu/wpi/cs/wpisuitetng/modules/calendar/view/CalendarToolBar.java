@@ -24,12 +24,6 @@ public class CalendarToolBar extends JPanel {
 	// Always visible
 	private JButton refreshButton;
 
-	// Visible always except while user is focused on Manage Filters Tab
-	private JButton filterButton;
-
-	// Visible only while user is focused on Manage Filters Tab
-	private JButton addFilterButton, deleteFilterButton;
-
 	// Always Visible
 	private JButton addCommitmentButton;
 	private JButton addEventButton;
@@ -41,13 +35,6 @@ public class CalendarToolBar extends JPanel {
 	public CalendarToolBar() {
 		try {
 			refreshButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
-
-			filterButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))));
-
-			addFilterButton = new JButton("<html>New<br/>Filter</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_filter.png"))));
-			deleteFilterButton = new JButton("<html>Delete<br/>Filter</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_filter.png"))));
 
 			addCommitmentButton = new JButton("<html>New<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png"))));
@@ -71,11 +58,7 @@ public class CalendarToolBar extends JPanel {
 		this.removeAll();
 
 		this.add(refreshButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		this.add(filterButton);
-
+		
 		this.add(Box.createHorizontalStrut(25));
 
 		this.add(addCommitmentButton);
@@ -93,10 +76,6 @@ public class CalendarToolBar extends JPanel {
 		this.removeAll();
 
 		this.add(refreshButton);
-
-		this.add(Box.createHorizontalStrut(25));
-
-		this.add(filterButton);
 
 		this.add(Box.createHorizontalStrut(25));
 

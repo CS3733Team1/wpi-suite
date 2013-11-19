@@ -10,14 +10,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 
@@ -31,27 +29,32 @@ public class CategoryListPanel extends JPanel {
 
 	private CategoryListModel model;
 	private JList<Category> categoryList;
-	
+	private JScrollPane scrollPane;
+
 	public CategoryListPanel() {
 		this.model = CategoryListModel.getCategoryListModel();
-		
-		this.setLayout(new BorderLayout());
-		
+
+		this.setLayout(new MigLayout("fill, insets 0"));
+
 		categoryList = new JList<Category>(model);
-		
+
 		categoryList.setCellRenderer(new CategoryListCellRenderer());
 		categoryList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		categoryList.setLayoutOrientation(JList.VERTICAL);
-		categoryList.setVisibleRowCount(-1);
 
-		JScrollPane scrollPane = new JScrollPane(categoryList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		categoryList.setVisibleRowCount(0);
 
-		this.add(new JLabel("Categories"), BorderLayout.NORTH);
-		this.add(scrollPane, BorderLayout.CENTER);
+		scrollPane = new JScrollPane(categoryList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		this.add(scrollPane, "grow, push");
 	}
 
 	public JList<Category> getCategoryList() {
 		return categoryList;
+	}
+
+	public void clearSelection() {
+		categoryList.clearSelection();
 	}
 }

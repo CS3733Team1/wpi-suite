@@ -37,7 +37,6 @@ public class EventListPanel extends JPanel {
 		eventList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		eventList.setLayoutOrientation(JList.VERTICAL);
-		eventList.setVisibleRowCount(-1);
 
 		JScrollPane scrollPane2 = new JScrollPane(eventList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 

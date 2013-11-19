@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.AddCategoryController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.DeleteCategoryController;
 
@@ -16,6 +17,7 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 	private AddCategoryPanel addCatPanel;
 	
 	public CategoryTabPanel() {
+		this.setLayout(new MigLayout("fill"));
 		addControl = new AddCategoryController();
 		delControl = new DeleteCategoryController();
 		categoryPanel = new CategoryPanel();
@@ -27,8 +29,9 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 	
 	public void setViewCategoryPanel() {
 		this.removeAll();
-		this.add(categoryPanel);
-		this.revalidate();
+		this.add(categoryPanel, "grow, push");
+		this.invalidate();
+		this.repaint();
 	}
 	
 	public void setViewAddCategoryPanel() {
@@ -36,8 +39,9 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 		addCatPanel = new AddCategoryPanel();
 		addCatPanel.setOkListener(this);
 		addCatPanel.setCancelListener(this);
-		this.add(addCatPanel);
-		this.revalidate();
+		this.add(addCatPanel, "grow, push");
+		this.invalidate();
+		this.repaint();
 	}
 
 	@Override
@@ -46,6 +50,7 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 			setViewAddCategoryPanel();
 		} else if(e.getActionCommand().equals("delete")) {
 			delControl.deleteCategories(categoryPanel.getSelectedCategories());
+			categoryPanel.clearSelection();
 		} else if(e.getActionCommand().equals("addok")) {
 			addControl.addCategory(addCatPanel.getCategory());
 			this.setViewCategoryPanel();

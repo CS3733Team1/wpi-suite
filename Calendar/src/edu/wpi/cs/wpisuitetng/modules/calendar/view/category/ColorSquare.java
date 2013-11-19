@@ -2,15 +2,17 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Insets;
 
-import javax.swing.JToggleButton;
+import javax.swing.JButton;
 
-public class ColorSquare extends JToggleButton {
+public class ColorSquare extends JButton {
 
 	private Color color;
 	
 	public ColorSquare(Color color) {
 		this.color = color;
+		this.setMargin(new Insets(0, 0, 0, 0));
 	}
 	
 	@Override
