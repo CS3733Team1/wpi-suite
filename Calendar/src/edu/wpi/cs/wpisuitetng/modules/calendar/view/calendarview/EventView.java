@@ -15,13 +15,15 @@ public class EventView extends JPanel {
 	public EventView(Event e)
 	{
 		this.e = e;
+		showEvent();
+		this.setVisible(true);
 	}
 	/**
 	 * Creates a Mig-Layout panel to be displayed on the day view
 	 * @param e Event to be displayed
 	 * @return JPanel generated
 	 */
-	public JPanel showEvent()
+	public void showEvent()
 	{
 		int height;
 		int width;
@@ -50,8 +52,6 @@ public class EventView extends JPanel {
 		panel.setBackground(Color.blue);
 		panel.setVisible(true);
 		this.add(panel, panelbuilder.toString());
-		
-		return panel;
 	}
 	
 }

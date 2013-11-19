@@ -54,6 +54,7 @@ public class EventPanel extends JPanel{
 		this.add(dataTextArea, databuilder.toString());
 		
 		this.setVisible(true);
+		this.setFocusable(true);
 		
 	}
 	
