@@ -150,7 +150,13 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		dayLabel.setForeground(text);
 		return dayLabel;
 	}
-
+	
+	/*
+	 * Creates the list of days to be displayed in the month view
+	 * returns ArrayList<Integer>
+	 * 
+	 * NOTE: THERE IS A BUG IN THIS FUNCTION SOMEWHERE
+	 */
 	public ArrayList<Integer> makeListOfDays(Calendar c)
 	{
 		ArrayList<Integer> listOfDays = new ArrayList<Integer>();
@@ -198,6 +204,11 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		return listOfDays;
 	}
 
+	/*
+	 * takes in a calendar and determines if it is the current month
+	 * returns boolean
+	 * 
+	 */
 	public boolean isCurrentMonth(Calendar c)
 	{
 		Calendar currentMonth = Calendar.getInstance();
