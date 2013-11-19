@@ -47,7 +47,7 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		
 		cs = new ColorSwatch();
 		
-		nameTextField = new JTextField(20);
+		nameTextField = new JTextField(24);
 		nameTextField.addKeyListener(this);
 		
 		JPanel p = new JPanel();
@@ -59,7 +59,7 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		
 		this.add(p, "cell 0 0, alignx center");
 		this.add(nameErrorLabel, "cell 0 1, alignx center");
-		this.add(cs, "cell 0 2, grow");
+		this.add(cs, "cell 0 2, grow, w 180, h 180, alignx center, aligny center");
 		this.add(new JLabel("Color"), "cell 0 3, alignx center");
 		
 		JPanel p2 = new JPanel();

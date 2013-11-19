@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 
 public class CategoryPanel extends JPanel{
@@ -18,7 +18,7 @@ public class CategoryPanel extends JPanel{
 	private JButton addCategoryButton, deleteCategoryButton;
 
 	public CategoryPanel() {
-		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		this.setLayout(new MigLayout("fill"));
 
 		try {
 			addCategoryButton = new JButton("<html>New<br/>Category</html>",
@@ -37,8 +37,8 @@ public class CategoryPanel extends JPanel{
 		p.add(addCategoryButton);
 		p.add(deleteCategoryButton);
 		
-		this.add(p);
-		this.add(categoryListPanel);
+		this.add(p, "wrap");
+		this.add(categoryListPanel, "grow");
 	}
 	
 	public void setAddCategoryListener(ActionListener al) {

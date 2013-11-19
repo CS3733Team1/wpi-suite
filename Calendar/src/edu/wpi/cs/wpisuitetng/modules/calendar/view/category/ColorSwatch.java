@@ -16,12 +16,11 @@ public class ColorSwatch extends JPanel implements ActionListener {
 
 	public ColorSwatch() {
 		selectedColor = Color.BLACK;
-		this.setLayout(new MigLayout("", "[][][][][][]", "[][][][][][]"));
+		this.setLayout(new MigLayout("fill", "[][][][][][]", "[][][][][][]"));
 
 		centerPanel = new JPanel();
 		centerPanel.setBackground(selectedColor);
-		centerPanel.setBorder(new MatteBorder(5, 5, 5, 5, Color.BLACK));//UIManager.getDefaults().getColor("Panel.background")));
-				
+		centerPanel.setBorder(new MatteBorder(5, 5, 5, 5, Color.BLACK));
 
 		Color colors[] = {Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, null, Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE};
 
@@ -34,7 +33,7 @@ public class ColorSwatch extends JPanel implements ActionListener {
 						for(int y = 0; y < 2; y++) {
 							ColorSquare cs = new ColorSquare(generateRandomColor(colors[3*j + i]));
 							cs.addActionListener(this);
-							this.add(cs, "cell " + (i*2+x) + " " + (j*2+y) + ", width 20, height 20");
+							this.add(cs, "cell " + (i*2+x) + " " + (j*2+y) + ", grow");
 						}
 					}
 				}
