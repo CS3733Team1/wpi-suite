@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -21,7 +20,8 @@ public class ColorSwatch extends JPanel implements ActionListener {
 
 		centerPanel = new JPanel();
 		centerPanel.setBackground(selectedColor);
-		centerPanel.setBorder(new MatteBorder(5, 5, 5, 5, UIManager.getDefaults().getColor("Panel.background")));
+		centerPanel.setBorder(new MatteBorder(5, 5, 5, 5, Color.BLACK));//UIManager.getDefaults().getColor("Panel.background")));
+				
 
 		Color colors[] = {Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, null, Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE};
 
