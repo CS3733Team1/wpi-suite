@@ -28,10 +28,6 @@ public class ChangeToolBarController implements ChangeListener {
 		} else if(calendarPanel.getSelectedComponent() instanceof CommitmentTabPanel ||
 				calendarPanel.getSelectedComponent() instanceof EventTabPanel) {
 			toolbar.setToolBarEventCommitment();
-		} else if(calendarPanel.getSelectedComponent() instanceof CategoryTabPanel) {
-			toolbar.setToolBarCategory();
-		} else if(calendarPanel.getSelectedComponent() instanceof FilterTabPanel) {
-			toolbar.setToolBarFilter();
 		}
 	}
 }

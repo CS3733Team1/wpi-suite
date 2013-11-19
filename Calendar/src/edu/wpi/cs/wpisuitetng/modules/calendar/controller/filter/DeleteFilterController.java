@@ -30,7 +30,7 @@ public class DeleteFilterController implements ActionListener{
 		//filt.markForDeletion();
 
 		// Send a request to the core to save this message 
-		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
+		final Request request = Network.getInstance().makeRequest("calendar/filter", HttpMethod.PUT); // PUT == create
 		//request.setBody(filt.toJSON()); // put the new message in the body of the request
 		//System.out.println("controller: sending this for deletion: " + commit.toJSON());
 		request.addObserver(new DeleteFilterObserver(this)); // add an observer to process the response

@@ -21,42 +21,22 @@ import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 
-public class CategoryListCellRenderer extends JPanel implements ListCellRenderer<Commitment> {
+public class CategoryListCellRenderer extends JPanel implements ListCellRenderer<Category> {
 
-	private JLabel commitmentName;
-	private JLabel dueDate;
-	private JLabel category;
-	
-	private static final String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+	private JLabel categoryName;
 	
 	public CategoryListCellRenderer() {
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		commitmentName = new JLabel();
-		dueDate = new JLabel();
-		category = new JLabel();
-		this.add(commitmentName);
-		this.add(dueDate);
-		this.add(category);
+		categoryName = new JLabel();
+		this.add(categoryName);
 	}
 	
 	@Override
-	public Component getListCellRendererComponent(JList<? extends Commitment> list, Commitment commitment,
+	public Component getListCellRendererComponent(JList<? extends Category> list, Category category,
 			int index, boolean isSelected, boolean cellHasFocus) {
-		commitmentName.setText("Name: " + commitment.getName());
-		dueDate.setText("Date: " + daysOfWeek[commitment.getDueDate().getDay()] + ", " + MonthCalendarView.monthNames[commitment.getDueDate().getMonth()] + " "
-		+ commitment.getDueDate().getDate() + ", "
-				+ (commitment.getDueDate().getYear() + 1900));
-
-		if(commitment.getCategory()!= null) {
-			category.setVisible(true);
-			category.setText("Category: " + commitment.getCategory().getName());
-			category.setForeground(commitment.getCategory().getColor());
-		} else {
-			category.setVisible(false);
-		}
+		categoryName.setText("Name: " + category.getName());
 		
 		final Color background = UIManager.getDefaults().getColor("List.background");
 		final Color foreground = UIManager.getDefaults().getColor("List.foreground");

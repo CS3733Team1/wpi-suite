@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewNextController;
@@ -40,6 +41,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarVi
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
 
@@ -59,10 +61,16 @@ public class CalendarTabPanel extends JPanel {
 	private YearCalendarView yearView;
 
 	private JLabel calendarViewTitleLabel;
+	
+	private JTabbedPane filterCategoryTabbedPane;
 
+	private CategoryTabPanel categoryTabPanel;
+	
 	public CalendarTabPanel() {
 		this.setLayout(new BorderLayout());
 
+		filterCategoryTabbedPane = new JTabbedPane();
+		
 		try {
 			prevButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png"))));
 			homeButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/home.png"))));
@@ -76,6 +84,9 @@ public class CalendarTabPanel extends JPanel {
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/month_cal.png"))));
 			yearViewButton = new JButton("Year",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png"))));
+			
+			filterCategoryTabbedPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
+					new CategoryTabPanel());
 		} catch (IOException e) {}
 
 		homeButton.setMargin(new Insets(0, 0, 0, 0));
@@ -123,13 +134,15 @@ public class CalendarTabPanel extends JPanel {
 		add(calendarViewPanel, BorderLayout.CENTER);
 
 		commitmentListPanel = new CommitmentListPanel();
-		eventListPanel = new EventListPanel();
+		eventListPanel = new EventListPanel();		
 		
 		calendarViewPanel.setLayout(new MigLayout("fill",
-				"[grow,push][][]", 
-				"[grow,push][][]"));
-		calendarViewPanel.add(commitmentListPanel, "width 250:300:350, dock east, grow");
-
+				"[grow,push][]", 
+				"[grow,push][]"));
+		calendarViewPanel.add(commitmentListPanel, 		"cell 1 0, width 250:300:350, grow");
+		calendarViewPanel.add(filterCategoryTabbedPane, "cell 1 1, width 250:300:350, grow");
+		
+		
 		dayView = new DayView();
 		weekView = new WeekView();
 		monthView = new MonthCalendarView();
@@ -156,7 +169,7 @@ public class CalendarTabPanel extends JPanel {
 		commitmentListPanel.getCommitmentList().clearSelection();
 		eventListPanel.getEventList().clearSelection();
 	}
-	
+
 	public List<Commitment> getSelectedCommitmentList(){
 		return commitmentListPanel.getCommitmentList().getSelectedValuesList();
 	}
@@ -191,7 +204,7 @@ public class CalendarTabPanel extends JPanel {
 		if(!(calendarView instanceof DayCalendarView)) {
 			calendarViewPanel.remove((Component)calendarView);
 			calendarView = dayView;
-			calendarViewPanel.add(dayView, "width 1000, dock west, grow");
+			calendarViewPanel.add(dayView, "width 1000, cell 0 0, span 1 2, grow");
 
 			this.setCalendarViewTitle(dayView.getTitle());
 			this.refreshCalendarView();
@@ -201,7 +214,7 @@ public class CalendarTabPanel extends JPanel {
 		if(!(calendarView instanceof WeekCalendarView)){
 			calendarViewPanel.remove((Component)calendarView);
 			calendarView = weekView;
-			calendarViewPanel.add(weekView, "width 1000, dock west, grow");
+			calendarViewPanel.add(weekView, "width 1000, cell 0 0, span 1 2, grow");
 
 			this.setCalendarViewTitle(weekView.getTitle());
 			this.refreshCalendarView();
@@ -212,7 +225,7 @@ public class CalendarTabPanel extends JPanel {
 		if(!(calendarView instanceof MonthCalendarView)) {
 			calendarViewPanel.remove((Component)calendarView);
 			calendarView = monthView;
-			calendarViewPanel.add(monthView, "width 1000, dock west, grow");
+			calendarViewPanel.add(monthView, "width 1000, cell 0 0, span 1 2, grow");
 
 			this.setCalendarViewTitle(monthView.getTitle());
 			this.refreshCalendarView();
@@ -223,7 +236,7 @@ public class CalendarTabPanel extends JPanel {
 		if(!(calendarView instanceof YearCalendarView)){
 			calendarViewPanel.remove((Component)calendarView);
 			calendarView = yearView;
-			calendarViewPanel.add(yearView, "width 1000, dock west, grow");
+			calendarViewPanel.add(yearView, "width 1000, cell 0 0, span 1 2, grow");
 
 			this.setCalendarViewTitle(yearView.getTitle());
 			this.refreshCalendarView();
