@@ -16,6 +16,7 @@ public class EventView extends JPanel {
 	{
 		this.e = e;
 		showEvent();
+		this.setOpaque(false);
 		this.setVisible(true);
 	}
 	/**

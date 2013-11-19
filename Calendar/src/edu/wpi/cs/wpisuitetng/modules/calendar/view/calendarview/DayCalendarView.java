@@ -54,12 +54,14 @@ public class DayCalendarView extends JLayeredPane implements ICalendarView, List
 		dayview = new DayView();
 		eventviewlist = new ArrayList<EventView>();
 		
-		System.out.println(this.getWidth() + " "+ this.getHeight());
-		
 		this.setPreferredSize(new Dimension(500,500));
-		this.setLayout(new GridLayout());
+		//this.setLayout(new GridLayout());
 		
-		this.add(dayview,new Integer(1), 2);
+		//Dimension d = dayview.getPreferredSize();
+		dayview.setBounds(0,0,1000,1000);
+		
+		this.add(dayview,new Integer(2), -1);
+		//this.setLayer(dayview, 10);
 		//this.moveToBack(dayview);
 		
 		this.setVisible(true);
@@ -81,10 +83,12 @@ public class DayCalendarView extends JLayeredPane implements ICalendarView, List
 			}
 		}
 		
+		System.out.println(this.getLayer(dayview));
 		for(EventView e: eventviewlist)
 		{
-			this.setLayout(new GridLayout());
-			this.add(e, new Integer(2), 1);
+			e.setBounds(0,10,1000,1000);
+			this.add(e, new Integer(3), -1);
+			//this.setLayer(e, 0);
 			this.moveToFront(e);
 		}
 	}
