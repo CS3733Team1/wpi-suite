@@ -48,7 +48,6 @@ public class CommitmentListPanel extends JPanel {
 		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		commitmentList.setLayoutOrientation(JList.VERTICAL);
-		commitmentList.setVisibleRowCount(-1);
 
 		JScrollPane scrollPane2 = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 

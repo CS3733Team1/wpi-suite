@@ -28,7 +28,8 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 	public void setViewCategoryPanel() {
 		this.removeAll();
 		this.add(categoryPanel);
-		this.revalidate();
+		this.invalidate();
+		this.repaint();
 	}
 	
 	public void setViewAddCategoryPanel() {
@@ -37,7 +38,8 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 		addCatPanel.setOkListener(this);
 		addCatPanel.setCancelListener(this);
 		this.add(addCatPanel);
-		this.revalidate();
+		this.invalidate();
+		this.repaint();
 	}
 
 	@Override

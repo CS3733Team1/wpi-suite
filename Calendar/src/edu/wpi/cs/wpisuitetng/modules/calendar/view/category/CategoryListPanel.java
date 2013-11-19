@@ -43,7 +43,6 @@ public class CategoryListPanel extends JPanel {
 		categoryList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		categoryList.setLayoutOrientation(JList.VERTICAL);
-		categoryList.setVisibleRowCount(-1);
 
 		JScrollPane scrollPane = new JScrollPane(categoryList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
