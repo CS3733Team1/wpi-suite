@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.Insets;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -40,6 +41,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 
@@ -62,10 +64,14 @@ public class CalendarTabPanel extends JPanel {
 	
 	private JTabbedPane filterCategoryTabbedPane;
 	
+	private CommitmentSubTabPanel commitmentSubTabPanel;
+	
 	public CalendarTabPanel() {
 		this.setLayout(new MigLayout());
 
 		filterCategoryTabbedPane = new JTabbedPane();
+		
+		commitmentSubTabPanel = new CommitmentSubTabPanel();
 		
 		try {
 			prevButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png"))));
@@ -82,7 +88,7 @@ public class CalendarTabPanel extends JPanel {
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png"))));
 			
 			filterCategoryTabbedPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
-					new CommitmentListPanel());
+					commitmentSubTabPanel);
 			
 			filterCategoryTabbedPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
 					new CategoryTabPanel());
@@ -142,15 +148,17 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void resetSelection() {
-		commitmentListPanel.getCommitmentList().clearSelection();
-		eventListPanel.getEventList().clearSelection();
+		commitmentSubTabPanel.getCommitmentsList().clearSelection();
 	}
 
 	public List<Commitment> getSelectedCommitmentList(){
-		return commitmentListPanel.getCommitmentList().getSelectedValuesList();
+		if(filterCategoryTabbedPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
+			return commitmentSubTabPanel.getCommitmentsList().getSelectedValuesList();
+		else return new ArrayList<Commitment>();
 	}
 
-	public List<Event> getSelectedEventList(){
+	public List<Event> getSelectedEventList() {
+		// TODO: Get selected events from visible Calendar View!
 		return eventListPanel.getEventList().getSelectedValuesList();
 	}
 

@@ -56,8 +56,8 @@ public class MainView {
 		calendarToolBar.addEventButtonListener(new DisplayEventTabController(calendarPanel));
 		calendarToolBar.deleteEventButtonListener(new DeleteEventController(calendarPanel));
 		
-		calendarToolBar.addCommitmentButtonListener(new DisplayCommitmentTabController(calendarPanel));
 		calendarToolBar.deleteCommitmentButtonListener(new DeleteCommitmentController(calendarPanel));
+		calendarToolBar.addCommitmentButtonListener(new DisplayCommitmentTabController(calendarPanel));
 		
 		tabs = new ArrayList<JanewayTabModel>();
 

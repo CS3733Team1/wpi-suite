@@ -12,19 +12,21 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class DeleteCommitmentController implements ActionListener{
+public class DeleteCommitmentController implements ActionListener {
 	private CommitmentListModel model;
 	private CalendarPanel calendarPanel;
 	
-	public DeleteCommitmentController(CalendarPanel calendarPanel){
+	public DeleteCommitmentController(CalendarPanel calendarPanel) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.calendarPanel = calendarPanel;
 	}
@@ -35,9 +37,11 @@ public class DeleteCommitmentController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		List<Commitment> list = ((CalendarTabPanel)(calendarPanel.getSelectedComponent())).getSelectedCommitmentList();
+		
 		System.out.println("Called Delete Commitments...");
 		
-		for (Commitment commit: calendarPanel.getCalendarTabPanel().getSelectedCommitmentList()) {
+		for (Commitment commit:list) {
 			commit.markForDeletion();
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
@@ -46,9 +50,6 @@ public class DeleteCommitmentController implements ActionListener{
 			request.addObserver(new DeleteCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
-		
-		calendarPanel.refreshSelectedPanel();
-		
 	}
 	
 	public void removeCommitmentFromModel(Commitment commit){

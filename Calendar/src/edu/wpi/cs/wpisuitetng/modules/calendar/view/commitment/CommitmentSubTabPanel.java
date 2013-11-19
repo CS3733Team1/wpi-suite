@@ -1,16 +1,26 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import javax.swing.JList;
 import javax.swing.JPanel;
 
-public class CommitmentSubTabPanel extends JPanel implements ActionListener {
+import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+public class CommitmentSubTabPanel extends JPanel {
+	
+	private CommitmentListPanel commitmentListPanel;
+	
+	public CommitmentSubTabPanel() {
+		this.setLayout(new MigLayout("fill"));
 		
+		commitmentListPanel = new CommitmentListPanel();
+		JPanel p = new JPanel(new MigLayout("fill"));
+		p.add(commitmentListPanel, "grow, push");
+		
+		this.add(p, "grow, push");
 	}
-
+	
+	public JList<Commitment> getCommitmentsList() {
+		return commitmentListPanel.getCommitmentList();
+	}
 }

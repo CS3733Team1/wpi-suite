@@ -13,7 +13,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 
 public class CategoryPanel extends JPanel{
-	private CategoryListPanel categoryListPanel;
+	CategoryListPanel categoryListPanel;
 
 	private JButton addCategoryButton, deleteCategoryButton;
 
@@ -38,7 +38,7 @@ public class CategoryPanel extends JPanel{
 		p.add(deleteCategoryButton);
 		
 		this.add(p, "wrap");
-		this.add(categoryListPanel, "grow, push, wrap");
+		this.add(categoryListPanel, "grow, push");
 	}
 	
 	public void setAddCategoryListener(ActionListener al) {
@@ -51,5 +51,9 @@ public class CategoryPanel extends JPanel{
 
 	public List<Category> getSelectedCategories() {
 		return categoryListPanel.getCategoryList().getSelectedValuesList();
+	}
+
+	public void clearSelection() {
+		categoryListPanel.clearSelection();
 	}
 }
