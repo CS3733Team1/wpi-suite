@@ -86,7 +86,8 @@ public class CategoryEntityManager implements EntityManager<Category> {
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific Commitments.
-		throw new WPISuiteException();
+		return (Category []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
+
 	}
 
 	/* 
@@ -146,8 +147,17 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 
-		// This module does not allow Commitments to be deleted, so throw an exception
-		throw new WPISuiteException();
+		System.out.println("Category entity manager delete id = " + id);
+		try
+		{
+			Category todelete= (Category) db.retrieve(Category.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+			deleteCategory(todelete);
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/*
@@ -159,7 +169,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	public void deleteAll(Session s) throws WPISuiteException {
 
 		// This module does not allow Commitments to be deleted, so throw an exception
-		throw new WPISuiteException();
+		db.deleteAll(new Category());
 	}
 
 	/*
