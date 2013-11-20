@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.AbstractListModel;
+import javax.swing.DefaultComboBoxModel;
 
-public class CategoryListModel extends AbstractListModel<Category>  { 
+public class CategoryListModel extends DefaultComboBoxModel<Category> { 
 
 	/**
 	 * This is a model for the commitment list. It contains all of the commitments to be

@@ -2,11 +2,9 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
@@ -68,7 +66,12 @@ public class EventView extends JPanel {
 				evebuilder.append(",grow, push");
 
 				event.add(new JLabel(e.getName()));
-				event.setBackground(Color.GREEN);
+				if (e.getCategory() != null){
+					event.setBackground(e.getCategory().getColor());
+				}
+				else{
+					event.setBackground(Color.CYAN);
+				}
 				event.setFocusable(true);
 				this.add(event, evebuilder.toString());
 			}

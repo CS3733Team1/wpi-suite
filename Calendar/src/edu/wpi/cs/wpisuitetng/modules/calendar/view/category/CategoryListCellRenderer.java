@@ -43,8 +43,11 @@ public class CategoryListCellRenderer extends JPanel implements ListCellRenderer
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Category> list, Category category,
 			int index, boolean isSelected, boolean cellHasFocus) {
-		colorSquare.setBackground(category.getColor());
-		categoryName.setText(category.getName());
+		
+		if(category != null) {
+			colorSquare.setBackground(category.getColor());
+			categoryName.setText(category.getName());
+		}
 		
 		final Color background = UIManager.getDefaults().getColor("List.background");
 		final Color foreground = UIManager.getDefaults().getColor("List.foreground");

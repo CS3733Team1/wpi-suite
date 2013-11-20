@@ -112,7 +112,13 @@ public class EventWeekView extends JPanel{
 				evebuilder.append(",grow, push");
 
 				event.add(new JLabel(e.getName()));
-				event.setBackground(Color.GREEN);
+				
+				if (e.getCategory() != null){
+					event.setBackground(e.getCategory().getColor());
+				}
+				else{
+					event.setBackground(Color.CYAN);
+				}
 				event.setFocusable(true);
 				this.add(event, evebuilder.toString());
 				occupied.add(new Integer(loc/4));

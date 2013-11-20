@@ -20,7 +20,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.DateFormat;
 import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
@@ -38,10 +37,12 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ErrorPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.PickCategoryPanel;
 
 /**
  * This panel tab is added whenever the user wants to create a new event or edit an existing one
@@ -84,6 +85,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener{
 	private JTextField endTimeMinutesTextField;
 	private JComboBox<String> endTimeDayNightComboBox;
 	private JComboBox<String> startTimeDayNightComboBox;
+	private PickCategoryPanel pickCategoryPanel;
 	private JLabel startTimeColonLabel;
 	private JLabel endTimeColonLabel;
 	private JLabel nameErrorLabel;
@@ -274,6 +276,9 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener{
 		endTimeErrorLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		endTimeErrorLabel.setForeground(Color.RED);
 		dataPanel.add(endTimeErrorLabel, "cell 6 4 3 1");
+		
+		pickCategoryPanel = new PickCategoryPanel();
+		dataPanel.add(pickCategoryPanel);
 	}
 
 	public void killPanel() {
@@ -535,6 +540,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener{
 		int startMin =  Integer.parseInt(startTimeMinutesTextField.getText());
 		int endHours = Integer.parseInt(endTimeHoursTextField.getText());
 		int endMin =  Integer.parseInt(endTimeMinutesTextField.getText());
+		Category cat = pickCategoryPanel.getSelectedCategory();
 		
 		if(startTimeDayNightComboBox.getSelectedItem()=="PM" && startHours!=12){
 			startHours+=12;
@@ -554,7 +560,7 @@ public class EventTabPanel extends JPanel implements KeyListener, MouseListener{
 		endDate.setHours(endHours);
 		endDate.setMinutes(endMin);
 		
-		Event thisEvent = new Event(nameTextField.getText(), startDate, endDate);
+		Event thisEvent = new Event(nameTextField.getText(), startDate, endDate, cat);
 		return thisEvent;
 	}
 

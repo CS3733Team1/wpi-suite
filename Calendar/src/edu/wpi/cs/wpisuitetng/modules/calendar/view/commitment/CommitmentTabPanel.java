@@ -24,7 +24,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,6 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitme
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ViewMode;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.PickCategoryPanel;
 
 /**
  * This panel tab is added whenever the user wants to create a new commitment or edit an existing one
@@ -62,7 +62,7 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 	//components that will be in the panel
 	private JTextField nameTextField;
 	private JTextArea descriptionTextArea;
-	private JComboBox<String> categoryComboBox;
+	private PickCategoryPanel pickCategoryPanel;
 	private JPanel buttonPanel;
 	private JPanel dataPanel;
 	private JFormattedTextField dueDateBox;
@@ -217,15 +217,11 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 		descriptionTextArea.setSize(new Dimension(200, 50));
 		dataPanel.add(descriptionTextArea, "cell 1 3,growx,aligny top");
 		
-		//Temporary Categories
-		String[] tempCategoriesNames = {"None", "Personal", "Team", "Important!"};
-		
 		//Category drop down box and adding it to dataPanel
 		JLabel labelCat = new JLabel("Category: ");
-		categoryComboBox = new JComboBox<String>(tempCategoriesNames);
-		categoryComboBox.setPreferredSize(new Dimension(200, 20));
+		pickCategoryPanel = new PickCategoryPanel();
 		dataPanel.add(labelCat, "cell 0 4,growx,aligny top");
-		dataPanel.add(categoryComboBox, "cell 1 4,growx,aligny top");
+		dataPanel.add(pickCategoryPanel, "cell 1 4,growx,aligny top");
 	}
 	
 	// Kills the current tab
@@ -245,7 +241,7 @@ public class CommitmentTabPanel extends JPanel  implements KeyListener, MouseLis
 		displayCommitment.setName(name);
 		displayCommitment.setDueDate(date);
 		displayCommitment.setDescription(description);
-		displayCommitment.setCategory(categories[categoryComboBox.getSelectedIndex()]);
+		displayCommitment.setCategory(pickCategoryPanel.getSelectedCategory());
 
 		if(vm == ViewMode.CREATING)
 		{
