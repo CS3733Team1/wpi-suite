@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -95,11 +94,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		Iterator<Commitment> iterator = commitments.iterator();
-		while (iterator.hasNext()) {
-			iterator.next();
-			iterator.remove();
-		}
+		commitments.removeAll(getList());
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 

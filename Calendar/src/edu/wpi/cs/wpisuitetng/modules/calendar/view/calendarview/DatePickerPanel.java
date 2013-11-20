@@ -92,15 +92,12 @@ public class DatePickerPanel extends JPanel {
 
 		System.out.println(parsedCal.get(Calendar.YEAR) + "   " + today.get(Calendar.YEAR));
 		
-		if(!(parsedCal.get(Calendar.YEAR) >= today.get(Calendar.YEAR) &&
-				parsedCal.get(Calendar.MONTH) >= today.get(Calendar.MONTH) &&
-				parsedCal.get(Calendar.DATE) >= today.get(Calendar.DATE)))
-			return 2;
+		if(parsedCal.getTimeInMillis() < today.getTimeInMillis()) return 2;
 		else return 0;
 	}
 
 	public Date getDate() {
-		return new Date(pickedDate.get(Calendar.YEAR)-1900, pickedDate.get(Calendar.MONTH), pickedDate.get(Calendar.DATE));
+		return (Date)inputField.getValue();
 	}
 
 	public void setKeyListener(KeyListener l) {

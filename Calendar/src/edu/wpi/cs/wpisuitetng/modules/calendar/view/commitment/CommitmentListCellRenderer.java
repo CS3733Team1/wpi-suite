@@ -30,7 +30,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarVi
  *@version 1.0
  *@author 
  */
-@SuppressWarnings("serial")
 public class CommitmentListCellRenderer extends JPanel implements ListCellRenderer<Commitment> {
 
 	private JLabel commitmentName;
@@ -61,7 +60,7 @@ public class CommitmentListCellRenderer extends JPanel implements ListCellRender
 		+ commitment.getDueDate().getDate() + ", "
 				+ (commitment.getDueDate().getYear() + 1900));
 
-		if(commitment.getCategory()!= null) {
+		if(commitment.getCategory()!= null && !commitment.getCategory().equals("None")) {
 			category.setVisible(true);
 			category.setText("Category: " + commitment.getCategory().getName());
 			category.setForeground(commitment.getCategory().getColor());

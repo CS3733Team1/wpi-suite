@@ -10,29 +10,16 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.ListIterator;
 
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -48,7 +35,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	private ArrayList<JLabel> nameLabelList = new ArrayList<JLabel>();
 	private ArrayList<DatePanel> nameList = new ArrayList<DatePanel>();
 	
-	private HashMap<Date, DatePanel> paneltracker;
+	private int[][] listOfDaysCalendar = new int[7][6];
+	
+	private HashMap<Date, DatePanel2> paneltracker;
 
 	private Calendar mycal;
 	private int currentMonth;
@@ -61,7 +50,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	 * Create the frame.
 	 */
 	public MonthCalendarView() {
-		paneltracker = new HashMap<Date, DatePanel>();
+		paneltracker = new HashMap<Date, DatePanel2>();
 		
 		Date today = new Date();
 		
@@ -71,85 +60,32 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		mycal = new GregorianCalendar(currentYear, currentMonth, 1);
 		this.setBackground(Color.white);
 		
-		this.setLayout(new MigLayout("fill", 
+		this.setLayout(new MigLayout("fill, insets 0", 
 				"[14%][14%][14%][14%][14%][14%][14%]", 
 				"[14%][14%][14%][14%][14%][14%][14%]"));
 		
-		
 		addDayLabels();
-		addDays(mycal);
-		this.setVisible(true);
-		
-		SetDate();
+		addDaysToCalendar(mycal);
+
 		EventListModel.getEventListModel().addListDataListener(this);
 	}
 	
-	public void makeGridPanels(Calendar c)
-	{
-		ArrayList<Integer> listDays = makeListOfDays(c);
-		int temp =7;
-//		nameList = new ArrayList<JPanel>();
-		for(int i = 1; i < 7; i++)
-		{	
-			for(int j = 0; j <7; j++)
-			{
-				JLabel dayLabel = addDay(listDays.get(temp-7),Color.black);
-				StringBuilder sb = new StringBuilder();
-				sb.append("cell ");
-				sb.append(j);
-				sb.append(" ");
-				sb.append(i);
-				sb.append(",grow, push");
-				
-				nameList.add(new DatePanel());
-				nameList.get(temp).setBackground(Color.white);
-				nameList.get(temp).add(dayLabel);
-				
-				this.add(nameList.get(temp), sb.toString());
-				
-				temp++;
-			}
-		}
-	}
-	
-	
-	
 
-	
+	/**
+	 * Adds Labels for the Days of the Week
+	 */
 
 	public void addDayLabels()
 	{
-		nameLabelList = new ArrayList<JLabel>();
-		nameList = new ArrayList<DatePanel>();
-		for(int i = 0; i < weekNames.length; i++)
-		{	
-			StringBuilder sb = new StringBuilder();
-			sb.append("cell ");
-			sb.append(i);
-			sb.append(" ");
-			sb.append(0);
-			sb.append(",grow, push");
-			
-			nameList.add(new DatePanel());
-			nameList.get(i).setBackground(new Color(138,173,209));
-			nameLabelList.add(new JLabel(weekNames[i]));
-			nameList.get(i).add(nameLabelList.get(i));
-			
-			
-			this.add(nameList.get(i), sb.toString());
+		for(int i = 0; i < 7; i++)
+		{
+			JPanel panel = new JPanel();
+			panel.setBackground(new Color(138,173,209));
+			panel.add(new JLabel(weekNames[i]));
+			this.add(panel, "cell "+i+" 0, grow, hmin 70, hmax 40");
 		}
 	}
 	
-	
-	public JLabel addDay( int day, Color text)
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("");
-		sb.append(day);
-		JLabel dayLabel = new JLabel(sb.toString());
-		dayLabel.setForeground(text);
-		return dayLabel;
-	}
 	
 	/*
 	 * Creates the list of days to be displayed in the month view
@@ -157,16 +93,14 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	 * 
 	 * NOTE: THERE IS A BUG IN THIS FUNCTION SOMEWHERE
 	 */
-	public ArrayList<Integer> makeListOfDays(Calendar c)
-	{
-		ArrayList<Integer> listOfDays = new ArrayList<Integer>();
+	public void makeListOfDays(Calendar c)
+	{	
 		int numberOfDaysInPreviousMonth;
 		int nextMonth = c.get(Calendar.MONTH);
 		int nextYear = c.get(Calendar.YEAR);
 		int daysInMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH); 
 		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-		c.set(Calendar.DAY_OF_MONTH, daysInMonth);
-
+		
 		if (c.get(Calendar.MONTH) == 0){
 			nextMonth = 11;
 			nextYear = c.get(Calendar.YEAR) -1;
@@ -176,33 +110,50 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		}
 		Calendar previous = new GregorianCalendar(nextYear, nextMonth, 1);
 		numberOfDaysInPreviousMonth = previous.getActualMaximum(Calendar.DAY_OF_MONTH);
-		int previousDays = 	dayOfWeek-1;
-		int day = 1;
-		int nextMonthDays = 1;
-		for(int i =0; i < 42; i++)
-		{
-			if(previousDays > 0)
-			{
-				previousDays--;
-				listOfDays.add(numberOfDaysInPreviousMonth-previousDays);
-			}
-			else if(daysInMonth > 0 && previousDays == 0)
-			{
-				listOfDays.add(day);
-				daysInMonth--;
-				day++;
-			}
-			else
-			{
-				listOfDays.add(nextMonthDays);
-				nextMonthDays++;
-			}
+		
+		addPreviousMonth(numberOfDaysInPreviousMonth,dayOfWeek);
+		addCurrentMonth(dayOfWeek,daysInMonth);
+		addNextMonth(daysInMonth+(dayOfWeek-1));
 			
-			System.out.println("day:"+day);
+	}
+
+	private void addNextMonth(int days) {
+		int day = 1;
+		for(int i = days; i < 42; i++)
+		{
+			int x = i%7;
+			int y = (i/7);
+			listOfDaysCalendar[x][y] = day;
+			day++;	
 		}
 		
-		return listOfDays;
 	}
+
+
+	private void addPreviousMonth(int daysInMonth, int dayOfWeek) {
+		int day = 0;
+		for(int i = dayOfWeek-2; i>= 0; i--)
+		{
+			listOfDaysCalendar[i][0] = daysInMonth-day;
+			day++;
+		}
+		
+	}
+	private void addCurrentMonth(int dayOfWeek, int daysInMonth)
+	{
+		int day = 1;
+		for(int i = dayOfWeek-1; i < daysInMonth+dayOfWeek; i++)
+		{
+			int x = i%7;
+			int y = (i/7);	
+			System.out.println("X: "+ x+ "Y:"+y+"Day"+day);
+			
+			
+			listOfDaysCalendar[x][y] = day;
+			day++;
+		}
+	}
+	
 
 	/*
 	 * takes in a calendar and determines if it is the current month
@@ -216,88 +167,171 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		int todayYear = currentMonth.get(Calendar.YEAR);
 		int givenMonth = c.get(Calendar.MONTH);
 		int givenYear = c.get(Calendar.YEAR);
-
+		
 		if(todayMonth == givenMonth && todayYear == givenYear)
-		{
-			System.out.println("TRUE");
 			return true;
+		else 
+			return false;
+	}
+	
+	public DatePanel2 constructDay (Calendar cal,int x, int y, int day, Color text, Color background)
+	{
+		DatePanel2 dayPanel = new DatePanel2(constructDate(cal,day));
+		dayPanel.setColors(text,background);
+		dayPanel.setDay(day);
+		this.add(dayPanel, "cell "+x+" "+(y+1)+", grow, hmin 27");
+		return dayPanel;
+	}
+	
+	private Date constructDate(Calendar cal, int day)
+	{
+		int setYear = cal.get(Calendar.YEAR)-1900;
+		int setMonth = cal.get(Calendar.MONTH);
+		return new Date(setYear, setMonth, day);
+		
+	}
+	
+	public Calendar nextMonth(Calendar cal)
+	{
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		if (month == 11){
+			month = 0;
+			year++;
 		}
-		else
-		{
-			System.out.println("False");
+		else{
+			month++;
+		}
+		Calendar next = new GregorianCalendar(year, month, 1);
+		
+		return next;
+	}
+	
+	public Calendar previousMonth(Calendar cal)
+	{
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		if (month == 0){
+			month = 11;
+			year--;
+		}
+		else{
+			month--;
+		}
+		Calendar next = new GregorianCalendar(year, month, 1);
+		return next;
+	}
+	
+	
+	
+	public void addDaysToCalendar(Calendar cal)
+	{
+		makeListOfDays(cal);
+		int index = 0;
+		for(int i = 0; i < 6; i++){
+			for(int j = 0; j< 7; j++){
+				if(isToday(cal,listOfDaysCalendar[j][i])){
+					DatePanel2 dayPanel = new DatePanel2(constructDate(cal,listOfDaysCalendar[j][i]));
+					dayPanel = constructDay(cal,j, i, listOfDaysCalendar[j][i],Color.black,new Color(236,252,144));
+					setDate(cal,listOfDaysCalendar[j][i], dayPanel);
+				}
+				else if(isPreviousMonth(cal, index) ||isNextMonth(cal, index)){
+					if(isPreviousMonth(cal, index)){
+						DatePanel2 dayPanel = new DatePanel2(constructDate(previousMonth(cal),listOfDaysCalendar[j][i]));
+						dayPanel = constructDay(previousMonth(cal),j, i, listOfDaysCalendar[j][i],Color.gray, Color.white);
+						setDatePrevious(cal,listOfDaysCalendar[j][i],dayPanel);
+					}
+					else{
+						DatePanel2 dayPanel = new DatePanel2(constructDate(nextMonth(cal),listOfDaysCalendar[j][i]));
+						dayPanel = constructDay(nextMonth(cal),j, i, listOfDaysCalendar[j][i],Color.gray, Color.white);
+						setDateNext(cal,listOfDaysCalendar[j][i], dayPanel);
+					}
+				}
+				else{
+					DatePanel2 dayPanel = new DatePanel2(constructDate(cal,listOfDaysCalendar[j][i]));
+					dayPanel=constructDay(cal,j, i, listOfDaysCalendar[j][i],Color.black, Color.white);
+					setDate(cal,listOfDaysCalendar[j][i], dayPanel);
+				}
+				index++;
+			}
+		}
+
+	}
+
+	private void setDate(Calendar cal, int day, DatePanel2 dayPanel) {
+		int setYear = cal.get(Calendar.YEAR)-1900;
+		int setMonth = cal.get(Calendar.MONTH);
+		Date today = new Date(setYear, setMonth, day);
+		dayPanel.setDate(today);
+	}
+
+
+	private void setDateNext(Calendar cal, int day, DatePanel2 dayPanel) {
+		int setYear = cal.get(Calendar.YEAR)-1900;
+		int setMonth = cal.get(Calendar.MONTH);
+		if (setMonth == 11){
+			setMonth = 0;
+			setYear++;
+		}
+		else{
+			setMonth++;
+		}
+		Date today = new Date(setYear, setMonth, day);
+		dayPanel.setDate(today);
+	}
+
+
+	private void setDatePrevious(Calendar cal, int day, DatePanel2 dayPanel) {
+		int setYear = cal.get(Calendar.YEAR)-1900;
+		int setMonth = cal.get(Calendar.MONTH);
+		if (setMonth == 11){
+			setMonth = 0;
+			setYear--;
+		}
+		else{
+			setMonth--;
+		}
+		Date today = new Date(setYear, setMonth, day);
+		dayPanel.setDate(today);
+	}
+
+
+	private boolean isToday(Calendar cal, int day) {
+		Calendar currentMonth = Calendar.getInstance();
+		int todayDay = currentMonth.get(Calendar.DATE);
+		int todayMonth = currentMonth.get(Calendar.MONTH);
+		int todayYear = currentMonth.get(Calendar.YEAR);
+		int givenMonth = cal.get(Calendar.MONTH);
+		int givenYear = cal.get(Calendar.YEAR);
+
+		if(todayMonth == givenMonth && todayYear == givenYear && day == todayDay){
+			return true;
+		}else{
 			return false;
 		}
 	}
-	public void addDay(int x, int y, int day, int gridIndex, Color text, Color background)
-	{
-		JLabel dayLabel = addDay(day,text);
-		StringBuilder sb = new StringBuilder();
-		sb.append("cell ");
-		sb.append(x);
-		sb.append(" ");
-		sb.append(y);
-		sb.append(",grow, push");
-		
-		nameList.add(new DatePanel());
-		nameList.get(gridIndex+7).setBackground(background);
-		nameList.get(gridIndex+7).setBorder(new MatteBorder(1, 1, 1, 1, Color.gray));
-		nameList.get(gridIndex+7).add(dayLabel);
-		
-		this.add(nameList.get(gridIndex+7), sb.toString());
+
+	private boolean isPreviousMonth(Calendar cal, int index) {
+		if(index < cal.get(Calendar.DAY_OF_WEEK))
+			return true;
+		else
+			return false;
 	}
 
-	public void addDays(Calendar cal)
-	{
-		int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-		ArrayList<Integer> listOfDays = makeListOfDays(cal);
-		Calendar currentMonth = Calendar.getInstance();
-		int todayDate = currentMonth.get(Calendar.DAY_OF_MONTH);
-
-		boolean isMonth = isCurrentMonth(cal);
-
-		System.out.println("days In Month: " + daysInMonth);
-
-		dayOfWeek = dayOfWeek-1;
-		boolean firstDaySet = false;
-		boolean lastDaySet = false;
-		for(int i = 0; i < 42; i++){
-			int x = i%7;
-			int y = (i/7)+1;
-			if(listOfDays.get(i) != 1 && !firstDaySet)
-			{
-				addDay(x,y,listOfDays.get(i),i, Color.gray, Color.white);
-			}
-			else if(listOfDays.get(i) == 1 && !firstDaySet){
-				addDay(x,y,listOfDays.get(i),i, Color.black, Color.white);
-				firstDaySet = true;
-			}
-			else if(listOfDays.get(i) == daysInMonth && !lastDaySet){
-				addDay(x,y,listOfDays.get(i),i, Color.black, Color.white);
-				lastDaySet = true;
-			}
-			else if(listOfDays.get(i) == todayDate && firstDaySet && isMonth && !lastDaySet){
-				addDay(x,y,listOfDays.get(i),i, Color.black,new Color(236,252,144));
-			}
-			else if(listOfDays.get(i) == todayDate && firstDaySet && !isMonth && !lastDaySet){
-				addDay(x,y,listOfDays.get(i),i, Color.black, Color.white);
-			}
-			else if(listOfDays.get(i) > 0 && listOfDays.get(i) != todayDate && firstDaySet && !lastDaySet){
-				addDay(x,y,listOfDays.get(i),i, Color.black, Color.white);
-			}
-			else{
-				addDay(x,y,listOfDays.get(i),i, Color.gray, Color.white);
-			}
-		}
+	private boolean isNextMonth(Calendar cal, int index) {
+		int totalDays = ((cal.get(Calendar.DAY_OF_WEEK))-1)+cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		if(index > totalDays) 
+			return true;
+		else
+			return false;
 	}
 
-
+	
+	
 	@Override
 	public void next() {
-		
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH);
-
 		if (currentMonth == 11){
 			currentMonth = 0;
 			currentYear++;
@@ -308,17 +342,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 		mycal = next;
 		
-		dayLabel = new ArrayList<JLabel>();
-		panelList = new ArrayList<DatePanel>();
-		nameLabelList = new ArrayList<JLabel>();
-		nameList = new ArrayList<DatePanel>();
-		
 		this.removeAll();
-
 		addDayLabels();
-		addDays(next);
-		
-		SetDate();
+		addDaysToCalendar(next);
 		updatePanels();
 	}
 
@@ -334,92 +360,35 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		else{
 			currentMonth--;
 		}
+		this.removeAll();
+		
 		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 		mycal = next;
-
-
-		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
-		int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
-		mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
-		int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-
-		dayLabel = new ArrayList<JLabel>();
-		panelList = new ArrayList<DatePanel>();
-		nameLabelList = new ArrayList<JLabel>();
-		nameList = new ArrayList<DatePanel>();
 		
-		this.removeAll();
-
 		addDayLabels();
-		addDays(next);
-
-		SetDate();
+		addDaysToCalendar(next);
 		updatePanels();
 	}
 
 
 	@Override
 	public void today() {
-		
 		Date today = new Date();
-		if(currentMonth != today.getMonth()) {
+		if(!(currentMonth == today.getMonth() && currentYear == today.getYear()+1900)) {
 			currentMonth = today.getMonth();
 			currentYear = today.getYear() + 1900;
 
 			Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
 			mycal = next;
-
-			int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH); // 28
-			int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
-			mycal.set(Calendar.DAY_OF_MONTH, daysInMonth);
-			int numWeeksMonth = mycal.get(Calendar.WEEK_OF_MONTH);
-
-			dayLabel = new ArrayList<JLabel>();
-			panelList = new ArrayList<DatePanel>();
-			nameLabelList = new ArrayList<JLabel>();
-			nameList = new ArrayList<DatePanel>();
 			
 			this.removeAll();
 
 			addDayLabels();
-			addDays(next);
-			SetDate();
+			addDaysToCalendar(next);
 			updatePanels();
 		}
 	}
 	
-	public void SetDate(){
-		int setMonth;
-		int day =0;
-		int setYear = currentYear - 1900;
-		
-		ArrayList<Integer> listOfDays = makeListOfDays(mycal);
-		
-		System.out.println(listOfDays.size());
-		
-		if (currentMonth == 0){
-			setMonth = 12;
-		}
-		else{
-			setMonth = currentMonth-1;
-		}
-		
-		for (int x = 0; x < nameList.size()-7; x ++){
-			day = listOfDays.get(x);
-			if (day == 1){
-				if (setMonth == 12){
-					setMonth = 1;
-					setYear++;
-				}
-				else{
-					setMonth++;
-				}
-			}
-			Date today = new Date(setYear, setMonth, day);
-			nameList.get(x+7).setDate(today);
-			paneltracker.put(today, nameList.get(x+7));
-		}
-	}
 	
 	public void removeEvents(){
 		for (int x = 0;x < nameList.size(); x++){
@@ -441,7 +410,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 			System.out.println(key);
 			if (paneltracker.containsKey(key)){
 				
-				paneltracker.get(key).addEventPanel(eve);
+				paneltracker.get(key).addEvent(eve);
 			}
 		}
 	}
@@ -453,18 +422,30 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
+		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
+		mycal = next;
+		
+		this.removeAll();
+
+		addDayLabels();
+		addDaysToCalendar(next);
 		updatePanels();
+		System.out.println("UPDATE!");
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
+		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
+		mycal = next;
+		
+		this.removeAll();
+
+		addDayLabels();
+		addDaysToCalendar(next);
 		updatePanels();
+		System.out.println("UPDATE!");
 	}
 
 	@Override
-	public void contentsChanged(ListDataEvent e) {
-		updatePanels();
-	}
-
-	
+	public void contentsChanged(ListDataEvent e) {}
 }

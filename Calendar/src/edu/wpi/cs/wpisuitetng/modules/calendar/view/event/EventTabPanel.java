@@ -71,7 +71,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		this.setLayout(new MigLayout("fill"));
 
 		// Name
-		this.add(new JLabel("Commitment Name:"), "split 3");
+		this.add(new JLabel("Event Name:"), "split 3");
 		nameErrorPanelWrapper = new JPanel(new MigLayout("fill, insets 0"));
 		nameTextField = new JTextField();
 		nameTextField.addKeyListener(this);
@@ -199,13 +199,17 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		cal.set(Calendar.YEAR, date.getYear()+1900);
 		cal.set(Calendar.MONTH, date.getMonth());
 		cal.set(Calendar.DATE, date.getDate());
-		cal.set(Calendar.HOUR, timeDurationPickerPanel.getStartTime());
+		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getStartTime());
 
 		Date startDate = cal.getTime();
+		
 
-		cal.set(Calendar.HOUR, timeDurationPickerPanel.getEndTime());
+		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getEndTime());
 
 		Date endDate = cal.getTime();
+		
+		System.out.println(startDate);
+		System.out.println(endDate);
 
 		return new Event(nameTextField.getText(), startDate, endDate,
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory());

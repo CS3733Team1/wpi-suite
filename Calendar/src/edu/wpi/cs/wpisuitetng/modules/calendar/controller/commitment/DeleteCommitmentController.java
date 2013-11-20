@@ -55,5 +55,6 @@ public class DeleteCommitmentController implements ActionListener {
 	
 	public void removeCommitmentFromModel(Commitment commit){
 		System.out.println("Deleting Commitment");
+		model.removeCommitment(commit);
 	}
 }

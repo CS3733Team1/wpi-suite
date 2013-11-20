@@ -35,12 +35,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 
 public class CalendarTabPanel extends JPanel {
 	private JButton prevButton, homeButton, nextButton;
@@ -87,8 +84,8 @@ public class CalendarTabPanel extends JPanel {
 			filterCategoryTabbedPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
 					new CategoryTabPanel());
 			
-			filterCategoryTabbedPane.addTab("Filters", new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))), 
-					new FilterTabPanel());
+			//filterCategoryTabbedPane.addTab("Filters", new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))), 
+			//		new FilterTabPanel());
 		} catch (IOException e) {}
 
 		homeButton.setMargin(new Insets(0, 0, 0, 0));
@@ -172,7 +169,7 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void displayDayView() {
-		if(!(calendarView instanceof DayView)) {
+		if(!(calendarView instanceof DayCalendarPanel)) {
 			calendarViewPanel.removeAll();
 			calendarView = dayView;
 			calendarViewPanel.add(dayView, "w 5000, h 5000");
@@ -182,7 +179,7 @@ public class CalendarTabPanel extends JPanel {
 		}
 	}
 	public void displayWeekView() {
-		if(!(calendarView instanceof WeekView)){
+		if(!(calendarView instanceof WeekCalendarPanel)){
 			calendarViewPanel.removeAll();
 			calendarView = weekView;
 			calendarViewPanel.add(weekView, "w 5000, h 5000");

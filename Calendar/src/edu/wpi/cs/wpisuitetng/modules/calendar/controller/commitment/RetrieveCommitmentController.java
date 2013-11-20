@@ -54,7 +54,6 @@ public class RetrieveCommitmentController implements AncestorListener, ActionLis
 	public void receivedMessages(Commitment[] commitments) {		
 		// Make sure the response was not null
 		if (commitments != null) {
-			// set the messages to the local model
 			model.setCommitments(commitments);
 		}
 	}
