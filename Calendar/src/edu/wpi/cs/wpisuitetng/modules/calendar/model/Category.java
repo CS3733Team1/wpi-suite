@@ -107,4 +107,12 @@ public class Category extends DeletableAbstractModel {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Category) {
+			Category c = (Category) o;
+			return (c.getColor().equals(this.getColor()) && c.getName().equals(this.getName()));
+		} else return false;
+	}
 }

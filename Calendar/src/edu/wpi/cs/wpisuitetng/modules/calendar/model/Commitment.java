@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.Date;
+
 import com.google.gson.Gson;
 
 /**

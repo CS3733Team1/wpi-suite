@@ -69,11 +69,12 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
-	public void setCategories(Category[] commitments) {
+	public void setCategories(Category[] categories) {
 		this.emptyModel();
-		for (int i = 0; i < commitments.length; i++) {
-			this.categories.add(commitments[i]);
+		for (int i = 0; i < categories.length; i++) {
+			if(!(this.categories.contains(categories[i]))) this.categories.add(categories[i]);
 		}
+		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
