@@ -17,9 +17,6 @@
 			<include name="miglayout-4.0-swing.jar"/>
 			<include name="swingx-all-1.6.4.jar"/>
 		</fileset>
-		<fileset dir="${janeway-lib}">
-			<include name="swingx-all-1.6.4.jar"/>
-		</fileset>
 		<pathelement path="build"/>
 	</path>
 
@@ -35,7 +32,7 @@
 				debuglevel="lines,vars,source" includeantruntime="false">
 			<classpath refid="classpath"/>
 		</javac>
-		<copy todir="build/images" overwrite="true">
+		<copy todir="build/images">
 			<fileset dir="images" includes="*.png" />
 		</copy>
 	</target>

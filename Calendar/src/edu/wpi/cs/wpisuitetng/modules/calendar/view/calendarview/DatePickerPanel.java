@@ -10,137 +10,100 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.KeyListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
-import org.jdesktop.swingx.JXMonthView;
-import org.jdesktop.swingx.calendar.DateSelectionModel.SelectionMode;
+import net.miginfocom.swing.MigLayout;
 
-/**
- * Panel to hold the date picking calendar and the buttons to scroll
- * which month it is displaying
- */
 public class DatePickerPanel extends JPanel {
-	private JXMonthView calendarMonthView;
-	
-	private JButton nextMonth;
-	private JButton prevMonth;
-	private JButton today;
 
-	/**
-	 * Panel constructor
-	 * @param singleSelection selects whether panel will be set to single or
-	 * multiple interval selection, true selects single interval
-	 */
-	public DatePickerPanel(SelectionMode sm) {
-		buildLayout(sm);
-	}
-	
-	private void buildLayout(SelectionMode sm){
-		
-		this.setLayout(new BorderLayout());
-		JPanel buttonPanel = new JPanel();
-		
-		setupButtons();
-		
-		buttonPanel.add(prevMonth);
-		buttonPanel.add(today);
-		buttonPanel.add(nextMonth);
-		calendarMonthView = new DatePicker(sm);
-		this.setAlignmentX(CENTER_ALIGNMENT);
-		this.add(buttonPanel,BorderLayout.NORTH);
-		this.add(calendarMonthView,BorderLayout.CENTER);
-	}
-	
-	private void setupButtons(){
-		nextMonth = new JButton(">");
-		nextMonth.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		today = new JButton ("Today");
-		today.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	private int isValid; // 0 = valid, 1 = format error, 2 = before date error
+	private Calendar pickedDate;
+	private SimpleDateFormat df;
 
-		prevMonth = new JButton("<");
-		prevMonth.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		nextMonth.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e){
-				nextMonth();
-			}
-		});
-		today.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e){
-				today();
-			}
-		});
-		prevMonth.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e){
-				prevMonth();
-			}
-		});
+	private JSpinner inputField;
+	private JTextField rawText;
+
+	private Date parsedDate;
+
+	public DatePickerPanel() {
+		pickedDate = Calendar.getInstance();
+		pickedDate.set(Calendar.HOUR_OF_DAY, 0);
+		pickedDate.set(Calendar.MINUTE, 0);
+		pickedDate.set(Calendar.SECOND, 0);
+
+		isValid = 0;
+
+		Calendar calendar = Calendar.getInstance();
+
+		Date initDate = new Date(pickedDate.get(Calendar.YEAR)-1900, pickedDate.get(Calendar.MONTH), pickedDate.get(Calendar.DATE));
+		Date latestDate = new Date(pickedDate.get(Calendar.YEAR)+1000, pickedDate.get(Calendar.MONTH), pickedDate.get(Calendar.DATE));
+		SpinnerDateModel model = new SpinnerDateModel(initDate, initDate, latestDate, Calendar.YEAR);
+		inputField = new JSpinner(model);
+
+		inputField.setEditor(new JSpinner.DateEditor(inputField, "EEE MM/dd/yyyy"));
+
+		rawText = ((JSpinner.DefaultEditor)inputField.getEditor()).getTextField();
+
+		df = new SimpleDateFormat("EEE MM/dd/yyyy");
+
+		this.setLayout(new MigLayout("insets 0"));
+
+		this.add(inputField, "split 2");
+		//this.add(new JLabel("[picker]"));
 	}
-	
-	private void nextMonth(){
-		Calendar cal = calendarMonthView.getCalendar();
-		cal.add(Calendar.MONTH, 1);
-		calendarMonthView.setFirstDisplayedDay(cal.getTime());
-	}
-	
-	private void today(){
-		Calendar cal = Calendar.getInstance();
-		calendarMonthView.setFirstDisplayedDay(cal.getTime());
-	}
-	
-	private void prevMonth(){
-		Calendar cal = calendarMonthView.getCalendar();
-		cal.add(Calendar.MONTH, -1);
-		calendarMonthView.setFirstDisplayedDay(cal.getTime());
-	}
-	
-	/**
-	 * @return all the dates the user has selected
-	 */
-	@SuppressWarnings("deprecation")
-	public ArrayList<Date> getAllDates(){
-		ArrayList<Date> dates = new ArrayList<Date>();
-		Date firstSel,lastSel,testDate;
-		firstSel=calendarMonthView.getFirstSelectionDate();
-		lastSel=calendarMonthView.getLastSelectionDate();
-		testDate=firstSel;
-		while(testDate.compareTo(lastSel)<=0){
-			if(calendarMonthView.isSelected(testDate)){
-				dates.add(new Date(testDate.getYear(),testDate.getMonth(),testDate.getDate()));
-			}
-			testDate.setDate(testDate.getDate()+1);
+
+	public void validateDate() {
+		System.out.println(rawText.getText());
+		try {
+			parsedDate = df.parse(rawText.getText());
+			System.out.println(parsedDate.toString());
+			this.isValid = isBeforeToday();
+		} catch (ParseException e) {
+			this.isValid = 1;
 		}
-		return dates;
 	}
-	
-	/**
-	 * @return the first date the user has selected
-	 */
-	public Date getStartDate(){
-		return calendarMonthView.getFirstSelectionDate();
+
+	public int isInvalidDate() {
+		return isValid;
 	}
-	
-	/**
-	 * @return the last date the user has selected
-	 */
-	public Date getEndDate(){
-		return calendarMonthView.getLastSelectionDate();
+
+	public int isBeforeToday() {
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+
+		Calendar parsedCal = Calendar.getInstance();
+		parsedCal.set(Calendar.HOUR_OF_DAY, 0);
+		parsedCal.set(Calendar.MINUTE, 0);
+		parsedCal.set(Calendar.SECOND, 0);
+		parsedCal.set(Calendar.YEAR, parsedDate.getYear()+1900);
+		parsedCal.set(Calendar.MONTH, parsedDate.getMonth());
+		parsedCal.set(Calendar.DATE, parsedDate.getDate());
+
+		System.out.println(parsedCal.get(Calendar.YEAR) + "   " + today.get(Calendar.YEAR));
+		
+		if(!(parsedCal.get(Calendar.YEAR) >= today.get(Calendar.YEAR) &&
+				parsedCal.get(Calendar.MONTH) >= today.get(Calendar.MONTH) &&
+				parsedCal.get(Calendar.DATE) >= today.get(Calendar.DATE)))
+			return 2;
+		else return 0;
+	}
+
+	public Date getDate() {
+		return new Date(pickedDate.get(Calendar.YEAR)-1900, pickedDate.get(Calendar.MONTH), pickedDate.get(Calendar.DATE));
+	}
+
+	public void setKeyListener(KeyListener l) {
+		rawText.addKeyListener(l);
 	}
 }

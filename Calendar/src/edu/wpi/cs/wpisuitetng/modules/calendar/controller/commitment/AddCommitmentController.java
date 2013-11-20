@@ -32,7 +32,7 @@ public class AddCommitmentController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		Commitment commit = view.getDisplayCommitment();
+		Commitment commit = view.getFilledCommitment();
 	
 		System.out.println("Adding commitment...");
 		
@@ -41,8 +41,7 @@ public class AddCommitmentController implements ActionListener{
 		request.setBody(commit.toJSON()); // put the new message in the body of the request
 		request.addObserver(new AddCommitmentObserver(this)); // add an observer to process the response
 		request.send(); // send the request
-		view.killPanel(); 
-		
+		view.killCommitmentPanel();
 	}
 	
 	public void addCommitmentToModel(Commitment commit){

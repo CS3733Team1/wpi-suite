@@ -1,17 +1,11 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.ListIterator;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -19,14 +13,13 @@ import javax.swing.event.ListDataListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
-public class DatePanel extends JPanel implements ListDataListener{
+public class DatePanel extends JPanel implements ListDataListener {
 	private Date paneldate;
 	private ArrayList<JPanel> eventlist;
 	private JPanel layout;
 	private GridLayout grid;
 	
-	public DatePanel(){
-
+	public DatePanel() {
 		grid = new GridLayout(0,1);
 		eventlist = new ArrayList<JPanel>();
 		layout = new JPanel();
@@ -36,8 +29,6 @@ public class DatePanel extends JPanel implements ListDataListener{
 		this.setVisible(true);
 		
 		this.add(layout);
-
-		
 	}
 	
 	public void setDate(Date today){

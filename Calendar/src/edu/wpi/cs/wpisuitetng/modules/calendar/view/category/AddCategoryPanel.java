@@ -47,7 +47,7 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		
 		cs = new ColorSwatch();
 		
-		nameTextField = new JTextField(24);
+		nameTextField = new JTextField(20);
 		nameTextField.addKeyListener(this);
 		
 		JPanel p = new JPanel();

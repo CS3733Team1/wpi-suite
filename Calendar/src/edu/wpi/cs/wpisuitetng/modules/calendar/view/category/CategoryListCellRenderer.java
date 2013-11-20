@@ -13,7 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,6 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 
 public class CategoryListCellRenderer extends JPanel implements ListCellRenderer<Category> {
@@ -31,13 +31,13 @@ public class CategoryListCellRenderer extends JPanel implements ListCellRenderer
 	private JLabel categoryName;
 	
 	public CategoryListCellRenderer() {
-		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		this.setLayout(new MigLayout());
 		categoryName = new JLabel();
 		colorSquare = new JPanel();
 		colorSquare.setPreferredSize(new Dimension(16, 16));
 		colorSquare.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
-		this.add(colorSquare);
-		this.add(categoryName);
+		this.add(colorSquare, "split 2");
+		this.add(categoryName, "alignx left, wmax 200");
 	}
 	
 	@Override

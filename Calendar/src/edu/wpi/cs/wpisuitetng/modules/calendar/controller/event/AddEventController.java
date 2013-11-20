@@ -32,7 +32,7 @@ public class AddEventController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Event eve = view.getEvent();
+		Event eve = view.getFilledEvent();
 		
 		System.out.println("Adding event...");
 		
@@ -41,7 +41,7 @@ public class AddEventController implements ActionListener{
 		request.setBody(eve.toJSON()); // put the new message in the body of the request
 		request.addObserver(new AddEventObserver(this)); // add an observer to process the response
 		request.send(); // send the request
-		view.killPanel();
+		view.killEventPanel();
 	}
 	
 	public void addEventToModel(Event eve){

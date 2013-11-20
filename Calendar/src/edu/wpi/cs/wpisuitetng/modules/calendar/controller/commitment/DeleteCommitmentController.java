@@ -50,10 +50,10 @@ public class DeleteCommitmentController implements ActionListener {
 			request.addObserver(new DeleteCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
+		calendarPanel.getCalendarTabPanel().resetSelection();
 	}
 	
 	public void removeCommitmentFromModel(Commitment commit){
 		System.out.println("Deleting Commitment");
-		model.removeCommitment(commit);
 	}
 }

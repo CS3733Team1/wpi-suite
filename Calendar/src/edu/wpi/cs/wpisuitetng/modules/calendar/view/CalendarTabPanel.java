@@ -31,13 +31,13 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayMo
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWeekViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DayCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.WeekCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
@@ -172,7 +172,7 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void displayDayView() {
-		if(!(calendarView instanceof DayCalendarView)) {
+		if(!(calendarView instanceof DayView)) {
 			calendarViewPanel.removeAll();
 			calendarView = dayView;
 			calendarViewPanel.add(dayView, "w 5000, h 5000");
@@ -182,7 +182,7 @@ public class CalendarTabPanel extends JPanel {
 		}
 	}
 	public void displayWeekView() {
-		if(!(calendarView instanceof WeekCalendarView)){
+		if(!(calendarView instanceof WeekView)){
 			calendarViewPanel.removeAll();
 			calendarView = weekView;
 			calendarViewPanel.add(weekView, "w 5000, h 5000");
