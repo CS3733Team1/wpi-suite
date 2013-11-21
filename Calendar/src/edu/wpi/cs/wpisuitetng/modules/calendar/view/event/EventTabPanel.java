@@ -37,8 +37,8 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	// Errors strings
 	private final String START_AFTER_END_ERROR = 	"Start time cannot be after end time.";
 	private final String EMPTY_NAME_ERROR = 		"Name is required.";
-	private final String INVALID_DATE_ERROR =		"Invalid date. Use: www mm/dd/yyyy EX: Sun 04/06/2014";
-	private final String PAST_DATE_ERROR = 			"Commitment cannot occur in the past.";
+	private final String INVALID_DATE_ERROR =		"Invalid date. Use: www mm/dd/yyyy ----EX: Sun 04/06/2014";
+	private final String PAST_DATE_ERROR = 			"Event cannot occur in the past.";
 	private final String ZERO_TIME_ERROR = 			"Event must have a duration greater than 0 minutes.";
 
 	// Data entry components

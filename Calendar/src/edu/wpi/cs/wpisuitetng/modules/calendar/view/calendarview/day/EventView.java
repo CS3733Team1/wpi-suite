@@ -53,7 +53,7 @@ public class EventView extends JPanel {
 		
 		for (int currenthour=0; currenthour < 25; currenthour++){
 			if (currenthour-1 == loc/4){
-				JPanel event = new JPanel();
+				JPanel event = new JPanel(new MigLayout());
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
 				evebuilder.append("1");
@@ -65,7 +65,7 @@ public class EventView extends JPanel {
 				evebuilder.append((new Integer((int)length)).toString());
 				evebuilder.append(",grow, push");
 
-				event.add(new JLabel(e.getName()));
+				event.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
 				if (e.getCategory() != null){
 					event.setBackground(e.getCategory().getColor());
 				}

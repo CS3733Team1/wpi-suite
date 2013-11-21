@@ -73,7 +73,7 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 	}
 
 	private void validateFields() {
-		if(nameTextField.getText().equals("")) {
+		if(nameTextField.getText().trim().length() == 0) {
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
 		} else {

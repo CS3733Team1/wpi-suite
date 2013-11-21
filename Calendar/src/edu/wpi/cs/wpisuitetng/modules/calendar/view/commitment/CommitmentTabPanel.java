@@ -33,7 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel
 public class CommitmentTabPanel extends JPanel implements ActionListener, KeyListener {	
 	//Errors strings
 	private final String EMPTY_NAME_ERROR =		"Name is required.";
-	private final String INVALID_DATE_ERROR =	"Invalid date. Use: mm/dd/yyyy";
+	private final String INVALID_DATE_ERROR =	"Invalid date. Use: www mm/dd/yyyy ----EX: Sun 04/06/2014";
 	private final String PAST_DATE_ERROR =		"Commitment cannot occur in the past.";
 
 	// Data entry components

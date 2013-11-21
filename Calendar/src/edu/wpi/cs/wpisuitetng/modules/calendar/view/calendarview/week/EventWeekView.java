@@ -99,7 +99,7 @@ public class EventWeekView extends JPanel{
 				height = (int)Math.round(length*4) - 1; //each hour is 4%, leave 1% for border
 				loc = (int)Math.round((e.getStartDate().getHours() + e.getStartDate().getMinutes()/60.0)*4);
 				
-				JPanel event = new JPanel();
+				JPanel event = new JPanel(new MigLayout());
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
 				evebuilder.append(new Integer(currentday+1).toString());
@@ -111,7 +111,7 @@ public class EventWeekView extends JPanel{
 				evebuilder.append((new Integer((int)length)).toString());
 				evebuilder.append(",grow, push");
 
-				event.add(new JLabel(e.getName()));
+				event.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
 				
 				if (e.getCategory() != null){
 					event.setBackground(e.getCategory().getColor());

@@ -20,6 +20,8 @@ import java.util.ListIterator;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -27,7 +29,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
-public class MonthCalendarView extends JPanel implements ICalendarView, ListDataListener {
+public class MonthCalendarView extends JPanel implements ICalendarView, ListDataListener, AncestorListener {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	private ArrayList<JLabel> dayLabel = new ArrayList<JLabel>();
@@ -68,6 +70,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		addDaysToCalendar(mycal);
 
 		EventListModel.getEventListModel().addListDataListener(this);
+		
+		this.addAncestorListener(this);
 	}
 	
 
@@ -448,4 +452,32 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {}
+
+
+	@Override
+	public void ancestorAdded(AncestorEvent arg0) {
+		Calendar next = new GregorianCalendar(currentYear, currentMonth, 1);
+		mycal = next;
+		
+		this.removeAll();
+
+		addDayLabels();
+		addDaysToCalendar(next);
+		updatePanels();
+		System.out.println("UPDATE!");
+	}
+
+
+	@Override
+	public void ancestorMoved(AncestorEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void ancestorRemoved(AncestorEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
