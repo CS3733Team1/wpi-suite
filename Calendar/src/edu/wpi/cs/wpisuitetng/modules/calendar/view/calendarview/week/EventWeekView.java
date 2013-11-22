@@ -126,25 +126,7 @@ public class EventWeekView extends JPanel{
 					infobuilder.append("<br><b>Category: </b>");
 					infobuilder.append(e.getCategory().getName());
 				}
-				if(e.getDescription()!=null){
-					infobuilder.append("<br><b>Description: </b>");
-					infobuilder.append(e.getDescription());
-				}
-				infobuilder.append("</p></html>");
-				event.setToolTipText(infobuilder.toString());
-				
-				StringBuilder infobuilder = new StringBuilder();
-				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
-				infobuilder.append(e.getName());
-				infobuilder.append("<br><b>Start: </b>");
-				infobuilder.append(DateFormat.getInstance().format(e.getStartDate()));
-				infobuilder.append("<br><b>End: </b>");
-				infobuilder.append(DateFormat.getInstance().format(e.getEndDate()));
-				if(e.getCategory()!=null){
-					infobuilder.append("<br><b>Category: </b>");
-					infobuilder.append(e.getCategory().getName());
-				}
-				if(e.getDescription()!=null){
+				if(e.getDescription().length()>0){
 					infobuilder.append("<br><b>Description: </b>");
 					infobuilder.append(e.getDescription());
 				}
