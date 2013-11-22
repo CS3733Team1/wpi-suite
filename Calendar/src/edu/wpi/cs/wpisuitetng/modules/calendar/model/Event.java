@@ -55,13 +55,13 @@ public class Event extends DeletableAbstractModel {
 	
 	public Event(String name, Date startDate, Date endDate, Category category) {
 		this(name, startDate, endDate);
-		this.category = category;
+		this.category = category.cloneFake();
 	}
 	
 	public Event(String name, Date startDate, Date endDate, String description, Category category) {
 		this(name, startDate, endDate);
 		this.description = description;
-		this.category = category;
+		this.category = category.cloneFake();
 	}
 
 	public String getName() {
