@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventHoverMouseListener;
 
 public class EventWeekView extends JPanel{
 
@@ -112,6 +113,7 @@ public class EventWeekView extends JPanel{
 				evebuilder.append(",grow, push");
 
 				event.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
+				event.setToolTipText("<html><b>Testing</b></html>");
 				
 				if (e.getCategory() != null){
 					event.setBackground(e.getCategory().getColor());
