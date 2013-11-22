@@ -10,9 +10,11 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
+import java.awt.Component;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
@@ -24,6 +26,25 @@ public class CalendarPanel extends JTabbedPane {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
 
+	
+	/**
+	 * Overridden insertTab function to add the closable tab element.
+	 * 
+	 * @param title	Title of the tab
+	 * @param icon	Icon for the tab
+	 * @param component	The tab
+	 * @param tip	Showing mouse tip when hovering over tab
+	 * @param index	Location of the tab
+	 */
+	@Override
+	public void addTab(String title, Icon icon, Component component) {
+		int index=this.getTabCount();
+		super.addTab(title, icon, component);
+		if (!(component instanceof CalendarTabPanel)) {
+			setTabComponentAt(index, new ClosableTabComponent(this));
+		}
+	}
+	
 	// Create TeamCalendar
 	public void createTeamCalendar() {
 		teamCalendarPanel = new CalendarTabPanel();
@@ -36,7 +57,6 @@ public class CalendarPanel extends JTabbedPane {
 		this.addTab("Team Calendar", calIcon, teamCalendarPanel, "Team Calendar");
 	}
 	
-
 	// Create PersonalCalendar
 	public void createPersonalCalendar() {
 		personalCalendarPanel = new CalendarTabPanel();
