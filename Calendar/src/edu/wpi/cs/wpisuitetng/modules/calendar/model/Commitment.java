@@ -57,7 +57,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 */
 	public Commitment(String name, Date dueDate, Category category) {
 		this(name, dueDate);
-		this.category = category;
+		this.category = category.cloneFake();
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			Category category) {
 		this(name, dueDate);
 		this.description = description;
-		this.category = category;
+		this.category = category.cloneFake();
 	}
 
 	/**
