@@ -114,6 +114,7 @@ public class EventWeekView extends JPanel{
 				evebuilder.append(",grow, push");
 
 				event.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
+				event.setToolTipText("<html><b>Testing</b></html>");
 				
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
