@@ -116,4 +116,11 @@ public class Category extends DeletableAbstractModel {
 			return (c.getColor().equals(this.getColor()) && c.getName().equals(this.getName()));
 		} else return false;
 	}
+	
+	public Category cloneFake()
+	{
+		Category cat = new Category(this.name, this.color);
+		cat.isReal = false;
+		return cat;
+	}
 }
