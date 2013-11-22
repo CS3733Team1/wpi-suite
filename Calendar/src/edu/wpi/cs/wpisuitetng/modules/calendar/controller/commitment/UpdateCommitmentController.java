@@ -11,7 +11,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 
-public class EditCommitmentController implements ActionListener {
+public class UpdateCommitmentController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
