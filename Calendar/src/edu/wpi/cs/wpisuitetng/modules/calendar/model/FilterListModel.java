@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+import javax.swing.ListModel;
 
 /**
  * This is a model for the filter list. It contains all of the filters the user has created.
@@ -15,7 +16,7 @@ import javax.swing.AbstractListModel;
  * 
  */
 
-public class FilterListModel extends AbstractListModel<Object>
+public class FilterListModel extends AbstractListModel<Filter>
 {
 	private static FilterListModel filterListModel;
 	
@@ -115,7 +116,7 @@ public class FilterListModel extends AbstractListModel<Object>
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	@Override
-	public Object getElementAt(int index) 
+	public Filter getElementAt(int index) 
 	{
 		return filters.get(filters.size() - 1 - index);
 	}
