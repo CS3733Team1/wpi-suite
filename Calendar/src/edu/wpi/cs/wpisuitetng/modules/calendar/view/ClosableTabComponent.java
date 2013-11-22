@@ -60,7 +60,7 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 		final int index = tabbedPane.indexOfTabComponent(this);
 		if(index > -1) {
 			tabbedPane.remove(index);
-			tabbedPane.removeTab((JComponent)tabbedPane.getComponentAt(index));
+//			tabbedPane.removeTab((JComponent)tabbedPane.getComponentAt(index));
 			//ViewEventController.getInstance().removeTab((JComponent)tabbedPane.getComponentAt(index));
 		}
 	}
