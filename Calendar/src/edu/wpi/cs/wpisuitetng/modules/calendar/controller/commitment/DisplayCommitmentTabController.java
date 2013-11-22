@@ -12,6 +12,10 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
@@ -26,7 +30,11 @@ public class DisplayCommitmentTabController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		CommitmentTabPanel pan = new CommitmentTabPanel();
-		calendarPanel.addTab("Add Commitment", pan);
+		ImageIcon miniCommitmentIcon = new ImageIcon();
+		try {
+			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
+		} catch (IOException exception) {}
+		calendarPanel.addTab("Add Commitment", miniCommitmentIcon, pan);
 		calendarPanel.setSelectedComponent(pan);
 	}
 }
