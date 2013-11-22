@@ -19,8 +19,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 /**
  * This Controller is based largely off of DisplayCommitmentController 
  * in the calendar->controller.display
- * @version $Revision: 1.0 $
- * @author rbansal
  */
 
 public class DisplayFilterTabController implements ActionListener {

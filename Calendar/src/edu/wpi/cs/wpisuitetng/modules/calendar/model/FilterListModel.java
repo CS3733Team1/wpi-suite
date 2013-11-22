@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
@@ -10,9 +20,6 @@ import javax.swing.AbstractListModel;
  * This is a model for the filter list. It contains all of the filters the user has created.
  *  It extends AbstractListModel so that it can provide
  * the model data to the JList component in the CalendarPanel.
- * 
- * @author Nicholas Otero
- * 
  */
 
 public class FilterListModel extends AbstractListModel<Filter>
