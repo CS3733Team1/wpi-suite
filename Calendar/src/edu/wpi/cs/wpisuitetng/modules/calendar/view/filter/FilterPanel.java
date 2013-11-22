@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 
 public class FilterPanel extends JPanel{
 	FilterListPanel filterListPanel;
@@ -41,15 +41,15 @@ public class FilterPanel extends JPanel{
 		this.add(filterListPanel, "grow, push");
 	}
 	
-	public void setAddCategoryListener(ActionListener al) {
+	public void setAddFilterListener(ActionListener al) {
 		addFilterButton.addActionListener(al);
 	}
 	
-	public void setDeleteCategoryListener(ActionListener al) {
+	public void setDeleteFilterListener(ActionListener al) {
 		deleteFilterButton.addActionListener(al);
 	}
 
-	public List<Category> getSelectedCategories() {
+	public List<Filter> getSelectedFilters() {
 		//TODO
 		//return filterListPanel.getFilterList().getSelectedValuesList();
 		return null;
