@@ -153,9 +153,9 @@ public class WPICoreServlet extends HttpServlet
 	/**
 	 *  This simple processes the X-HTTP-Method-Override header for DELETE but otherwise always uses super.severice() like normal.
 	 */
-	public void service(HttpServletRequest req,HttpServletResponse resp) throws ServletException,java.io.IOException
+	public void service(HttpServletRequest req,HttpServletResponse resp) throws ServletException,java.io.IOException,NullPointerException
 	{	
-		String override = (req == null) ? " " : req.getHeader("X-HTTP-Method-Override");
+		String override = (req == null) ? null : req.getHeader("X-HTTP-Method-Override");
 		if (override != null && override.equals("DELETE"))
 		{
 			this.doDelete(req, resp);

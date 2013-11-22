@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JLayeredPane;
@@ -17,14 +19,13 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
 public class DayCalendarLayerPane extends JLayeredPane implements ListDataListener{
 	private DayView dayview;
-	private ArrayList<EventView> eventviewlist;
+	private EventView eventviewlist;
 	private Integer layer;
 	
 	public DayCalendarLayerPane()
 	{
 		layer = 0;
 		dayview = new DayView();
-		eventviewlist = new ArrayList<EventView>();
 		
 		int height = dayview.getPreferredSize().getSize().height;
 		int width = 950;
@@ -46,6 +47,8 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		Date key;
 		
 		ClearEvents();
+		
+		List<Event> test = new LinkedList<Event>();
 		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
 		
 		while(event.hasNext()){
@@ -53,15 +56,13 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){
-				eventviewlist.add(new EventView(eve, this.getSize()));
+				test.add(eve);
 			}
 		}
 		
-		for(EventView e: eventviewlist)
-		{
-			this.add(e, layer,-1);
-			layer++;
-		}
+		eventviewlist = new EventView(test, this.getSize());
+		this.add(eventviewlist, layer,-1);
+		layer++;
 	}
 	
 	public void reSize(int width){
@@ -69,32 +70,24 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		this.setPreferredSize(new Dimension(width, this.getHeight()));
 		
 		dayview.setSize(this.getSize());
-		for (EventView e: eventviewlist){
-			e.setSize(this.getSize());
-		}
+		eventviewlist.setSize(this.getSize());
 		
 		repaint();
 	}
 	
 	public void repaint(){
 		dayview.repaint();
-		for(EventView e: eventviewlist)
-		{
-			e.repaint();
-		}
+		eventviewlist.repaint();
 		
 		super.repaint();
 	}
 	
 	public void ClearEvents()
 	{
-		for(EventView e: eventviewlist)
-		{
-			this.remove(e);
+		if (eventviewlist != null){
+			this.remove(eventviewlist);
 			layer--;
 		}
-		
-		eventviewlist = new ArrayList<EventView>();
 	}
 	
 	public String getTitle() {
