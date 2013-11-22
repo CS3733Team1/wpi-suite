@@ -103,7 +103,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		
 		System.out.println(s.getProject().toString());
 		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
-		System.out.println(s.getProject().getProject().toString());
+		//System.out.println(s.getProject().getProject().toString());
 		// Return the list of messages as an array
 		return messages.toArray(new Category[0]);
 	}
