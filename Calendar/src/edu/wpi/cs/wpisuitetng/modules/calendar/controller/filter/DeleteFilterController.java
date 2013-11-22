@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -13,7 +13,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class DeleteFilterController implements ActionListener{
 	FilterListModel model;
 	
-	public DeleteFilterController(CalendarPanel calendarPanel){
+	public DeleteFilterController(FilterPanel filterPanel){
 		model = FilterListModel.getFilterListModel();
 	}
 	

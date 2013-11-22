@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -15,7 +15,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class AddFilterController implements ActionListener{
 	FilterListModel model;
 	
-	public AddFilterController(CalendarPanel calendarPanel){
+	public AddFilterController(FilterPanel filterPanel){
 		model = FilterListModel.getFilterListModel();
 	}
 	
