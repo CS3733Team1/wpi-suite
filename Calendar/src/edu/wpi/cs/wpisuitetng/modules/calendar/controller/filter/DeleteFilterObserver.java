@@ -22,12 +22,12 @@ public class DeleteFilterObserver implements RequestObserver{
 	public void responseSuccess(IRequest iReq) {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
-
+		System.out.println("Filter delete successful");
 		// Parse the message out of the response body
-		final Filter filt = Filter.fromJSON(response.getBody());
+		//final Filter filt = Filter.fromJSON(response.getBody());
 
 		// Pass the messages back to the controller
-		controller.removeFilterToModel(filt);
+		//controller.removeFilterToModel(filt);
 	}
 
 	@Override
