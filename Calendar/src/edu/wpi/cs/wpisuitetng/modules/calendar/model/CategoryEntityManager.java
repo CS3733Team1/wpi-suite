@@ -97,11 +97,13 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public Category[] getAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type Commitment.
-		// Passing a dummy Commitment lets the db know what type of object to retrieve
+		// Ask the database to retrieve all objects of the type Category.
+		// Passing a dummy Category lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
+		
+		System.out.println(s.getProject().toString());
 		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
-
+		System.out.println(s.getProject().getProject().toString());
 		// Return the list of messages as an array
 		return messages.toArray(new Category[0]);
 	}
