@@ -1,28 +1,19 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class AddFilterController implements ActionListener{
+public class AddFilterController{
 	FilterListModel model;
 	
-	public AddFilterController(FilterPanel filterPanel){
-		model = FilterListModel.getFilterListModel();
+	public AddFilterController(){
+		this.model = FilterListModel.getFilterListModel();
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		Filter filt = new Filter("A FILTER" , new ArrayList<Category>());
+	public void addFilter(Filter filt) {
 	
 		System.out.println("Adding filter...");
 		
