@@ -1,7 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.DeleteCategoryController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -35,7 +33,7 @@ public class DeleteFilterObserver implements RequestObserver{
 	@Override
 	public void responseError(IRequest iReq) {
 		System.out.println(iReq.getResponse().getStatusMessage());
-		System.err.println("The request to remove a category failed.");
+		System.err.println("The request to remove a filter failed.");
 	}
 
 	@Override

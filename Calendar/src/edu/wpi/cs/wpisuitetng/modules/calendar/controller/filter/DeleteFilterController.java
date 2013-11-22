@@ -22,7 +22,7 @@ public class DeleteFilterController{
 	public void deleteFilters(List<Filter> list) {
 		for (Filter filt: list) {
 			// Send a request to the core to save this message 
-			final Request request = Network.getInstance().makeRequest("calendar/category/"+filt.getUniqueID(), HttpMethod.GET); // PUT == create
+			final Request request = Network.getInstance().makeRequest("calendar/filter/"+filt.getUniqueID(), HttpMethod.GET); // PUT == create
 			request.addHeader("X-HTTP-Method-Override", "DELETE");
 			//request.setBody(cat.toJSON()); // put the new message in the body of the request
 			request.addObserver(new DeleteFilterObserver(this)); // add an observer to process the response

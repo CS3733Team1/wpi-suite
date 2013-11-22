@@ -1,27 +1,27 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.filter;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
+import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryListAddRemovePanel;
 
 public class AddFilterPanel extends JPanel implements KeyListener, ActionListener {
 	
-	private JButton randomColors;
+	private CategoryListAddRemovePanel topCategoryListPanel;
+	private CategoryListAddRemovePanel bottomCategoryListPanel;
+	
 	private JButton ok;
 	private JButton cancel;
 	private JButton moveUp;
@@ -32,11 +32,7 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 	private JLabel nameErrorLabel;
 
 	public AddFilterPanel() {
-		this.setLayout(new MigLayout("", "[]", "[][][][][][]"));
-		
-		try {
-			randomColors = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png"))));
-		} catch (IOException e) {}
+		this.setLayout(new MigLayout("fill"));
 		
 		ok = new JButton("Ok");
 		cancel = new JButton("Cancel");
@@ -44,12 +40,13 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 		moveUp = new JButton("Move Up");
 		moveDown = new JButton("Move Down");
 		
-		randomColors.addActionListener(this);
-		
 		ok.setActionCommand("addok");
 		cancel.setActionCommand("addcancel");
 		moveUp.setActionCommand("moveup");
 		moveDown.setActionCommand("movedown");
+		
+		moveUp.addActionListener(this);
+		moveDown.addActionListener(this);
 		
 		nameTextField = new JTextField(20);
 		nameTextField.addKeyListener(this);
@@ -61,32 +58,28 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 		nameErrorLabel = new JLabel("Enter a Name");
 		nameErrorLabel.setForeground(Color.RED);
 		
-		JPanel availableCategories = new JPanel();
-		availableCategories.setSize(new Dimension(100, 200));
-		availableCategories.setMinimumSize(new Dimension(100, 100));
-		availableCategories.setOpaque(true);
-		availableCategories.setBackground(Color.WHITE);
-		this.add(p, "cell 0 0, alignx center");
-		this.add(nameErrorLabel, "cell 0 1, alignx center");;
-		this.add(availableCategories, "cell 0 2, growx, growy, alignx center");
+		this.add(p, "alignx center, wrap");
+		this.add(nameErrorLabel, "alignx center, wrap");
+		
+		topCategoryListPanel = new CategoryListAddRemovePanel(false);
+		
+		this.add(topCategoryListPanel, "grow, push, alignx center, wrap");
 		
 		JPanel p2 = new JPanel();
-		p2.add(randomColors);
-		p2.add(ok);
-		p2.add(cancel);
+		p2.add(moveUp);
+		p2.add(moveDown);
+		
+		this.add(p2, "alignx center, wrap");
+		
+		bottomCategoryListPanel = new CategoryListAddRemovePanel(true);
+		this.add(bottomCategoryListPanel, "grow, push, alignx center, wrap");
 		
 		JPanel p3 = new JPanel();
-		p3.add(moveUp);
-		p3.add(moveDown);
+		p3.add(ok);
+		p3.add(cancel);
 		
-		JPanel filterCategories = new JPanel();
-		filterCategories.setSize(new Dimension(100, 200));
-		filterCategories.setMinimumSize(new Dimension(100, 100));
-		filterCategories.setOpaque(true);
-		filterCategories.setBackground(Color.WHITE);
-		this.add(p3, "cell 0 3, alignx center");
-		this.add(p2, "cell 0 5, alignx center");
-		this.add(filterCategories, "cell 0 4, growx, growy, alignx center");
+		this.add(p3, "alignx center");
+		
 		this.validateFields();
 	}
 
@@ -123,15 +116,23 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 	}
 	
 	public Filter getFilter() {
-		return new Filter(nameTextField.getText());// cs.getSelectedColor());
+		return new Filter(nameTextField.getText(), bottomCategoryListPanel.getCategories());
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		/*this.remove(cs);
-		cs = new ColorSwatch();
-		cs.revalidate();
-		this.add(cs, "cell 0 2, w 200, h 200, alignx center, aligny center");
-		this.revalidate();*/
+		if(e.getActionCommand().equals("movedown")) {
+			List<Category> temp = topCategoryListPanel.getSelectedCategories();
+			bottomCategoryListPanel.addCategories(temp);
+			topCategoryListPanel.removeCategories(temp);
+			topCategoryListPanel.clearSelection();
+			bottomCategoryListPanel.clearSelection();
+		} else if(e.getActionCommand().equals("moveup")) {
+			List<Category> temp = bottomCategoryListPanel.getSelectedCategories();
+			topCategoryListPanel.addCategories(temp);
+			bottomCategoryListPanel.removeCategories(temp);
+			topCategoryListPanel.clearSelection();
+			bottomCategoryListPanel.clearSelection();
+		}
 	}
 }

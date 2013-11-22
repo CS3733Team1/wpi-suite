@@ -16,8 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
 
@@ -52,7 +50,7 @@ public class FilterListPanel extends JPanel {
 		this.add(scrollPane, "grow, push");
 	}
 
-	public JList<Filter> getCategoryList() {
+	public JList<Filter> getFilterList() {
 		return filterList;
 	}
 

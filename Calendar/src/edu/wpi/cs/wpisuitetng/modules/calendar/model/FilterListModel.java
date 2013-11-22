@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
-import javax.swing.ListModel;
 
 /**
  * This is a model for the filter list. It contains all of the filters the user has created.
@@ -30,8 +29,7 @@ public class FilterListModel extends AbstractListModel<Filter>
 	private Filter activeCommitmentFilter;
 	
 	
-	private FilterListModel() 
-	{
+	private FilterListModel() {
 		this.filters = new ArrayList<Filter>();
 	}
 	

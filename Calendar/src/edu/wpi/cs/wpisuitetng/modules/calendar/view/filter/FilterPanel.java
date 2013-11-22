@@ -50,9 +50,7 @@ public class FilterPanel extends JPanel{
 	}
 
 	public List<Filter> getSelectedFilters() {
-		//TODO
-		//return filterListPanel.getFilterList().getSelectedValuesList();
-		return null;
+		return filterListPanel.getFilterList().getSelectedValuesList();
 	}
 
 	public void clearSelection() {

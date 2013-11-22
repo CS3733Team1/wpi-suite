@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -13,12 +14,12 @@ public class Filter extends DeletableAbstractModel {
 	
 	public Filter(String name) {
 		this.name = name;
+		this.categories = new ArrayList<Category>();
 	}
 	
-	public Filter(String name, ArrayList<Category> categories) {
-		this.name = name;
-		this.categories = new ArrayList<Category>();
-		for(Category cat: categories) {
+	public Filter(String name, List<Category> list) {
+		this(name);
+		for(Category cat: list) {
 			addCategory(cat);
 		}
 	}
@@ -41,7 +42,6 @@ public class Filter extends DeletableAbstractModel {
 	
 	public ArrayList<Event> apply(Event[] inlist) {
 		ArrayList<Event> outlist = new ArrayList<Event>();
-		
 		for(Event event: inlist) {
 			for(Category cat: this.categories) {
 				if(event.getCategory().equals(cat)) {
