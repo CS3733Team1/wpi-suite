@@ -51,7 +51,7 @@ public class EventView extends JPanel {
 		int maxwidth = 1;
 		int curwidth = 0;
 		for (int x = 0; x < events.size();){
-			curwidth = grabOverlapChain(0).size();
+			curwidth = grabOverlapChain(x).size();
 			if (maxwidth < curwidth){
 				maxwidth = curwidth;
 			}
