@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -39,10 +40,18 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 				final int index = tabbedPane.indexOfTabComponent(ClosableTabComponent.this);
 				return index > -1 ? tabbedPane.getTitleAt(index) : "";
 			}
+			
+			// display the icon according to that's set on our JTabbedPane
+			@Override 
+			public Icon getIcon(){
+				final JTabbedPane tabbedPane = ClosableTabComponent.this.tabbedPane;
+				final int index = tabbedPane.indexOfTabComponent(ClosableTabComponent.this);
+				return index > -1 ? tabbedPane.getIconAt(index) : null;
+			}
 		};
 		label.setBorder(BorderFactory.createEmptyBorder(3, 0, 2, 7));
 		add(label);
-		
+				
 		final JButton closeButton = new JButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
 		closeButton.setMargin(new Insets(0, 0, 0, 0));

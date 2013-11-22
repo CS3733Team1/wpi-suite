@@ -131,7 +131,7 @@ public class Event extends DeletableAbstractModel {
 		String str = "Name: " + this.name + " Start Date: " + this.startDate.toString()
 				+ " End Date: " + this.endDate.toString();
 		if(this.category != null)
-			str += " Category: " + this.category;
+			str += " Category: " + this.category.toJSON();
 		if(this.description != null)
 			str += " Description: " + this.description;
 		str += "\n";

@@ -22,11 +22,8 @@ public class FilterListModel extends AbstractListModel<Filter>
 	/** The list of filter */
 	private List<Filter> filters;
 	
-	/** The active Event filter */
-	private Filter activeEventFilter;
-	
-	/** The active Category filter */
-	private Filter activeCommitmentFilter;
+	/** The active filter */
+	private Filter activeFilter;
 	
 	
 	private FilterListModel() {
@@ -62,30 +59,27 @@ public class FilterListModel extends AbstractListModel<Filter>
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
-	public void setActiveEventFilter(int filterIndex)
-	{
-		this.activeEventFilter = filters.get(filterIndex);
-	}//end setActiveEventFilter
+	public void setActiveFilter(Filter filter) {
+		for(Filter f: this.filters) {
+			f.setSelected(false);
+		}
+		filter.setSelected(true);
+		this.activeFilter = filter;
+		System.out.println("Active filter: " + filter.getName());
+	}
 	
-	public void setActiveCommitmentFilter(int filterIndex)
-	{
-		this.activeCommitmentFilter = filters.get(filterIndex);
-	}//end setActiveEventFilter
-	
-	public ArrayList<Event> applyEventFilter()
-	{
+	public ArrayList<Event> applyFilterToEvent() {
 		List<Event> eventList = EventListModel.getEventListModel().getList();
 		Event[] eventArray = eventList.toArray(new Event[eventList.size()]);
 		
-		return this.activeEventFilter.apply(eventArray);
+		return this.activeFilter.apply(eventArray);
 	}//end applyFilter
 	
-	public ArrayList<Event> applyFilter()
-	{
+	public ArrayList<Event> applyFilter() {
 		List<Event> eventList = EventListModel.getEventListModel().getList();
 		Event[] eventArray = eventList.toArray(new Event[eventList.size()]);
 		
-		return this.activeEventFilter.apply(eventArray);
+		return this.activeFilter.apply(eventArray);
 	}//end applyFilter
 	
 	/**

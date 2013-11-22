@@ -9,12 +9,14 @@ public class Filter extends DeletableAbstractModel {
 	
 	public String name;
 	private ArrayList<Category> categories;
+	private boolean isSelected;
 	
 	public Filter(){}
 	
 	public Filter(String name) {
 		this.name = name;
 		this.categories = new ArrayList<Category>();
+		this.isSelected = false;
 	}
 	
 	public Filter(String name, List<Category> list) {
@@ -107,6 +109,14 @@ public class Filter extends DeletableAbstractModel {
 	public Boolean identify(Object o) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setSelected(boolean b) {
+		this.isSelected = b;
+	}
+
+	public boolean getSelected() {
+		return this.isSelected;
 	}
 
 }

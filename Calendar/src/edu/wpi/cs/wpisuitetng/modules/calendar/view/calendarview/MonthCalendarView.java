@@ -150,7 +150,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		{
 			int x = i%7;
 			int y = (i/7);	
-			System.out.println("X: "+ x+ "Y:"+y+"Day"+day);
+			//System.out.println("X: "+ x+ "Y:"+y+"Day"+day);
 			
 			
 			listOfDaysCalendar[x][y] = day;
