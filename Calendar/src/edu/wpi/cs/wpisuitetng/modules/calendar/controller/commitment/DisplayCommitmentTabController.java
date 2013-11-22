@@ -29,12 +29,12 @@ public class DisplayCommitmentTabController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		CommitmentTabPanel pan = new CommitmentTabPanel();
+		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel();
 		ImageIcon miniCommitmentIcon = new ImageIcon();
 		try {
 			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
 		} catch (IOException exception) {}
-		calendarPanel.addTab("Add Commitment", miniCommitmentIcon, pan);
-		calendarPanel.setSelectedComponent(pan);
+		calendarPanel.addTab("Add Commitment", miniCommitmentIcon, commitmentPanel);
+		calendarPanel.setSelectedComponent(commitmentPanel);
 	}
 }
