@@ -85,6 +85,11 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 
 	private void validateFields() {
 		if(nameTextField.getText().trim().length() == 0) {
+			nameErrorLabel.setText("Enter a Name");
+			nameErrorLabel.setVisible(true);
+			ok.setEnabled(false);
+		} else if (nameTextField.getText().equals("No Filter")){
+			nameErrorLabel.setText("No Filter is a reserved keyword");
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
 		} else {
