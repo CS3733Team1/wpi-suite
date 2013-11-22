@@ -126,7 +126,7 @@ public class EventWeekView extends JPanel{
 					infobuilder.append("<br><b>Category: </b>");
 					infobuilder.append(e.getCategory().getName());
 				}
-				if(e.getDescription()!=null){
+				if(e.getDescription().length()>0){
 					infobuilder.append("<br><b>Description: </b>");
 					infobuilder.append(e.getDescription());
 				}
