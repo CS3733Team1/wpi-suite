@@ -116,24 +116,21 @@ public class EventWeekView extends JPanel{
 				event.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
 				
 				StringBuilder infobuilder = new StringBuilder();
-				infobuilder.append("<html><p><b>Name: </b>");
+				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
 				infobuilder.append(e.getName());
-				infobuilder.append("</p><p><b>Start: </b>");
+				infobuilder.append("<br><b>Start: </b>");
 				infobuilder.append(DateFormat.getInstance().format(e.getStartDate()));
-				infobuilder.append("</p><p><b>End: </b>");
+				infobuilder.append("<br><b>End: </b>");
 				infobuilder.append(DateFormat.getInstance().format(e.getEndDate()));
-				infobuilder.append("</p>");
 				if(e.getCategory()!=null){
-					infobuilder.append("<p><b>Category: </b>");
+					infobuilder.append("<br><b>Category: </b>");
 					infobuilder.append(e.getCategory().getName());
-					infobuilder.append("</p>");
 				}
 				if(e.getDescription()!=null){
-					infobuilder.append("<p><b>Description: </b>");
+					infobuilder.append("<br><b>Description: </b>");
 					infobuilder.append(e.getDescription());
-					infobuilder.append("</p>");
 				}
-				infobuilder.append("</html>");
+				infobuilder.append("</p></html>");
 				event.setToolTipText(infobuilder.toString());
 				
 				if (e.getCategory() != null){
