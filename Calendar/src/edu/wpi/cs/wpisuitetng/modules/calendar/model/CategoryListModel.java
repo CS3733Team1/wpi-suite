@@ -128,7 +128,7 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 		return categories.size();
 	}
 
-	public List<Category> getList(){
-		return categories; 
+	public static List<Category> getList() {
+		return categoryModel.categories;
 	}
 }

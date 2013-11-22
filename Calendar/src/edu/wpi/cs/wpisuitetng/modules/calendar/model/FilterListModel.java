@@ -15,7 +15,7 @@ import javax.swing.AbstractListModel;
  * 
  */
 
-public class FilterListModel extends AbstractListModel<Object>
+public class FilterListModel extends AbstractListModel<Filter>
 {
 	private static FilterListModel filterListModel;
 	
@@ -29,8 +29,7 @@ public class FilterListModel extends AbstractListModel<Object>
 	private Filter activeCommitmentFilter;
 	
 	
-	private FilterListModel() 
-	{
+	private FilterListModel() {
 		this.filters = new ArrayList<Filter>();
 	}
 	
@@ -55,7 +54,7 @@ public class FilterListModel extends AbstractListModel<Object>
 		this.fireIntervalAdded(this, 0, 0);
 	}//end addFilter
 	
-	public void setFilter(Filter[] filters) {
+	public void setFilters(Filter[] filters) {
 		this.emptyModel();
 		for (int i = 0; i < filters.length; i++) {
 			this.filters.add(filters[i]);
@@ -115,16 +114,11 @@ public class FilterListModel extends AbstractListModel<Object>
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	@Override
-	public Object getElementAt(int index) 
+	public Filter getElementAt(int index) 
 	{
 		return filters.get(filters.size() - 1 - index);
 	}
 	
-	//Duplicate function?
-//	public Object getElement(int index){
-//		return filters.get(filters.size() - 1 - index);
-//	}
-
 	public void removeFilter(int index) 
 	{
 		filters.remove(index);
@@ -151,10 +145,5 @@ public class FilterListModel extends AbstractListModel<Object>
 		List<Filter> rtnFilterList = new ArrayList<Filter>();
 		rtnFilterList.addAll(getFilterListModel().filters);
 		return rtnFilterList;
-	}
-
-	public void setFilters(Filter[] fil) {
-		// TODO Auto-generated method stub
-		
 	}
 }
