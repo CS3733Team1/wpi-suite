@@ -10,6 +10,10 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -51,6 +55,16 @@ public class CommitmentListPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		this.add(scrollPane, "grow, push");
+		
+//		 MouseListener mouseListener = new MouseAdapter() {
+//		     public void mouseClicked(MouseEvent e) {
+//		         if (e.getClickCount() == 2) {
+//		             int index = commitmentList.locationToIndex(e.getPoint());
+//		             System.out.println("Double clicked on Item " + index);
+//		          }
+//		     }
+//		 };
+//		 commitmentList.addMouseListener(mouseListener);
 	}
 	
 	/**
