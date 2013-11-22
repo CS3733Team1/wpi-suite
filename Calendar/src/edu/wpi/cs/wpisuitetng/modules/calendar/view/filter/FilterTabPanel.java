@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.filter;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -13,7 +14,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.AddFilterContro
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.DeleteFilterController;
 import net.miginfocom.swing.MigLayout;
 
-public class FilterTabPanel extends JPanel {
+public class FilterTabPanel extends JPanel implements ActionListener {
 
 	private FilterPanel filterPanel;
 	private AddFilterController addControl;
@@ -56,7 +57,7 @@ public class FilterTabPanel extends JPanel {
 			delControl.deleteFilters(filterPanel.getSelectedFilters());
 			filterPanel.clearSelection();
 		} else if(e.getActionCommand().equals("addok")) {
-			addControl.addFilters(addFilPanel.getFilter());
+			addControl.addFilter(addFilPanel.getFilter());
 			this.setViewFilterPanel();
 		} else if(e.getActionCommand().equals("addcancel")) {
 			this.setViewFilterPanel();
