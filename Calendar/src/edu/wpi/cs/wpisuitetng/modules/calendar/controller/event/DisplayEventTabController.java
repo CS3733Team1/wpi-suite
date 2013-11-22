@@ -36,13 +36,13 @@ public class DisplayEventTabController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		EventTabPanel pan = new EventTabPanel();
+		EventTabPanel eventPanel = new EventTabPanel();
 		ImageIcon miniEventIcon = new ImageIcon();
 		try {
 			miniEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
 		} catch (IOException exception) {}
-		calendarPanel.addTab("Add Event", miniEventIcon , pan);
-		calendarPanel.setSelectedComponent(pan);
+		calendarPanel.addTab("Add Event", miniEventIcon , eventPanel);
+		calendarPanel.setSelectedComponent(eventPanel);
 	}
 	
 
