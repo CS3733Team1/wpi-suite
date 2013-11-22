@@ -54,7 +54,7 @@ public class FilterListModel extends AbstractListModel<Filter>
 		this.fireIntervalAdded(this, 0, 0);
 	}//end addFilter
 	
-	public void setFilter(Filter[] filters) {
+	public void setFilters(Filter[] filters) {
 		this.emptyModel();
 		for (int i = 0; i < filters.length; i++) {
 			this.filters.add(filters[i]);
@@ -119,11 +119,6 @@ public class FilterListModel extends AbstractListModel<Filter>
 		return filters.get(filters.size() - 1 - index);
 	}
 	
-	//Duplicate function?
-//	public Object getElement(int index){
-//		return filters.get(filters.size() - 1 - index);
-//	}
-
 	public void removeFilter(int index) 
 	{
 		filters.remove(index);
@@ -150,10 +145,5 @@ public class FilterListModel extends AbstractListModel<Filter>
 		List<Filter> rtnFilterList = new ArrayList<Filter>();
 		rtnFilterList.addAll(getFilterListModel().filters);
 		return rtnFilterList;
-	}
-
-	public void setFilters(Filter[] fil) {
-		// TODO Auto-generated method stub
-		
 	}
 }
