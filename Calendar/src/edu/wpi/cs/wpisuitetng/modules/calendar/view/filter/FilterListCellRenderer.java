@@ -17,27 +17,33 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 
 public class FilterListCellRenderer extends JPanel implements ListCellRenderer<Filter> {
 
-	private JPanel colorSquare;
+	private JPanel colorSquares;
 	private JLabel filterName;
+	private JRadioButton appliedFilterRadio;
 	
 	public FilterListCellRenderer() {
 		this.setLayout(new MigLayout());
 		filterName = new JLabel();
-		colorSquare = new JPanel();
-		colorSquare.setPreferredSize(new Dimension(16, 16));
-		colorSquare.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
-		this.add(colorSquare, "split 2");
-		this.add(filterName, "alignx left, wmax 200");
+		colorSquares = new JPanel(new MigLayout("insets 0"));
+		
+		
+		appliedFilterRadio = new JRadioButton();
+		
+		this.add(appliedFilterRadio, "split 2");
+		this.add(filterName, "alignx left, wmax 140");
+		this.add(colorSquares, "alignx right, wmax 60");
 	}
 	
 	@Override
@@ -45,9 +51,14 @@ public class FilterListCellRenderer extends JPanel implements ListCellRenderer<F
 			int index, boolean isSelected, boolean cellHasFocus) {
 		
 		if(filter != null) {
-			//TODO
-			//colorSquare.setBackground(filter.getColor());
-			//filterName.setText(filter.getName());
+			filterName.setText(filter.getName());
+			for(Category c: filter.getCategories()) {
+				JPanel colorSquare = new JPanel();
+				colorSquare.setPreferredSize(new Dimension(16, 16));
+				colorSquare.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
+				colorSquare.setBackground(c.getColor());
+				colorSquares.add(colorSquare);
+			}
 		}
 		
 		final Color background = UIManager.getDefaults().getColor("List.background");

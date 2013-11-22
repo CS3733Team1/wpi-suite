@@ -17,12 +17,19 @@ public class Filter extends DeletableAbstractModel {
 	
 	public Filter(String name, ArrayList<Category> categories) {
 		this.name = name;
-		this.categories = categories;
+		this.categories = new ArrayList<Category>();
+		for(Category cat: categories) {
+			addCategory(cat);
+		}
 	}
 	
 	public void addCategory(Category cat) {
-		categories.add(cat);
+		Category dupedCat = new Category(cat.getName(), cat.getColor());
+		dupedCat.isReal = false;
+		categories.add(dupedCat);
 	}
+	
+	public String getName() {return this.name;}
 	
 	public void removeCategory(Category cat) {
 		categories.remove(cat);
