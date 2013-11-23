@@ -10,59 +10,57 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.Calendar;
+
 import net.miginfocom.swing.MigLayout;
 
 public class TimeDurationPickerPanel extends JPanel {
 
-	private String[] times;
-
-	private JComboBox<String> timeStart;
-	private JComboBox<String> timeEnd;
-
+	private TimePicker StartTimePicker;
+	private TimePicker EndTimePicker;
+	private JLabel errorLabel;
+	
 	public TimeDurationPickerPanel() {
 		this.setLayout(new MigLayout("insets 1"));
 
-		times = new String[24];
-
-		for(int i = 0; i < 24; i++) {
-			times[i] = i + ":00";
-		}
-
-		timeStart = new JComboBox<String>(times);
-		timeEnd = new JComboBox<String>(times);
-
-		timeStart.setSelectedIndex(12);
-		timeEnd.setSelectedIndex(12);
+		StartTimePicker =  new TimePicker();
+		EndTimePicker = new TimePicker();
+		errorLabel=new JLabel("ERROR: End Time after Start Time!");
+		errorLabel.setForeground(Color.RED);
+		errorLabel.setVisible(false);
 		
-		this.add(new JLabel("Start:"), "split 2");
-		this.add(timeStart, "alignx left, wrap");
+		//TODO: add a listener to each TimePicker to validate start tiem is before end time and change the visibility of the error label	
 		
-		this.add(new JLabel("<html>&nbsp;&nbsp;End:</html>"), "split 2");
-		this.add(timeEnd, "alignx left, wrap");
+		this.add(StartTimePicker, "alignx left, wrap");
+		this.add(EndTimePicker, "alignx left, wrap");
+		this.add(errorLabel,  "alignx left, wrap");
 	}
 
-	public int isInvalidTime() {
-		if(timeStart.getSelectedIndex() == timeEnd.getSelectedIndex()) return 1;
-		else if(timeStart.getSelectedIndex() > timeEnd.getSelectedIndex()) return 2;
-		return 0;
+	public boolean isValidTime() {
+		return (StartTimePicker.hasValidTime() && EndTimePicker.hasValidTime() &&  EndTimePicker.getTime().after( StartTimePicker.getTime()));
 	}
 	
-	public int getStartTime() {
-		return timeStart.getSelectedIndex();
+	public Date getStartTime() {
+		return StartTimePicker.getTime();
 	}
 	
-	public int getEndTime() {
-		return timeEnd.getSelectedIndex();
+	public Date getEndTime() {
+		return EndTimePicker.getTime();
 	}
 	
-	public void setActionListener(ActionListener al) {
-		timeStart.addActionListener(al);
-		timeEnd.addActionListener(al);
-	}
+	
+//	public void setActionListener(ActionListener al) {
+//		timeStart.addActionListener(al);
+//		timeEnd.addActionListener(al);
+//	}
 }
