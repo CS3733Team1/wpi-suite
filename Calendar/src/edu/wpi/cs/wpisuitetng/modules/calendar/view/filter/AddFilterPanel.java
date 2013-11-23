@@ -88,12 +88,8 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 		ok.setEnabled(true);
 		addCat.setEnabled(true);
 		removeCat.setEnabled(true);
-		if(nameTextField.getText().trim().length() == 0) {
-			nameErrorLabel.setText("Enter a Name");
-			nameErrorLabel.setVisible(true);
-			ok.setEnabled(false);
-		} if (nameTextField.getText().equals("No Filter")){
-			nameErrorLabel.setText("No Filter is a reserved keyword");
+		if (nameTextField.getText().equals("No Filter")){
+			nameErrorLabel.setText("'No Filter' is a reserved keyword");
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
 		} if (bottomCategoryListPanel.getCategories().isEmpty()){
@@ -105,7 +101,11 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 			nameErrorLabel.setText("There are no more categories to add");
 			nameErrorLabel.setVisible(true);
 			addCat.setEnabled(false);
-		}else
+		} if(nameTextField.getText().trim().length() == 0) {
+			nameErrorLabel.setText("Enter a Name");
+			nameErrorLabel.setVisible(true);
+			ok.setEnabled(false);
+		} 
 		this.revalidate();
 	}
 	
