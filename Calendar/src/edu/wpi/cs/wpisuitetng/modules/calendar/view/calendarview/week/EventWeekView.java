@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventHoverMouseListener;
 
 public class EventWeekView extends JPanel{
 
@@ -198,6 +200,24 @@ public class EventWeekView extends JPanel{
 					evebuilder.append(new Integer(getLength(e)).toString());
 					evebuilder.append(",grow, push, wmin 0");
 
+					StringBuilder infobuilder = new StringBuilder();
+					infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
+					infobuilder.append(e.getName());
+					infobuilder.append("<br><b>Start: </b>");
+					infobuilder.append(DateFormat.getInstance().format(e.getStartDate()));
+					infobuilder.append("<br><b>End: </b>");
+					infobuilder.append(DateFormat.getInstance().format(e.getEndDate()));
+					if(e.getCategory()!=null){
+						infobuilder.append("<br><b>Category: </b>");
+						infobuilder.append(e.getCategory().getName());
+					}
+					if(e.getDescription().length()>0){
+						infobuilder.append("<br><b>Description: </b>");
+						infobuilder.append(e.getDescription());
+					}
+					infobuilder.append("</p></html>");
+					panel.setToolTipText(infobuilder.toString());
+					
 					panel.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
 					if (e.getCategory() != null){
 						panel.setBackground(e.getCategory().getColor());

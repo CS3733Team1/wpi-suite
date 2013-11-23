@@ -31,7 +31,7 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 	
 	
 	public AddCategoryPanel() {
-		this.setLayout(new MigLayout("insets 0"));
+		this.setLayout(new MigLayout("insets 0", "push[center]push", "[][][][]"));
 		
 		try {
 			randomColors = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png"))));
@@ -57,17 +57,16 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		nameErrorLabel = new JLabel("Enter a Name");
 		nameErrorLabel.setForeground(Color.RED);
 		
-		this.add(p, "alignx center, wrap");
-		this.add(nameErrorLabel, "alignx center, wrap");
-		this.add(cs, "w 200, h 200, alignx center, wrap");
-		this.add(new JLabel("Color"), "alignx center, wrap");
+		this.add(p, "cell 0 0, alignx center");
+		this.add(nameErrorLabel, "cell 0 1, alignx center");
+		this.add(cs, "cell 0 2, w 200, h 200, alignx center");
 		
 		JPanel p2 = new JPanel();
 		p2.add(randomColors);
 		p2.add(ok);
 		p2.add(cancel);
 		
-		this.add(p2, "alignx center");
+		this.add(p2, "cell 0 3, alignx center");
 		
 		this.validateFields();
 	}
@@ -113,7 +112,7 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		this.remove(cs);
 		cs = new ColorSwatch();
 		cs.revalidate();
-		this.add(cs, "cell 0 2, w 200, h 200, alignx center, aligny center");
+		this.add(cs, "cell 0 2, w 200, h 200, alignx center");
 		this.revalidate();
 	}
 }
