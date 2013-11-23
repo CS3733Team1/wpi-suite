@@ -83,9 +83,7 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	@Override
 	public Filter[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		// Throw an exception if an ID was specified, as this module does not support
-		// retrieving specific Commitments.
-		throw new WPISuiteException();
+		return (Filter []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
 	}
 
 	/* 
@@ -144,9 +142,17 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-
-		// This module does not allow Filters to be deleted, so throw an exception
-		throw new WPISuiteException();
+		System.out.println("Filter entiy manager delete entity id = " + id);
+		try
+		{
+			Filter todelete = (Filter) db.retrieve(Filter.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+			deleteFilter(todelete);
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/*
@@ -156,9 +162,7 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-
-		// This module does not allow Commitments to be deleted, so throw an exception
-		throw new WPISuiteException();
+		db.deleteAll(new Filter());
 	}
 
 	/*

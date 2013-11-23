@@ -47,6 +47,7 @@ public class RetrieveCategoryObserver implements RequestObserver{
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
+		System.err.println(iReq.getResponse().getStatusMessage());
 		System.err.println("Failed To Retrieve Categories");
 	}
 }

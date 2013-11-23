@@ -12,6 +12,10 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
@@ -30,9 +34,13 @@ public class DisplayEventTabController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		EventTabPanel pan = new EventTabPanel();
-		calendarPanel.addTab("Add Event", pan);
-		calendarPanel.setSelectedComponent(pan);
+		EventTabPanel eventPanel = new EventTabPanel();
+		ImageIcon miniEventIcon = new ImageIcon();
+		try {
+			miniEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
+		} catch (IOException exception) {}
+		calendarPanel.addTab("Add Event", miniEventIcon , eventPanel);
+		calendarPanel.setSelectedComponent(eventPanel);
 	}
 	
 

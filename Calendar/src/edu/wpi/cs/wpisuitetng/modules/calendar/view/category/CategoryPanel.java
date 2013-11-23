@@ -23,7 +23,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 
 public class CategoryPanel extends JPanel{
-	CategoryListPanel categoryListPanel;
+	private CategoryListPanel categoryListPanel;
 
 	private JButton addCategoryButton, deleteCategoryButton;
 

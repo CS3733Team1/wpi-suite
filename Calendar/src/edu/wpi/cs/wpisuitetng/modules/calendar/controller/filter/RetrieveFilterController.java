@@ -43,7 +43,7 @@ public class RetrieveFilterController implements AncestorListener, ActionListene
 	 * 
 	 * @param messages an array of messages received from the server
 	 */
-	public void receivedMessages(Filter[] fil) {		
+	public void receivedMessages(Filter[] fil) {
 		// Make sure the response was not null
 		if (fil != null) {
 			// set the messages to the local model
