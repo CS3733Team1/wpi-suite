@@ -24,8 +24,8 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 	
 	private JButton ok;
 	private JButton cancel;
-	private JButton moveUp;
-	private JButton moveDown;
+	private JButton addCat;
+	private JButton removeCat;
 	
 	private JTextField nameTextField;
 	
@@ -37,16 +37,16 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 		ok = new JButton("Ok");
 		cancel = new JButton("Cancel");
 		
-		moveUp = new JButton("Move Up");
-		moveDown = new JButton("Move Down");
+		addCat = new JButton("Add Category");
+		removeCat = new JButton("Remove Category");
 		
 		ok.setActionCommand("addok");
 		cancel.setActionCommand("addcancel");
-		moveUp.setActionCommand("moveup");
-		moveDown.setActionCommand("movedown");
+		addCat.setActionCommand("movedown");
+		removeCat.setActionCommand("moveup");
 		
-		moveUp.addActionListener(this);
-		moveDown.addActionListener(this);
+		addCat.addActionListener(this);
+		removeCat.addActionListener(this);
 		
 		nameTextField = new JTextField(20);
 		nameTextField.addKeyListener(this);
@@ -66,8 +66,8 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 		this.add(topCategoryListPanel, "grow, push, alignx center, wrap");
 		
 		JPanel p2 = new JPanel();
-		p2.add(moveUp);
-		p2.add(moveDown);
+		p2.add(addCat);
+		p2.add(removeCat);
 		
 		this.add(p2, "alignx center, wrap");
 		
@@ -90,6 +90,10 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 			ok.setEnabled(false);
 		} else if (nameTextField.getText().equals("No Filter")){
 			nameErrorLabel.setText("No Filter is a reserved keyword");
+			nameErrorLabel.setVisible(true);
+			ok.setEnabled(false);
+		} else if (bottomCategoryListPanel.getCategories().isEmpty()){
+			nameErrorLabel.setText("Add at least one category");
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
 		} else {
@@ -139,5 +143,6 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 			topCategoryListPanel.clearSelection();
 			bottomCategoryListPanel.clearSelection();
 		}
+		validateFields();
 	}
 }
