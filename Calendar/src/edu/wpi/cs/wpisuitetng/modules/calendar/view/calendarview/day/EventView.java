@@ -153,7 +153,7 @@ public class EventView extends JPanel {
 				evebuilder.append("0");
 				evebuilder.append(" ");
 				evebuilder.append(new Integer(getLength(e)).toString());
-				evebuilder.append(",grow, push");
+				evebuilder.append(",grow, push, wmin 0");
 				
 				panel.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
 				if (e.getCategory() != null){
