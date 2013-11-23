@@ -92,7 +92,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		// Start/End Time
 		timeDurationPickerPanel = new TimeDurationPickerPanel();
-		timeDurationPickerPanel.setActionListener(this);
+//		timeDurationPickerPanel.setActionListener(this);
 		this.add(timeDurationPickerPanel, "alignx left, split 2");
 		timeErrorLabel = new JLabel();
 		timeErrorLabel.setForeground(Color.RED);
@@ -171,20 +171,22 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			dateErrorLabel.setVisible(false);
 		}
 
-		if(timeDurationPickerPanel.isInvalidTime() == 1) {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			timeErrorLabel.setText(ZERO_TIME_ERROR);
-			timeErrorLabel.setVisible(true);
-			enableAddEvent = false;
-		} else if (timeDurationPickerPanel.isInvalidTime() == 2) {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			timeErrorLabel.setText(START_AFTER_END_ERROR);
-			timeErrorLabel.setVisible(true);
-			enableAddEvent = false;
-		} else {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
-			timeErrorLabel.setVisible(false);
-		}
+		
+		enableAddEvent&=timeDurationPickerPanel.isValidTime();
+//		if(timeDurationPickerPanel.isInvalidTime() == 1) {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+//			timeErrorLabel.setText(ZERO_TIME_ERROR);
+//			timeErrorLabel.setVisible(true);
+//			enableAddEvent = false;
+//		} else if (timeDurationPickerPanel.isInvalidTime() == 2) {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+//			timeErrorLabel.setText(START_AFTER_END_ERROR);
+//			timeErrorLabel.setVisible(true);
+//			enableAddEvent = false;
+//		} else {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
+//			timeErrorLabel.setVisible(false);
+//		}
 
 		addEventButton.setEnabled(enableAddEvent);
 	}
@@ -194,17 +196,18 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.YEAR, date.getYear()+1900);
 		cal.set(Calendar.MONTH, date.getMonth());
 		cal.set(Calendar.DATE, date.getDate());
-		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getStartTime());
-
+		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getStartTime().getHours());
+		cal.set(Calendar.MINUTE, timeDurationPickerPanel.getStartTime().getMinutes());
+		cal.set(Calendar.SECOND, 0);
+		
 		Date startDate = cal.getTime();
 		
 
-		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getEndTime());
+		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getEndTime().getHours());
+		cal.set(Calendar.MINUTE, timeDurationPickerPanel.getEndTime().getMinutes());
 
 		Date endDate = cal.getTime();
 		
