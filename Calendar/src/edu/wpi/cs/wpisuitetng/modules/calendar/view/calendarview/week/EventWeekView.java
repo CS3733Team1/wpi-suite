@@ -109,7 +109,7 @@ public class EventWeekView extends JPanel{
 	 * @return length of event e
 	 */
 	public int getLength(Event e){
-		return e.getEndDate().getHours() - e.getStartDate().getHours();
+		return ((e.getEndDate().getHours()*4 + (int) Math.round(e.getEndDate().getMinutes()/15.0)) - (e.getStartDate().getHours()*4 + (int) Math.round(e.getStartDate().getMinutes()/15.0)));
 	}
 	
 	/**
@@ -147,6 +147,7 @@ public class EventWeekView extends JPanel{
 			
 		List<List<Event>> weekevents = fixDays();
 		StringBuilder layouts = new StringBuilder();
+		String toomanyones = "";
 		
 		layouts.append("[8%]");
 		for (int currentday = 0; currentday < 7; currentday++){
@@ -167,9 +168,14 @@ public class EventWeekView extends JPanel{
 			layouts.append(calclayout);
 		}
 		
-		this.setLayout(new MigLayout("fill", 
-				layouts.toString(), 
-				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
+		for(int i = 0; i < 100; i++)
+			toomanyones += "[1%]";
+		
+		System.out.println(toomanyones);
+		
+		this.setLayout(new MigLayout("fill",
+				layouts.toString(),
+				toomanyones));
 		
 		System.out.println(layouts.toString());
 		
@@ -193,7 +199,7 @@ public class EventWeekView extends JPanel{
 					evebuilder.append("cell ");
 					evebuilder.append(new Integer(maxmove + z).toString());
 					evebuilder.append(" ");
-					evebuilder.append((new Integer(e.getStartDate().getHours()+1)).toString());
+					evebuilder.append((new Integer((int)(4*(e.getStartDate().getHours()) + Math.round((e.getStartDate().getMinutes()/15.0) + 4))).toString()));
 					evebuilder.append(" ");
 					evebuilder.append("0");
 					evebuilder.append(" ");

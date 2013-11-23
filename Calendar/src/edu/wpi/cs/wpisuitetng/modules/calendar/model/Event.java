@@ -29,6 +29,7 @@ public class Event extends DeletableAbstractModel {
 	private String description;
 	private Category category;
 	
+	private boolean isTeam;
 
 	/*
 	 * TO DO:
@@ -46,20 +47,48 @@ public class Event extends DeletableAbstractModel {
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.isTeam = false;
+	}
+	
+	public Event(String name, Date startDate, Date endDate, boolean isTeam) {
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.isTeam = isTeam;
 	}
 	
 	public Event(String name, Date startDate, Date endDate, String description) {
 		this(name, startDate, endDate);
+		this.description = description;
+		this.isTeam = false;
+	}
+	
+	public Event(String name, Date startDate, Date endDate, String description, boolean isTeam) {
+		this(name, startDate, endDate, isTeam);
 		this.description = description;
 	}
 	
 	public Event(String name, Date startDate, Date endDate, Category category) {
 		this(name, startDate, endDate);
 		this.category = category.cloneFake();
+		this.isTeam = false;
+	}
+	
+	public Event(String name, Date startDate, Date endDate, Category category, boolean isTeam) {
+		this(name, startDate, endDate, isTeam);
+		this.category = category.cloneFake();
 	}
 	
 	public Event(String name, Date startDate, Date endDate, String description, Category category) {
 		this(name, startDate, endDate);
+		this.description = description;
+		this.category = category.cloneFake();
+		this.isTeam = false;
+	}
+	
+	public Event(String name, Date startDate, Date endDate, String description, Category category,
+				boolean isTeam) {
+		this(name, startDate, endDate, isTeam);
 		this.description = description;
 		this.category = category.cloneFake();
 	}
@@ -102,6 +131,16 @@ public class Event extends DeletableAbstractModel {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+	
+	public boolean getTeam()
+	{
+		return isTeam;
+	}
+	
+	public void setTeam(boolean isTeam)
+	{
+		this.isTeam = isTeam;
 	}
 	
 	@Override

@@ -26,6 +26,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	private String description;
 	private Category category;
 	
+	private boolean isTeam;
+	
 	public Commitment(){}
 	
 	/**
@@ -36,6 +38,14 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate) {
 		this.name = name;
 		this.dueDate = dueDate;
+		
+		this.isTeam = false;
+	}
+	
+	public Commitment(String name, Date dueDate, boolean isTeam) {
+		this.name = name;
+		this.dueDate = dueDate;
+		this.isTeam = isTeam;
 	}
 
 	/**
@@ -46,6 +56,13 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 */
 	public Commitment(String name, Date dueDate, String description) {
 		this(name, dueDate);
+		this.description = description;
+		this.isTeam = false;
+	}
+	
+	public Commitment(String name, Date dueDate, String description, boolean isTeam)
+	{
+		this(name, dueDate, isTeam);
 		this.description = description;
 	}
 
@@ -58,8 +75,15 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate, Category category) {
 		this(name, dueDate);
 		this.category = category.cloneFake();
+		this.isTeam = false;
 	}
 
+	public Commitment(String name, Date dueDate, Category category, boolean isTeam) {
+		this(name, dueDate);
+		this.category = category.cloneFake();
+		this.isTeam = isTeam;
+	}
+	
 	/**
 	 * Constructs a Commitment
 	 * @param name name of Commitment
@@ -72,6 +96,15 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
+		this.isTeam = false;
+	}
+	
+	public Commitment(String name, Date dueDate, String description,
+			Category category, boolean isTeam) {
+		this(name, dueDate);
+		this.description = description;
+		this.category = category.cloneFake();
+		this.isTeam = isTeam;
 	}
 
 	/**
@@ -128,6 +161,16 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 */
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+	
+	public boolean getTeam()
+	{
+		return isTeam;
+	}
+	
+	public void setTeam(boolean isTeam)
+	{
+		this.isTeam = isTeam;
 	}
 
 	@Override
