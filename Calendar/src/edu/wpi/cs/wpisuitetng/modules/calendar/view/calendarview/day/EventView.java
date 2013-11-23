@@ -83,7 +83,7 @@ public class EventView extends JPanel {
 	 * @return length of event e
 	 */
 	public int getLength(Event e){
-		return e.getEndDate().getHours() - e.getStartDate().getHours();
+		return ((e.getEndDate().getHours()*4 + (int) Math.round(e.getEndDate().getMinutes()/15.0)) - (e.getStartDate().getHours()*4 + (int) Math.round(e.getStartDate().getMinutes()/15.0)));
 	}
 	
 	/**
@@ -122,6 +122,7 @@ public class EventView extends JPanel {
 		
 		int maxwidth = findMaxWidth();
 		int sectionsize = 76 / maxwidth;
+		String toomanyones = "";
 		
 		StringBuilder calclayout = new StringBuilder();
 		calclayout.append("[22%]");
@@ -131,9 +132,14 @@ public class EventView extends JPanel {
 		}
 		calclayout.append("[2%]");
 		
+		for(int i = 0; i < 100; i++)
+			toomanyones += "[1%]";
+		
+		System.out.println(toomanyones);
+		
 		this.setLayout(new MigLayout("fill",
 				calclayout.toString(),
-				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
+				toomanyones));
 		
 		int y = 0;
 		while (y < events.size()){
@@ -149,7 +155,7 @@ public class EventView extends JPanel {
 				evebuilder.append("cell ");
 				evebuilder.append(new Integer(1 + z).toString());
 				evebuilder.append(" ");
-				evebuilder.append((new Integer(e.getStartDate().getHours()+1)).toString());
+				evebuilder.append((new Integer((int)(4*(e.getStartDate().getHours()) + Math.round((e.getStartDate().getMinutes()/15.0) + 4))).toString()));
 				evebuilder.append(" ");
 				evebuilder.append("0");
 				evebuilder.append(" ");
