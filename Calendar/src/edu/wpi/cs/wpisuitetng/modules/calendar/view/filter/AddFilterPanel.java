@@ -84,26 +84,28 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 	}
 
 	private void validateFields() {
+		nameErrorLabel.setVisible(false);
+		ok.setEnabled(true);
+		addCat.setEnabled(true);
+		removeCat.setEnabled(true);
 		if(nameTextField.getText().trim().length() == 0) {
 			nameErrorLabel.setText("Enter a Name");
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
-		} else if (nameTextField.getText().equals("No Filter")){
+		} if (nameTextField.getText().equals("No Filter")){
 			nameErrorLabel.setText("No Filter is a reserved keyword");
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
-		} else if (bottomCategoryListPanel.getCategories().isEmpty()){
+		} if (bottomCategoryListPanel.getCategories().isEmpty()){
 			nameErrorLabel.setText("Add at least one category");
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
-		} else if (topCategoryListPanel.getCategories().isEmpty()){
+			removeCat.setEnabled(false);
+		} if (topCategoryListPanel.getCategories().isEmpty()){
 			nameErrorLabel.setText("There are no more categories to add");
 			nameErrorLabel.setVisible(true);
 			addCat.setEnabled(false);
-		}else {
-			nameErrorLabel.setVisible(false);
-			ok.setEnabled(true);
-		}
+		}else
 		this.revalidate();
 	}
 	
