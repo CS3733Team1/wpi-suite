@@ -96,7 +96,11 @@ public class AddFilterPanel extends JPanel implements KeyListener, ActionListene
 			nameErrorLabel.setText("Add at least one category");
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
-		} else {
+		} else if (topCategoryListPanel.getCategories().isEmpty()){
+			nameErrorLabel.setText("There are no more categories to add");
+			nameErrorLabel.setVisible(true);
+			addCat.setEnabled(false);
+		}else {
 			nameErrorLabel.setVisible(false);
 			ok.setEnabled(true);
 		}
