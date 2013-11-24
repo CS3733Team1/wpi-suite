@@ -19,10 +19,13 @@ import java.awt.event.MouseListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
@@ -95,10 +98,14 @@ public class CommitmentListPanel extends JPanel implements MouseListener{
 		this.removeAll();
 		this.repaint();
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		this.add(new JLabel("<html>Commitment Name:  " + c.getName() + "</html>"));
+		JEditorPane detailDisplay = new JEditorPane("text/html", c.toString());
+		//detailDisplay.setLineWrap(true);
+		//detailDisplay.setWrapStyleWord(true);
+		this.add(detailDisplay);
+		/*this.add(new JLabel("<html>Commitment Name:  " + c.getName() + "</html>"));
 		this.add(new JLabel("Commitment Date:  " + c.getDueDate()));
 		this.add(new JLabel("Commitment Category:  " + c.getCategory().getName()));
-		this.add(new JLabel("<html>Commitment Descrption:  " + c.getDescription() + "</html>"));
+		this.add(new JLabel("<html>Commitment Descrption:  " + c.getDescription() + "</html>"));*/
 		/** Setup gui for editing commitments **/
 		
 		// Add / Cancel buttons
