@@ -10,10 +10,15 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
+import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,10 +35,11 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
  * @author
  */
 
-public class CommitmentListPanel extends JPanel {
+public class CommitmentListPanel extends JPanel implements MouseListener{
 
 	private CommitmentListModel model;
 	private JList<Commitment> commitmentList;
+	private Boolean EDITMODE = false;
 	/**
 	 * Constructor for the CommitmentListPanel creates both the list of commitments
 	 * and the scroll pane that they are displayed on.
@@ -55,16 +61,8 @@ public class CommitmentListPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		this.add(scrollPane, "grow, push");
-		
-//		 MouseListener mouseListener = new MouseAdapter() {
-//		     public void mouseClicked(MouseEvent e) {
-//		         if (e.getClickCount() == 2) {
-//		             int index = commitmentList.locationToIndex(e.getPoint());
-//		             System.out.println("Double clicked on Item " + index);
-//		          }
-//		     }
-//		 };
-//		 commitmentList.addMouseListener(mouseListener);
+	
+		 commitmentList.addMouseListener(this);
 	}
 	
 	/**
@@ -73,5 +71,51 @@ public class CommitmentListPanel extends JPanel {
 	 */
 	public JList<Commitment> getCommitmentList() {
 		return commitmentList;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		   if (e.getClickCount() == 2) {
+	        	 if (commitmentList.contains(e.getPoint())) { 
+	        		  this.editCommitment(commitmentList.getSelectedValue());
+	        		 }
+	            
+	          }
+		
+	}
+	public void editCommitment(Commitment c)
+	{
+		this.removeAll();
+		this.repaint();
+		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		this.add(new JLabel("<html>Commitment Name:  " + c.getName() + "</html>"));
+		this.add(new JLabel("Commitment Date:  " + c.getDueDate()));
+		this.add(new JLabel("Commitment Category:  " + c.getCategory().getName()));
+		this.add(new JLabel("<html>Commitment Descrption:  " + c.getDescription() + "</html>"));
+		/** Setup gui for editing commitments **/
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
