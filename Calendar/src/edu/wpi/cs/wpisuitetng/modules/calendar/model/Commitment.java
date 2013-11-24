@@ -41,6 +41,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate) {
 		this.name = name;
 		this.dueDate = dueDate;
+		this.progress = 0; //Default
 	}
 
 	/**
@@ -52,6 +53,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate, String description) {
 		this(name, dueDate);
 		this.description = description;
+		this.progress = 0; //Default
 	}
 
 	/**
@@ -63,6 +65,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate, Category category) {
 		this(name, dueDate);
 		this.category = category.cloneFake();
+		this.progress = 0; //Default
 	}
 
 	/**
@@ -77,6 +80,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
+		this.progress = 0; //Default
 	}
 	
 	/**
@@ -249,12 +253,14 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	@Override
 	public String toString()
 	{
-		String str = "Name: " + this.name + " Due Date: " + this.dueDate.toString();
+		String str = "<html><b>Name:</b>  " + getName() +
+				"<br><b>Due Date:</b>  " + getDueDate().toString();
 		if(this.category != null)
-			str += " Category: " + this.category;
+			str += "<br><b>Category:</b> " + getCategory().getName();
 		if(this.description != null)
-			str += " Description: " + this.description;
-		str += "\n";
+			str += "<br><b>Description:</b> " + getDescription();
+		str += String.format("<br><b>Progress:</b> %d%%</html>", getProgress());
+				
 		return str;
 	}
 
