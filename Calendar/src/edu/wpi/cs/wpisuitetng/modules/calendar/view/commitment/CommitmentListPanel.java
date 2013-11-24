@@ -18,6 +18,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -25,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 
@@ -40,6 +42,11 @@ public class CommitmentListPanel extends JPanel implements MouseListener{
 	private CommitmentListModel model;
 	private JList<Commitment> commitmentList;
 	private Boolean EDITMODE = false;
+	
+	private JButton updateCommitmentButton;
+	private JButton cancelButton;
+	private JButton deleteButton;
+	
 	/**
 	 * Constructor for the CommitmentListPanel creates both the list of commitments
 	 * and the scroll pane that they are displayed on.
@@ -94,6 +101,20 @@ public class CommitmentListPanel extends JPanel implements MouseListener{
 		this.add(new JLabel("<html>Commitment Descrption:  " + c.getDescription() + "</html>"));
 		/** Setup gui for editing commitments **/
 		
+		// Add / Cancel buttons
+				updateCommitmentButton = new JButton("Update Commitment");
+				updateCommitmentButton.setActionCommand("updatecommitment");
+				//updateCommitmentButton.addActionListener(new AddCommitmentController(this));
+				
+				this.add(updateCommitmentButton, "alignx left, split 2");
+				
+				cancelButton = new JButton("Cancel");
+				cancelButton.setActionCommand("cancel");
+				
+				this.add(cancelButton, "alignx left");
+				
+				//Action Listener for Cancel Button
+				//cancelButton.addActionListener(this);
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
