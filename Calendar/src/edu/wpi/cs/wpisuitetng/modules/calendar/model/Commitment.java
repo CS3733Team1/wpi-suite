@@ -25,7 +25,12 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	// Optional parameters
 	private String description;
 	private Category category;
+	private int progress;
 	
+	//------------ATTENTION---------
+	//Should Category have an empty constructor?
+	//It has required fields that should constitute
+	//the arguments of the most basic constructor.
 	public Commitment(){}
 	
 	/**
@@ -72,6 +77,61 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
+	}
+	
+	/**
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param progress progress of Commitment
+	 */
+	public Commitment(String name, Date dueDate, int progress) {
+		this(name, dueDate);
+		this.progress = progress;
+	}
+	
+	/**
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param description description of Commitment
+	 * @param progress progress of Commitment
+	 */
+	public Commitment(String name, Date dueDate, String description, 
+			int progress) {
+		this(name, dueDate);
+		this.description = description;
+		this.progress = progress;
+	}
+	
+	/**
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param category category of Commitment
+	 * @param progress progress of Commitment
+	 */
+	public Commitment(String name, Date dueDate, Category category, 
+			int progress) {
+		this(name, dueDate);
+		this.category = category.cloneFake();
+		this.progress = progress;
+	}
+	
+	/**
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param description description of Commitment
+	 * @param category category of Commitment
+	 * @param progress progress of Commitment
+	 */
+	public Commitment(String name, Date dueDate, String description,
+			Category category, int progress) {
+		this(name, dueDate);
+		this.description = description;
+		this.category = category.cloneFake();
+		this.progress = progress;
 	}
 
 	/**
@@ -128,6 +188,20 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 */
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+	
+	/**
+	 * @return the Category object representing the Commitment's Category
+	 */
+	public int getProgress() {
+		return progress;
+	}
+
+	/**
+	 * @param category the Category object to set the Commitment's Category to
+	 */
+	public void setProgress(int progress) {
+		this.progress = progress;
 	}
 
 	@Override
