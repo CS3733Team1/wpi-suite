@@ -10,12 +10,20 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
+
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -31,6 +39,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterListPanel;
 
 /**
  * This is the view where the list of commitments are displayed.
@@ -39,7 +48,11 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
  * @author
  */
 
+<<<<<<< HEAD
 public class CommitmentListPanel extends JPanel {
+=======
+public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener{
+>>>>>>> Moved buttons and implemented cancel button
 
 	private CommitmentListModel model;
 	private JList<Commitment> commitmentList;
@@ -58,7 +71,8 @@ public class CommitmentListPanel extends JPanel {
 	 */
 	public CommitmentListPanel() {
 		this.model = CommitmentListModel.getCommitmentListModel();
-		
+		viewCommitments();
+		/*
 		this.setLayout(new MigLayout("fill, insets 0"));
 		
 		commitmentList = new JList<Commitment>(model);
@@ -73,6 +87,7 @@ public class CommitmentListPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		this.add(scrollPane, "grow, push");
+<<<<<<< HEAD
 		
 //		 MouseListener mouseListener = new MouseAdapter() {
 //		     public void mouseClicked(MouseEvent e) {
@@ -83,6 +98,10 @@ public class CommitmentListPanel extends JPanel {
 //		     }
 //		 };
 //		 commitmentList.addMouseListener(mouseListener);
+=======
+	
+		 commitmentList.addMouseListener(this);*/
+>>>>>>> Moved buttons and implemented cancel button
 	}
 	
 	/**
@@ -109,6 +128,31 @@ public class CommitmentListPanel extends JPanel {
 	{
 		this.removeAll();
 		this.repaint();
+		
+		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][grow, fill]"));
+
+		//try { Required to use Icon, none used now
+		updateCommitmentButton = new JButton("<html>Edit<br/>Commitment</html>");
+		cancelButton = new JButton("<html>Cancel</html>");
+		//} catch (IOException e) {e.printStackTrace();}
+
+		JEditorPane detailDisplay = new JEditorPane("text/html", c.toString());
+		
+		updateCommitmentButton.setActionCommand("updatecommitment");
+		//updateCommitmentButton.addActionListener(new AddCommitmentController(this));
+		cancelButton.setActionCommand("cancel");
+		cancelButton.addActionListener(this);
+		
+		JPanel p = new JPanel();
+		p.add(updateCommitmentButton);
+		p.add(cancelButton);
+		
+		this.add(p, "wrap");
+		this.add(detailDisplay, "grow, push");
+		
+		
+		
+		/*
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JEditorPane detailDisplay = new JEditorPane("text/html", c.toString());
 		//detailDisplay.setLineWrap(true);
@@ -119,7 +163,7 @@ public class CommitmentListPanel extends JPanel {
 		this.add(new JLabel("Commitment Category:  " + c.getCategory().getName()));
 		this.add(new JLabel("<html>Commitment Descrption:  " + c.getDescription() + "</html>"));*/
 		/** Setup gui for editing commitments **/
-		
+		/*
 		// Add / Cancel buttons
 				updateCommitmentButton = new JButton("Update Commitment");
 				updateCommitmentButton.setActionCommand("updatecommitment");
@@ -133,7 +177,30 @@ public class CommitmentListPanel extends JPanel {
 				this.add(cancelButton, "alignx left");
 				
 				//Action Listener for Cancel Button
-				//cancelButton.addActionListener(this);
+				//cancelButton.addActionListener(this); */
+	}
+	
+	public void viewCommitments()
+	{
+		this.removeAll();
+		this.repaint();
+		
+		this.setLayout(new MigLayout("fill, insets 0"));
+		
+		commitmentList = new JList<Commitment>(model);
+		
+		commitmentList.setCellRenderer(new CommitmentListCellRenderer());
+		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+		commitmentList.setLayoutOrientation(JList.VERTICAL);
+		
+		commitmentList.setVisibleRowCount(0);
+
+		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		this.add(scrollPane, "grow, push");
+	
+		commitmentList.addMouseListener(this);
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -158,5 +225,15 @@ public class CommitmentListPanel extends JPanel {
 		// TODO Auto-generated method stub
 		
 	}
+<<<<<<< HEAD
 >>>>>>> added buttons with no functionality
+=======
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("cancel")) {
+			viewCommitments();
+		}
+	}
+>>>>>>> Moved buttons and implemented cancel button
 }
