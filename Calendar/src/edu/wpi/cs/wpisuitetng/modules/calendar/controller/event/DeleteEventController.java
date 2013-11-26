@@ -36,14 +36,15 @@ public class DeleteEventController implements ActionListener {
 		//calendarPanel.getCalendarTabPanel().getSelectedEventList()
 //		for (Event event: new ArrayList<Event>()) {
 			Event event=EventMouseListener.getSelected();
+		if(event!=null){
 			event.markForDeletion();
-			
 			model.removeEvent(event);
 			// Send a request to the core to save this message 
 			final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.GET); 
 			request.addHeader("X-HTTP-Method-Override", "DELETE");
 			request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
 			request.send(); // send the request
+		}
 			
 //		}
 		
