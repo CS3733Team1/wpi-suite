@@ -14,7 +14,7 @@ import javax.swing.plaf.ColorUIResource;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventHoverMouseListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 public class EventWeekView extends JPanel{
 
@@ -117,7 +117,7 @@ public class EventWeekView extends JPanel{
 
 				JLabel name = new JLabel(e.getName());
 				event.add(name, "wmin 0, aligny center, alignx center");
-				event.addMouseListener(new EventHoverMouseListener(e, event, this));
+				event.addMouseListener(new EventMouseListener(e, event, this));
 				
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
