@@ -14,12 +14,15 @@ import javax.swing.plaf.ColorUIResource;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
-public class EventHoverMouseListener implements MouseListener{
+public class EventMouseListener implements MouseListener{
 
 	Event e;
 	JPanel epanel,calview;
 	
-	public EventHoverMouseListener(Event e, JPanel epanel, JPanel calview){
+	static Event selectedEvent=null;
+	static JPanel selectedPanel=null;
+	
+	public EventMouseListener(Event e, JPanel epanel, JPanel calview){
 		this.e=e;
 		this.epanel=epanel;
 		this.calview=calview;
@@ -51,6 +54,30 @@ public class EventHoverMouseListener implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		float[] hsb = new float[3];
+		int newRGB;
+		
+		if(selectedPanel!=null){
+			Color panelColor=selectedPanel.getBackground();
+			hsb=Color.RGBtoHSB(panelColor.getRed(), panelColor.getGreen(), panelColor.getBlue(), hsb);
+			newRGB=Color.HSBtoRGB(1-hsb[0], hsb[1], hsb[2]);
+			Color newPanelColor = new Color(newRGB);
+			selectedPanel.setBackground(newPanelColor);
+		}
+		if(selectedEvent==this.e){
+			selectedEvent=null;
+			selectedPanel=null;
+		}
+		else{
+			selectedEvent=this.e;
+			selectedPanel=this.epanel;
+	
+			Color eventColor=selectedEvent.getCategory().getColor();
+			hsb=Color.RGBtoHSB(eventColor.getRed(), eventColor.getGreen(), eventColor.getBlue(), hsb);
+			newRGB=Color.HSBtoRGB(1-hsb[0], hsb[1], hsb[2]);
+			Color selectColor = new Color(newRGB);
+			epanel.setBackground(selectColor);
+		}
 	}
 
 	@Override
@@ -59,5 +86,9 @@ public class EventHoverMouseListener implements MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+	}
+	
+	public static Event getSelected(){
+		return selectedEvent;
 	}
 }

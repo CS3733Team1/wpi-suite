@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -33,7 +34,8 @@ public class DeleteEventController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//calendarPanel.getCalendarTabPanel().getSelectedEventList()
-		for (Event event: new ArrayList<Event>()) {
+//		for (Event event: new ArrayList<Event>()) {
+			Event event=EventMouseListener.getSelected();
 			event.markForDeletion();
 			
 			model.removeEvent(event);
@@ -43,7 +45,7 @@ public class DeleteEventController implements ActionListener {
 			request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 			
-		}
+//		}
 		
 		calendarPanel.refreshSelectedPanel();
 	}

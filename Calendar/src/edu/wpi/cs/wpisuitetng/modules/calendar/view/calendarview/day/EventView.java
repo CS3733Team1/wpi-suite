@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventHoverMouseListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 public class EventView extends JPanel {
 
@@ -176,7 +176,7 @@ public class EventView extends JPanel {
 				}
 				infobuilder.append("</p></html>");
 				panel.setToolTipText(infobuilder.toString());
-				panel.addMouseListener(new EventHoverMouseListener(e, panel, this));
+				panel.addMouseListener(new EventMouseListener(e, panel, this));
 				
 				if (e.getCategory() != null){
 					panel.setBackground(e.getCategory().getColor());
