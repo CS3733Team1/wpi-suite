@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
@@ -58,13 +60,15 @@ public class EventMouseListener implements MouseListener{
 		if(selectedEvents.contains(this.e)){
 			selectedEvents.remove(this.e);
 			selectedPanels.remove(this.epanel);
+			deselectPanel(this.epanel);
 		}
 		else{
 			selectedEvents.add(this.e);
 			selectedPanels.add(this.epanel);
+			selectPanel(this.epanel);
 			
 		}
-		invertBGColor(this.epanel);
+//		invertBGColor(this.epanel);
 	}
 
 	@Override
@@ -87,5 +91,18 @@ public class EventMouseListener implements MouseListener{
 		newRGB=Color.HSBtoRGB(1-hsb[0], hsb[1], hsb[2]);
 		Color newPanelColor = new Color(newRGB);
 		panel.setBackground(newPanelColor);
+	}
+	
+	private void selectPanel(JPanel panel){
+		Color panelColor = panel.getBackground();
+		panel.setBorder(new LineBorder(panelColor,3));
+		panel.setBackground(Color.getHSBColor(0,0,(float).6));
+	}
+	
+	private void deselectPanel(JPanel panel){
+		LineBorder panelBorder = (LineBorder)panel.getBorder();
+		Color borderColor = panelBorder.getLineColor();
+		panel.setBackground(borderColor);
+		panel.setBorder(new EmptyBorder(0,0,0,0));
 	}
 }
