@@ -76,11 +76,17 @@ public class EventMouseListener implements MouseListener{
 		else{
 			System.out.println("no ctrl!");
 			if(selectedEvents.contains(this.e)){
+				boolean multiple = (selectedEvents.size()!=1);
 				selectedEvents.clear();
 				for(JPanel panel : selectedPanels){
 					deselectPanel(panel);
 				}
 				selectedPanels.clear();
+				if(multiple){
+					selectedEvents.add(this.e);
+					selectedPanels.add(this.epanel);
+					selectPanel(this.epanel);
+				}
 			}
 			else{
 				selectedEvents.clear();
