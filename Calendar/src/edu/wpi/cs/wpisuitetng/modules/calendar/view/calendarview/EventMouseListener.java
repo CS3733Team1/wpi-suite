@@ -57,16 +57,42 @@ public class EventMouseListener implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(selectedEvents.contains(this.e)){
-			selectedEvents.remove(this.e);
-			selectedPanels.remove(this.epanel);
-			deselectPanel(this.epanel);
+		int ctrldwn = MouseEvent.CTRL_DOWN_MASK;
+		boolean multiSelect = ((e.getModifiersEx() & ctrldwn) == ctrldwn);
+		if(multiSelect){
+			System.out.println("ctrl!");
+			if(selectedEvents.contains(this.e)){
+				selectedEvents.remove(this.e);
+				selectedPanels.remove(this.epanel);
+				deselectPanel(this.epanel);
+			}
+			else{
+				selectedEvents.add(this.e);
+				selectedPanels.add(this.epanel);
+				selectPanel(this.epanel);
+				
+			}
 		}
 		else{
-			selectedEvents.add(this.e);
-			selectedPanels.add(this.epanel);
-			selectPanel(this.epanel);
-			
+			System.out.println("no ctrl!");
+			if(selectedEvents.contains(this.e)){
+				selectedEvents.clear();
+				for(JPanel panel : selectedPanels){
+					deselectPanel(panel);
+				}
+				selectedPanels.clear();
+			}
+			else{
+				selectedEvents.clear();
+				for(JPanel panel : selectedPanels){
+					deselectPanel(panel);
+				}
+				selectedPanels.clear();
+				selectedEvents.add(this.e);
+				selectedPanels.add(this.epanel);
+				selectPanel(this.epanel);
+				
+			}
 		}
 //		invertBGColor(this.epanel);
 	}
