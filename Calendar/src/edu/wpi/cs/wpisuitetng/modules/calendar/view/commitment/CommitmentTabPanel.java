@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ClosableTabComponent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
@@ -54,8 +55,23 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
 
-	public CommitmentTabPanel() {
+	public CommitmentTabPanel() 
+	{
 		this.buildLayout();
+	}
+	
+	public CommitmentTabPanel(Commitment c)
+	{
+		this.buildLayout();
+		nameTextField.setText(c.getName());
+		//nameErrorLabel.setVisible(false);
+		datePickerPanel.setDate(c.getDueDate());
+		descriptionTextArea.setText(c.getDescription());
+		addCommitmentButton.setText("Update Commitment");
+		addCommitmentButton.setActionCommand("updatecommitment");
+		addCommitmentButton.removeActionListener(addCommitmentButton.getActionListeners()[0]); //Remove the addCommitment action listener
+		addCommitmentButton.addActionListener(new UpdateCommitmentController(this, c));	//Add the updateCommitment action listener
+		validateFields();
 	}
 
 	/**
