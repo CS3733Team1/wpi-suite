@@ -15,15 +15,16 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 
 public class CommitmentSubTabPanel extends JPanel {
 	
 	private CommitmentListPanel commitmentListPanel;
 	
-	public CommitmentSubTabPanel() {
+	public CommitmentSubTabPanel(CalendarPanel calendarPanel) {
 		this.setLayout(new MigLayout("fill"));
 		
-		commitmentListPanel = new CommitmentListPanel();
+		commitmentListPanel = new CommitmentListPanel(calendarPanel);
 		JPanel p = new JPanel(new MigLayout("fill"));
 		p.add(commitmentListPanel, "grow, push");
 		

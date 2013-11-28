@@ -37,6 +37,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterListPanel;
 
 /**
@@ -49,19 +50,22 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterListPanel;
 public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener{
 
 	private CommitmentListModel model;
+	private CalendarPanel calendarPanel;
 	private JList<Commitment> commitmentList;
 	private Boolean EDITMODE = false;
 	
 	private JButton updateCommitmentButton;
 	private JButton cancelButton;
 	private JButton deleteButton;
+	private Commitment selectedCommitment;
 	
 	/**
 	 * Constructor for the CommitmentListPanel creates both the list of commitments
 	 * and the scroll pane that they are displayed on.
 	 */
-	public CommitmentListPanel() {
+	public CommitmentListPanel(CalendarPanel calendarPanel) {
 		this.model = CommitmentListModel.getCommitmentListModel();
+		this.calendarPanel = calendarPanel;
 		viewCommitments();
 		/*
 		this.setLayout(new MigLayout("fill, insets 0"));
@@ -93,14 +97,16 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		   if (e.getClickCount() == 2) {
-	        	 if (commitmentList.contains(e.getPoint())) { 
-	        		  this.editCommitment(commitmentList.getSelectedValue());
-	        		 }
+	        	 if (commitmentList.contains(e.getPoint())) 
+	        	 { 
+	        		 selectedCommitment = commitmentList.getSelectedValue();
+	        		 editCommitment();
+	        	}
 	            
 	          }
 		
 	}
-	public void editCommitment(Commitment c)
+	public void editCommitment()
 	{
 		this.removeAll();
 		this.repaint();
@@ -108,14 +114,14 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][grow, fill]"));
 
 		//try { Required to use Icon, none used now
-		updateCommitmentButton = new JButton("<html>Edit<br/>Commitment</html>");
-		cancelButton = new JButton("<html>Cancel</html>");
+		updateCommitmentButton = new JButton("<html>Edit</html>");
+		cancelButton = new JButton("<html>Close</html>");
 		//} catch (IOException e) {e.printStackTrace();}
 
-		JEditorPane detailDisplay = new JEditorPane("text/html", c.toString());
+		JEditorPane detailDisplay = new JEditorPane("text/html", selectedCommitment.toString());
 		
 		updateCommitmentButton.setActionCommand("updatecommitment");
-		//updateCommitmentButton.addActionListener(new AddCommitmentController(this));
+		updateCommitmentButton.addActionListener(this);
 		cancelButton.setActionCommand("cancel");
 		cancelButton.addActionListener(this);
 		
@@ -156,7 +162,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 				//cancelButton.addActionListener(this); */
 	}
 	
-	public void viewCommitments()
+	private void viewCommitments()
 	{
 		this.removeAll();
 		this.repaint();
@@ -177,6 +183,17 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		this.add(scrollPane, "grow, push");
 	
 		commitmentList.addMouseListener(this);
+	}
+	
+	private void openUpdateCommitmentTabPanel()
+	{
+		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(selectedCommitment);
+		ImageIcon miniCommitmentIcon = new ImageIcon();
+		try {
+			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
+		} catch (IOException exception) {}
+		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
+		calendarPanel.setSelectedComponent(commitmentPanel);	
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -206,6 +223,10 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("cancel")) {
 			viewCommitments();
+		}
+		else if (e.getActionCommand().equals("updatecommitment"))
+		{
+			openUpdateCommitmentTabPanel();
 		}
 	}
 }
