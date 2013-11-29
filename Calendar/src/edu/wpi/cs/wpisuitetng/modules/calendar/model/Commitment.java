@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 
@@ -26,6 +27,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	private String description;
 	private Category category;
 	private int progress;
+	private int id;
 	
 	//------------ATTENTION---------
 	//Should Category have an empty constructor?
@@ -42,6 +44,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.name = name;
 		this.dueDate = dueDate;
 		this.progress = 0; //Default
+		createID();
 	}
 
 	/**
@@ -54,6 +57,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.progress = 0; //Default
+		createID();
 	}
 
 	/**
@@ -66,6 +70,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.category = category.cloneFake();
 		this.progress = 0; //Default
+		createID();
 	}
 
 	/**
@@ -81,6 +86,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = 0; //Default
+		createID();
+
 	}
 	
 	/**
@@ -92,6 +99,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate, int progress) {
 		this(name, dueDate);
 		this.progress = progress;
+		createID();
 	}
 	
 	/**
@@ -106,6 +114,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.progress = progress;
+		createID();
 	}
 	
 	/**
@@ -120,6 +129,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.category = category.cloneFake();
 		this.progress = progress;
+		createID();
 	}
 	
 	/**
@@ -136,6 +146,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = progress;
+		createID();
 	}
 
 	/**
@@ -217,6 +228,27 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public void delete() {
 		// TODO Auto-generated method stub
 	}
+	
+	/**
+	 * Creates a unique ID for a commitment.
+	 */
+	private void createID()
+	{
+		id = UUID.randomUUID().hashCode();
+	}
+	
+	public void setID(int newID)
+	{
+		id = newID;
+	}
+	
+	/**
+	 * @return The unique ID of the commitment
+	 */
+	public int getID()
+	{
+		return id;
+	}
 
 	/**
 	 * @return a json String representation of the Commitment
@@ -296,4 +328,14 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			return 0;
 		}//end else
 	}//end compareTo
+
+	public void copyFrom(Commitment toCopyFrom) 
+	{
+		this.category = toCopyFrom.getCategory();
+		this.description = toCopyFrom.getDescription();
+		this.dueDate = toCopyFrom.getDueDate();
+		this.id = toCopyFrom.getID();
+		this.name = toCopyFrom.getName();
+		this.progress = toCopyFrom.getProgress();
+	}
 }//end Commitment
