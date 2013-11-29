@@ -31,21 +31,23 @@ public class UpdateCommitmentObserver implements RequestObserver
 	{
 		this.controller = controller;
 	}
-	
+
 	@Override
 	public void responseSuccess(IRequest iReq) 
 	{
 		// Get the response to the given request
-		final ResponseModel response = iReq.getResponse();
+		final ResponseModel response = iReq.getResponse();				
+				
+		// Parse the message out of the response body
+		final Commitment commit = Commitment.fromJSON(response.getBody());
 		
-		// Parse the requirement out of the response body
-		final Commitment commitment = Commitment.fromJSON(response.getBody());	
 		// Pass the messages back to the controller
-		controller.updateCommitmentModel(commitment);
+		controller.updateCommitmentInModel(commit);
+		
 	}
-	
+
 	@Override
-	public void responseError(IRequest iReq) 
+	public void responseError(IRequest iReq)
 	{
 		System.err.println("The request to update a commitment failed.");
 		System.err.println("Response: " + iReq.getResponse().getStatusMessage());
