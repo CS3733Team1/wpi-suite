@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 public class EventView extends JPanel {
 
@@ -155,8 +156,8 @@ public class EventView extends JPanel {
 				evebuilder.append(" ");
 				evebuilder.append(new Integer(getLength(e)).toString());
 				evebuilder.append(",grow, push");
-				
-				panel.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
+				JLabel name = new JLabel(e.getName());
+				panel.add(name, "wmin 0, aligny center, alignx center");
 				
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
@@ -175,9 +176,19 @@ public class EventView extends JPanel {
 				}
 				infobuilder.append("</p></html>");
 				panel.setToolTipText(infobuilder.toString());
+				panel.addMouseListener(new EventMouseListener(e, panel, this));
 				
 				if (e.getCategory() != null){
 					panel.setBackground(e.getCategory().getColor());
+					Color catColor=e.getCategory().getColor();
+					float[] hsb=new float[3];
+					hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
+					if(hsb[2]<0.5){
+						name.setForeground(Color.WHITE);
+					}
+					else{
+						name.setForeground(Color.BLACK);
+					}
 				}
 				else{
 					panel.setBackground(Color.CYAN);

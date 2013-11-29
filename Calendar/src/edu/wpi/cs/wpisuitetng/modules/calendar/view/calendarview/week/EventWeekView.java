@@ -8,11 +8,13 @@ import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventHoverMouseListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 public class EventWeekView extends JPanel{
 
@@ -113,7 +115,9 @@ public class EventWeekView extends JPanel{
 				evebuilder.append((new Integer((int)length)).toString());
 				evebuilder.append(",grow, push");
 
-				event.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
+				JLabel name = new JLabel(e.getName());
+				event.add(name, "wmin 0, aligny center, alignx center");
+				event.addMouseListener(new EventMouseListener(e, event, this));
 				
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
@@ -135,6 +139,15 @@ public class EventWeekView extends JPanel{
 				
 				if (e.getCategory() != null){
 					event.setBackground(e.getCategory().getColor());
+					Color catColor=e.getCategory().getColor();
+					float[] hsb=new float[3];
+					hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
+					if(hsb[2]<0.5){
+						name.setForeground(Color.WHITE);
+					}
+					else{
+						name.setForeground(Color.BLACK);
+					}
 				}
 				else{
 					event.setBackground(Color.CYAN);
