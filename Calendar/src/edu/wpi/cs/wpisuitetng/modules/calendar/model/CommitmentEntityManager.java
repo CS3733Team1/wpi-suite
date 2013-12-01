@@ -114,7 +114,6 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	public Commitment update(Session s, String content)
 			throws WPISuiteException {
 
-		System.out.println("In Entity Manager");
 		Commitment updatedCommitment = Commitment.fromJSON(content);
 		/*
 		 * Because of the disconnected objects problem in db4o, we can't just save Commitments.
