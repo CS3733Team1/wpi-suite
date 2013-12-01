@@ -43,6 +43,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		EventListModel.getEventListModel().addListDataListener(this);
 	}
 	
+	
 	public void ChangeTheWorld(){
 		Date key;
 		
@@ -64,6 +65,11 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		this.add(eventviewlist, layer,-1);
 		layer++;
 	}
+	
+	public Date getDayViewDate(){
+		return dayview.getDate();
+	}
+	
 	
 	public void reSize(int width){
 		this.setSize(width, this.getHeight());

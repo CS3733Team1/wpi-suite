@@ -47,7 +47,7 @@ public class DayView extends JPanel implements ICalendarView {
 
 		this.setLayout(new MigLayout("fill", 
 				"[20%][80%]", 
-				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
+				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 
 		this.setVisible(true);
 
@@ -55,7 +55,7 @@ public class DayView extends JPanel implements ICalendarView {
 	}
 
 	public void fillDayView(){
-		JPanel event = new JPanel();
+//		JPanel event = new JPanel();
 
 		StringBuilder eventbuilder = new StringBuilder();
 		eventbuilder.append("cell ");
@@ -64,11 +64,11 @@ public class DayView extends JPanel implements ICalendarView {
 		eventbuilder.append("0");
 		eventbuilder.append(",grow, push");
 
-		event.add(new JLabel(weekNames[(new Date(currentYear-1900, currentMonth, currentDate).getDay())]));
-		event.setBackground(new Color(138,173,209));
-		this.add(event, eventbuilder.toString());
+		//event.add(new JLabel(weekNames[(new Date(currentYear-1900, currentMonth, currentDate).getDay())]));
+		//event.setBackground(new Color(138,173,209));
+		//this.add(event, eventbuilder.toString());
 
-		JPanel time = new JPanel();
+//		JPanel time = new JPanel();
 
 		StringBuilder timebuilder = new StringBuilder();
 		timebuilder.append("cell ");
@@ -77,9 +77,8 @@ public class DayView extends JPanel implements ICalendarView {
 		timebuilder.append("0");
 		timebuilder.append(",grow, push");
 
-		time.add(new JLabel("Time"));
-		time.setBackground(new Color(138,173,209));
-		this.add(time, timebuilder.toString());
+	
+//		this.add(time, timebuilder.toString());
 
 		for (int currenthour=0; currenthour < 24; currenthour++){
 			JPanel hour = new JPanel();
@@ -88,7 +87,7 @@ public class DayView extends JPanel implements ICalendarView {
 			hourbuilder.append("cell ");
 			hourbuilder.append("0");
 			hourbuilder.append(" ");
-			hourbuilder.append((new Integer(currenthour+1)).toString());
+			hourbuilder.append((new Integer(currenthour)).toString());
 			hourbuilder.append(",grow, push");
 
 			hour.add(new JLabel(currenthour+":00"));
@@ -102,7 +101,7 @@ public class DayView extends JPanel implements ICalendarView {
 			datebuilder.append("cell ");
 			datebuilder.append("1");
 			datebuilder.append(" ");
-			datebuilder.append((new Integer(currenthour+1)).toString());
+			datebuilder.append((new Integer(currenthour)).toString());
 			datebuilder.append(",grow, push");
 
 			Date hue = new Date(currentYear-1900, currentMonth, currentDate, currenthour, 0);
@@ -113,6 +112,10 @@ public class DayView extends JPanel implements ICalendarView {
 			paneltracker.put(hue, thesecond);
 			nameList.add(thesecond);
 		}
+	}
+	
+	public Date getDate(){
+		return new Date(currentYear-1900, currentMonth, currentDate);
 	}
 
 	@Override

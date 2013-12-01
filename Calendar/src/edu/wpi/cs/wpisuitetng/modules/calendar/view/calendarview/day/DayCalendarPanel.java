@@ -1,21 +1,25 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 public class DayCalendarPanel extends JPanel implements ICalendarView{
+	
 	private DayCalendarScrollPane dayscroll;
 	private DayCalendarLayerPane daylayer;
 	
+
 	public DayCalendarPanel(){
 		this.setBorder(BorderFactory.createTitledBorder(null,
 	            "Day View", TitledBorder.LEFT, TitledBorder.TOP,
@@ -26,6 +30,8 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 				"[100%]", 
 				"[100%]"));
 		
+
+		
 		daylayer = new DayCalendarLayerPane();
 		
 		dayscroll = new DayCalendarScrollPane(daylayer);
@@ -35,11 +41,12 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		scrollbuilder.append("0");
 		scrollbuilder.append(" ");
 		scrollbuilder.append("0");
-		scrollbuilder.append(",grow, push");
-		
+	
+	
 		this.add(dayscroll, scrollbuilder.toString());
 		
 	}
+	
 	
 	public void paint(Graphics g){
 		if (daylayer != null){
@@ -67,18 +74,26 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 	public void next() {
 		// TODO Auto-generated method stub
 		daylayer.next();
+		dayscroll.updateDay();
+
+		
 	}
 
 	@Override
 	public void previous() {
 		// TODO Auto-generated method stub
+		
 		daylayer.previous();
+		dayscroll.updateDay();
+		
 	}
 
 	@Override
 	public void today() {
 		// TODO Auto-generated method stub
 		daylayer.today();
+		dayscroll.updateDay();
+		
 	}
 
 }
