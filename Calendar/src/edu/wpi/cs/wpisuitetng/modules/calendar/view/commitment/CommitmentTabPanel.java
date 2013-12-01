@@ -18,6 +18,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -54,14 +55,17 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
+	JEditorPane display;
 
 	public CommitmentTabPanel() 
 	{
 		this.buildLayout();
 	}
 	
-	public CommitmentTabPanel(Commitment c)
+	public CommitmentTabPanel(JEditorPane display, Commitment c)
 	{
+		this.display = display;
+		
 		this.buildLayout();
 		nameTextField.setText(c.getName());
 		//nameErrorLabel.setVisible(false);
@@ -175,6 +179,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		}
 		
 		addCommitmentButton.setEnabled(enableAddCommitment);
+	}
+	
+	public JEditorPane getCommitmentView()
+	{
+		return display;
 	}
 
 	/**

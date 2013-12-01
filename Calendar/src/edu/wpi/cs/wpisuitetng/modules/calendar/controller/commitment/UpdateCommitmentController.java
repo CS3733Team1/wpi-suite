@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JEditorPane;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
@@ -25,12 +27,14 @@ public class UpdateCommitmentController implements ActionListener
 	CommitmentListModel model;
 	CommitmentTabPanel view;
 	Commitment oldCommitment;
+	JEditorPane commitmentDisplay;
 	
 	public UpdateCommitmentController(CommitmentTabPanel view, Commitment oldCommitment)
 	{
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.view = view;
 		this.oldCommitment = oldCommitment;
+		this.commitmentDisplay = view.getCommitmentView();
 		
 	}
 	
@@ -54,6 +58,7 @@ public class UpdateCommitmentController implements ActionListener
 	public void updateCommitmentInModel(Commitment newCommitment) 
 	{
 		model.updateCommitment(oldCommitment, newCommitment);
+		commitmentDisplay.setText(newCommitment.toString());
 	}
 
 }

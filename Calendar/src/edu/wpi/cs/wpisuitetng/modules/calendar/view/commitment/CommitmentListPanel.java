@@ -54,6 +54,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	private JList<Commitment> commitmentList;
 	private Boolean EDITMODE = false;
 	
+	private JEditorPane detailDisplay;
 	private JButton updateCommitmentButton;
 	private JButton cancelButton;
 	private JButton deleteButton;
@@ -118,7 +119,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		cancelButton = new JButton("<html>Close</html>");
 		//} catch (IOException e) {e.printStackTrace();}
 
-		JEditorPane detailDisplay = new JEditorPane("text/html", selectedCommitment.toString());
+		detailDisplay = new JEditorPane("text/html", selectedCommitment.toString());
 		
 		updateCommitmentButton.setActionCommand("updatecommitment");
 		updateCommitmentButton.addActionListener(this);
@@ -187,7 +188,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	
 	private void openUpdateCommitmentTabPanel()
 	{
-		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(selectedCommitment);
+		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(detailDisplay, selectedCommitment);
 		ImageIcon miniCommitmentIcon = new ImageIcon();
 		try {
 			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
