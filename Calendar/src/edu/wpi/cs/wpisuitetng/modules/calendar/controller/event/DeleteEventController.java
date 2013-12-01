@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -33,15 +34,17 @@ public class DeleteEventController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//calendarPanel.getCalendarTabPanel().getSelectedEventList()
-		for (Event event: new ArrayList<Event>()) {
-			event.markForDeletion();
-			
-			model.removeEvent(event);
-			// Send a request to the core to save this message 
-			final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.GET); 
-			request.addHeader("X-HTTP-Method-Override", "DELETE");
-			request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
-			request.send(); // send the request
+		for (Event event: EventMouseListener.getSelected()) {
+//			Event event=EventMouseListener.getSelected();
+			if(event!=null){
+				event.markForDeletion();
+				model.removeEvent(event);
+				// Send a request to the core to save this message 
+				final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.GET); 
+				request.addHeader("X-HTTP-Method-Override", "DELETE");
+				request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
+				request.send(); // send the request
+			}
 			
 		}
 		

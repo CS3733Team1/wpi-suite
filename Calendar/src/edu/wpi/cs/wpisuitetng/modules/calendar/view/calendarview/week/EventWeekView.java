@@ -12,12 +12,12 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventHoverMouseListener;
-
 public class EventWeekView extends JPanel{
 
 	private List<Event> events;
