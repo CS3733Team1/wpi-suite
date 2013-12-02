@@ -37,7 +37,6 @@ public class DeleteEventController implements ActionListener {
 		for (Event event: EventMouseListener.getSelected()) {
 //			Event event=EventMouseListener.getSelected();
 			if(event!=null){
-				event.markForDeletion();
 				model.removeEvent(event);
 				// Send a request to the core to save this message 
 				final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.GET); 
