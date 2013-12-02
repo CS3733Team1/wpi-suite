@@ -67,7 +67,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 					multi.add(eve);	
 			}
 		}
-		multi.add(new Event("RAISE YOUR DONGERS", new Date(2013, 12, 2), new Date(2013, 12, 5)));
+		multi.add(new Event("RAISE YOUR DONGERS", new Date(113, 12, 2), new Date(113, 12, 5)));
 		
 		eventviewlist = new EventView(test, this.getSize());
 		multiviewlist = new MultidayEventView(multi, this.getSize());
