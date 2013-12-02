@@ -38,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendar
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 
 public class CalendarTabPanel extends JPanel {
 	private JButton prevButton, homeButton, nextButton;
@@ -84,8 +85,7 @@ public class CalendarTabPanel extends JPanel {
 			filterCategoryTabbedPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
 					new CategoryTabPanel());
 			
-			//filterCategoryTabbedPane.addTab("Filters", new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))), 
-			//		new FilterTabPanel());
+			filterCategoryTabbedPane.addTab("Filters", new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))), new FilterTabPanel());
 		} catch (IOException e) {}
 
 		homeButton.setMargin(new Insets(0, 0, 0, 0));
@@ -113,7 +113,7 @@ public class CalendarTabPanel extends JPanel {
 		this.add(weekViewButton);
 		this.add(dayViewButton);
 
-		this.add(filterCategoryTabbedPane, "growy, wmin 272, span 1 2, wrap");
+		this.add(filterCategoryTabbedPane, "growy, wmin 265, span 1 2, wrap");
 		
 		calendarViewPanel = new JPanel(new MigLayout("fill"));
 		this.add(calendarViewPanel, "grow, push, span 2");

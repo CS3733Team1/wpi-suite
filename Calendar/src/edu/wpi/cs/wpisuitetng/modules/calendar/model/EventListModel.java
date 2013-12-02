@@ -137,4 +137,16 @@ public class EventListModel extends AbstractListModel<Event> {
 		rtnEventList.addAll(getEventListModel().events);
 		return rtnEventList;
 	}
+	
+	public List<Event> getList(boolean isTeam)
+	{
+		ArrayList<Event> list = new ArrayList<Event>();
+		for(Event eve: events)
+		{
+			if(eve.getTeam() == isTeam)
+				list.add(eve);
+		}
+		
+		return list;
+	}
 }

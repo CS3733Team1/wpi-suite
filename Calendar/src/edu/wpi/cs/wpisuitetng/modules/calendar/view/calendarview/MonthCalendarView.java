@@ -188,7 +188,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		{
 			int x = i%7;
 			int y = (i/7);	
-			System.out.println("X: "+ x+ "Y:"+y+"Day"+day);
+			//System.out.println("X: "+ x+ "Y:"+y+"Day"+day);
 			
 			listOfDates[x][y]= new Date(nextYear-1900,nextMonth,day);
 			listOfDaysCalendar[x][y] = day;
