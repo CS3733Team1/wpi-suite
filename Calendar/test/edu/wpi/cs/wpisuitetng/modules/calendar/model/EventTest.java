@@ -88,6 +88,8 @@ public class EventTest {
 	public void testEventJSONConversion()
 	{
 		assertEquals(Event4, Event4);
-		assertEquals(Event4.toJSON()+"1", Event.fromJSON(Event4.toJSON()).toJSON());
+		Event anEvent = Event.fromJSON(Event4.toJSON());
+		assertEquals(anEvent, anEvent);
+		assertEquals("Event converted toJSON and back to object should be equal to original object", Event4, anEvent);
 	}
 }
