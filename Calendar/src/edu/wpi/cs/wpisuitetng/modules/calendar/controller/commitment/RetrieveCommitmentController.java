@@ -27,7 +27,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * from the server. This controller is called when the user
  * clicks the refresh button.
  * 
- * @author Chris Casola
+ * @author John Breen
  *
  */
 public class RetrieveCommitmentController implements AncestorListener, ActionListener {
