@@ -65,7 +65,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 
 		Event eve = new Event("Test MultiDay",d3,d2);
 		Event eve1 = new Event("Test 2", d, d3);
-		Event ev2 = new Event("Overlap Test", d3, d4);
+		Event ev2 = new Event("Overlap Test", d4, d1);
 		if(isDateEqual(d3,today)){
 			addEvent(eve1);
 		}
