@@ -73,4 +73,23 @@ public class EventTest {
 		Event3.setCategory(cat2);
 		assertEquals(cat2,Event3.getCategory());
 	}
+	
+	@Test
+	public void testToString() {
+		assertEquals("Name: Meeting1 Start Date: Mon Jul 05 00:00:00 EDT 1993 End Date: Wed Dec 11 00:00:00 EST 2013\n", Event1.toString());
+		String str = Event4.toString();
+		assertEquals("Name: Meeting2 Start Date: Tue Feb 01 10:15:00 EST 2000 End Date: Tue Feb 01 11:30:00 EST 2000"
+				+ " Category: {\"name\":\"school\",\"color\":{\"value\":-16776961,\"falpha\":0.0},\"isReal\":false,\"UniqueID\"", str.substring(0,str.indexOf("\"UniqueID\"") + 10));
+		assertEquals(",\"MarkedForDeletion\":false,\"permissionMap\":{}} Description: CS Meeting\n", str.substring(str.indexOf(",\"MarkedForDeletion\"")));
+		assertEquals(str.length(), Event4.toString().length());
+	}
+	
+	@Test
+	public void testEventJSONConversion()
+	{
+		assertEquals(Event4, Event4);
+		Event anEvent = Event.fromJSON(Event4.toJSON());
+		assertEquals(anEvent, anEvent);
+		assertEquals("Event converted toJSON and back to object should be equal to original object", Event4, anEvent);
+	}
 }
