@@ -43,6 +43,10 @@ public class MultidayEventView extends JPanel{
 	}
 	
 	public void showEvents(){
+		if (multidaye.size() == 0){
+			return;
+		}
+		
 		sortEvents();
 		
 		System.out.println("WHY U NO SHOW");
