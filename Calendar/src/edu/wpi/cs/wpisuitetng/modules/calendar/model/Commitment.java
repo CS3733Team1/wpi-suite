@@ -19,6 +19,26 @@ import com.google.gson.Gson;
  * Model for holding commitment data
  */
 public class Commitment extends DeletableAbstractModel implements Comparable<Commitment>{
+	
+	private enum State 
+	{
+		NEW ("New"),
+		IN_PROGRESS ("In Progress"),
+		COMPLETE ("Complete");
+		
+		private String display;
+		
+		State(String display)
+		{
+			this.display = display;
+		}
+		
+		public String toString()
+		{
+			return display;
+		}
+	}
+	
 	// Required parameters
 	private String name;
 	private Date dueDate;
@@ -26,7 +46,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	// Optional parameters
 	private String description;
 	private Category category;
-	private int progress;
+	private State progress;
 	private int id;
 	
 	//------------ATTENTION---------
@@ -43,7 +63,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate) {
 		this.name = name;
 		this.dueDate = dueDate;
-		this.progress = 0; //Default
+		this.progress = State.NEW; //Default
 		createID();
 	}
 
@@ -56,7 +76,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate, String description) {
 		this(name, dueDate);
 		this.description = description;
-		this.progress = 0; //Default
+		this.progress = State.NEW; //Default
 		createID();
 	}
 
@@ -69,7 +89,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate, Category category) {
 		this(name, dueDate);
 		this.category = category.cloneFake();
-		this.progress = 0; //Default
+		this.progress = State.NEW; //Default
 		createID();
 	}
 
@@ -85,7 +105,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
-		this.progress = 0; //Default
+		this.progress = State.NEW; //Default
 		createID();
 
 	}
@@ -96,7 +116,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param dueDate due date of Commitment
 	 * @param progress progress of Commitment
 	 */
-	public Commitment(String name, Date dueDate, int progress) {
+	public Commitment(String name, Date dueDate, State progress) {
 		this(name, dueDate);
 		this.progress = progress;
 		createID();
@@ -110,7 +130,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param progress progress of Commitment
 	 */
 	public Commitment(String name, Date dueDate, String description, 
-			int progress) {
+			State progress) {
 		this(name, dueDate);
 		this.description = description;
 		this.progress = progress;
@@ -125,7 +145,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param progress progress of Commitment
 	 */
 	public Commitment(String name, Date dueDate, Category category, 
-			int progress) {
+			State progress) {
 		this(name, dueDate);
 		this.category = category.cloneFake();
 		this.progress = progress;
@@ -141,7 +161,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param progress progress of Commitment
 	 */
 	public Commitment(String name, Date dueDate, String description,
-			Category category, int progress) {
+			Category category, State progress) {
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
@@ -208,14 +228,14 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	/**
 	 * @return the Category object representing the Commitment's Category
 	 */
-	public int getProgress() {
+	public State getProgress() {
 		return progress;
 	}
 
 	/**
 	 * @param category the Category object to set the Commitment's Category to
 	 */
-	public void setProgress(int progress) {
+	public void setProgress(State progress) {
 		this.progress = progress;
 	}
 
@@ -291,7 +311,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			str += "<br><b>Category:</b> " + getCategory().getName();
 		if(this.description != null)
 			str += "<br><b>Description:</b> " + getDescription();
-		str += String.format("<br><b>Progress:</b> %d%%</html>", getProgress());
+		str += String.format("<br><b>Progress:</b> %s</html>", progress.toString());
 				
 		return str;
 	}
