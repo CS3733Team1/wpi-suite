@@ -11,6 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,20 +40,26 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	private ArrayList<DatePanel> nameList = new ArrayList<DatePanel>();
 	
 	private int[][] listOfDaysCalendar = new int[7][6];
+	private Date[][] listOfDates = new Date[7][6];
+	private DatePanel2[][] dateArray = new DatePanel2[7][6];
 	
 	private HashMap<Date, DatePanel2> paneltracker;
 
 	private Calendar mycal;
 	private int currentMonth;
 	private int currentYear;
-
 	
-//	JPanel contentPane = new JPanel();
+	private boolean isDay = false;
+	
+	private Date d1 = new Date(113,10,13);
+	private Date d2 = new Date(113,10,15);
+	
 	
 	/**
 	 * Create the frame.
 	 */
 	public MonthCalendarView() {
+		
 		paneltracker = new HashMap<Date, DatePanel2>();
 		
 		Date today = new Date();
@@ -63,8 +71,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		this.setBackground(Color.white);
 		
 		this.setLayout(new MigLayout("fill, insets 0", 
-				"[14%][14%][14%][14%][14%][14%][14%]", 
-				"[14%][14%][14%][14%][14%][14%][14%]"));
+				"[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0", 
+				"[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0"));
 		
 		addDayLabels();
 		addDaysToCalendar(mycal);
@@ -72,6 +80,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		EventListModel.getEventListModel().addListDataListener(this);
 		
 		this.addAncestorListener(this);
+		
 	}
 	
 
@@ -94,8 +103,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	/*
 	 * Creates the list of days to be displayed in the month view
 	 * returns ArrayList<Integer>
-	 * 
-	 * NOTE: THERE IS A BUG IN THIS FUNCTION SOMEWHERE
 	 */
 	public void makeListOfDays(Calendar c)
 	{	
@@ -115,18 +122,35 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		Calendar previous = new GregorianCalendar(nextYear, nextMonth, 1);
 		numberOfDaysInPreviousMonth = previous.getActualMaximum(Calendar.DAY_OF_MONTH);
 		
-		addPreviousMonth(numberOfDaysInPreviousMonth,dayOfWeek);
-		addCurrentMonth(dayOfWeek,daysInMonth);
-		addNextMonth(daysInMonth+(dayOfWeek-1));
+		addPreviousMonth(numberOfDaysInPreviousMonth,dayOfWeek,c);
+		addCurrentMonth(dayOfWeek,daysInMonth,c);
+		addNextMonth(daysInMonth+(dayOfWeek-1),c);
 			
 	}
 
-	private void addNextMonth(int days) {
+	
+	
+	private void addNextMonth(int days, Calendar c) {
 		int day = 1;
+		int nextMonth =c.get(Calendar.MONTH);
+		int nextYear = c.get(Calendar.YEAR);
+		
+		if (c.get(Calendar.MONTH) == 11){
+			nextMonth = 0;
+			nextYear = c.get(Calendar.YEAR) +1;
+		}
+		else{
+			nextMonth++;
+			nextYear = c.get(Calendar.YEAR);
+		}
+		
 		for(int i = days; i < 42; i++)
 		{
 			int x = i%7;
 			int y = (i/7);
+			
+			listOfDates[x][y]= new Date(nextYear-1900,nextMonth,day);
+			System.out.println(listOfDates[x][y]);
 			listOfDaysCalendar[x][y] = day;
 			day++;	
 		}
@@ -134,25 +158,39 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	}
 
 
-	private void addPreviousMonth(int daysInMonth, int dayOfWeek) {
+	private void addPreviousMonth(int daysInMonth, int dayOfWeek, Calendar c) {
 		int day = 0;
+		int nextMonth =c.get(Calendar.MONTH);
+		int nextYear = c.get(Calendar.YEAR);
+		if (c.get(Calendar.MONTH) == 0){
+			nextMonth = 11;
+			nextYear = (c.get(Calendar.YEAR) - 1);
+		}
+		else{
+			nextMonth--;
+			nextYear = c.get(Calendar.YEAR);
+		}
+		
 		for(int i = dayOfWeek-2; i>= 0; i--)
 		{
 			listOfDaysCalendar[i][0] = daysInMonth-day;
+			listOfDates[i][0]= new Date(nextYear-1900,nextMonth,daysInMonth-day);
 			day++;
 		}
 		
 	}
-	private void addCurrentMonth(int dayOfWeek, int daysInMonth)
+	private void addCurrentMonth(int dayOfWeek, int daysInMonth, Calendar c)
 	{
 		int day = 1;
+		int nextYear = c.get(Calendar.YEAR);
+		int nextMonth = c.get(Calendar.MONTH);
 		for(int i = dayOfWeek-1; i < daysInMonth+dayOfWeek; i++)
 		{
 			int x = i%7;
 			int y = (i/7);	
 			System.out.println("X: "+ x+ "Y:"+y+"Day"+day);
 			
-			
+			listOfDates[x][y]= new Date(nextYear-1900,nextMonth,day);
 			listOfDaysCalendar[x][y] = day;
 			day++;
 		}
@@ -234,31 +272,32 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		int index = 0;
 		for(int i = 0; i < 6; i++){
 			for(int j = 0; j< 7; j++){
-				if(isToday(cal,listOfDaysCalendar[j][i])){
-					DatePanel2 dayPanel = new DatePanel2(constructDate(cal,listOfDaysCalendar[j][i]));
-					dayPanel = constructDay(cal,j, i, listOfDaysCalendar[j][i],Color.black,new Color(236,252,144));
-					setDate(cal,listOfDaysCalendar[j][i], dayPanel);
+				if(isToday(cal,listOfDates[j][i])){
+					dateArray[j][i] = new DatePanel2(constructDate(cal,listOfDaysCalendar[j][i]));
+					dateArray[j][i] = constructDay(cal,j, i, listOfDaysCalendar[j][i],Color.black,new Color(236,252,144));
+					setDate(cal,listOfDaysCalendar[j][i], dateArray[j][i]);
 				}
 				else if(isPreviousMonth(cal, index) ||isNextMonth(cal, index)){
 					if(isPreviousMonth(cal, index)){
-						DatePanel2 dayPanel = new DatePanel2(constructDate(previousMonth(cal),listOfDaysCalendar[j][i]));
-						dayPanel = constructDay(previousMonth(cal),j, i, listOfDaysCalendar[j][i],Color.gray, Color.white);
-						setDatePrevious(cal,listOfDaysCalendar[j][i],dayPanel);
+						dateArray[j][i] = new DatePanel2(constructDate(previousMonth(cal),listOfDaysCalendar[j][i]));
+						dateArray[j][i] = constructDay(previousMonth(cal),j, i, listOfDaysCalendar[j][i],Color.gray, Color.white);
+						setDatePrevious(cal,listOfDaysCalendar[j][i],dateArray[j][i]);
 					}
 					else{
-						DatePanel2 dayPanel = new DatePanel2(constructDate(nextMonth(cal),listOfDaysCalendar[j][i]));
-						dayPanel = constructDay(nextMonth(cal),j, i, listOfDaysCalendar[j][i],Color.gray, Color.white);
-						setDateNext(cal,listOfDaysCalendar[j][i], dayPanel);
+						dateArray[j][i] = new DatePanel2(constructDate(nextMonth(cal),listOfDaysCalendar[j][i]));
+						dateArray[j][i] = constructDay(nextMonth(cal),j, i, listOfDaysCalendar[j][i],Color.gray, Color.white);
+						setDateNext(cal,listOfDaysCalendar[j][i], dateArray[j][i]);
 					}
 				}
 				else{
-					DatePanel2 dayPanel = new DatePanel2(constructDate(cal,listOfDaysCalendar[j][i]));
-					dayPanel=constructDay(cal,j, i, listOfDaysCalendar[j][i],Color.black, Color.white);
-					setDate(cal,listOfDaysCalendar[j][i], dayPanel);
+					dateArray[j][i] = new DatePanel2(constructDate(cal,listOfDaysCalendar[j][i]));
+					dateArray[j][i]=constructDay(cal,j, i, listOfDaysCalendar[j][i],Color.black, Color.white);
+					setDate(cal,listOfDaysCalendar[j][i], dateArray[j][i]);
 				}
 				index++;
 			}
 		}
+		isDay = true;
 
 	}
 
@@ -300,15 +339,19 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	}
 
 
-	private boolean isToday(Calendar cal, int day) {
+	private boolean isToday(Calendar cal, Date day) {
+		Calendar conversion = Calendar.getInstance();
+		System.out.println(day);
+		conversion.setTime(day);
 		Calendar currentMonth = Calendar.getInstance();
 		int todayDay = currentMonth.get(Calendar.DATE);
 		int todayMonth = currentMonth.get(Calendar.MONTH);
 		int todayYear = currentMonth.get(Calendar.YEAR);
-		int givenMonth = cal.get(Calendar.MONTH);
-		int givenYear = cal.get(Calendar.YEAR);
+		int givenMonth = conversion.get(Calendar.MONTH);
+		int givenYear = conversion.get(Calendar.YEAR);
+		int givenDay = conversion.get(Calendar.DATE);
 
-		if(todayMonth == givenMonth && todayYear == givenYear && day == todayDay){
+		if(todayMonth == givenMonth && todayYear == givenYear && givenDay == todayDay){
 			return true;
 		}else{
 			return false;
@@ -415,10 +458,93 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 			if (paneltracker.containsKey(key)){
 				
 				paneltracker.get(key).addEvent(eve);
+				
 			}
 		}
 	}
 	
+	private Point getLocationInArray(Date set)
+	{
+		System.out.println("inGetLocationInArray");
+		int setYear = set.getYear();
+		int setMonth = set.getMonth();
+		int setDay = set.getDate();
+		System.out.println("years:"+setYear+":"+"months:"+setMonth+":"+"days:"+setDay);
+		for(int i = 0; i < 6; i++)
+		{
+			for(int j = 0; j < 7; j++)
+			{
+				
+				int year = dateArray[j][i].getDate().getYear();
+				int month = dateArray[j][i].getDate().getMonth();
+				int day = dateArray[j][i].getDate().getDate();
+				if(year == setYear && month ==setMonth && day == setDay){
+					Point p = new Point(j,i);
+					return p;
+				}
+			}
+		}
+		System.out.println("null");
+		return null;
+	}
+	
+	
+	private Point getScreenLocationDateBegin(Date start) {
+		System.out.println("Get Screen Location Date Begin");
+		Point location = getLocationInArray(start);
+		
+		Point p = dateArray[location.x][location.y].getLocationOnScreen();
+		System.out.println(p.x + " ," +p.y);
+		p.x = p.x-51;
+		p.y = p.y-291;
+		return p;
+	}
+	
+	private int getScreenLocationDateEnd(Date end, int x1) {
+
+		Point location = getLocationInArray(end);
+		Point dateLocation = dateArray[location.x][location.y].getLocationOnScreen();
+		dateLocation.x = dateLocation.x-51;
+		dateLocation.y = dateLocation.y-291;
+		int width =dateArray[location.x][location.y].getSize().width;
+		System.out.println("width:" + width);
+		return (dateLocation.x-x1)+width;
+	}
+	
+	public boolean isArrayEmpty()
+	{
+		boolean isEmpty = false;
+		for(int i = 0; i < 6; i++)
+		{
+			for(int j = 0; j < 7; j++)
+			{
+				if(dateArray[j][i] == null)
+				{
+					isEmpty = true;
+				}
+		    }
+		}
+		if(isEmpty == true){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+
+	@Override
+	public void repaint()
+	{
+		super.repaint();
+	}
+	
+	@Override 
+	public void paint(Graphics g)
+	{
+		super.paint(g);
+//		addMultiDayEvent(d1, d2,g);
+	}
+
 	@Override
 	public String getTitle() {
 		return monthNames[currentMonth] + ", " + currentYear;
