@@ -24,6 +24,8 @@ public class MultidayEventView extends JPanel{
 		this.setSize(size);
 		this.setPreferredSize(size);
 		
+		showEvents();
+		
 		this.setOpaque(false);
 		this.setVisible(true);
 	}
@@ -41,6 +43,10 @@ public class MultidayEventView extends JPanel{
 	}
 	
 	public void showEvents(){
+		sortEvents();
+		
+		System.out.println("WHY U NO SHOW");
+		
 		this.setLayout(new MigLayout("fill", 
 				"[20%][80%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
@@ -53,9 +59,9 @@ public class MultidayEventView extends JPanel{
 		evebuilder.append(" ");
 		evebuilder.append("0");
 		evebuilder.append(" ");
-		evebuilder.append("0");
-		evebuilder.append(" ");
 		evebuilder.append("2");
+		evebuilder.append(" ");
+		evebuilder.append("0");
 		evebuilder.append(",grow, push");
 		
 		
