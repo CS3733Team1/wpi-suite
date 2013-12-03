@@ -13,10 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,7 +23,6 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 public class EventView extends JPanel {
@@ -145,8 +142,6 @@ public class EventView extends JPanel {
 		
 		for(int i = 0; i < 100; i++)
 			toomanyones += "[1%]";
-		
-		System.out.println(toomanyones);
 		
 		this.setLayout(new MigLayout("fill",
 				calclayout.toString(),
