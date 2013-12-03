@@ -71,8 +71,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		this.setBackground(Color.white);
 		
 		this.setLayout(new MigLayout("fill, insets 0", 
-				"[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0", 
-				"[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0"));
+				"0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0", 
+				"0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0"));
 		
 		addDayLabels();
 		addDaysToCalendar(mycal);
@@ -150,7 +150,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 			int y = (i/7);
 			
 			listOfDates[x][y]= new Date(nextYear-1900,nextMonth,day);
-//			System.out.println(listOfDates[x][y]);
 			listOfDaysCalendar[x][y] = day;
 			day++;	
 		}
@@ -458,11 +457,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		}
 	}
 	
-	
-	
-	
-	
-	
 	public boolean isArrayEmpty()
 	{
 		boolean isEmpty = false;
@@ -544,15 +538,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 
 
 	@Override
-	public void ancestorMoved(AncestorEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void ancestorMoved(AncestorEvent e) {}
 
 	@Override
-	public void ancestorRemoved(AncestorEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void ancestorRemoved(AncestorEvent e) {}
 }

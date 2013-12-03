@@ -26,8 +26,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * This controller coordinates retrieving all of the messages
  * from the server. This controller is called when the user
  * clicks the refresh button.
- * 
- * @author John Breen
  *
  */
 public class RetrieveCommitmentController implements AncestorListener, ActionListener {

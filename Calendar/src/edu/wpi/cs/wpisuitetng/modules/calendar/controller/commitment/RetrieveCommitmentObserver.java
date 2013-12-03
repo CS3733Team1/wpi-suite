@@ -18,9 +18,6 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 /**
  * This observer handles responses to requests for all
  * post board messages.
- * 
- * @author John Breen
- *
  */
 public class RetrieveCommitmentObserver implements RequestObserver {
 	

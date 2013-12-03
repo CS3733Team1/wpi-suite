@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
@@ -208,6 +218,10 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		return notevenclose;
 	}
 	
+	public Date getDate() {
+		return new Date(currentYear-1900, currentMonth, currentDate);
+	}
+	
 	@Override
 	public String getTitle() {
 		return monthNames[currentMonth] + " "+ currentDate+ ", " + currentYear;
@@ -268,6 +282,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		}
 	}
 
+	
 	public HashMap<Date,DatePanel> getMap()
 	{
 		return paneltracker;

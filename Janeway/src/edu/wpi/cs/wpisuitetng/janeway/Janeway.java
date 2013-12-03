@@ -36,7 +36,7 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.ModuleLoader;
  *
  */
 public class Janeway {
-	
+
 	/** List containing all modules */
 	protected static List<IJanewayModule> modules;
 
@@ -44,33 +44,32 @@ public class Janeway {
 	 * Instantiate the main GUI frame
 	 */
 	public static void main(final String[] args) {
-		
+
 		// Set the look and feel to cross-platform so the UI looks
 		// the same across operating systems
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} 
-		catch (Exception e) {
-			System.out.println("Error setting UI manager to cross-platform!");
+		} catch (Exception e) {
+			System.out.println("Error setting UI manager!");
 			e.printStackTrace();
 		}
-		
+
 		// Load modules
 		ModuleLoader<IJanewayModule> moduleLoader = new ModuleLoader<IJanewayModule>("./modules.conf");
 		modules = moduleLoader.getModules();
 		modules.add(new DummyModule());
-		
+
 		// Check for modules
 		if (modules.size() < 1) {
 			System.out.println("WARNING: No modules were loaded, be sure the correct config file\nis referenced and jar files have been created.");
 		}
-		
+
 		// Start the GUI
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				final JanewayFrame gui = JanewayFrame.initialize(modules);
 				final LoginFrame loginGui = new LoginFrame("Janeway");
-				
+
 				if (args.length > 0 && args[0].equals("-nologin")) {
 					loginGui.setVisible(false);
 					gui.setVisible(true);
@@ -83,7 +82,7 @@ public class Janeway {
 			}
 		});
 	}
-	
+
 	/**
 	 * Dynamically load the modules to include and add them to the
 	 * modules list.
@@ -101,7 +100,7 @@ public class Janeway {
 		IJanewayModule currMod; /* the current module object */
 		ClassLoader classLoader = Janeway.class.getClassLoader();
 		List<IJanewayModule> retVal = new ArrayList<IJanewayModule>(); /* The list of modules to be returned */
-		
+
 		// Attempt to dynamically load the modules, based on the contents of
 		// the modules.conf file
 		try {
@@ -134,7 +133,7 @@ public class Janeway {
 			System.out.println("An error occurred instantiating the module class!");
 			e.printStackTrace();
 		}		
-		
+
 		return retVal;
 	}
 }
