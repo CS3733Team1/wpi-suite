@@ -26,7 +26,7 @@ public class EventMouseListener implements MouseListener{
 	static ArrayList<JPanel> selectedPanels= new ArrayList<JPanel>();
 	
 	public EventMouseListener(Event e, JPanel epanel, JPanel calview){
-		this.e=e;
+		this.e= new Event(e);
 		this.epanel=epanel;
 		this.calview=calview;
 	}

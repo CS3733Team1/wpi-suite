@@ -53,7 +53,8 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
 		
 		while(event.hasNext()){
-			Event eve = event.next();
+			Event eve = new Event(event.next());
+			System.out.println("Change the world has event: \n" + eve);
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){

@@ -132,9 +132,9 @@ public class EventListModel extends AbstractListModel<Event> {
 		return events.size();
 	}
 
+	//** Note: avoid coping the events in the list here.
+	// use the copy constructor provided in Event() to avoid creating copies with dissimilar UniuqeID's
 	public List<Event> getList(){
-		List<Event> rtnEventList = new ArrayList<Event>();
-		rtnEventList.addAll(getEventListModel().events);
-		return rtnEventList;
+		return events;
 	}
 }

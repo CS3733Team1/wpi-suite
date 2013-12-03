@@ -42,6 +42,19 @@ public class Event extends DeletableAbstractModel {
 
 	public Event(){}
 	
+	//A copy constructor to preserve UniqueID's when copying events.
+	public Event(Event other)
+	{
+		super();
+		System.out.println("Event Copy Constructor");
+		this.UniqueID=other.getUniqueID();
+		this.name = other.name;
+		this.startDate = other.startDate;
+		this.endDate = other.endDate;
+		this.description=other.description;
+		this.category=other.category;
+	}
+	
 	public Event(String name, Date startDate, Date endDate) {
 		this.name = name;
 		this.startDate = startDate;

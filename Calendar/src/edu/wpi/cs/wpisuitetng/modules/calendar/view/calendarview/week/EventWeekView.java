@@ -47,7 +47,7 @@ public class EventWeekView extends JPanel{
 				
 				System.out.println("event: " + evedate.toString() + " start: " + start.toString());
 				if (evedate.getMonth() == current.getMonth() && evedate.getYear() == current.getYear() && evedate.getDate() == current.getDate()){
-					weekevents.get(y).add(events.get(x));
+					weekevents.get(y).add(new Event(events.get(x)));
 				}
 			}
 		}

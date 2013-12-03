@@ -144,7 +144,7 @@ public class EventView extends JPanel {
 			}
 			
 			for (int z = 0; z < chain.size(); z++){
-				Event e = chain.get(z);
+				Event e = new Event(chain.get(z));
 				JPanel panel = new JPanel();
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
