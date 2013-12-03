@@ -10,59 +10,138 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+
+import edu.wpi.cs.wpisuitetng.modules.calendar.Calendar;
 
 import net.miginfocom.swing.MigLayout;
 
 public class TimeDurationPickerPanel extends JPanel {
 
-	private String[] times;
+	private TimePicker StartTimePicker;
+	private TimePicker EndTimePicker;
+	private JLabel errorLabel;
+	private String defaultErrorText_="ERROR: Start Time after End Time!";
+	
+	private Border errorBorder;
+	private Border normalBorder;
+	
+	
+	public void addTimeChangedEventListener(TimeChangedEventListener timeChangedEventListener) {
+		listenerList.add(TimeChangedEventListener.class, timeChangedEventListener);
+	}
 
-	private JComboBox<String> timeStart;
-	private JComboBox<String> timeEnd;
+	public void removeTimeChangedEventListener(TimeChangedEventListener listener) {
+		listenerList.remove(TimeChangedEventListener.class, listener);
+	}
 
+	private void fireTimeChangedEvent(TimeChangedEvent evt) {
+		Object[] listeners = listenerList.getListenerList();
+		for (int i = 0; i < listeners.length; i = i + 2) {
+			if (listeners[i] == TimeChangedEventListener.class) {
+				((TimeChangedEventListener) listeners[i + 1]).TimeChangedEventOccurred(evt);
+			}
+		}
+	}
+	
+	private void TimeChanged(){
+		fireTimeChangedEvent(new TimeChangedEvent(StartTimePicker.getTimeAsSting()+"-"+EndTimePicker.getTimeAsSting()));
+	}
+	
 	public TimeDurationPickerPanel() {
+		errorBorder=BorderFactory.createLineBorder(new Color(255, 51, 51));
+		normalBorder=BorderFactory.createLineBorder(new Color(255, 51, 51,0));
+		
 		this.setLayout(new MigLayout("insets 1"));
 
-		times = new String[24];
+		StartTimePicker =  new TimePicker("Start Time:");
+		EndTimePicker = new TimePicker("End Time:");
+		errorLabel=new JLabel(defaultErrorText_);
+		errorLabel.setForeground(Color.RED);
+		errorLabel.setVisible(false);
+		
+		StartTimePicker.addTimeChangedEventListener(new TimeChangedEventListener() {
+			public void TimeChangedEventOccurred(TimeChangedEvent e) {
+				validateStartEndTime();
+				TimeChanged();
+			}
+		});
+		EndTimePicker.addTimeChangedEventListener(new TimeChangedEventListener() {
+			public void TimeChangedEventOccurred(TimeChangedEvent e) {
+				validateStartEndTime();
+				TimeChanged();
+			}
+		});
+		
+		this.add(StartTimePicker, "alignx left, wrap");
+		this.add(EndTimePicker, "alignx left, wrap");
+		this.add(errorLabel,  "alignx left, wrap");
+	}
 
-		for(int i = 0; i < 24; i++) {
-			times[i] = i + ":00";
+	private boolean validateStartEndTime(){
+		if (StartTimePicker.hasValidTime() && EndTimePicker.hasValidTime()){
+			Date startTime=StartTimePicker.getTime();
+			Date endTime=EndTimePicker.getTime();
+			boolean endTimeIsAfterStartTime=true;
+			if (startTime.after(endTime)){
+				errorLabel.setText(defaultErrorText_);
+				endTimeIsAfterStartTime=false;
+			}else if (startTime.equals(endTime)){
+				errorLabel.setText("ERROR: Start and End time cannot be the same!");
+				endTimeIsAfterStartTime=false;
+			}
+			
+			if (endTimeIsAfterStartTime){
+				setNoError();
+			}else{
+				setError();
+			}
+			return endTimeIsAfterStartTime;
+			
+		}else{	//one of the timePickers has a bad time
+//			System.out.println("One of the timepickers is bad - time duration is not valid");
+			this.setBorder(errorBorder);	//let the user know something is wrong within this component
+			return false;
 		}
-
-		timeStart = new JComboBox<String>(times);
-		timeEnd = new JComboBox<String>(times);
-
-		timeStart.setSelectedIndex(12);
-		timeEnd.setSelectedIndex(12);
-		
-		this.add(new JLabel("Start:"), "split 2");
-		this.add(timeStart, "alignx left, wrap");
-		
-		this.add(new JLabel("<html>&nbsp;&nbsp;End:</html>"), "split 2");
-		this.add(timeEnd, "alignx left, wrap");
-	}
-
-	public int isInvalidTime() {
-		if(timeStart.getSelectedIndex() == timeEnd.getSelectedIndex()) return 1;
-		else if(timeStart.getSelectedIndex() > timeEnd.getSelectedIndex()) return 2;
-		return 0;
 	}
 	
-	public int getStartTime() {
-		return timeStart.getSelectedIndex();
+	private void setError(){
+		errorLabel.setVisible(true);
+		this.setBorder(errorBorder);
 	}
 	
-	public int getEndTime() {
-		return timeEnd.getSelectedIndex();
+	private void setNoError(){
+		errorLabel.setVisible(false);
+		this.setBorder(normalBorder);
 	}
+	
+	public boolean isValidTime() {
+		return validateStartEndTime();
+	}
+	
+	public Date getStartTime() {
+		return StartTimePicker.getTime();
+	}
+	
+	public Date getEndTime() {
+		return EndTimePicker.getTime();
+	}
+	
 	
 	public void setActionListener(ActionListener al) {
-		timeStart.addActionListener(al);
-		timeEnd.addActionListener(al);
+//		StartTimePicker.addTimeChangedEventListener(al);
+//		StartTimePicker.addTimeChangedEventListener(al);
 	}
 }

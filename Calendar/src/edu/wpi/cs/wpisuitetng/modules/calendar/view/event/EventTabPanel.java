@@ -30,6 +30,8 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeDurationPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 
@@ -92,7 +94,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		// Start/End Time
 		timeDurationPickerPanel = new TimeDurationPickerPanel();
-		timeDurationPickerPanel.setActionListener(this);
+		timeDurationPickerPanel.addTimeChangedEventListener(new TimeChangedEventListener() {
+			public void TimeChangedEventOccurred(TimeChangedEvent e) {
+				validateFields();
+			}
+		});
 		this.add(timeDurationPickerPanel, "alignx left, split 2");
 		timeErrorLabel = new JLabel();
 		timeErrorLabel.setForeground(Color.RED);
@@ -142,8 +148,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 * @return void
 	 */
 	private void validateFields() {
+//		System.out.println("Validating Event Fields");
+		
 		boolean enableAddEvent = true;
 
+		//Check the name
 		if(nameTextField.getText().trim().length() == 0) {
 			nameErrorPanelWrapper.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
 			nameErrorLabel.setText(EMPTY_NAME_ERROR);
@@ -154,8 +163,8 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			nameErrorLabel.setVisible(false);
 		}
 
+		//check the date
 		datePickerPanel.validateDate();
-
 		if(datePickerPanel.isInvalidDate() == 1) {
 			datePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
 			dateErrorLabel.setText(INVALID_DATE_ERROR);
@@ -171,20 +180,26 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			dateErrorLabel.setVisible(false);
 		}
 
-		if(timeDurationPickerPanel.isInvalidTime() == 1) {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			timeErrorLabel.setText(ZERO_TIME_ERROR);
-			timeErrorLabel.setVisible(true);
-			enableAddEvent = false;
-		} else if (timeDurationPickerPanel.isInvalidTime() == 2) {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			timeErrorLabel.setText(START_AFTER_END_ERROR);
-			timeErrorLabel.setVisible(true);
-			enableAddEvent = false;
-		} else {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
-			timeErrorLabel.setVisible(false);
+		//check the time
+		if (!timeDurationPickerPanel.isValidTime()){
+//			System.out.println("\tCannot enable add Event button - bad time duration!");
+			enableAddEvent=false;
 		}
+		
+//		if(timeDurationPickerPanel.isInvalidTime() == 1) {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+//			timeErrorLabel.setText(ZERO_TIME_ERROR);
+//			timeErrorLabel.setVisible(true);
+//			enableAddEvent = false;
+//		} else if (timeDurationPickerPanel.isInvalidTime() == 2) {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+//			timeErrorLabel.setText(START_AFTER_END_ERROR);
+//			timeErrorLabel.setVisible(true);
+//			enableAddEvent = false;
+//		} else {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
+//			timeErrorLabel.setVisible(false);
+//		}
 
 		addEventButton.setEnabled(enableAddEvent);
 	}
@@ -194,17 +209,18 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.YEAR, date.getYear()+1900);
 		cal.set(Calendar.MONTH, date.getMonth());
 		cal.set(Calendar.DATE, date.getDate());
-		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getStartTime());
-
+		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getStartTime().getHours());
+		cal.set(Calendar.MINUTE, timeDurationPickerPanel.getStartTime().getMinutes());
+		cal.set(Calendar.SECOND, 0);
+		
 		Date startDate = cal.getTime();
 		
 
-		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getEndTime());
+		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getEndTime().getHours());
+		cal.set(Calendar.MINUTE, timeDurationPickerPanel.getEndTime().getMinutes());
 
 		Date endDate = cal.getTime();
 
