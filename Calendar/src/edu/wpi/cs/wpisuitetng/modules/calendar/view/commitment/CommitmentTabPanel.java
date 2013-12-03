@@ -43,6 +43,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	private JTextField nameTextField;
 	private DatePickerPanel datePickerPanel;
 	private CategoryPickerPanel categoryPickerPanel;
+	private CommitmentProgressPanel commitmentProgressPanel;
 	private JTextArea descriptionTextArea;
 	
 	// Buttons
@@ -70,6 +71,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		nameTextField.setText(c.getName());
 		//nameErrorLabel.setVisible(false);
 		datePickerPanel.setDate(c.getDueDate());
+		commitmentProgressPanel.setSelected(c.getProgress());
 		descriptionTextArea.setText(c.getDescription());
 		addCommitmentButton.setText("Update Commitment");
 		addCommitmentButton.setActionCommand("updatecommitment");
@@ -109,6 +111,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		this.add(new JLabel("Category:"), "split 2");
 		categoryPickerPanel = new CategoryPickerPanel();
 		this.add(categoryPickerPanel, "alignx left, wrap");
+		
+		//Progress
+		this.add(new JLabel("Progress:"), "split 2");
+		commitmentProgressPanel = new CommitmentProgressPanel();
+		this.add(commitmentProgressPanel, "alignx left, wrap");
 		
 		// Description
 		this.add(new JLabel("Description:"), "wrap");
@@ -192,7 +199,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	 */
 	public Commitment getFilledCommitment() {
 		return new Commitment(nameTextField.getText(), datePickerPanel.getDate(),
-				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory());
+				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory(), commitmentProgressPanel.getSelectedState());
 	}
 	
 	@Override

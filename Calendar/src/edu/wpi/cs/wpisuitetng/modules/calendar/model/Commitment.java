@@ -114,26 +114,14 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * Constructs a Commitment
 	 * @param name name of Commitment
 	 * @param dueDate due date of Commitment
-	 * @param progress progress of Commitment
-	 */
-	public Commitment(String name, Date dueDate, State progress) {
-		this(name, dueDate);
-		this.progress = progress;
-		createID();
-	}
-	
-	/**
-	 * Constructs a Commitment
-	 * @param name name of Commitment
-	 * @param dueDate due date of Commitment
 	 * @param description description of Commitment
 	 * @param progress progress of Commitment
 	 */
 	public Commitment(String name, Date dueDate, String description, 
-			State progress) {
+			String progress) {
 		this(name, dueDate);
 		this.description = description;
-		this.progress = progress;
+		this.progress=getStateFromString(progress);
 		createID();
 	}
 	
@@ -145,10 +133,10 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param progress progress of Commitment
 	 */
 	public Commitment(String name, Date dueDate, Category category, 
-			State progress) {
+			String progress) {
 		this(name, dueDate);
 		this.category = category.cloneFake();
-		this.progress = progress;
+		this.progress = getStateFromString(progress);
 		createID();
 	}
 	
@@ -161,11 +149,11 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param progress progress of Commitment
 	 */
 	public Commitment(String name, Date dueDate, String description,
-			Category category, State progress) {
+			Category category, String progress) {
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
-		this.progress = progress;
+		this.progress = getStateFromString(progress);
 		createID();
 	}
 
@@ -228,7 +216,11 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	/**
 	 * @return the Category object representing the Commitment's Category
 	 */
-	public State getProgress() {
+	public String getProgress() {
+		return progress.toString();
+	}
+	
+	private State getProgressState(){
 		return progress;
 	}
 
@@ -237,6 +229,18 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 */
 	public void setProgress(State progress) {
 		this.progress = progress;
+	}
+	
+	private State getStateFromString(String stateString){
+		switch(stateString){
+			case "New": 
+				return State.NEW;
+			case "In Progress": 
+				return State.IN_PROGRESS;
+			case "Complete": 
+				return State.COMPLETE;
+		}
+		return null;
 	}
 
 	@Override
@@ -356,6 +360,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.dueDate = toCopyFrom.getDueDate();
 		this.id = toCopyFrom.getID();
 		this.name = toCopyFrom.getName();
-		this.progress = toCopyFrom.getProgress();
+		this.progress = toCopyFrom.getProgressState();
 	}
 }//end Commitment

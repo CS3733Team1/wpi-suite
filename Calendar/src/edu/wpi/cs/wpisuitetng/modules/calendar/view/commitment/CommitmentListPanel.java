@@ -227,6 +227,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		}
 		else if (e.getActionCommand().equals("updatecommitment"))
 		{
+			viewCommitments();
 			openUpdateCommitmentTabPanel();
 		}
 	}
