@@ -3,18 +3,14 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.DateFormat;
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 
-import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
 public class EventMouseListener implements MouseListener{
@@ -59,8 +55,7 @@ public class EventMouseListener implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		int ctrldwn = MouseEvent.CTRL_DOWN_MASK;
 		boolean multiSelect = ((e.getModifiersEx() & ctrldwn) == ctrldwn);
-		if(multiSelect){
-			System.out.println("ctrl!");
+		if(multiSelect) {
 			if(selectedEvents.contains(this.e)){
 				selectedEvents.remove(this.e);
 				selectedPanels.remove(this.epanel);
@@ -72,9 +67,7 @@ public class EventMouseListener implements MouseListener{
 				selectPanel(this.epanel);
 				
 			}
-		}
-		else{
-			System.out.println("no ctrl!");
+		} else {
 			if(selectedEvents.contains(this.e)){
 				boolean multiple = (selectedEvents.size()!=1);
 				selectedEvents.clear();

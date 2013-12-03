@@ -259,7 +259,6 @@ public class ManagerLayer {
 
 		Model m;
 		m = (Model) map.get(args[0] + args[1]).update(s, content);
-
 		return m.toJSON();
 
 	}

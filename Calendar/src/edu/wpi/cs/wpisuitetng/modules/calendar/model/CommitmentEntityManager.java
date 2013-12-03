@@ -10,7 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -114,8 +113,28 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	public Commitment update(Session s, String content)
 			throws WPISuiteException {
 
-		// This module does not allow Commitments to be modified, so throw an exception
-		throw new WPISuiteException();
+		Commitment updatedCommitment = Commitment.fromJSON(content);
+		/*
+		 * Because of the disconnected objects problem in db4o, we can't just save Commitments.
+		 * We have to get the original defect from db4o, copy properties from updatedCommitment,
+		 * then save the original Commitment again.
+		 */
+		List<Model> oldCommitments = db.retrieve(Commitment.class, "id", updatedCommitment.getID(), s.getProject());
+		//System.out.println(oldCommitments.toString());
+		if(oldCommitments.size() < 1 || oldCommitments.get(0) == null) {
+			throw new BadRequestException("Commitment with ID does not exist.");
+		}
+				
+		Commitment existingCommitment = (Commitment)oldCommitments.get(0);		
+
+		// copy values to old commitment and fill in our changeset appropriately
+		existingCommitment.copyFrom(updatedCommitment);
+		
+		if(!db.save(existingCommitment, s.getProject())) {
+			throw new WPISuiteException();
+		}
+		
+		return existingCommitment;
 	}
 
 	/*
@@ -139,7 +158,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.println("commitment entiy manager delete entity id = " + id);
+		System.out.println("Commitment entiy manager delete entity id = " + id);
 		try
 		{
 			Commitment todelete= (Commitment) db.retrieve(Commitment.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
