@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JLayeredPane;
@@ -28,14 +30,14 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 	private WeekView weekview;
 	private EventWeekView eventview;
 	
-	private ArrayList<Event> eventlist;
+	private List<Event> eventlist;
 	private Integer layer;
 	
 	public WeekCalendarLayerPane()
 	{
 		layer = 0;
 		weekview = new WeekView();
-		eventlist = new ArrayList<Event>();
+		eventlist = new LinkedList<Event>();
 		
 		int height = weekview.getPreferredSize().getSize().height;
 		int width = 950;
@@ -98,7 +100,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			layer--;
 		}
 
-		eventlist = new ArrayList<Event>();
+		eventlist = new LinkedList<Event>();
 	}
 	
 	public String getTitle() {
