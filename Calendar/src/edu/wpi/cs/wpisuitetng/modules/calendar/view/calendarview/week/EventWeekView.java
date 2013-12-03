@@ -171,13 +171,13 @@ public class EventWeekView extends JPanel{
 		for(int i = 0; i < 100; i++)
 			toomanyones += "[1%]";
 		
-		System.out.println(toomanyones);
+		//System.out.println(toomanyones);
 		
 		this.setLayout(new MigLayout("fill",
 				layouts.toString(),
 				toomanyones));
 		
-		System.out.println(layouts.toString());
+		//System.out.println(layouts.toString());
 		
 		int maxmove = 1;
 		
