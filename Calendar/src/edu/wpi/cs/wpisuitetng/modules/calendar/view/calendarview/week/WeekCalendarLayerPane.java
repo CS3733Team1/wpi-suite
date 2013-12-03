@@ -31,7 +31,6 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 	private EventWeekView eventview;
 	
 	private List<Event> eventlist;
-	private List<List<Event>> multilistlist;
 	private Integer layer;
 	
 	public WeekCalendarLayerPane()
@@ -39,12 +38,6 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		layer = 0;
 		weekview = new WeekView();
 		eventlist = new LinkedList<Event>();
-		
-		multilistlist = new LinkedList<List<Event>>();
-		for(int i = 0; i < 7; i++)
-		{
-			multilistlist.add(new LinkedList<Event>());
-		}
 		
 		int height = weekview.getPreferredSize().getSize().height;
 		int width = 950;
@@ -64,40 +57,20 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 	
 	public void ChangeTheWorld(){
 		Date key;
-		Date current = weekview.getStart();
-		int startind, endind;
-		List<Event> multilist = new LinkedList<Event>();
 		
 		ClearEvents();
 		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
 		
 		while(event.hasNext()){
-			Event eve = event.next();
+			Event eve = new Event(event.next());
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (weekview.getMap().containsKey(key)){
-				if(eve.getStartDate().getDay() == eve.getEndDate().getDay()
-				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
-				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
-					eventlist.add(eve);
-				else
-				{
-					multilist.add(eve);
-				}
+				eventlist.add(eve);
 			}
 		}
 		eventview = new EventWeekView(eventlist, this.getSize(), weekview.getStart());
 		
-		for(Event e: multilist)
-		{
-			startind = e.getStartDate().getDate() - current.getDate(); //will break going over month boundary
-			endind = e.getEndDate().getDate() - current.getDate();
-			
-			for(int i = startind; i < endind; i++)
-			{
-				multilistlist.get(i).add(e);
-			}
-		}
 		
 		this.add(eventview, layer,-1);
 		layer++;

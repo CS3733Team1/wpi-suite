@@ -102,8 +102,9 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		// Passing the project makes it only get messages from that project
 		
 		//System.out.println(s.getProject().toString());
-		//List<Model> messages = db.retrieveAll(new Category(), s.getProject());
-		List<Model> messages = db.retrieve(Category.class, "isReal", true, s.getProject());
+		System.out.println("Trying to retrive all categories");
+		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
+		//List<Model> messages = db.retrieve(Category.class, "isReal", true, s.getProject());
 		// Return the list of messages as an array
 		return messages.toArray(new Category[0]);
 	}

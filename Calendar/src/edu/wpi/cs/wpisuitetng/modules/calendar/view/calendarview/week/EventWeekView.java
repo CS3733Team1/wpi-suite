@@ -54,7 +54,7 @@ public class EventWeekView extends JPanel{
 				Date evedate = events.get(x).getStartDate();
 				
 				if (evedate.getMonth() == current.getMonth() && evedate.getYear() == current.getYear() && evedate.getDate() == current.getDate()){
-					weekevents.get(y).add(events.get(x));
+					weekevents.get(y).add(new Event(events.get(x)));
 				}
 			}
 		}
@@ -175,11 +175,11 @@ public class EventWeekView extends JPanel{
 		
 		for(int i = 0; i < 100; i++)
 			toomanyones += "[1%]";
-
+		
 		this.setLayout(new MigLayout("fill",
 				layouts.toString(),
 				toomanyones));
-
+		
 		int maxmove = 1;
 		
 		for (int currentday = 0; currentday < 7; currentday++){
