@@ -428,9 +428,9 @@ public class TimePicker extends JPanel{
 			value = Integer.parseInt(sourceTextField.getText());
 //			System.out.println("Value of textField is: "+ Integer.toString(value));
 		} catch (NumberFormatException e) {
-			System.err.println("Caught IOException: " + e.getMessage() + " returning "+Integer.toString(value));
+//			System.err.println("Caught IOException: " + e.getMessage() + " returning "+Integer.toString(value));
 		} catch (NullPointerException e) {
-			System.err.println("Caught IOException: " + e.getMessage() + " returning "+Integer.toString(value));
+//			System.err.println("Caught IOException: " + e.getMessage() + " returning "+Integer.toString(value));
 		}
 		return value;
 	}

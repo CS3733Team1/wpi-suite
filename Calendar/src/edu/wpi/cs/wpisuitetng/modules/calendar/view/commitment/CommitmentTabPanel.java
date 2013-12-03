@@ -173,7 +173,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	 * @return void
 	 */
 	private void validateFields() {
-		System.out.println("Validating Commitment Fields");
+//		System.out.println("Validating Commitment Fields");
 		
 		boolean enableAddCommitment = true;
 
