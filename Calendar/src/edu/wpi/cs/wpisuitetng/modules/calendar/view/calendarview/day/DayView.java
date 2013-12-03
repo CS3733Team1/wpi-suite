@@ -207,6 +207,10 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		return notevenclose;
 	}
 	
+	public Date getDate() {
+		return new Date(currentYear-1900, currentMonth, currentDate);
+	}
+	
 	@Override
 	public String getTitle() {
 		return monthNames[currentMonth] + " "+ currentDate+ ", " + currentYear;
