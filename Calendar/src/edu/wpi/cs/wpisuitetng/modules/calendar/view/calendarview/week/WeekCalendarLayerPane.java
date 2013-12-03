@@ -103,6 +103,10 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		layer++;
 	}
 	
+	public WeekView getWeek(){
+		return weekview;
+	}
+	
 	public void reSize(int width){
 		this.setSize(width, this.getHeight());
 		this.setPreferredSize(new Dimension(width, this.getHeight()));
