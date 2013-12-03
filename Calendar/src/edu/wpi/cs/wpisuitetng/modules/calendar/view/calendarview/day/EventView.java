@@ -136,8 +136,6 @@ public class EventView extends JPanel {
 		for(int i = 0; i < 100; i++)
 			toomanyones += "[1%]";
 		
-		System.out.println(toomanyones);
-		
 		this.setLayout(new MigLayout("fill",
 				calclayout.toString(),
 				toomanyones));
@@ -161,7 +159,7 @@ public class EventView extends JPanel {
 				evebuilder.append("0");
 				evebuilder.append(" ");
 				evebuilder.append(new Integer(getLength(e)).toString());
-				evebuilder.append(",grow, push");
+				evebuilder.append(",grow, push, wmin 0");
 				JLabel name = new JLabel(e.getName());
 				panel.add(name, "wmin 0, aligny center, alignx center");
 				
