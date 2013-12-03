@@ -10,7 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -159,7 +158,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.println("commitment entiy manager delete entity id = " + id);
+		System.out.println("Commitment entiy manager delete entity id = " + id);
 		try
 		{
 			Commitment todelete= (Commitment) db.retrieve(Commitment.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);

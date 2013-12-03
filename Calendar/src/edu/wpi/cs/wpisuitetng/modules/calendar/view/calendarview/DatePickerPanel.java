@@ -89,10 +89,8 @@ public class DatePickerPanel extends JPanel {
 	}
 
 	public void validateDate() {
-		System.out.println(rawText.getText());
 		try {
 			parsedDate = df.parse(rawText.getText());
-			System.out.println(parsedDate.toString());
 			this.isValid = isBeforeToday();
 		} catch (ParseException e) {
 			this.isValid = 1;
@@ -116,8 +114,6 @@ public class DatePickerPanel extends JPanel {
 		parsedCal.set(Calendar.YEAR, parsedDate.getYear()+1900);
 		parsedCal.set(Calendar.MONTH, parsedDate.getMonth());
 		parsedCal.set(Calendar.DATE, parsedDate.getDate());
-
-		System.out.println(parsedCal.get(Calendar.YEAR) + "   " + today.get(Calendar.YEAR));
 		
 		if(parsedCal.getTimeInMillis() < today.getTimeInMillis()) return 2;
 		else return 0;

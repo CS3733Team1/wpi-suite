@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
-import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,7 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.CalendarConstants;
 
 public class DayCalendarScrollPane extends JScrollPane{
 	private DayCalendarLayerPane daylayer;
@@ -61,7 +59,6 @@ public class DayCalendarScrollPane extends JScrollPane{
 	public void updateDay(){
 		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
 		repaint();
-		System.out.println("Happy Days!");
 	}
 	
 }

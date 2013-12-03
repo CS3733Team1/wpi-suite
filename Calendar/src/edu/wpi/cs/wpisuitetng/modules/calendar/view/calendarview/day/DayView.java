@@ -209,8 +209,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		for (Commitment commit: CommitmentListModel.getCommitmentListModel().getList()){
 			Date commitdate = commit.getDueDate();
 			Date teemo = new Date(commitdate.getYear(),commitdate.getMonth(),commitdate.getDate(),commitdate.getHours(),0);
-			if (paneltracker.containsKey(teemo)){
-				System.out.println("I'm Invisible");
+			if (paneltracker.containsKey(teemo)) {
 				notevenclose.add(commit);
 			}
 		}

@@ -13,7 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -22,12 +21,9 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 public class EventWeekView extends JPanel{
 
 	private List<Event> events;
@@ -57,7 +53,6 @@ public class EventWeekView extends JPanel{
 			for (int x = 0; x < events.size(); x++){
 				Date evedate = events.get(x).getStartDate();
 				
-				System.out.println("event: " + evedate.toString() + " start: " + start.toString());
 				if (evedate.getMonth() == current.getMonth() && evedate.getYear() == current.getYear() && evedate.getDate() == current.getDate()){
 					weekevents.get(y).add(events.get(x));
 				}
@@ -181,13 +176,9 @@ public class EventWeekView extends JPanel{
 		for(int i = 0; i < 100; i++)
 			toomanyones += "[1%]";
 		
-		System.out.println(toomanyones);
-		
 		this.setLayout(new MigLayout("fill",
 				layouts.toString(),
 				toomanyones));
-		
-		System.out.println(layouts.toString());
 		
 		int maxmove = 1;
 		
