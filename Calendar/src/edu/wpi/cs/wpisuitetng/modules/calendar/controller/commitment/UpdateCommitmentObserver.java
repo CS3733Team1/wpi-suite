@@ -36,12 +36,7 @@ public class UpdateCommitmentObserver implements RequestObserver
 	public void responseSuccess(IRequest iReq) 
 	{
 		// Get the response to the given request
-<<<<<<< HEAD
-		final ResponseModel response = iReq.getResponse();				
-=======
 		final ResponseModel response = iReq.getResponse();
-				
->>>>>>> cc25a4858a127d2740e607de0e5ab046b79c8776
 				
 		// Parse the message out of the response body
 		final Commitment commit = Commitment.fromJSON(response.getBody());
@@ -61,11 +56,7 @@ public class UpdateCommitmentObserver implements RequestObserver
 	@Override
 	public void fail(IRequest iReq, Exception exception) 
 	{
-<<<<<<< HEAD
 		System.err.println("The request to update a commitment failed.");
-=======
-		System.err.println("The request to add a commitment failed.");		
->>>>>>> cc25a4858a127d2740e607de0e5ab046b79c8776
 	}
 
 }

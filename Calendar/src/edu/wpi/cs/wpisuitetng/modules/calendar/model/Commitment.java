@@ -320,10 +320,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			str += "<br><b>Description:</b> " + getDescription();
 		
 		str += "</html>";
-<<<<<<< HEAD
-=======
 
->>>>>>> cc25a4858a127d2740e607de0e5ab046b79c8776
 		return str;
 	}
 
