@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.JanewayFrame;
 import edu.wpi.cs.wpisuitetng.janeway.gui.login.LoginController;
@@ -48,10 +49,15 @@ public class Janeway {
 		// Set the look and feel to cross-platform so the UI looks
 		// the same across operating systems
 		try {
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-		} 
-		catch (Exception e) {
-			System.out.println("Error setting UI manager to cross-platform!");
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		    	System.out.println(info.getName());
+		        if ("Windows".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+			System.out.println("Error setting UI manager!");
 			e.printStackTrace();
 		}
 		
