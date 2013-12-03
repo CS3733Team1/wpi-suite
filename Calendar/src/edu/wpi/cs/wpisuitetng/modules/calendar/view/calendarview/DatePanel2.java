@@ -37,7 +37,6 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	private Color text;
 	private Color background;
 	private JLabel dateLabel;
-	private JLabel moreMulti;
 	private int day;
 	private int unaddedEvents;
 	private int heightOfJPanel;
@@ -46,7 +45,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 
 
 	public DatePanel2(Date today){
-		this.setLayout(new MigLayout("fill, insets 0", 
+		this.setLayout(new MigLayout("fill, insets 0, hmin 55", 
 				"[]", 
 				"[][]"));
 		multiDayLabelList = new ArrayList<JLabel>();
@@ -54,26 +53,27 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 		singleDayPanel = new ArrayList<JPanel>();
 		multiDayPanel  = new ArrayList<JPanel>();
 
-		moreMulti= new JLabel("");
 		
+		this.setBorder(new MatteBorder(0,0, 1, 0, Color.gray));
 		this.setDate(today);
 		this.today = today;
 
 		Calendar currentDay = Calendar.getInstance();
 		Date d1 = new Date(currentDay.get(Calendar.YEAR)-1900,currentDay.get(Calendar.MONTH),currentDay.get(Calendar.DATE));
-		Date d = new Date(113,10,27);
+		Date d = new Date(113,11,27);
 		Date d2 = new Date(113,11,28);
 		Date d3 = new Date(113,11,16);
 		Date d4 = new Date(113,11,1);
+		Date d5 = new Date(113,11,15);
 
 		Event eve = new Event("Test MultiDay",d3,d2);
 		Event eve1 = new Event("Test 2", d, d3);
-		Event ev2 = new Event("Overlap Test", d3, d4);
+		Event ev2 = new Event("Overlap Test", d4, d5);
 		if(isDateEqual(d3,today)){
 			addEvent(eve1);
 		}
-		this.setBorder(new MatteBorder(0,0,1,0,Color.gray));
 		addEvent(eve);
+		
 		addEvent(ev2);
 		updatePanel();
 		configurePanel();
@@ -112,11 +112,9 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	}
 
 	private void addSingleDayEvent(Event eve) {
-
-		System.out.println("Add Single Day Event");
-
 		JPanel eventPanel = new JPanel(new MigLayout("insets 0 5 0 0, hmin 15, hmax 15,gapy 0"));
 		JLabel jLab = new JLabel(eve.getName());
+		
 		eventPanel.setBackground(background);
 		Category c = eve.getCategory();
 		if(c != null)
@@ -125,8 +123,8 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 			jLab.setForeground(Color.black);
 
 		eventPanel.add(jLab, "center, gapy 0 0");
+		jLab.setFont(new Font(jLab.getFont().getFontName(), jLab.getFont().getStyle(), 10));
 		singleDayPanel.add(eventPanel);
-		System.out.println("Updated Single Day Event");
 		eventLabelList.add(jLab);
 	}
 
@@ -134,11 +132,10 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	{
 		if((isTodayWithinDates(today,eve.getStartDate(),eve.getEndDate())))
 		{
-			System.out.println("ADD MULTIDAY EVENT:" + today + ",Start Date:"+eve.getStartDate());
 			JPanel eventPanel = new JPanel(new MigLayout("insets 0, hmin 15, hmax 15,gapy 0"));
 			if(isDateEqual(eve.getStartDate(),today)){
 				JLabel jLab = new JLabel(eve.getName());
-				System.out.println("ADD JLABEL");
+				jLab.setFont(new Font(jLab.getFont().getFontName(), jLab.getFont().getStyle(), 10));
 				eventPanel.add(jLab, "gapy 0 0");
 				eventPanel.validate();
 				multiDayLabelList.add(jLab);
@@ -190,11 +187,8 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	 */
 	private boolean isMultiDayEvent(Event e)
 	{	
-		if(isDateEqual(e.getStartDate(),e.getEndDate())){
-			System.out.println("MULTIDAYEVENT");
-			System.out.println("StartDate:"+e.getStartDate()+", End Date: "+e.getEndDate());
+		if(isDateEqual(e.getStartDate(),e.getEndDate()))
 			return false;
-		}
 		else
 			return true;
 	}
@@ -220,7 +214,6 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 				singleDayEvents = new JPanel(new MigLayout("insets 0, gapy 0"));
 				singleDayEvents = createSingleDayPanel();
 				singleDayEvents.setBackground(background);
-				System.out.println("Single Day Events");
 				events.add(singleDayEvents,"grow,gapy 0 0, h 5000, w "+widthOfJPanel);
 			}
 		}
@@ -259,41 +252,42 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 
 
 	private JPanel createSingleDayPanel() {
-		JPanel last = new JPanel(new MigLayout("insets 0, hmin 16, hmax 16,center"));
+		JPanel last = new JPanel(new MigLayout("insets 0, hmin 14, hmax 14,center"));
 		JLabel more = new JLabel("more");
 		more.setFont(new Font(more.getFont().getFontName(), more.getFont().getStyle(), 10));
 		for(JPanel jpanel: singleDayPanel){	
 			if(heightOfJPanel >= 50){//change to preffered size latter
-				heightOfJPanel = heightOfJPanel-20;
-				singleDayEvents.add(jpanel,"w "+widthOfJPanel+",hmin 16, hmax 16, gapy 0 0, wrap, center");
+				heightOfJPanel = heightOfJPanel-15;
+				singleDayEvents.add(jpanel,"w "+widthOfJPanel+",hmin 14, hmax 14, gapy 0 0, wrap, center");
 			}else {
 				unaddedEvents++;
 			}
 		}
 		if(unaddedEvents > 0) {
-				more.setText(unaddedEvents + " more..");
-				last.add(more,"center");
-				last.setBackground(background);
-				singleDayEvents.add(last, "w "+widthOfJPanel+", hmin 12, hmax 12, gapy 0 0,center");
+			more.setText(unaddedEvents + " more..");
+			last.add(more,"center");
+			last.setBackground(background);
+			singleDayEvents.add(last, "w "+widthOfJPanel+", hmin 12, hmax 12, gapy 0 0,center");
 		}
 		return singleDayEvents;
 	}
 
 	private JPanel createMultiDayPanel() {
-		JPanel last = new JPanel(new MigLayout("insets 0, hmin 16, hmax 16,center"));
-		moreMulti.setFont(new Font(moreMulti.getFont().getFontName(), moreMulti.getFont().getStyle(), 10));
+		JPanel last = new JPanel(new MigLayout("insets 0, hmin 14, hmax 14,center"));
+		JLabel more = new JLabel("more");
+		more.setFont(new Font(more.getFont().getFontName(), more.getFont().getStyle(), 10));
 
 		for(JPanel jpanel: multiDayPanel){	
 			if(heightOfJPanel >= 50){//change to preffered size latter
-				heightOfJPanel = heightOfJPanel-20;
-				multiDayEvents.add(jpanel,"w "+widthOfJPanel+",hmin 16, hmax 16, gapy 0 0, wrap, center");
+				heightOfJPanel = heightOfJPanel-15;
+				multiDayEvents.add(jpanel,"w "+widthOfJPanel+",hmin 14, hmax 14, gapy 0 0, wrap, center");
 			}else {
 				unaddedEvents++;
 			}
 		}
 		if(unaddedEvents > 0) {
-			moreMulti.setText(unaddedEvents + " more..");
-			last.add(moreMulti,"center");
+			more.setText(unaddedEvents + " more..");
+			last.add(more,"center");
 			last.setBackground(background);
 			multiDayEvents.add(last, "w "+widthOfJPanel+", hmin 12, hmax 12, gapy 0 0,center");
 		}
@@ -334,6 +328,12 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+}public void contentsChanged(ListDataEvent e) {
 		// TODO Auto-generated method stub
 
 	}
