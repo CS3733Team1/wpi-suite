@@ -150,7 +150,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 			int y = (i/7);
 			
 			listOfDates[x][y]= new Date(nextYear-1900,nextMonth,day);
-			System.out.println(listOfDates[x][y]);
+//			System.out.println(listOfDates[x][y]);
 			listOfDaysCalendar[x][y] = day;
 			day++;	
 		}
@@ -188,9 +188,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		{
 			int x = i%7;
 			int y = (i/7);	
-			//System.out.println("X: "+ x+ "Y:"+y+"Day"+day);
-			
 			listOfDates[x][y]= new Date(nextYear-1900,nextMonth,day);
+			System.out.println(listOfDates[x][y]);
 			listOfDaysCalendar[x][y] = day;
 			day++;
 		}
@@ -341,7 +340,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 
 	private boolean isToday(Calendar cal, Date day) {
 		Calendar conversion = Calendar.getInstance();
-		System.out.println(day);
 		conversion.setTime(day);
 		Calendar currentMonth = Calendar.getInstance();
 		int todayDay = currentMonth.get(Calendar.DATE);
@@ -359,7 +357,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	}
 
 	private boolean isPreviousMonth(Calendar cal, int index) {
-		if(index < cal.get(Calendar.DAY_OF_WEEK))
+		if(index < cal.get(Calendar.DAY_OF_WEEK)-1)
 			return true;
 		else
 			return false;
@@ -367,13 +365,11 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 
 	private boolean isNextMonth(Calendar cal, int index) {
 		int totalDays = ((cal.get(Calendar.DAY_OF_WEEK))-1)+cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		if(index > totalDays) 
+		if(index > totalDays-1) 
 			return true;
 		else
 			return false;
 	}
-
-	
 	
 	@Override
 	public void next() {
@@ -454,7 +450,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(), evedate.getDate());
 			
-			System.out.println(key);
 			if (paneltracker.containsKey(key)){
 				
 				paneltracker.get(key).addEvent(eve);
@@ -463,53 +458,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		}
 	}
 	
-	private Point getLocationInArray(Date set)
-	{
-		System.out.println("inGetLocationInArray");
-		int setYear = set.getYear();
-		int setMonth = set.getMonth();
-		int setDay = set.getDate();
-		System.out.println("years:"+setYear+":"+"months:"+setMonth+":"+"days:"+setDay);
-		for(int i = 0; i < 6; i++)
-		{
-			for(int j = 0; j < 7; j++)
-			{
-				
-				int year = dateArray[j][i].getDate().getYear();
-				int month = dateArray[j][i].getDate().getMonth();
-				int day = dateArray[j][i].getDate().getDate();
-				if(year == setYear && month ==setMonth && day == setDay){
-					Point p = new Point(j,i);
-					return p;
-				}
-			}
-		}
-		System.out.println("null");
-		return null;
-	}
 	
 	
-	private Point getScreenLocationDateBegin(Date start) {
-		System.out.println("Get Screen Location Date Begin");
-		Point location = getLocationInArray(start);
-		
-		Point p = dateArray[location.x][location.y].getLocationOnScreen();
-		System.out.println(p.x + " ," +p.y);
-		p.x = p.x-51;
-		p.y = p.y-291;
-		return p;
-	}
 	
-	private int getScreenLocationDateEnd(Date end, int x1) {
-
-		Point location = getLocationInArray(end);
-		Point dateLocation = dateArray[location.x][location.y].getLocationOnScreen();
-		dateLocation.x = dateLocation.x-51;
-		dateLocation.y = dateLocation.y-291;
-		int width =dateArray[location.x][location.y].getSize().width;
-		System.out.println("width:" + width);
-		return (dateLocation.x-x1)+width;
-	}
+	
 	
 	public boolean isArrayEmpty()
 	{
@@ -560,7 +512,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		addDayLabels();
 		addDaysToCalendar(next);
 		updatePanels();
-		System.out.println("UPDATE!");
 	}
 
 	@Override
@@ -573,7 +524,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		addDayLabels();
 		addDaysToCalendar(next);
 		updatePanels();
-		System.out.println("UPDATE!");
 	}
 
 	@Override
@@ -590,7 +540,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		addDayLabels();
 		addDaysToCalendar(next);
 		updatePanels();
-		System.out.println("UPDATE!");
 	}
 
 
