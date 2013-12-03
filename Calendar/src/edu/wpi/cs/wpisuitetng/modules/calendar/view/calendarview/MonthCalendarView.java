@@ -356,7 +356,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	}
 
 	private boolean isPreviousMonth(Calendar cal, int index) {
-		if(index < cal.get(Calendar.DAY_OF_WEEK))
+		if(index < cal.get(Calendar.DAY_OF_WEEK)-1)
 			return true;
 		else
 			return false;
@@ -364,7 +364,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 
 	private boolean isNextMonth(Calendar cal, int index) {
 		int totalDays = ((cal.get(Calendar.DAY_OF_WEEK))-1)+cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		if(index > totalDays) 
+		if(index > totalDays-1) 
 			return true;
 		else
 			return false;

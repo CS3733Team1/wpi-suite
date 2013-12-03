@@ -333,10 +333,6 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	}
 
 
-}public void contentsChanged(ListDataEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
 }
+
+
