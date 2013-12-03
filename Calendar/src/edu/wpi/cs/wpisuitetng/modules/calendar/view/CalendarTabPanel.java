@@ -58,12 +58,13 @@ public class CalendarTabPanel extends JPanel {
 	
 	private CommitmentSubTabPanel commitmentSubTabPanel;
 	
-	public CalendarTabPanel() {
+	public CalendarTabPanel(CalendarPanel calendarPanel) 
+	{
 		this.setLayout(new MigLayout());
 
 		filterCategoryTabbedPane = new JTabbedPane();
 		
-		commitmentSubTabPanel = new CommitmentSubTabPanel();
+		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		
 		try {
 			prevButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png"))));

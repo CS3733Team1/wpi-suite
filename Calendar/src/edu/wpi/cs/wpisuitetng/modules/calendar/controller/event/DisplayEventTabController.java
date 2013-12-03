@@ -23,8 +23,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 /**
  * This Controller is based largely off of DisplayCommitmentController 
  * in the calendar->controller.display
- * @version $Revision: 1.0 $
- * @author rbansal
  */
 
 public class DisplayEventTabController implements ActionListener {
