@@ -111,7 +111,7 @@ public class TimeDurationPickerPanel extends JPanel {
 			return endTimeIsAfterStartTime;
 			
 		}else{	//one of the timePickers has a bad time
-			System.out.println("One of the timepickers is bad - time duration is not valid");
+//			System.out.println("One of the timepickers is bad - time duration is not valid");
 			this.setBorder(errorBorder);	//let the user know something is wrong within this component
 			return false;
 		}

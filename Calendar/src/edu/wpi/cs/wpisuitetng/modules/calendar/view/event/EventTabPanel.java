@@ -148,7 +148,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 * @return void
 	 */
 	private void validateFields() {
-		System.out.println("Validating Event Fields");
+//		System.out.println("Validating Event Fields");
 		
 		boolean enableAddEvent = true;
 
@@ -182,7 +182,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		//check the time
 		if (!timeDurationPickerPanel.isValidTime()){
-			System.out.println("\tCannot enable add Event button - bad time duration!");
+//			System.out.println("\tCannot enable add Event button - bad time duration!");
 			enableAddEvent=false;
 		}
 		
