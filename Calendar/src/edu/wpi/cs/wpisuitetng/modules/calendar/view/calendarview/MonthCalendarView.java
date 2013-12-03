@@ -71,8 +71,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		this.setBackground(Color.white);
 		
 		this.setLayout(new MigLayout("fill, insets 0", 
-				"[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0", 
-				"[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0"));
+				"0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0", 
+				"0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0[14%]0"));
 		
 		addDayLabels();
 		addDaysToCalendar(mycal);

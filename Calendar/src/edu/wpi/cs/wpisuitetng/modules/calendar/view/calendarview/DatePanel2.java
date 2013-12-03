@@ -37,6 +37,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	private Color text;
 	private Color background;
 	private JLabel dateLabel;
+	private JLabel moreMulti;
 	private int day;
 	private int unaddedEvents;
 	private int heightOfJPanel;
@@ -53,14 +54,16 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 		singleDayPanel = new ArrayList<JPanel>();
 		multiDayPanel  = new ArrayList<JPanel>();
 
+		moreMulti= new JLabel("");
+		
 		this.setDate(today);
 		this.today = today;
 
 		Calendar currentDay = Calendar.getInstance();
 		Date d1 = new Date(currentDay.get(Calendar.YEAR)-1900,currentDay.get(Calendar.MONTH),currentDay.get(Calendar.DATE));
 		Date d = new Date(113,10,27);
-		Date d2 = new Date(113,10,28);
-		Date d3 = new Date(113,10,16);
+		Date d2 = new Date(113,11,28);
+		Date d3 = new Date(113,11,16);
 		Date d4 = new Date(113,11,1);
 
 		Event eve = new Event("Test MultiDay",d3,d2);
@@ -69,6 +72,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 		if(isDateEqual(d3,today)){
 			addEvent(eve1);
 		}
+		this.setBorder(new MatteBorder(0,0,1,0,Color.gray));
 		addEvent(eve);
 		addEvent(ev2);
 		updatePanel();
@@ -255,44 +259,43 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 
 
 	private JPanel createSingleDayPanel() {
-		JPanel last = new JPanel(new MigLayout("insets 0, hmin 15, hmax 15,center"));
+		JPanel last = new JPanel(new MigLayout("insets 0, hmin 16, hmax 16,center"));
 		JLabel more = new JLabel("more");
 		more.setFont(new Font(more.getFont().getFontName(), more.getFont().getStyle(), 10));
 		for(JPanel jpanel: singleDayPanel){	
-			if(heightOfJPanel >= 44){//change to preffered size latter
+			if(heightOfJPanel >= 50){//change to preffered size latter
 				heightOfJPanel = heightOfJPanel-20;
-				singleDayEvents.add(jpanel,"w "+widthOfJPanel+",hmin 15, hmax 15, gapy 0 0, wrap, center");
+				singleDayEvents.add(jpanel,"w "+widthOfJPanel+",hmin 16, hmax 16, gapy 0 0, wrap, center");
 			}else {
 				unaddedEvents++;
 			}
 		}
 		if(unaddedEvents > 0) {
-			more.setText(unaddedEvents + " more..");
-			last.add(more,"center");
-			last.setBackground(background);
-			singleDayEvents.add(last, "w "+widthOfJPanel+", hmin 15, hmax 15, gapy 0 0,center");
+				more.setText(unaddedEvents + " more..");
+				last.add(more,"center");
+				last.setBackground(background);
+				singleDayEvents.add(last, "w "+widthOfJPanel+", hmin 12, hmax 12, gapy 0 0,center");
 		}
 		return singleDayEvents;
 	}
 
 	private JPanel createMultiDayPanel() {
-		JPanel last = new JPanel(new MigLayout("insets 0, hmin 15, hmax 15,center"));
-		JLabel more = new JLabel("more");
-		more.setFont(new Font(more.getFont().getFontName(), more.getFont().getStyle(), 10));
+		JPanel last = new JPanel(new MigLayout("insets 0, hmin 16, hmax 16,center"));
+		moreMulti.setFont(new Font(moreMulti.getFont().getFontName(), moreMulti.getFont().getStyle(), 10));
 
 		for(JPanel jpanel: multiDayPanel){	
-			if(heightOfJPanel >= 44){//change to preffered size latter
+			if(heightOfJPanel >= 50){//change to preffered size latter
 				heightOfJPanel = heightOfJPanel-20;
-				multiDayEvents.add(jpanel,"w "+widthOfJPanel+",hmin 15, hmax 15, gapy 0 0, wrap, center");
+				multiDayEvents.add(jpanel,"w "+widthOfJPanel+",hmin 16, hmax 16, gapy 0 0, wrap, center");
 			}else {
 				unaddedEvents++;
 			}
 		}
 		if(unaddedEvents > 0) {
-			more.setText(unaddedEvents + " more..");
-			last.add(more,"center");
+			moreMulti.setText(unaddedEvents + " more..");
+			last.add(moreMulti,"center");
 			last.setBackground(background);
-			multiDayEvents.add(last, "w "+widthOfJPanel+", hmin 15, hmax 15, gapy 0 0,center");
+			multiDayEvents.add(last, "w "+widthOfJPanel+", hmin 12, hmax 12, gapy 0 0,center");
 		}
 		return multiDayEvents;
 	}
