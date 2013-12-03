@@ -10,7 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
-
 import java.awt.Component;
 
 import java.awt.Rectangle;
@@ -43,7 +42,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
  * @author
  */
 
-
 public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener{
 
 	private CommitmentListModel model;
@@ -51,6 +49,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	private JList<Commitment> commitmentList;
 
 	private Boolean EDITMODE = false;
+
 	
 	private JEditorPane detailDisplay;
 	private JButton updateCommitmentButton;
@@ -65,24 +64,6 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.calendarPanel = calendarPanel;
 		viewCommitments();
-		/*
-		this.setLayout(new MigLayout("fill, insets 0"));
-		
-		commitmentList = new JList<Commitment>(model);
-		
-		commitmentList.setCellRenderer(new CommitmentListCellRenderer());
-		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-		commitmentList.setLayoutOrientation(JList.VERTICAL);
-		
-		commitmentList.setVisibleRowCount(0);
-
-		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-		this.add(scrollPane, "grow, push");
-	
-		 commitmentList.addMouseListener(this);*/
-
 	}
 	
 	/**
