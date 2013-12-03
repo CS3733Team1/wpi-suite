@@ -141,4 +141,10 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	public List<Commitment> getList(){
 		return commitments;
 	}
+
+	public void updateCommitment(Commitment oldCommitment, Commitment newCommitment) 
+	{
+		removeCommitment(oldCommitment);
+		addCommitment(newCommitment);
+	}
 }

@@ -1,8 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JLayeredPane;
@@ -18,14 +30,14 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 	private WeekView weekview;
 	private EventWeekView eventview;
 	
-	private ArrayList<Event> eventlist;
+	private List<Event> eventlist;
 	private Integer layer;
 	
 	public WeekCalendarLayerPane()
 	{
 		layer = 0;
 		weekview = new WeekView();
-		eventlist = new ArrayList<Event>();
+		eventlist = new LinkedList<Event>();
 		
 		int height = weekview.getPreferredSize().getSize().height;
 		int width = 950;
@@ -88,7 +100,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			layer--;
 		}
 
-		eventlist = new ArrayList<Event>();
+		eventlist = new LinkedList<Event>();
 	}
 	
 	public String getTitle() {

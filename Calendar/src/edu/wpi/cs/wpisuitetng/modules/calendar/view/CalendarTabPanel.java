@@ -33,9 +33,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYe
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
@@ -58,12 +58,13 @@ public class CalendarTabPanel extends JPanel {
 	
 	private CommitmentSubTabPanel commitmentSubTabPanel;
 	
-	public CalendarTabPanel() {
+	public CalendarTabPanel(CalendarPanel calendarPanel) 
+	{
 		this.setLayout(new MigLayout());
 
 		filterCategoryTabbedPane = new JTabbedPane();
 		
-		commitmentSubTabPanel = new CommitmentSubTabPanel();
+		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		
 		try {
 			prevButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png"))));
@@ -156,7 +157,6 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void setCalendarViewToday() {
-		System.out.println(filterCategoryTabbedPane.getWidth());
 		calendarView.today();
 		this.setCalendarViewTitle(calendarView.getTitle());
 		this.refreshCalendarView();

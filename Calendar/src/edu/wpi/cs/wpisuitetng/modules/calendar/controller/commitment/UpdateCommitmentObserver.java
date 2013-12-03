@@ -7,52 +7,56 @@
  * 
  * Contributors: Team TART
  ******************************************************************************/
+package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
-
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This observer is called when a response is received from a request
- * to the server to add a messages
+ * to the server to update a commitment.
  */
-public class AddEventObserver implements RequestObserver {
+
+public class UpdateCommitmentObserver implements RequestObserver
+{
+	private final UpdateCommitmentController controller;
 	
-	private final AddEventController controller;
-	
-	public AddEventObserver(AddEventController controller) {
-		this.controller = controller;
-	}
-	
-	/*
-	 * Parse the message that was received from the server then pass them to
-	 * the controller.
-	 * 
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	/**
+	 * Constructs the observer given an UpdateCommitmentController
+	 * @param controller The controller used to update commitments
 	 */
-	@Override
-	public void responseSuccess(IRequest iReq) {
-		// Get the response to the given request
-		final ResponseModel response = iReq.getResponse();
-		
-		// Parse the message out of the response body
-		final Event event = Event.fromJSON(response.getBody());
-		
-		// Pass the messages back to the controller
-		controller.addEventToModel(event);
+	public UpdateCommitmentObserver(UpdateCommitmentController controller) 
+	{
+		this.controller = controller;
 	}
 
 	@Override
-	public void responseError(IRequest iReq) {
-		System.err.println("The request to add an event failed.");
+	public void responseSuccess(IRequest iReq) 
+	{
+		// Get the response to the given request
+		final ResponseModel response = iReq.getResponse();
+				
+		// Parse the message out of the response body
+		final Commitment commit = Commitment.fromJSON(response.getBody());
+		
+		// Pass the messages back to the controller
+		controller.updateCommitmentInModel(commit);
+		
+	}
+
+	@Override
+	public void responseError(IRequest iReq)
+	{
+		System.err.println("The request to update a commitment failed.");
 		System.err.println("Response: " + iReq.getResponse().getStatusMessage());
 	}
 
 	@Override
-	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to add an event failed.");
+	public void fail(IRequest iReq, Exception exception) 
+	{
+		System.err.println("The request to update a commitment failed.");
 	}
+
 }

@@ -18,6 +18,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,6 +29,7 @@ import sun.util.calendar.BaseCalendar.Date;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.ClosableTabComponent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
@@ -48,6 +50,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	private DatePickerPanel datePickerPanel;
 	private TimePicker timePicker;
 	private CategoryPickerPanel categoryPickerPanel;
+	private CommitmentProgressPanel commitmentProgressPanel;
 	private JTextArea descriptionTextArea;
 	
 	// Buttons
@@ -60,9 +63,28 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
+	JEditorPane display;
 
-	public CommitmentTabPanel() {
+	public CommitmentTabPanel() 
+	{
 		this.buildLayout();
+	}
+	
+	public CommitmentTabPanel(JEditorPane display, Commitment c)
+	{
+		this.display = display;
+		
+		this.buildLayout();
+		nameTextField.setText(c.getName());
+		//nameErrorLabel.setVisible(false);
+		datePickerPanel.setDate(c.getDueDate());
+		commitmentProgressPanel.setSelected(c.getProgress());
+		descriptionTextArea.setText(c.getDescription());
+		addCommitmentButton.setText("Update Commitment");
+		addCommitmentButton.setActionCommand("updatecommitment");
+		addCommitmentButton.removeActionListener(addCommitmentButton.getActionListeners()[0]); //Remove the addCommitment action listener
+		addCommitmentButton.addActionListener(new UpdateCommitmentController(this, c));	//Add the updateCommitment action listener
+		validateFields();
 	}
 
 	/**
@@ -106,6 +128,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		this.add(new JLabel("Category:"), "split 2");
 		categoryPickerPanel = new CategoryPickerPanel();
 		this.add(categoryPickerPanel, "alignx left, wrap");
+		
+		//Progress
+		this.add(new JLabel("Progress:"), "split 2");
+		commitmentProgressPanel = new CommitmentProgressPanel();
+		this.add(commitmentProgressPanel, "alignx left, wrap");
 		
 		// Description
 		this.add(new JLabel("Description:"), "wrap");
@@ -185,6 +212,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		
 		addCommitmentButton.setEnabled(enableAddCommitment);
 	}
+	
+	public JEditorPane getCommitmentView()
+	{
+		return display;
+	}
 
 	/**
 	 * Returns the currently inputed data in the form of a commitment
@@ -196,7 +228,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		date.setHours(timeDate.getHours());
 		date.setMinutes(timeDate.getMinutes());
 		return new Commitment(nameTextField.getText(), date,
-				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory());
+				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory(),commitmentProgressPanel.getSelectedState());
 	}
 	
 	@Override

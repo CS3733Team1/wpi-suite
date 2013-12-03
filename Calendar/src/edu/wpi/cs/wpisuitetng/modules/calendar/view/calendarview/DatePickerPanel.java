@@ -60,12 +60,37 @@ public class DatePickerPanel extends JPanel {
 		this.add(inputField, "split 2");
 		//this.add(new JLabel("[picker]"));
 	}
+	
+	public DatePickerPanel(Date chosenDate) 
+	{
+		pickedDate = Calendar.getInstance();
+		pickedDate.set(Calendar.HOUR_OF_DAY, 0);
+		pickedDate.set(Calendar.MINUTE, 0);
+		pickedDate.set(Calendar.SECOND, 0);
+
+		isValid = 0;
+
+		Date initDate = chosenDate;
+		Date latestDate = new Date(chosenDate.getYear() + 1000, chosenDate.getDate(), chosenDate.getDay());
+		//Date latestDate = new Date(pickedDate.get(Calendar.YEAR)+1000, pickedDate.get(Calendar.MONTH), pickedDate.get(Calendar.DATE));
+		SpinnerDateModel model = new SpinnerDateModel(initDate, initDate, latestDate, Calendar.YEAR);
+		inputField = new JSpinner(model);
+
+		inputField.setEditor(new JSpinner.DateEditor(inputField, "EEE MM/dd/yyyy"));
+
+		rawText = ((JSpinner.DefaultEditor)inputField.getEditor()).getTextField();
+
+		df = new SimpleDateFormat("EEE MM/dd/yyyy");
+
+		this.setLayout(new MigLayout("insets 0"));
+
+		this.add(inputField, "split 2");
+		//this.add(new JLabel("[picker]"));
+	}
 
 	public void validateDate() {
-		System.out.println(rawText.getText());
 		try {
 			parsedDate = df.parse(rawText.getText());
-			System.out.println(parsedDate.toString());
 			this.isValid = isBeforeToday();
 		} catch (ParseException e) {
 			this.isValid = 1;
@@ -89,8 +114,6 @@ public class DatePickerPanel extends JPanel {
 		parsedCal.set(Calendar.YEAR, parsedDate.getYear()+1900);
 		parsedCal.set(Calendar.MONTH, parsedDate.getMonth());
 		parsedCal.set(Calendar.DATE, parsedDate.getDate());
-
-		System.out.println(parsedCal.get(Calendar.YEAR) + "   " + today.get(Calendar.YEAR));
 		
 		if(parsedCal.getTimeInMillis() < today.getTimeInMillis()) return 2;
 		else return 0;
@@ -98,6 +121,11 @@ public class DatePickerPanel extends JPanel {
 
 	public Date getDate() {
 		return (Date)inputField.getValue();
+	}
+	
+	public void setDate(Date newDate)
+	{
+		inputField.setValue(newDate);
 	}
 
 	public void setKeyListener(KeyListener l) {

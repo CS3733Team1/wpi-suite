@@ -223,9 +223,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		cal.set(Calendar.MINUTE, timeDurationPickerPanel.getEndTime().getMinutes());
 
 		Date endDate = cal.getTime();
-		
-		System.out.println(startDate);
-		System.out.println(endDate);
 
 		return new Event(nameTextField.getText(), startDate, endDate,
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory());
