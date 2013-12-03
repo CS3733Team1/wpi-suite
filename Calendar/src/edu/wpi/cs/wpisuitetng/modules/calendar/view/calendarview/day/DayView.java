@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
@@ -199,12 +209,15 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		for (Commitment commit: CommitmentListModel.getCommitmentListModel().getList()){
 			Date commitdate = commit.getDueDate();
 			Date teemo = new Date(commitdate.getYear(),commitdate.getMonth(),commitdate.getDate(),commitdate.getHours(),0);
-			if (paneltracker.containsKey(teemo)){
-				System.out.println("I'm Invisible");
+			if (paneltracker.containsKey(teemo)) {
 				notevenclose.add(commit);
 			}
 		}
 		return notevenclose;
+	}
+	
+	public Date getDate() {
+		return new Date(currentYear-1900, currentMonth, currentDate);
 	}
 	
 	@Override

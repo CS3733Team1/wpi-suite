@@ -8,25 +8,19 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class AddCommitmentValidator implements KeyListener {
+import static org.junit.Assert.*;
 
-	public AddCommitmentValidator() {
-		
+import org.junit.Ignore;
+
+public class CalendarPanelTest {
+
+	@Ignore
+	public void test() {
+		fail("Not yet implemented");
 	}
-	
-	@Override
-	public void keyReleased(KeyEvent e) {
-		
-	}
-	
-	@Override
-	public void keyPressed(KeyEvent e) {}
 
-	@Override
-	public void keyTyped(KeyEvent e) {}
 }
+

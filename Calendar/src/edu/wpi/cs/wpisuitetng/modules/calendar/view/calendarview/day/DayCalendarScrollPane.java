@@ -1,7 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
-import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -9,7 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.CalendarConstants;
 
 public class DayCalendarScrollPane extends JScrollPane{
 	private DayCalendarLayerPane daylayer;
@@ -51,7 +59,6 @@ public class DayCalendarScrollPane extends JScrollPane{
 	public void updateDay(){
 		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
 		repaint();
-		System.out.println("Happy Days!");
 	}
 	
 }

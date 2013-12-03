@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 
@@ -18,6 +19,26 @@ import com.google.gson.Gson;
  * Model for holding commitment data
  */
 public class Commitment extends DeletableAbstractModel implements Comparable<Commitment>{
+	
+	private enum State 
+	{
+		NEW ("New"),
+		IN_PROGRESS ("In Progress"),
+		COMPLETE ("Complete");
+		
+		private String display;
+		
+		State(String display)
+		{
+			this.display = display;
+		}
+		
+		public String toString()
+		{
+			return display;
+		}
+	}
+	
 	// Required parameters
 	private String name;
 	private Date dueDate;
@@ -25,9 +46,13 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	// Optional parameters
 	private String description;
 	private Category category;
+	private State progress;
+	private int id;
 	
-	private boolean isTeam;
-	
+	//------------ATTENTION---------
+	//Should Category have an empty constructor?
+	//It has required fields that should constitute
+	//the arguments of the most basic constructor.
 	public Commitment(){}
 	
 	/**
@@ -38,14 +63,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate) {
 		this.name = name;
 		this.dueDate = dueDate;
-		
-		this.isTeam = false;
-	}
-	
-	public Commitment(String name, Date dueDate, boolean isTeam) {
-		this.name = name;
-		this.dueDate = dueDate;
-		this.isTeam = isTeam;
+		this.progress = State.NEW; //Default
+		createID();
 	}
 
 	/**
@@ -57,13 +76,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate, String description) {
 		this(name, dueDate);
 		this.description = description;
-		this.isTeam = false;
-	}
-	
-	public Commitment(String name, Date dueDate, String description, boolean isTeam)
-	{
-		this(name, dueDate, isTeam);
-		this.description = description;
+		this.progress = State.NEW; //Default
+		createID();
 	}
 
 	/**
@@ -75,15 +89,10 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	public Commitment(String name, Date dueDate, Category category) {
 		this(name, dueDate);
 		this.category = category.cloneFake();
-		this.isTeam = false;
+		this.progress = State.NEW; //Default
+		createID();
 	}
 
-	public Commitment(String name, Date dueDate, Category category, boolean isTeam) {
-		this(name, dueDate);
-		this.category = category.cloneFake();
-		this.isTeam = isTeam;
-	}
-	
 	/**
 	 * Constructs a Commitment
 	 * @param name name of Commitment
@@ -96,15 +105,56 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
-		this.isTeam = false;
+		this.progress = State.NEW; //Default
+		createID();
+
 	}
 	
+	/**
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param description description of Commitment
+	 * @param progress progress of Commitment
+	 */
+	public Commitment(String name, Date dueDate, String description, 
+			String progress) {
+		this(name, dueDate);
+		this.description = description;
+		this.progress=getStateFromString(progress);
+		createID();
+	}
+	
+	/**
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param category category of Commitment
+	 * @param progress progress of Commitment
+	 */
+	public Commitment(String name, Date dueDate, Category category, 
+			String progress) {
+		this(name, dueDate);
+		this.category = category.cloneFake();
+		this.progress = getStateFromString(progress);
+		createID();
+	}
+	
+	/**
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
+	 * @param description description of Commitment
+	 * @param category category of Commitment
+	 * @param progress progress of Commitment
+	 */
 	public Commitment(String name, Date dueDate, String description,
-			Category category, boolean isTeam) {
+			Category category, String progress) {
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
-		this.isTeam = isTeam;
+		this.progress = getStateFromString(progress);
+		createID();
 	}
 
 	/**
@@ -163,14 +213,34 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.category = category;
 	}
 	
-	public boolean getTeam()
-	{
-		return isTeam;
+	/**
+	 * @return the Category object representing the Commitment's Category
+	 */
+	public String getProgress() {
+		return progress.toString();
 	}
 	
-	public void setTeam(boolean isTeam)
-	{
-		this.isTeam = isTeam;
+	private State getProgressState(){
+		return progress;
+	}
+
+	/**
+	 * @param category the Category object to set the Commitment's Category to
+	 */
+	public void setProgress(State progress) {
+		this.progress = progress;
+	}
+	
+	private State getStateFromString(String stateString){
+		switch(stateString){
+			case "New": 
+				return State.NEW;
+			case "In Progress": 
+				return State.IN_PROGRESS;
+			case "Complete": 
+				return State.COMPLETE;
+		}
+		return null;
 	}
 
 	@Override
@@ -181,6 +251,27 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
+	}
+	
+	/**
+	 * Creates a unique ID for a commitment.
+	 */
+	private void createID()
+	{
+		id = UUID.randomUUID().hashCode();
+	}
+	
+	public void setID(int newID)
+	{
+		id = newID;
+	}
+	
+	/**
+	 * @return The unique ID of the commitment
+	 */
+	public int getID()
+	{
+		return id;
 	}
 
 	/**
@@ -218,12 +309,18 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	@Override
 	public String toString()
 	{
-		String str = "Name: " + this.name + " Due Date: " + this.dueDate.toString();
+		String str = "<html><b>Name:</b>  " + getName() +
+				"<br><b>Due Date:</b>  " + getDueDate().toString();
 		if(this.category != null)
-			str += " Category: " + this.category;
+			str += "<br><b>Category:</b> " + getCategory().getName();
+		
+		str += String.format("<br><b>Progress:</b> %s", progress.toString());
+		
 		if(this.description != null)
-			str += " Description: " + this.description;
-		str += "\n";
+			str += "<br><b>Description:</b> " + getDescription();
+		
+		str += "</html>";
+
 		return str;
 	}
 
@@ -259,4 +356,14 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			return 0;
 		}//end else
 	}//end compareTo
+
+	public void copyFrom(Commitment toCopyFrom) 
+	{
+		this.category = toCopyFrom.getCategory();
+		this.description = toCopyFrom.getDescription();
+		this.dueDate = toCopyFrom.getDueDate();
+		this.id = toCopyFrom.getID();
+		this.name = toCopyFrom.getName();
+		this.progress = toCopyFrom.getProgressState();
+	}
 }//end Commitment
