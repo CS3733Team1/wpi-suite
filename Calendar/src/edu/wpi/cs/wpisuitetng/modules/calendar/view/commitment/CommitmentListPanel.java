@@ -119,6 +119,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		//} catch (IOException e) {e.printStackTrace();}
 
 		detailDisplay = new JEditorPane("text/html", selectedCommitment.toString());
+		detailDisplay.setEditable(false);
 		
 		updateCommitmentButton.setActionCommand("updatecommitment");
 		updateCommitmentButton.addActionListener(this);
