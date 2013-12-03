@@ -74,9 +74,9 @@ public class WeekView extends JPanel implements ICalendarView {
 		timebuilder.append("0");
 		timebuilder.append(",grow, push");
 
-		time.add(new JLabel("Time"));
-		time.setBackground(new Color(138,173,209));
-		this.add(time, timebuilder.toString());
+//		time.add(new JLabel("Time"));
+//		time.setBackground(new Color(138,173,209));
+//		this.add(time, timebuilder.toString());
 
 		for (int currenthour=0; currenthour < 24; currenthour++){
 			JPanel hour = new JPanel();
@@ -126,10 +126,10 @@ public class WeekView extends JPanel implements ICalendarView {
 			eventbuilder.append(" ");
 			eventbuilder.append("0");
 			eventbuilder.append(",grow, push");
-
-			event.add(new JLabel(weekNames[day-1]));
-			event.setBackground(new Color(138,173,209));
-			this.add(event, eventbuilder.toString());
+//
+//			event.add(new JLabel(weekNames[day-1]));
+//			event.setBackground(new Color(138,173,209));
+//			this.add(event, eventbuilder.toString());
 
 		}
 	}
