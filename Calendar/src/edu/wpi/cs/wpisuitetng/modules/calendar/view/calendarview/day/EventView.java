@@ -155,7 +155,7 @@ public class EventView extends JPanel {
 			}
 			
 			for (int z = 0; z < chain.size(); z++){
-				Event e = new Event(chain.get(z));
+				Event e = chain.get(z);
 				JPanel panel = new JPanel();
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
@@ -166,7 +166,7 @@ public class EventView extends JPanel {
 				evebuilder.append("0");
 				evebuilder.append(" ");
 				evebuilder.append(new Integer(getLength(e)).toString());
-				evebuilder.append(",grow, push");
+				evebuilder.append(",grow, push, wmin 0");
 				JLabel name = new JLabel(e.getName());
 				panel.add(name, "wmin 0, aligny center, alignx center");
 				
