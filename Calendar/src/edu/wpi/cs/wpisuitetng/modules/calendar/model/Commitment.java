@@ -315,7 +315,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			str += "<br><b>Category:</b> " + getCategory().getName();
 		if(this.description != null)
 			str += "<br><b>Description:</b> " + getDescription();
-		str += String.format("<br><b>Progress:</b> %s</html>", progress.toString());
+		str += String.format("<br><b>Progress:</b> %s</html>", progress);
 				
 		return str;
 	}
