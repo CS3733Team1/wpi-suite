@@ -19,8 +19,17 @@ public class CategoryTest {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testCategoryName() {
+		assertEquals("School",cat1.getName());
+		cat1.setName("class");
+		assertEquals("class",cat1.getName());
+	}
+	
+	@Test
+	public void testCategoryColor() {
+		assertEquals(Color.red,cat2.getColor());
+		cat2.setColor(Color.green);
+		assertEquals(Color.green,cat2.getColor());
 	}
 
 }
