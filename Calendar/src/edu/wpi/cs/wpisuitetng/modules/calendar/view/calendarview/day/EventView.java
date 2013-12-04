@@ -187,7 +187,7 @@ public class EventView extends JPanel {
 				}
 				infobuilder.append("</p></html>");
 				panel.setToolTipText(infobuilder.toString());
-				panel.addMouseListener(new EventMouseListener(e, panel, this));
+				panel.addMouseListener(new EventMouseListener(e, panel));
 				
 				if (e.getCategory() != null){
 					panel.setBackground(e.getCategory().getColor());

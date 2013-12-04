@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 public class EventWeekView extends JPanel{
 
 	private List<Event> events;
@@ -233,6 +234,7 @@ public class EventWeekView extends JPanel{
 						panel.setBackground(Color.CYAN);
 					}
 					panel.setFocusable(true);
+					panel.addMouseListener(new EventMouseListener(e, panel));
 					this.add(panel, evebuilder.toString());
 				}
 				y = y + chain.size();
