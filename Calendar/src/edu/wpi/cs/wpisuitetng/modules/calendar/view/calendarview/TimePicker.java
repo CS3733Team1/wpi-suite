@@ -1,64 +1,36 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import net.miginfocom.swing.MigLayout;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.event.EventListenerList;
 
 import net.miginfocom.swing.MigLayout;
-
-import com.toedter.calendar.JCalendar;
-
-import java.util.EventListener;
-import java.util.EventObject;
-
 
 /**
  * @author DanF
  * 
  */
-public class TimePicker extends JPanel{
-	
+public class TimePicker extends JPanel {
+
 	//time changed events
 	protected EventListenerList listenerList = new EventListenerList();
 
-	
+
 	// components within this panel
 	private JLabel nameLabel;
 	private JTextField hoursTextField;
@@ -67,7 +39,6 @@ public class TimePicker extends JPanel{
 	private JLabel colonLabel;
 	private JLabel errorLabel;
 	private String timeErrorText_ = "Invalid Time!";
-	private JLabel debugLabel;
 
 	// time Data containing the time currently displayed in this picker
 	private int displayHours_;
@@ -78,12 +49,12 @@ public class TimePicker extends JPanel{
 	private final static int maxHours_ = 23;
 	private final static int noonHours_ = 12;
 
-//	private boolean validHours_ = false;
-//	private boolean validMinutes_ = false;
+	//	private boolean validHours_ = false;
+	//	private boolean validMinutes_ = false;
 	private boolean validTimeFlag_ = false;
 	private boolean inAM_=true;
 	private boolean militaryTime_=false;
-	
+
 	public void addTimeChangedEventListener(TimeChangedEventListener timeChangedEventListener) {
 		listenerList.add(TimeChangedEventListener.class, timeChangedEventListener);
 	}
@@ -100,16 +71,16 @@ public class TimePicker extends JPanel{
 			}
 		}
 	}
-	
-	private void TimeChanged(){
+
+	private void TimeChanged() {
 		fireTimeChangedEvent(new TimeChangedEvent(getTimeAsSting()));
 	}
-	
+
 	/**
 	 * gives the internally represented time as a string
 	 * @return the time in "HH:MM:AM" format
 	 */
-	public String getTimeAsSting(){
+	public String getTimeAsSting() {
 		int hours=displayHours_;
 		String txtAmPm="AM";
 		if (displayHours_>=12){
@@ -118,9 +89,9 @@ public class TimePicker extends JPanel{
 		}else if (displayHours_==0){
 			hours=12;
 		}
-		return Integer.toString(hours)+ ":"+Integer.toString(displayMinutes_)+":"+txtAmPm;
+		return Integer.toString(hours) + ":"+Integer.toString(displayMinutes_)+":"+txtAmPm;
 	}
-	
+
 	// default - makes a new time
 	public TimePicker() {
 		buildLayout(-1, -1, "Time:");
@@ -130,10 +101,10 @@ public class TimePicker extends JPanel{
 	public TimePicker(String name) {
 		buildLayout(-1, -1, name);
 	}
-	
+
 	// TimePicker from given hours and minutes
 	public TimePicker(int hours, int minutes, String name) {
-		buildLayout(hours, minutes,name);
+		buildLayout(hours, minutes, name);
 	}
 
 	// TimePicker from given date
@@ -142,7 +113,7 @@ public class TimePicker extends JPanel{
 	}
 
 	// Build the component with the given hours and minutes
-	void buildLayout(int hours, int minutes, String name) {
+	public void buildLayout(int hours, int minutes, String name) {
 
 		this.setLayout(new MigLayout("",
 				//name label, hourstextfield, colonLabel, minutesTextfield,errorlabel,debugLabel
@@ -154,7 +125,7 @@ public class TimePicker extends JPanel{
 		nameLabel.setHorizontalTextPosition(SwingConstants.LEFT);
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		this.add(nameLabel, "cell 0 0,growx, gp1, aligny center");
-		
+
 		// hours
 		hoursTextField = new JTextField();
 		// hoursTextField.setText((displayHours_==0)? "HH" :
@@ -223,23 +194,23 @@ public class TimePicker extends JPanel{
 		dayNightComboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				int id=dayNightComboBox.getSelectedIndex();
-//				System.out.println("Item Changed to "+Integer.toString(id));
+				//				System.out.println("Item Changed to "+Integer.toString(id));
 				amPmChanged(id);
 				updateDebugLabel();
 			}
 		});
 
 		this.add(dayNightComboBox, "cell 4 0,alignx right,aligny center");
-//		accountForMilitaryTime();
+		//		accountForMilitaryTime();
 
 		errorLabel = new JLabel();
 		errorLabelErrorMode();
 		this.add(errorLabel, "cell 5 0,alignx right,aligny center");
-		
+
 		// DEBUG
-//		debugLabel = new JLabel("DEBUG");
-//		this.add(debugLabel, "cell 6 0");
-		
+		//		debugLabel = new JLabel("DEBUG");
+		//		this.add(debugLabel, "cell 6 0");
+
 		// set things based on given times
 		setHours(hours);
 		setMinutes(minutes);
@@ -255,23 +226,23 @@ public class TimePicker extends JPanel{
 	 * @param i the 0 or 1, corresponds to the index of the dayNightChooser combo box for AM/PM
 	 */
 	public void amPmChanged(int i) {
-//		System.out.println("AM/PM changed to "+Integer.toString(i));
+		//		System.out.println("AM/PM changed to "+Integer.toString(i));
 		inAM_=(i==0);
 		int hours=getNumberFromTextField(hoursTextField);	//get the number that is actually in the text field
 		if (isValidNumber(hours, maxHours_)){	//only change displayHours if it's already valid
 			if (inAM_) {// just changed from PM to Am 
-//				System.out.println("Changed from PM -> AM");
+				//				System.out.println("Changed from PM -> AM");
 				if (hours >= noonHours_) {	//if hours is a valid pm military time [1pm-12pm] NOTE: this should never happen because if the hours is >12, then military time is detected, and the checkbox is disabled
-//					System.out.println("ERROR: how did you change PM->Am when in military time?");
+					//					System.out.println("ERROR: how did you change PM->Am when in military time?");
 					displayHours_ = hours- noonHours_;
 					hoursTextField.setText(Integer.toString(displayHours_));
 				}else{
 					displayHours_ = hours;
 				}
 			} else {// just changed from Am to PM
-//				System.out.println("Changed from AM -> PM");
+				//				System.out.println("Changed from AM -> PM");
 				if (hours < noonHours_) {	//if hours is a valid standard AM time [1-12], then add 12 to it. if it was 12 and we changed to pm, keep it as 12
-//					System.out.println("\tAdding 12 to hours");
+					//					System.out.println("\tAdding 12 to hours");
 					displayHours_ = hours+noonHours_;
 				}else{
 					displayHours_=hours;
@@ -280,20 +251,20 @@ public class TimePicker extends JPanel{
 				//it won't have been 0
 			}
 			validateDisplayTimes();
-//			accountForMilitaryTime();
+			//			accountForMilitaryTime();
 		}
 		TimeChanged();
 	}
 
-//	/*
-//	 * main input validation method
-//	 * gets the current input from the hour and minute text fields and validates them
-//	 */
-//	private void validateInputTime() {
-//		validateMinutes();
-//		validateHours();
-//		validateDisplayTimes();
-//	}
+	//	/*
+	//	 * main input validation method
+	//	 * gets the current input from the hour and minute text fields and validates them
+	//	 */
+	//	private void validateInputTime() {
+	//		validateMinutes();
+	//		validateHours();
+	//		validateDisplayTimes();
+	//	}
 
 	/*
 	 * gets the minutes from the text field, validates, and sets as displayMinutes_ if it's valid
@@ -301,9 +272,9 @@ public class TimePicker extends JPanel{
 	 */
 	private void minutesChanged() {
 		int minutes = getNumberFromTextField(minutesTextField);
-//		System.out.println("Minutes changed!" + Integer.toString(minutes));
+		//		System.out.println("Minutes changed!" + Integer.toString(minutes));
 		setDisplayMinutes(minutes);
-//		validateDisplayTimes();
+		//		validateDisplayTimes();
 		TimeChanged();
 	}
 
@@ -313,9 +284,9 @@ public class TimePicker extends JPanel{
 	 */
 	private void hoursChanged() {
 		int hours = getNumberFromTextField(hoursTextField);	//hour will be the hour if the text us a number>0, -1 otherwise
-//		System.out.println("Hours changed! "+ Integer.toString(hours));
+		//		System.out.println("Hours changed! "+ Integer.toString(hours));
 		setDisplayHours(hours);	//set display hours if it is a valid hour, or leave it alone if it's not
-//		validateDisplayTimes(); //re-check to see if all times are now valid
+		//		validateDisplayTimes(); //re-check to see if all times are now valid
 		TimeChanged();
 	}
 
@@ -325,55 +296,55 @@ public class TimePicker extends JPanel{
 	 */
 	private void accountForNonMilitaryTime() {
 		if (displayHoursAreValid()){
-//			System.out.println("Converting "+Integer.toString(displayHours_)+" from standard time...");
+			//			System.out.println("Converting "+Integer.toString(displayHours_)+" from standard time...");
 			militaryTime_ = false;
 			if (displayHours_ == 0) {	//the user entered 0 for an hour, which is military time for 12am
-//				System.out.println("\tSetting 00 in military time");
+				//				System.out.println("\tSetting 00 in military time");
 				militaryTime_ = true;
 				if (!inAM_){	//if we're not already in AM, then set AM
-//					System.out.println("\t\tSetting to AM...");
+					//					System.out.println("\t\tSetting to AM...");
 					dayNightComboBox.setSelectedIndex(0); // set to AM
 				}
 			} else if (displayHours_ > noonHours_) {	//hours [3, 23] are also definitely military time
-//				System.out.println("\tSetting PM military time");
+				//				System.out.println("\tSetting PM military time");
 				militaryTime_ = true;
 				if (inAM_){
-//					System.out.println("\t\tSetting to PM...");
+					//					System.out.println("\t\tSetting to PM...");
 					dayNightComboBox.setSelectedIndex(1); // set to PM
 				}
 			} else if (displayHours_ == noonHours_ && inAM_){	//12:00 am = 00 in military time
-//				System.out.println("\tConverting 12Am to military");
+				//				System.out.println("\tConverting 12Am to military");
 				displayHours_=0;
 			}else if (displayHours_<noonHours_ && !inAM_){//if displayHours are [1,11] and if they are in Pm, we must add 12 to get military time
 				displayHours_+=noonHours_;
 			}else{//otherwise, displayHours must be [1, 11] and in am, in which case leave it alone
-//				System.out.println("\t Leaving hours as is.");
+				//				System.out.println("\t Leaving hours as is.");
 			}
-	
+
 			dayNightComboBox.setEnabled(!militaryTime_);
 
-//		}else{
-//			errorLabelErrorMode();
-//			errorLabel.setVisible(true);
-//			System.out.println("Cannot account for military time for badly formatted hours!");
+			//		}else{
+			//			errorLabelErrorMode();
+			//			errorLabel.setVisible(true);
+			//			System.out.println("Cannot account for military time for badly formatted hours!");
 		}
-//		updateErrorLabel();
+		//		updateErrorLabel();
 	}
 
-//	/*
-//	 * not used
-//	 */
+	//	/*
+	//	 * not used
+	//	 */
 	private void updateDebugLabel() {
-//		String debugText = Integer.toString(displayHours_)
-//				+ ":"
-//				+ Integer.toString(displayMinutes_) + ":"
-//				+ Integer.toString(dayNightComboBox.getSelectedIndex())
-//				+" "
-//				+(militaryTime_?"(M)":"(S)");
-//		System.out.println("Time="+debugText);
-//		debugLabel.setText(debugText);
-//
-//		debugLabel.setForeground(validTimeFlag_ ? Color.BLACK : Color.RED);
+		//		String debugText = Integer.toString(displayHours_)
+		//				+ ":"
+		//				+ Integer.toString(displayMinutes_) + ":"
+		//				+ Integer.toString(dayNightComboBox.getSelectedIndex())
+		//				+" "
+		//				+(militaryTime_?"(M)":"(S)");
+		//		System.out.println("Time="+debugText);
+		//		debugLabel.setText(debugText);
+		//
+		//		debugLabel.setForeground(validTimeFlag_ ? Color.BLACK : Color.RED);
 	}
 
 	/**
@@ -388,7 +359,7 @@ public class TimePicker extends JPanel{
 			errorLabel.setVisible(false);
 		}
 	}
-	
+
 	/**
 	 * sets the text of the error label with black color
 	 * @param text the text to set the error label to use
@@ -424,13 +395,13 @@ public class TimePicker extends JPanel{
 	private int getNumberFromTextField(JTextField sourceTextField) {
 		int value = -1;
 		try {
-//			System.out.println("Validating text field: "+ sourceTextField.getText());
+			//			System.out.println("Validating text field: "+ sourceTextField.getText());
 			value = Integer.parseInt(sourceTextField.getText());
-//			System.out.println("Value of textField is: "+ Integer.toString(value));
+			//			System.out.println("Value of textField is: "+ Integer.toString(value));
 		} catch (NumberFormatException e) {
-//			System.err.println("Caught IOException: " + e.getMessage() + " returning "+Integer.toString(value));
+			//			System.err.println("Caught IOException: " + e.getMessage() + " returning "+Integer.toString(value));
 		} catch (NullPointerException e) {
-//			System.err.println("Caught IOException: " + e.getMessage() + " returning "+Integer.toString(value));
+			//			System.err.println("Caught IOException: " + e.getMessage() + " returning "+Integer.toString(value));
 		}
 		return value;
 	}
@@ -482,7 +453,7 @@ public class TimePicker extends JPanel{
 	}
 
 	/************************ SETTERS *********************/
-	
+
 	/**
 	 * sets the minutes displayed and represented by this TimePicek
 	 * @param minutes the minutes to set
@@ -507,7 +478,7 @@ public class TimePicker extends JPanel{
 	 * @param hours the hours to set internally, in military time
 	 */
 	private void setDisplayHours(int hours) {
-//		System.out.println("Setting Display Hours");
+		//		System.out.println("Setting Display Hours");
 		if (isValidNumber(hours, maxHours_)) {
 			displayHours_ = hours;
 			validTimeFlag_ = displayMinutesAreValid();//hours are correct - lets see if minutes were as well

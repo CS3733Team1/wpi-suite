@@ -1,6 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
@@ -8,11 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
 public class Year extends JPanel implements Scrollable {
-
-	public Year() {
-		this.setBackground(Color.WHITE);
-	}
-	
 	@Override
 	public boolean getScrollableTracksViewportHeight() {
 		return false;
@@ -22,7 +16,6 @@ public class Year extends JPanel implements Scrollable {
 	public boolean getScrollableTracksViewportWidth() {
 		return true;
 	}
-	
 	
 	// Unused
 	@Override

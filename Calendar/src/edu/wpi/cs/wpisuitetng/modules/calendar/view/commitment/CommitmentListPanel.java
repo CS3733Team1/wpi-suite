@@ -71,27 +71,21 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
 			Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
-			if (r != null && r.contains(e.getPoint())) 
-			{ 
+			if (r != null && r.contains(e.getPoint())) {
 				selectedCommitment = commitmentList.getSelectedValue();
 				editCommitment();
 			}
-
 		}
-
 	}
-	
-	public void editCommitment()
-	{
+
+	public void editCommitment() {
 		this.removeAll();
 		this.repaint();
 
 		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][grow, fill]"));
 
-		//try { Required to use Icon, none used now
 		updateCommitmentButton = new JButton("<html>Edit</html>");
 		cancelButton = new JButton("<html>Close</html>");
-		//} catch (IOException e) {e.printStackTrace();}
 
 		detailDisplay = new JEditorPane("text/html", selectedCommitment.toString());
 		detailDisplay.setEditable(false);
@@ -112,8 +106,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		/** Setup gui for editing commitments **/
 	}
 
-	private void viewCommitments()
-	{
+	private void viewCommitments() {
 		this.removeAll();
 		this.repaint();
 
@@ -135,8 +128,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		commitmentList.addMouseListener(this);
 	}
 
-	private void openUpdateCommitmentTabPanel()
-	{
+	private void openUpdateCommitmentTabPanel() {
 		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(detailDisplay, selectedCommitment);
 		ImageIcon miniCommitmentIcon = new ImageIcon();
 		try {
@@ -145,39 +137,29 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
 		calendarPanel.setSelectedComponent(commitmentPanel);	
 	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("cancel")) {
 			viewCommitments();
 		}
-		else if (e.getActionCommand().equals("updatecommitment"))
-		{
+		else if (e.getActionCommand().equals("updatecommitment")) {
 			viewCommitments();
 			openUpdateCommitmentTabPanel();
 		}
 	}
+	
+	
+	// Unused
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	@Override
+	public void mouseReleased(MouseEvent e) {}
 }
