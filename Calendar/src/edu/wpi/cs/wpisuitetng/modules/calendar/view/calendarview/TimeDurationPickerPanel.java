@@ -38,6 +38,8 @@ public class TimeDurationPickerPanel extends JPanel {
 	private Border errorBorder;
 	private Border normalBorder;
 	
+	private Date startDay_;
+	private Date endDay_;
 	
 	public void addTimeChangedEventListener(TimeChangedEventListener timeChangedEventListener) {
 		listenerList.add(TimeChangedEventListener.class, timeChangedEventListener);
@@ -60,9 +62,23 @@ public class TimeDurationPickerPanel extends JPanel {
 		fireTimeChangedEvent(new TimeChangedEvent(StartTimePicker.getTimeAsSting()+"-"+EndTimePicker.getTimeAsSting()));
 	}
 	
+	public void setStartDay(Date day){
+		startDay_=day;
+//		System.out.println("Setting start Date: "+startDay_.toString());
+//		validateStartEndTime();
+	}
+	public void setEndDay(Date day){
+		endDay_=day;
+//		System.out.println("Setting end Date: "+endDay_.toString());
+		validateStartEndTime();
+	}
+	
 	public TimeDurationPickerPanel() {
 		errorBorder=BorderFactory.createLineBorder(new Color(255, 51, 51));
 		normalBorder=BorderFactory.createLineBorder(new Color(255, 51, 51,0));
+		
+		startDay_=new Date();
+		endDay_=new Date();
 		
 		this.setLayout(new MigLayout("insets 1"));
 
@@ -92,8 +108,24 @@ public class TimeDurationPickerPanel extends JPanel {
 
 	private boolean validateStartEndTime(){
 		if (StartTimePicker.hasValidTime() && EndTimePicker.hasValidTime()){
+			
+			
+			//take into account the start day
 			Date startTime=StartTimePicker.getTime();
+			startTime.setYear(startDay_.getYear());
+			startTime.setMonth(startDay_.getMonth());
+			startTime.setDate(startDay_.getDate());
+			startTime.setSeconds(0);
+			
+			//take into account the end day
 			Date endTime=EndTimePicker.getTime();
+			endTime.setYear(endDay_.getYear());
+			endTime.setMonth(endDay_.getMonth());
+			endTime.setDate(endDay_.getDate());
+			endTime.setSeconds(0);
+			
+//			System.out.println("Validating time duration for start time "+startTime.toString()+" end time "+endTime.toString());
+
 			boolean endTimeIsAfterStartTime=true;
 			if (startTime.after(endTime)){
 				errorLabel.setText(defaultErrorText_);
