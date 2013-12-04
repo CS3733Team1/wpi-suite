@@ -30,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 public class DayCalendarLayerPane extends JLayeredPane implements ListDataListener{
 	private DayView dayview;
 	private EventView eventviewlist;
+	private MultidayEventView multiviewlist;
 	private Integer layer;
 	
 	public DayCalendarLayerPane()
@@ -60,18 +61,30 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		ClearEvents();
 		
 		List<Event> test = new LinkedList<Event>();
+		List<Event> multi = new LinkedList<Event>();
 		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
 		
+		
 		while(event.hasNext()){
-			Event eve = event.next();
+			Event eve = new Event(event.next());
+			System.out.println("Change the world has event: \n" + eve);
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){
-				test.add(eve);
+				if(eve.getStartDate().getDay() == eve.getEndDate().getDay()
+				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
+				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
+					test.add(eve);
+				else
+					multi.add(eve);	
 			}
 		}
+		multi.add(new Event("RAISE YOUR DONGERS", new Date(113, 12, 2), new Date(113, 12, 5)));
 		
 		eventviewlist = new EventView(test, this.getSize());
+		multiviewlist = new MultidayEventView(multi, this.getSize());
+		this.add(multiviewlist, layer, -1);
+		layer++;
 		this.add(eventviewlist, layer,-1);
 		layer++;
 	}
@@ -87,6 +100,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		
 		dayview.setSize(this.getSize());
 		eventviewlist.setSize(this.getSize());
+		multiviewlist.setSize(this.getSize());
 		
 		repaint();
 	}
@@ -94,7 +108,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 	public void repaint(){
 		dayview.repaint();
 		eventviewlist.repaint();
-		
+		multiviewlist.repaint();
 		super.repaint();
 	}
 	
@@ -102,6 +116,10 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 	{
 		if (eventviewlist != null){
 			this.remove(eventviewlist);
+			layer--;
+		}
+		if (multiviewlist != null){
+			this.remove(multiviewlist);
 			layer--;
 		}
 	}

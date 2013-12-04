@@ -186,9 +186,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		for(int i = dayOfWeek-1; i < daysInMonth+dayOfWeek; i++)
 		{
 			int x = i%7;
-			int y = (i/7);
-			
+			int y = (i/7);	
 			listOfDates[x][y]= new Date(nextYear-1900,nextMonth,day);
+			System.out.println(listOfDates[x][y]);
 			listOfDaysCalendar[x][y] = day;
 			day++;
 		}
@@ -369,8 +369,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		else
 			return false;
 	}
-
-	
 	
 	@Override
 	public void next() {
@@ -457,47 +455,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 				
 			}
 		}
-	}
-	
-	private Point getLocationInArray(Date set) {
-		int setYear = set.getYear();
-		int setMonth = set.getMonth();
-		int setDay = set.getDate();
-		for(int i = 0; i < 6; i++)
-		{
-			for(int j = 0; j < 7; j++)
-			{
-				
-				int year = dateArray[j][i].getDate().getYear();
-				int month = dateArray[j][i].getDate().getMonth();
-				int day = dateArray[j][i].getDate().getDate();
-				if(year == setYear && month ==setMonth && day == setDay){
-					Point p = new Point(j,i);
-					return p;
-				}
-			}
-		}
-		return null;
-	}
-	
-	
-	private Point getScreenLocationDateBegin(Date start) {
-		Point location = getLocationInArray(start);
-		
-		Point p = dateArray[location.x][location.y].getLocationOnScreen();
-		p.x = p.x-51;
-		p.y = p.y-291;
-		return p;
-	}
-	
-	private int getScreenLocationDateEnd(Date end, int x1) {
-
-		Point location = getLocationInArray(end);
-		Point dateLocation = dateArray[location.x][location.y].getLocationOnScreen();
-		dateLocation.x = dateLocation.x-51;
-		dateLocation.y = dateLocation.y-291;
-		int width =dateArray[location.x][location.y].getSize().width;
-		return (dateLocation.x-x1)+width;
 	}
 	
 	public boolean isArrayEmpty()

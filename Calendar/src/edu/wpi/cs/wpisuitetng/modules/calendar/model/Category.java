@@ -19,7 +19,12 @@ import com.google.gson.Gson;
 public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
-	public boolean isReal;
+	public boolean isReal=true;
+	
+	public boolean getisReal()
+	{
+		return isReal;
+	}
 	/**
 	 * Category constructor
 	 */
