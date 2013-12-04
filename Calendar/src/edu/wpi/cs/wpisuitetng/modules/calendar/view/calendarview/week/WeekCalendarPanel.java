@@ -15,6 +15,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -27,6 +28,9 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView {
 
 	private WeekCalendarScrollPane weekscroll;
 	private WeekCalendarLayerPane weeklayer;
+	private JPanel weektitle;
+	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	
 	
 	public WeekCalendarPanel(){
 		this.setBorder(BorderFactory.createTitledBorder(null,
@@ -34,11 +38,36 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView {
 	            new Font("null", Font.BOLD, 12), Color.BLUE));
 		
 		
-		this.setLayout(new MigLayout("fill", 
-				"[100%]", 
-				"[100%]"));
+		this.setLayout(new MigLayout("fill","[100%]","[15%][100%]"));
 		
 		weeklayer = new WeekCalendarLayerPane();
+		
+		weektitle = new JPanel(new MigLayout("insets 6", "[grow][grow][grow][grow][grow][grow][grow][grow]"));
+		
+		JPanel time = new JPanel(new MigLayout("fill"));
+		time.add(new JLabel("Time"), "align center");
+		time.setBackground(new Color(138,173,209));
+		
+		for(int days = 1; days < 8; days++){
+			JPanel weekName = new JPanel(new MigLayout("fill"));
+			
+			StringBuilder weekbuilder = new StringBuilder();
+			weekbuilder.append("cell ");
+			weekbuilder.append((new Integer(days)).toString());
+			weekbuilder.append(" ");
+			weekbuilder.append("0");
+			weekbuilder.append(",wmin 130, alignx center, growy");
+			
+			weekName.add(new JLabel(weekNames[days-1]),"align center");
+			
+			
+			weekName.setBackground(new Color(138,173,209));
+			weektitle.add(weekName, weekbuilder.toString());
+		}
+		
+		weektitle.add(time, "cell 0 0, wmin 80, alignx center, growy");
+		
+		this.add(weektitle, "cell 0 0,grow,aligny top");
 		
 		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		
@@ -46,8 +75,8 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView {
 		scrollbuilder.append("cell ");
 		scrollbuilder.append("0");
 		scrollbuilder.append(" ");
-		scrollbuilder.append("0");
-		scrollbuilder.append(",grow, push");
+		scrollbuilder.append("1");
+		scrollbuilder.append(",grow, push, aligny top");
 		
 		this.add(weekscroll, scrollbuilder.toString());
 		

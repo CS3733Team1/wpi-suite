@@ -25,55 +25,80 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 public class DayCalendarPanel extends JPanel implements ICalendarView{
-	
+
 	private DayCalendarScrollPane dayscroll;
 	private DayCalendarLayerPane daylayer;
-	
+	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	private JLabel dayLabel;
+	private JPanel daytitle;
+
 
 	public DayCalendarPanel(){
 		this.setBorder(BorderFactory.createTitledBorder(null,
-	            "Day View", TitledBorder.LEFT, TitledBorder.TOP,
-	            new Font("null", Font.BOLD, 12), Color.BLUE));
-		
-		
-		this.setLayout(new MigLayout("fill", 
-				"[100%]", 
-				"[100%]"));
-		
+				"Day View", TitledBorder.LEFT, TitledBorder.TOP,
+				new Font("null", Font.BOLD, 12), Color.BLUE));
 
-		
+
+		this.setLayout(new MigLayout("fill", "[100%]", "[15%][100%]"));
+
 		daylayer = new DayCalendarLayerPane();
-		
+
+		JPanel daytitle = new JPanel(new MigLayout("insets 9", "[grow]"));
+
+
+		dayLabel = new JLabel(weekNames[(daylayer.getDayViewDate().getDay())]);
+
+		JPanel dayname = new JPanel(new MigLayout("fill"));
+		dayname.add(dayLabel, "alignx center");
+		dayname.setBackground(new Color(138,173,209));
+
+		JPanel time = new JPanel(new MigLayout("fill"));
+		time.add(new JLabel("Time"), "align center");
+		time.setBackground(new Color(138,173,209));
+
+		daytitle.add(time, "cell 0 0, wmin 175, alignx center, growy");
+		daytitle.add(dayname,  "cell 1 0,wmin 800, alignx center,growy");
+
+		this.add(daytitle, "cell 0 0, grow, aligny top");
+
+
+
+
 		dayscroll = new DayCalendarScrollPane(daylayer);
-		
+
 		StringBuilder scrollbuilder = new StringBuilder();
 		scrollbuilder.append("cell ");
 		scrollbuilder.append("0");
 		scrollbuilder.append(" ");
-		scrollbuilder.append("0");
-	
-	
+		scrollbuilder.append("1");
+
+
 		this.add(dayscroll, scrollbuilder.toString());
-		
+
 	}
-	
-	
+
+
 	public void paint(Graphics g){
 		if (daylayer != null){
 			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
 		}
-		
+
 		super.paint(g);
 	}
-	
+
+	public void updateDay(){
+		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
+//		daytitle.resize(size());
+	}
+
 	public void repaint(){
 		if (daylayer != null){
 			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
 		}
-		
+
 		super.repaint();
 	}
-	
+
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
@@ -84,26 +109,26 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 	public void next() {
 		// TODO Auto-generated method stub
 		daylayer.next();
-		dayscroll.updateDay();
+		updateDay();
 
-		
+
 	}
 
 	@Override
 	public void previous() {
 		// TODO Auto-generated method stub
-		
+
 		daylayer.previous();
-		dayscroll.updateDay();
-		
+		updateDay();
+
 	}
 
 	@Override
 	public void today() {
 		// TODO Auto-generated method stub
 		daylayer.today();
-		dayscroll.updateDay();
-		
+		updateDay();
+
 	}
 
 }

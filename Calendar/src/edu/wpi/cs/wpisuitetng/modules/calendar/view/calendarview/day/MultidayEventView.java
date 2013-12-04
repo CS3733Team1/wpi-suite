@@ -56,7 +56,7 @@ public class MultidayEventView extends JPanel{
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 		
 		JPanel eventinfo = new JPanel();
-		eventinfo.add(new JLabel("Multiday Event"), "wmin 0, aligny center, alignx center");
+		eventinfo.add(new JLabel("Multiday Event"), "wmin 0, aligny top, alignx center");
 		StringBuilder evebuilder = new StringBuilder();
 		evebuilder.append("cell ");
 		evebuilder.append("0");
