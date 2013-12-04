@@ -68,7 +68,14 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 		for (int i = 0; i < filters.length; i++) {
 			this.filters.add(filters[i]);
+			if(filters[i].getSelected()) this.activeFilter = filters[i];
 		}
+
+		if(this.activeFilter == null) {
+			defaultFilters[0].setSelected(true);
+			this.activeFilter = defaultFilters[0];
+		}
+
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -80,6 +87,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 			filter.setSelected(true);
 			this.activeFilter = filter;
 			this.fireFilterChanged();
+			this.fireContentsChanged(this, 0, Math.max(0, filters.size()-1));
 		}
 	}
 
@@ -92,7 +100,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		for(Filter filter: filters) filters.remove(filter);
+		while(filters.size() != 0) filters.remove(0);
 
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
@@ -135,7 +143,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	}
 
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter.getName().equals("None")) return commitmentList;
+		if(activeFilter == null || activeFilter.getName().equals("None")) return commitmentList;
 		else return activeFilter.applyCommitmentFilter(commitmentList);
 	}
 

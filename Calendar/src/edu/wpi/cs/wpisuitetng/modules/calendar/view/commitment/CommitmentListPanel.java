@@ -28,7 +28,7 @@ import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 
 /**
@@ -40,7 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 
 public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener{
 
-	private CommitmentListModel model;
+	private FilteredCommitmentsListModel model;
 	private CalendarPanel calendarPanel;
 	private JList<Commitment> commitmentList;
 
@@ -54,7 +54,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	 * and the scroll pane that they are displayed on.
 	 */
 	public CommitmentListPanel(CalendarPanel calendarPanel) {
-		this.model = CommitmentListModel.getCommitmentListModel();
+		this.model = FilteredCommitmentsListModel.getFilteredCommitmentsListModel();
 		this.calendarPanel = calendarPanel;
 		viewCommitments();
 	}

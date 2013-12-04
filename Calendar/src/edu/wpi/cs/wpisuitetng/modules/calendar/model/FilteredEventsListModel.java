@@ -31,7 +31,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 
 		int removed = filteredEvents.size();
 		
-		for(Event e: filteredEvents) filteredEvents.remove(e);
+		while(filteredEvents.size() != 0) filteredEvents.remove(0);
 		
 		this.fireIntervalRemoved(this, 0, Math.max(removed - 1, 0));
 		
