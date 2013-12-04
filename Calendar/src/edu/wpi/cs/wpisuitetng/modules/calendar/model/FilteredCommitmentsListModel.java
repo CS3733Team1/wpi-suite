@@ -71,4 +71,8 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 	public void filterChanged() {
 		filterCommitments();
 	}
+
+	public List<Commitment> getList() {
+		return filteredCommitments;
+	}
 }

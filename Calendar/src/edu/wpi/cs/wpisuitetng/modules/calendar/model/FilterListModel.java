@@ -118,6 +118,11 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 	public void removeFilter(Filter filter) {
 		filters.remove(filter);
+		if(filter.getSelected()) {
+			defaultFilters[0].setSelected(true);
+			this.activeFilter = defaultFilters[0];
+			this.fireFilterChanged();
+		}
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
@@ -138,7 +143,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	}
 
 	public List<Event> applyEventFilter(List<Event> eventList) {
-		if(activeFilter.getName().equals("None")) return eventList;
+		if(activeFilter == null || activeFilter.getName().equals("None")) return eventList;
 		else return activeFilter.applyEventFilter(eventList);
 	}
 

@@ -17,6 +17,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	private FilteredEventsListModel() {
 		filteredEvents = new ArrayList<Event>();
 		EventListModel.getEventListModel().addListDataListener(this);
+		FilterListModel.getFilterListModel().addListDataListener(this);
 		filterEvents();
 	}
 
@@ -70,5 +71,9 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	@Override
 	public void filterChanged() {
 		filterEvents();
+	}
+
+	public List<Event> getList() {
+		return filteredEvents;
 	}
 }

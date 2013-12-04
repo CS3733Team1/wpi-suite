@@ -15,9 +15,9 @@ import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 public class YearCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener {
@@ -35,8 +35,8 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 	public YearCalendarView() {
 		this.setLayout(new MigLayout("fill, insets 0"));
 
-		EventListModel.getEventListModel().addListDataListener(this);
-		CommitmentListModel.getCommitmentListModel().addListDataListener(this);
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
+		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 		
 		this.calendar = Calendar.getInstance();
 		
@@ -79,7 +79,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 			monthList.get(today.get(Calendar.MONTH)).markDateToday(today);
 		}
 		
-		for(Event event: EventListModel.getEventListModel().getList()) {
+		for(Event event: FilteredEventsListModel.getFilteredEventsListModel().getList()) {
 			Date start = event.getStartDate();
 			Calendar startCal = Calendar.getInstance();
 			startCal.set(start.getYear()+1900, start.getMonth(), start.getDate());
@@ -87,7 +87,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 				monthList.get(startCal.get(Calendar.MONTH)).markEventCommitmentDate((Calendar)startCal.clone());
 		}
 		
-		for(Commitment commitment: CommitmentListModel.getCommitmentListModel().getList()) {
+		for(Commitment commitment: FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList()) {
 			Date date = commitment.getDueDate();
 			Calendar dateCal = Calendar.getInstance();
 			dateCal.set(date.getYear()+1900, date.getMonth(), date.getDate());
