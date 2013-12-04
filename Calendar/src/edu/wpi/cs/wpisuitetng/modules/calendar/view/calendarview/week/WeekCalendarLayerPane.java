@@ -89,7 +89,6 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 				}
 			}
 		}
-		multilist.add(new Event("RAISE YOUR DONGERS", new Date(113, 12, 2), new Date(113, 12, 5)));
 		
 		eventview = new EventWeekView(eventlist, this.getSize(), weekview.getStart());
 		
@@ -117,7 +116,8 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 				iter.setDate(iter.getDate() + 1); //setDate knows where month boundaries are
 			}
 		}
-		
+		multilistlist.get(0).add(new Event("SHIT", new Date(), new Date()));
+		multilistlist.get(1).add(new Event("SHIT", new Date(), new Date()));
 		multiview = new MultidayEventWeekView(multilistlist, this.getSize());
 		
 		this.add(multiview, layer, -1);
