@@ -75,7 +75,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
 		
 		while(event.hasNext()){
-			Event eve = event.next();
+			Event eve = new Event(event.next());
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (weekview.getMap().containsKey(key)){

@@ -86,6 +86,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific Commitments.
+		System.out.println("Category retrieve");
 		return (Category []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
 
 	}
