@@ -22,7 +22,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
 public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListener{
 	private WeekView weekview;
@@ -58,7 +58,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		ChangeTheWorld();
 		this.setVisible(true);
 		
-		EventListModel.getEventListModel().addListDataListener(this);
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 	}
 	
 	public void ChangeTheWorld(){
@@ -70,7 +70,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		List<Event> multilist = new LinkedList<Event>();
 		
 		ClearEvents();
-		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
+		ListIterator<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList().listIterator();
 		
 		while(event.hasNext()){
 			Event eve = new Event(event.next());

@@ -28,8 +28,8 @@ import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
@@ -71,7 +71,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		fillDayView();
 		DisplayCommitments();
 		
-		CommitmentListModel.getCommitmentListModel().addListDataListener(this);
+		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
 
 	public void fillDayView(){
@@ -219,7 +219,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 	 */
 	public List<Commitment> CommitmentsOnCalendar(){
 		List<Commitment> notevenclose = new LinkedList<Commitment>();
-		for (Commitment commit: CommitmentListModel.getCommitmentListModel().getList()){
+		for (Commitment commit: FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList()){
 			Date commitdate = commit.getDueDate();
 			Date teemo = new Date(commitdate.getYear(),commitdate.getMonth(),commitdate.getDate(),commitdate.getHours(),0);
 			if (paneltracker.containsKey(teemo)){

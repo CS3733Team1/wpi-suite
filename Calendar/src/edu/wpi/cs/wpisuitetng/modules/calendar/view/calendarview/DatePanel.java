@@ -21,7 +21,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
 public class DatePanel extends JPanel implements ListDataListener {
 	private Date paneldate;
@@ -76,7 +76,7 @@ public class DatePanel extends JPanel implements ListDataListener {
 	
 	public void updatePanel(){
 		removeEventPanel();
-		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
+		ListIterator<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList().listIterator();
 		while(event.hasNext()){
 			Event eve = event.next();
 			Date evedate = eve.getStartDate();

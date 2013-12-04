@@ -16,7 +16,7 @@ import javax.swing.event.ListDataListener;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
 public class DatePanel2 extends JPanel implements ListDataListener{
 
@@ -274,7 +274,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	public void updatePanel(){
 		int push = 0;
 		clearEvents();
-		List<Event> events = EventListModel.getEventListModel().getList();
+		List<Event> events = FilteredEventsListModel.getFilteredEventsListModel().getList();
 		for(Event eve: events){
 			Date evedate = eve.getStartDate();
 			if(isDateEqual(paneldate,evedate) && !(isMultiDayEvent(eve)))
@@ -296,7 +296,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	
 	int numMultiDayEvents(Date d)
 	{
-		List<Event> events = EventListModel.getEventListModel().getList();
+		List<Event> events = FilteredEventsListModel.getFilteredEventsListModel().getList();
 		int numToPush = 0;
 		for(Event eve: events){
 			if(isMultiDayEvent(eve)){

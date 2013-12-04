@@ -21,7 +21,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
 public class DayCalendarLayerPane extends JLayeredPane implements ListDataListener{
 	private DayView dayview;
@@ -47,7 +47,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		ChangeTheWorld();
 		this.setVisible(true);
 		
-		EventListModel.getEventListModel().addListDataListener(this);
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 	}
 	
 	
@@ -58,7 +58,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		
 		List<Event> test = new LinkedList<Event>();
 		List<Event> multi = new LinkedList<Event>();
-		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
+		ListIterator<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList().listIterator();
 		
 		
 		while(event.hasNext()){

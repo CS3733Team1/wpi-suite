@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,7 +28,7 @@ import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
 public class MonthCalendarView extends JPanel implements ICalendarView, ListDataListener, AncestorListener {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -77,7 +76,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		addDayLabels();
 		addDaysToCalendar(mycal);
 
-		EventListModel.getEventListModel().addListDataListener(this);
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 		
 		this.addAncestorListener(this);
 		
@@ -441,7 +440,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 		Date key;
 		
 		removeEvents();
-		ListIterator<Event> event = EventListModel.getEventListModel().getList().listIterator();
+		ListIterator<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList().listIterator();
 		
 		while(event.hasNext()){
 			Event eve = event.next();

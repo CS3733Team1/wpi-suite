@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,10 +24,9 @@ import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarLayerPane;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 
-public class WeekCalendarScrollPane extends JScrollPane implements ListDataListener{
+public class WeekCalendarScrollPane extends JScrollPane implements ListDataListener {
 	private WeekCalendarLayerPane weeklayer;
 	private List<JPanel> weekpanel;
 	private JPanel weektitle;
@@ -80,7 +78,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 		this.setColumnHeaderView(weektitle);
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		CommitmentListModel.getCommitmentListModel().addListDataListener(this);
+		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 		DisplayCommitments();
 	}
 	
