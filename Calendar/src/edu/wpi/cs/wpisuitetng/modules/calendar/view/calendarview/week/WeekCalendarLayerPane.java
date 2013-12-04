@@ -111,7 +111,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			else
 				iter = (Date) current.clone();
 			
-			while(!iter.equals(e.getEndDate()))
+			while(!(iter.equals(e.getEndDate()) || iter.getDate() == weekdays.get(6)))
 			{
 				if(weekdays.contains(iter.getDate()))
 				{
