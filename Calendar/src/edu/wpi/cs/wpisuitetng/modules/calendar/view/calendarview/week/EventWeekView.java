@@ -55,7 +55,7 @@ public class EventWeekView extends JPanel{
 				Date evedate = events.get(x).getStartDate();
 				
 				if (evedate.getMonth() == current.getMonth() && evedate.getYear() == current.getYear() && evedate.getDate() == current.getDate()){
-					weekevents.get(y).add(events.get(x));
+					weekevents.get(y).add(new Event(events.get(x)));
 				}
 			}
 		}
