@@ -58,7 +58,7 @@ public class WeekView extends JPanel implements ICalendarView {
 		this.setBackground(Color.white);
 
 		this.setLayout(new MigLayout("fill", 
-				"[8%][13%][13%][13%][13%][13%][13%][13%]", 
+				"[9%][13%][13%][13%][13%][13%][13%][13%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 
 		this.setVisible(true);

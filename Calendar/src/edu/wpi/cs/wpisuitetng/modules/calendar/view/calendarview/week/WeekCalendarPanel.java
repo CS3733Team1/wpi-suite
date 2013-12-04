@@ -21,8 +21,6 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarLayerPane;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarScrollPane;
 
 public class WeekCalendarPanel extends JPanel implements ICalendarView {
 
@@ -38,47 +36,33 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView {
 	            new Font("null", Font.BOLD, 12), Color.BLUE));
 		
 		
-		this.setLayout(new MigLayout("fill","[100%]","[15%][100%]"));
+		this.setLayout(new MigLayout("fill"));
 		
 		weeklayer = new WeekCalendarLayerPane();
 		
-		weektitle = new JPanel(new MigLayout("insets 6", "[grow][grow][grow][grow][grow][grow][grow][grow]"));
+		weektitle = new JPanel(new MigLayout("fill, insets 0", "[9%][13%][13%][13%][13%][13%][13%][13%]18px"));
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
-		time.add(new JLabel("Time"), "align center");
+		time.add(new JLabel("Time"), "grow, aligny center");
 		time.setBackground(new Color(138,173,209));
+		
+		weektitle.add(time, "aligny center, w 5000, grow");
 		
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout("fill"));
 			
-			StringBuilder weekbuilder = new StringBuilder();
-			weekbuilder.append("cell ");
-			weekbuilder.append((new Integer(days)).toString());
-			weekbuilder.append(" ");
-			weekbuilder.append("0");
-			weekbuilder.append(",wmin 130, alignx center, growy");
-			
-			weekName.add(new JLabel(weekNames[days-1]),"align center");
-			
-			
+			weekName.add(new JLabel(weekNames[days-1]),"grow, aligny center");
 			weekName.setBackground(new Color(138,173,209));
-			weektitle.add(weekName, weekbuilder.toString());
+			weektitle.add(weekName, "aligny center, w 5000, grow");
 		}
 		
-		weektitle.add(time, "cell 0 0, wmin 80, alignx center, growy");
-		
-		this.add(weektitle, "cell 0 0,grow,aligny top");
+		JPanel filler = new JPanel(new MigLayout("fill"));
+		filler.add(weektitle, "grow, wrap");
+		this.add(filler, "grow, wrap");
 		
 		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		
-		StringBuilder scrollbuilder = new StringBuilder();
-		scrollbuilder.append("cell ");
-		scrollbuilder.append("0");
-		scrollbuilder.append(" ");
-		scrollbuilder.append("1");
-		scrollbuilder.append(",grow, push, aligny top");
-		
-		this.add(weekscroll, scrollbuilder.toString());
+		this.add(weekscroll, "grow, push");
 		
 		repaint();
 	}

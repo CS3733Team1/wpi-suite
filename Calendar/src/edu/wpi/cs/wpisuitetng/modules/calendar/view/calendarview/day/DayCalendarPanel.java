@@ -11,10 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -39,41 +37,30 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 				new Font("null", Font.BOLD, 12), Color.BLUE));
 
 
-		this.setLayout(new MigLayout("fill", "[100%]", "[15%][100%]"));
+		this.setLayout(new MigLayout("fill"));
 
 		daylayer = new DayCalendarLayerPane();
 
-		JPanel daytitle = new JPanel(new MigLayout("insets 9", "[grow]"));
-
+		JPanel daytitle = new JPanel(new MigLayout("fill, insets 0", "[20%][80%]"));
 
 		dayLabel = new JLabel(weekNames[(daylayer.getDayViewDate().getDay())]);
 
 		JPanel dayname = new JPanel(new MigLayout("fill"));
-		dayname.add(dayLabel, "alignx center");
+		dayname.add(dayLabel, "grow, aligny center");
 		dayname.setBackground(new Color(138,173,209));
 
 		JPanel time = new JPanel(new MigLayout("fill"));
-		time.add(new JLabel("Time"), "align center");
+		time.add(new JLabel("Time"), "grow, aligny center");
 		time.setBackground(new Color(138,173,209));
 
-		daytitle.add(time, "cell 0 0, wmin 175, alignx center, growy");
-		daytitle.add(dayname,  "cell 1 0,wmin 800, alignx center,growy");
+		daytitle.add(time, "aligny center, w 5000, grow");
+		daytitle.add(dayname,  "aligny center, w 5000, grow");
 
-		this.add(daytitle, "cell 0 0, grow, aligny top");
-
-
-
+		this.add(daytitle, "grow, wrap");
 
 		dayscroll = new DayCalendarScrollPane(daylayer);
 
-		StringBuilder scrollbuilder = new StringBuilder();
-		scrollbuilder.append("cell ");
-		scrollbuilder.append("0");
-		scrollbuilder.append(" ");
-		scrollbuilder.append("1");
-
-
-		this.add(dayscroll, scrollbuilder.toString());
+		this.add(dayscroll, "grow, push");
 
 	}
 
