@@ -80,18 +80,21 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView {
 	public void next() {
 		// TODO Auto-generated method stub
 		weeklayer.next();
+		weekscroll.updateDayHeader();
 	}
 
 	@Override
 	public void previous() {
 		// TODO Auto-generated method stub
 		weeklayer.previous();
+		weekscroll.updateDayHeader();
 	}
 
 	@Override
 	public void today() {
 		// TODO Auto-generated method stub
 		weeklayer.today();
+		weekscroll.updateDayHeader();
 	}
 
 }

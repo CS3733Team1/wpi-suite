@@ -68,7 +68,7 @@ public class FilterListCellRenderer extends JPanel implements ListCellRenderer<F
 		if(filter != null) {
 			filterName.setText(filter.getName());
 			colorSquares.removeAll();
-			if(filterName.getText().equals("No Filter")) {
+			if(filterName.getText().equals("None")) {
 				colorSquares.add(specialRainbow);
 			} else {
 				int i = 0;

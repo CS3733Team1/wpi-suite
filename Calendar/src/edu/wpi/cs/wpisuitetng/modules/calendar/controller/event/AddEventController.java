@@ -34,7 +34,7 @@ public class AddEventController implements ActionListener{
 
 		Event eve = view.getFilledEvent();
 		
-		System.out.println("Adding event...");
+		System.out.println("Adding event... id = " + eve.getUniqueID());
 		
 		// Send a request to the core to save this message
 		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT); // PUT == create

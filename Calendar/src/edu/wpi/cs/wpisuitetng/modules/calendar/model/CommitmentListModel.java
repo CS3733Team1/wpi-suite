@@ -44,6 +44,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 			commitmentListModel = new CommitmentListModel();
 		return commitmentListModel;
 	}
+
 	/**
 	 * Adds the given commitment to the calendar
 	 * 
@@ -54,7 +55,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		// Add the commitment
 		this.commitments.add(newCommitment);
 		Collections.sort(this.commitments);
-		
+
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
 		this.fireContentsChanged(this, 0, commitments.size()-1);
@@ -71,17 +72,17 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 			this.commitments.add(commitments[i]);
 		}
 		Collections.sort(this.commitments);
-		
+
 		this.fireContentsChanged(this, 0, this.commitments.size()-1);
 	}
-	
+
 	public void setCommitments(Commitment[] commitments) {
 		this.emptyModel();
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
 		Collections.sort(this.commitments);
-		
+
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -116,13 +117,11 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 
 	public void removeCommitment(int index) {
 		this.commitments.remove(index);
-		//Collections.sort(this.commitments);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
 	public void removeCommitment(Commitment commitment) {
 		this.commitments.remove(commitment);
-		//Collections.sort(this.commitments);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
@@ -142,8 +141,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments;
 	}
 
-	public void updateCommitment(Commitment oldCommitment, Commitment newCommitment) 
-	{
+	public void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
 		removeCommitment(oldCommitment);
 		addCommitment(newCommitment);
 	}

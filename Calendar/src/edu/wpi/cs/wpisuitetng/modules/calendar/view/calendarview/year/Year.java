@@ -28,7 +28,7 @@ public class Year extends JPanel implements Scrollable {
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {return null;}
 	@Override
-	public int getScrollableBlockIncrement(Rectangle arg0, int arg1, int arg2) {return 0;}
+	public int getScrollableBlockIncrement(Rectangle r, int i, int j) {return 0;}
 	@Override
-	public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {return 0;}
+	public int getScrollableUnitIncrement(Rectangle r, int i, int j) {return 0;}
 }

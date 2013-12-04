@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -71,6 +72,14 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	
 	public void setCategories(Category[] categories) {
 		this.emptyModel();
+
+		//DEFAULT CATEGORIES
+		this.categories.add(new Category("None", Color.BLACK));
+		this.categories.add(new Category("Important", Color.RED));
+		this.categories.add(new Category("Work", Color.BLUE));
+		this.categories.add(new Category("Home", Color.ORANGE));
+		this.categories.add(new Category("Holiday", Color.PINK));
+		
 		for (int i = 0; i < categories.length; i++) {
 			if(!(this.categories.contains(categories[i]))) this.categories.add(categories[i]);
 		}

@@ -25,7 +25,7 @@ import org.jdesktop.swingx.JXMonthView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 
-public class YearCalendarView extends JPanel implements ICalendarView, ListDataListener{
+public class YearCalendarView extends JPanel implements ICalendarView, ListDataListener {
 
 	public static final Color START_END_DAY = new Color(47, 150, 9);
 

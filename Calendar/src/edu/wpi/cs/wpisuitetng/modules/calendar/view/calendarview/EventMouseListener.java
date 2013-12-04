@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
@@ -16,15 +27,14 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 public class EventMouseListener implements MouseListener{
 
 	Event e;
-	JPanel epanel,calview;
+	JPanel epanel;
 	
 	static ArrayList<Event> selectedEvents= new ArrayList<Event>();
 	static ArrayList<JPanel> selectedPanels= new ArrayList<JPanel>();
 	
-	public EventMouseListener(Event e, JPanel epanel, JPanel calview){
+	public EventMouseListener(Event e, JPanel epanel){
 		this.e=e;
 		this.epanel=epanel;
-		this.calview=calview;
 	}
 
 	@Override
@@ -49,6 +59,8 @@ public class EventMouseListener implements MouseListener{
 	
 	@Override
 	public void mouseExited(MouseEvent e) {
+		UIManager.put("ToolTip.foreground",UIManager.getDefaults().getString("ToolTip.foreground"));
+		UIManager.put("ToolTip.background",UIManager.getDefaults().getString("ToolTip.background"));
 	}
 
 	@Override

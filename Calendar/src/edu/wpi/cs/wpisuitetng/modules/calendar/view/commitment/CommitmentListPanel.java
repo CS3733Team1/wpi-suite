@@ -10,8 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
-import java.awt.Component;
-
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,8 +21,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -48,14 +44,11 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	private CalendarPanel calendarPanel;
 	private JList<Commitment> commitmentList;
 
-	private Boolean EDITMODE = false;
-
-	
 	private JEditorPane detailDisplay;
 	private JButton updateCommitmentButton;
 	private JButton cancelButton;
 	private Commitment selectedCommitment;
-	
+
 	/**
 	 * Constructor for the CommitmentListPanel creates both the list of commitments
 	 * and the scroll pane that they are displayed on.
@@ -65,7 +58,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		this.calendarPanel = calendarPanel;
 		viewCommitments();
 	}
-	
+
 	/**
 	 * Public accessor for the JList of commitments
 	 * @return JList<Commitment>: The list of Commitments.
@@ -76,22 +69,23 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		   if (e.getClickCount() == 2) {
-			   Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
-	        	 if (r != null && r.contains(e.getPoint())) 
-	        	 { 
-	        		 selectedCommitment = commitmentList.getSelectedValue();
-	        		 editCommitment();
-	        	}
-	            
-	          }
-		
+		if (e.getClickCount() == 2) {
+			Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
+			if (r != null && r.contains(e.getPoint())) 
+			{ 
+				selectedCommitment = commitmentList.getSelectedValue();
+				editCommitment();
+			}
+
+		}
+
 	}
+	
 	public void editCommitment()
 	{
 		this.removeAll();
 		this.repaint();
-		
+
 		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][grow, fill]"));
 
 		//try { Required to use Icon, none used now
@@ -101,46 +95,46 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 
 		detailDisplay = new JEditorPane("text/html", selectedCommitment.toString());
 		detailDisplay.setEditable(false);
-		
+
 		updateCommitmentButton.setActionCommand("updatecommitment");
 		updateCommitmentButton.addActionListener(this);
 		cancelButton.setActionCommand("cancel");
 		cancelButton.addActionListener(this);
-		
+
 		JPanel p = new JPanel();
 		p.add(updateCommitmentButton);
 		p.add(cancelButton);
-		
+
 		this.add(p, "wrap");
 		this.add(detailDisplay, "grow, push");
-		
-		
+
+
 		/** Setup gui for editing commitments **/
 	}
-	
+
 	private void viewCommitments()
 	{
 		this.removeAll();
 		this.repaint();
-		
+
 		this.setLayout(new MigLayout("fill, insets 0"));
-		
+
 		commitmentList = new JList<Commitment>(model);
-		
+
 		commitmentList.setCellRenderer(new CommitmentListCellRenderer());
 		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		commitmentList.setLayoutOrientation(JList.VERTICAL);
-		
+
 		commitmentList.setVisibleRowCount(0);
 
 		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		this.add(scrollPane, "grow, push");
-	
+
 		commitmentList.addMouseListener(this);
 	}
-	
+
 	private void openUpdateCommitmentTabPanel()
 	{
 		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(detailDisplay, selectedCommitment);
@@ -154,25 +148,25 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

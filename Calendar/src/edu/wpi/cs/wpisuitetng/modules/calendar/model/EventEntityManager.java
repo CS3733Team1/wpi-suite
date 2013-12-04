@@ -136,6 +136,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
+				System.out.println("Trying to delete an event with id = " + id);
 				try {
 				Event todelete = (Event) db.retrieve(Event.class, "UniqueID", id, s.getProject()).get(0);
 				this.deleteEvent(todelete);

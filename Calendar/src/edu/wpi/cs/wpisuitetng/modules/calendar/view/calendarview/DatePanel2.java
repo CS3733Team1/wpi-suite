@@ -2,14 +2,11 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
@@ -69,9 +66,12 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 		Event eve = new Event("Test MultiDay",d3,d2);
 		Event eve1 = new Event("Test 2", d, d3);
 		Event ev2 = new Event("Overlap Test", d4, d5);
-	
-		addEvent(eve);	
-		addEvent(ev2);
+		if(isDateEqual(d3,today)){
+			addEvent(eve1);
+		}
+//		addEvent(eve);
+		
+//		addEvent(ev2);
 		updatePanel();
 		configurePanel();
 	}
@@ -106,7 +106,6 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 			addMultiDayEvents(eve);
 		else
 			addSingleDayEvent(eve);
-		repaint();
 	}
 
 	private void addSingleDayEvent(Event eve) {
@@ -238,7 +237,6 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 				addEvent(eve);
 		}
 		configurePanel();
-		
 	}
 
 	private boolean isDateEqual(Date d1, Date d2)
@@ -331,7 +329,5 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 
 	}
 
-
 }
-
 

@@ -16,12 +16,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
@@ -74,8 +78,8 @@ public class WeekView extends JPanel implements ICalendarView {
 		timebuilder.append("0");
 		timebuilder.append(",grow, push");
 
-		time.add(new JLabel("Time"));
-		time.setBackground(new Color(138,173,209));
+		time.add(new JLabel(" "));
+		time.setBackground(new Color(255,255,255));
 		this.add(time, timebuilder.toString());
 
 		for (int currenthour=0; currenthour < 24; currenthour++){
@@ -126,14 +130,32 @@ public class WeekView extends JPanel implements ICalendarView {
 			eventbuilder.append(" ");
 			eventbuilder.append("0");
 			eventbuilder.append(",grow, push");
-
-			event.add(new JLabel(weekNames[day-1]));
-			event.setBackground(new Color(138,173,209));
+//
+			event.add(new JLabel(" "));
+			event.setBackground(new Color(255,255,255));
 			this.add(event, eventbuilder.toString());
 
 		}
 	}
 
+	/**
+	 * Finds All Commitments Belonging to Calendar
+	 * @return List of Found Commitments
+	 */
+	public List<Commitment> CommitmentsOnCalendar(){
+		List<Commitment> notevenclose = new LinkedList<Commitment>();
+		for (Commitment commit: CommitmentListModel.getCommitmentListModel().getList()){
+			Date commitdate = commit.getDueDate();
+			Date teemo = new Date(commitdate.getYear(),commitdate.getMonth(),commitdate.getDate(),commitdate.getHours(),0);
+			if (paneltracker.containsKey(teemo)){
+				System.out.println("I'm Invisible"); //never underestimate the power of the scout's code
+				notevenclose.add(commit);
+			}
+		}
+		
+		return notevenclose;
+	}
+	
 	@Override
 	public String getTitle() {
 		Date datdate = new Date(currentYear-1900, currentMonth, currentDate+6);

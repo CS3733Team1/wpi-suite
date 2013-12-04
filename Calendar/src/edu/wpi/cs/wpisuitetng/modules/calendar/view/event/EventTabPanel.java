@@ -30,6 +30,8 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeDurationPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 
@@ -43,7 +45,8 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	// Data entry components
 	private JTextField nameTextField;
-	private DatePickerPanel datePickerPanel;
+	private DatePickerPanel startDatePickerPanel;
+	private DatePickerPanel endDatePickerPanel;
 	private TimeDurationPickerPanel timeDurationPickerPanel;
 	private CategoryPickerPanel categoryPickerPanel;
 	private JTextArea descriptionTextArea;
@@ -54,7 +57,8 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	// Error Labels
 	private JLabel nameErrorLabel;
-	private JLabel dateErrorLabel;
+	private JLabel startDateErrorLabel;
+	private JLabel endDateErrorLabel;
 	private JLabel timeErrorLabel;
 
 	// Error wrappers
@@ -81,18 +85,31 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		nameErrorLabel.setForeground(Color.RED);
 		this.add(nameErrorLabel, "wrap");
 
-		// Date
-		this.add(new JLabel("Date:"), "split 3");
-		datePickerPanel = new DatePickerPanel();
-		datePickerPanel.setKeyListener(this);
-		this.add(datePickerPanel, "alignx left");
-		dateErrorLabel = new JLabel(INVALID_DATE_ERROR);
-		dateErrorLabel.setForeground(Color.RED);
-		this.add(dateErrorLabel, "wrap");
+		// Start Date
+		this.add(new JLabel("Start Date:"), "split 3");
+		startDatePickerPanel = new DatePickerPanel();
+		startDatePickerPanel.setKeyListener(this);
+		this.add(startDatePickerPanel, "alignx left");
+		startDateErrorLabel = new JLabel(INVALID_DATE_ERROR);
+		startDateErrorLabel.setForeground(Color.RED);
+		this.add(startDateErrorLabel, "wrap");
 
+		// End Date
+		this.add(new JLabel("End Date:"), "split 3");
+		endDatePickerPanel = new DatePickerPanel();
+		endDatePickerPanel.setKeyListener(this);
+		this.add(endDatePickerPanel, "alignx left");
+		endDateErrorLabel = new JLabel(INVALID_DATE_ERROR);
+		endDateErrorLabel.setForeground(Color.RED);
+		this.add(endDateErrorLabel, "wrap");
+		
 		// Start/End Time
 		timeDurationPickerPanel = new TimeDurationPickerPanel();
-		timeDurationPickerPanel.setActionListener(this);
+		timeDurationPickerPanel.addTimeChangedEventListener(new TimeChangedEventListener() {
+			public void TimeChangedEventOccurred(TimeChangedEvent e) {
+				validateFields();
+			}
+		});
 		this.add(timeDurationPickerPanel, "alignx left, split 2");
 		timeErrorLabel = new JLabel();
 		timeErrorLabel.setForeground(Color.RED);
@@ -142,8 +159,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 * @return void
 	 */
 	private void validateFields() {
+//		System.out.println("Validating Event Fields");
+		
 		boolean enableAddEvent = true;
 
+		//Check the name
 		if(nameTextField.getText().trim().length() == 0) {
 			nameErrorPanelWrapper.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
 			nameErrorLabel.setText(EMPTY_NAME_ERROR);
@@ -154,60 +174,98 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			nameErrorLabel.setVisible(false);
 		}
 
-		datePickerPanel.validateDate();
-
-		if(datePickerPanel.isInvalidDate() == 1) {
-			datePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			dateErrorLabel.setText(INVALID_DATE_ERROR);
-			dateErrorLabel.setVisible(true);
+		//check the start date
+		startDatePickerPanel.validateDate();
+		if(startDatePickerPanel.isInvalidDate() == 1) {
+			startDatePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+			startDateErrorLabel.setText(INVALID_DATE_ERROR);
+			startDateErrorLabel.setVisible(true);
 			enableAddEvent = false;
-		} else if (datePickerPanel.isInvalidDate() == 2) {
-			datePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			dateErrorLabel.setText(PAST_DATE_ERROR);
-			dateErrorLabel.setVisible(true);
-			enableAddEvent = false;
-		} else {
-			datePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
-			dateErrorLabel.setVisible(false);
-		}
-
-		if(timeDurationPickerPanel.isInvalidTime() == 1) {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			timeErrorLabel.setText(ZERO_TIME_ERROR);
-			timeErrorLabel.setVisible(true);
-			enableAddEvent = false;
-		} else if (timeDurationPickerPanel.isInvalidTime() == 2) {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			timeErrorLabel.setText(START_AFTER_END_ERROR);
-			timeErrorLabel.setVisible(true);
+		} else if (startDatePickerPanel.isInvalidDate() == 2) {
+			startDatePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+			startDateErrorLabel.setText(PAST_DATE_ERROR);
+			startDateErrorLabel.setVisible(true);
 			enableAddEvent = false;
 		} else {
-			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
-			timeErrorLabel.setVisible(false);
+			startDatePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
+			startDateErrorLabel.setVisible(false);
 		}
+
+		//check the end date
+		endDatePickerPanel.validateDate();
+		if(endDatePickerPanel.isInvalidDate() == 1) {
+			endDatePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+			endDateErrorLabel.setText(INVALID_DATE_ERROR);
+			endDateErrorLabel.setVisible(true);
+			enableAddEvent = false;
+		} else if (endDatePickerPanel.isInvalidDate() == 2) {
+			endDatePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+			endDateErrorLabel.setText(PAST_DATE_ERROR);
+			endDateErrorLabel.setVisible(true);
+			enableAddEvent = false;
+		} else {
+			endDatePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
+			endDateErrorLabel.setVisible(false);
+		}
+		
+		//ensure the timeDurationPicker knows what days the times are for before checking if it's valid
+		timeDurationPickerPanel.setStartDay(startDatePickerPanel.getDate());
+		timeDurationPickerPanel.setEndDay(endDatePickerPanel.getDate());
+		
+		//check the time
+		if (!timeDurationPickerPanel.isValidTime()){
+//			System.out.println("\tCannot enable add Event button - bad time duration!");
+			enableAddEvent=false;
+		}
+		
+//		if(timeDurationPickerPanel.isInvalidTime() == 1) {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+//			timeErrorLabel.setText(ZERO_TIME_ERROR);
+//			timeErrorLabel.setVisible(true);
+//			enableAddEvent = false;
+//		} else if (timeDurationPickerPanel.isInvalidTime() == 2) {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+//			timeErrorLabel.setText(START_AFTER_END_ERROR);
+//			timeErrorLabel.setVisible(true);
+//			enableAddEvent = false;
+//		} else {
+//			timeDurationPickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
+//			timeErrorLabel.setVisible(false);
+//		}
 
 		addEventButton.setEnabled(enableAddEvent);
 	}
 
 	public Event getFilledEvent() {
-		Date date = datePickerPanel.getDate();
+		//start date
+		Date startDateDay = startDatePickerPanel.getDate();	//get's a Date which has the day of the start of the event
+		//set a calendar thingy with this start day and the time from the timeDurationPicker start time
+		Calendar startCal = Calendar.getInstance();
+		startCal.set(Calendar.HOUR_OF_DAY, 0);
+		startCal.set(Calendar.YEAR, startDateDay.getYear()+1900);
+		startCal.set(Calendar.MONTH, startDateDay.getMonth());
+		startCal.set(Calendar.DATE, startDateDay.getDate());
+		startCal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getStartTime().getHours());
+		startCal.set(Calendar.MINUTE, timeDurationPickerPanel.getStartTime().getMinutes());
+		startCal.set(Calendar.SECOND, 0);
+		Date startDate = startCal.getTime();//convert the calendar back to a date
 
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.YEAR, date.getYear()+1900);
-		cal.set(Calendar.MONTH, date.getMonth());
-		cal.set(Calendar.DATE, date.getDate());
-		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getStartTime());
+		//end date
+		Date endDateDay = endDatePickerPanel.getDate();	//get's a Date which has the day of the end of the event
+		//set a calendar thingy with this end day and the time from the timeDurationPicker end time
+		Calendar endCal = Calendar.getInstance();
+		endCal.set(Calendar.HOUR_OF_DAY, 0);
+		endCal.set(Calendar.YEAR, endDateDay.getYear()+1900);
+		endCal.set(Calendar.MONTH, endDateDay.getMonth());
+		endCal.set(Calendar.DATE, endDateDay.getDate());
+		endCal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getEndTime().getHours());
+		endCal.set(Calendar.MINUTE, timeDurationPickerPanel.getEndTime().getMinutes());
+		endCal.set(Calendar.SECOND, 0);
+		Date endDate = endCal.getTime();//convert the calendar back to a date
 
-		Date startDate = cal.getTime();
+		System.out.println(startDate + ":" + endDate);
 		
-
-		cal.set(Calendar.HOUR_OF_DAY, timeDurationPickerPanel.getEndTime());
-
-		Date endDate = cal.getTime();
-
+		//make a new event with start and end times
 		return new Event(nameTextField.getText(), startDate, endDate,
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory());
 	}
