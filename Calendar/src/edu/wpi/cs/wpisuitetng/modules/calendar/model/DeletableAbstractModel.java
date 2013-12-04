@@ -19,7 +19,7 @@ public abstract class DeletableAbstractModel extends AbstractModel{
 	//In the beginning it was described in Model.java
 	//that models shall have a Unique Identifier int
 	//and so it shall be 
-	public final int UniqueID = (int) UUID.randomUUID().getMostSignificantBits();
+	public int UniqueID = (int) UUID.randomUUID().getMostSignificantBits();
 	
 	public int getUniqueID()
 	{
