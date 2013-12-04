@@ -31,7 +31,7 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 
 		int removed = filteredCommitments.size();
 		
-		for(Commitment c: filteredCommitments) filteredCommitments.remove(c);
+		while(filteredCommitments.size() != 0) filteredCommitments.remove(0);
 		
 		this.fireIntervalRemoved(this, 0, Math.max(removed - 1, 0));
 		

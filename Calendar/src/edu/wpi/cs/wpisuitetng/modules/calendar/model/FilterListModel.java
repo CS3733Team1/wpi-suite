@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -23,8 +24,10 @@ import javax.swing.AbstractListModel;
 
 public class FilterListModel extends AbstractListModel<Filter> {
 	private static FilterListModel filterListModel;
-	
+
 	List<FilterChangedListener> filterChangedListeners = new ArrayList<FilterChangedListener>();
+
+	private final Filter[] defaultFilters = {new Filter("None")};
 
 	/** The list of filter */
 	private List<Filter> filters;
@@ -52,15 +55,27 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
+	// Used to see if a filter is a default or not
+	public boolean isDefault(Filter filter) {
+		return Arrays.asList(defaultFilters).contains(filter);
+	}
+
 	public void setFilters(Filter[] filters) {
 		this.emptyModel();
-		
+
 		//DEFAULT FILTERS
-		this.filters.add(new Filter("None"));
-		
+		for(Filter filter: defaultFilters) this.filters.add(filter);
+
 		for (int i = 0; i < filters.length; i++) {
 			this.filters.add(filters[i]);
+			if(filters[i].getSelected()) this.activeFilter = filters[i];
 		}
+
+		if(this.activeFilter == null) {
+			defaultFilters[0].setSelected(true);
+			this.activeFilter = defaultFilters[0];
+		}
+
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -72,6 +87,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 			filter.setSelected(true);
 			this.activeFilter = filter;
 			this.fireFilterChanged();
+			this.fireContentsChanged(this, 0, Math.max(0, filters.size()-1));
 		}
 	}
 
@@ -84,7 +100,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		for(Filter filter: filters) filters.remove(filter);
+		while(filters.size() != 0) filters.remove(0);
 
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
@@ -98,11 +114,6 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	@Override
 	public Filter getElementAt(int index) {
 		return filters.get(index);
-	}
-
-	public void removeFilter(int index) {
-		filters.remove(index);
-		this.fireIntervalAdded(this, 0, 0);
 	}
 
 	public void removeFilter(Filter filter) {
@@ -132,15 +143,15 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	}
 
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter.getName().equals("None")) return commitmentList;
+		if(activeFilter == null || activeFilter.getName().equals("None")) return commitmentList;
 		else return activeFilter.applyCommitmentFilter(commitmentList);
 	}
-	
+
 	public void fireFilterChanged() {
 		for(FilterChangedListener l: filterChangedListeners)
 			l.filterChanged();
 	}
-	
+
 	public void addFilterChangedListener(FilterChangedListener l) {
 		filterChangedListeners.add(l);
 	}
