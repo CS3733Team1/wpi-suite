@@ -25,6 +25,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	private ArrayList<JLabel> eventLabelList;
 	private ArrayList<JPanel> singleDayPanel;
 	private ArrayList<JPanel> multiDayPanel;
+	private ArrayList<Event> multiDayEventList;
 
 	private JPanel date;
 	private JPanel events;
@@ -49,6 +50,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 		eventLabelList = new ArrayList<JLabel>();
 		singleDayPanel = new ArrayList<JPanel>();
 		multiDayPanel  = new ArrayList<JPanel>();
+		multiDayEventList = new ArrayList<Event>();
 
 		
 		this.setBorder(new MatteBorder(0,0, 1, 0, Color.gray));
@@ -109,6 +111,8 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	}
 
 	private void addSingleDayEvent(Event eve) {
+		System.out.println(eve.getName());
+		System.out.println("SINGLEDAY!!!");
 		JPanel eventPanel = new JPanel(new MigLayout("insets 0 5 0 0, hmin 15, hmax 15,gapy 0"));
 		JLabel jLab = new JLabel(eve.getName());
 		
@@ -125,8 +129,13 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 		eventLabelList.add(jLab);
 	}
 
+	
+	
+	
 	private void addMultiDayEvents(Event eve)
 	{
+		System.out.println(eve.getName());
+		System.out.println("MULTIDAY!!!");
 		if((isTodayWithinDates(today,eve.getStartDate(),eve.getEndDate())))
 		{
 			JPanel eventPanel = new JPanel(new MigLayout("insets 0, hmin 15, hmax 15,gapy 0"));
@@ -147,6 +156,40 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 			multiDayPanel.add(eventPanel);
 		}
 	}
+	
+	private void addEmptyEventPlaceHolder()
+	{
+
+		JPanel eventPanel = new JPanel(new MigLayout("insets 0, hmin 15, hmax 15,gapy 0"));
+		eventPanel.setBackground(background);
+		multiDayPanel.add(eventPanel);
+	}
+	
+	private void addMultiDayEvents(Event eve, int push)
+	{
+		JPanel eventPanel = new JPanel(new MigLayout("insets 0, hmin 15, hmax 15,gapy 0"));
+		for(int i = 0; i < push; i++)
+		{
+			addEmptyEventPlaceHolder();
+		}
+		if(isDateEqual(eve.getStartDate(),today)){
+			JLabel jLab = new JLabel(eve.getName());
+			jLab.setFont(new Font(jLab.getFont().getFontName(), jLab.getFont().getStyle(), 10));
+			eventPanel.add(jLab, "gapy 0 0");
+			eventPanel.validate();
+			multiDayLabelList.add(jLab);
+		}else{
+		}
+		Category c = eve.getCategory();
+		if(c != null)
+			eventPanel.setBackground(eve.getCategory().getColor());
+		else
+			eventPanel.setBackground(Color.orange);
+
+		multiDayPanel.add(eventPanel);
+
+	}
+
 
 	private static Calendar DateToCalendar(Date date){ 
 		Calendar cal = Calendar.getInstance();
@@ -229,16 +272,41 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	}
 
 	public void updatePanel(){
+		int push = 0;
 		clearEvents();
 		List<Event> events = EventListModel.getEventListModel().getList();
 		for(Event eve: events){
 			Date evedate = eve.getStartDate();
-			if(isDateEqual(paneldate,evedate))
+			if(isDateEqual(paneldate,evedate) && !(isMultiDayEvent(eve)))
 				addEvent(eve);
+			if(isMultiDayEvent(eve)){
+				if(isTodayWithinDates(today,eve.getStartDate(), eve.getEndDate())){
+					int numEventsStartDay = numMultiDayEvents(eve.getStartDate());
+					int numEventDaysToday = numMultiDayEvents(today);
+					if(numEventsStartDay > numEventDaysToday ){
+						addMultiDayEvents(eve, numEventsStartDay-numEventDaysToday);
+					}else{
+						addEvent(eve);
+					}
+				}
+			}
 		}
 		configurePanel();
 	}
-
+	
+	int numMultiDayEvents(Date d)
+	{
+		List<Event> events = EventListModel.getEventListModel().getList();
+		int numToPush = 0;
+		for(Event eve: events){
+			if(isMultiDayEvent(eve)){
+				if(isTodayWithinDates(d, eve.getStartDate(), eve.getEndDate()))
+					numToPush++;
+			}
+		}
+		return numToPush;
+	}
+	
 	private boolean isDateEqual(Date d1, Date d2)
 	{
 		if (d1.getYear() == d2.getYear() && d1.getDate() == d2.getDate() && d1.getMonth() == d2.getMonth())
