@@ -18,9 +18,6 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 /**
  * This observer is called when a response is received from a request
  * to the server to add a message.
- * 
- * @author John Breen
- *
  */
 public class DeleteCommitmentObserver implements RequestObserver {
 

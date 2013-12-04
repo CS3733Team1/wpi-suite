@@ -47,7 +47,7 @@ public class CalendarPanel extends JTabbedPane {
 	
 	// Create TeamCalendar
 	public void createTeamCalendar() {
-		teamCalendarPanel = new CalendarTabPanel();
+		teamCalendarPanel = new CalendarTabPanel(this);
 
 		ImageIcon calIcon = new ImageIcon();
 		try {
@@ -59,7 +59,7 @@ public class CalendarPanel extends JTabbedPane {
 	
 	// Create PersonalCalendar
 	public void createPersonalCalendar() {
-		personalCalendarPanel = new CalendarTabPanel();
+		personalCalendarPanel = new CalendarTabPanel(this);
 
 		ImageIcon calIcon = new ImageIcon();
 		try {

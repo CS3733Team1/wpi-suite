@@ -141,16 +141,10 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	public List<Commitment> getList(){
 		return commitments;
 	}
-	
-	public List<Commitment> getList(boolean isTeam)
+
+	public void updateCommitment(Commitment oldCommitment, Commitment newCommitment) 
 	{
-		ArrayList<Commitment> list = new ArrayList<Commitment>();
-		for(Commitment com: commitments)
-		{
-			if(com.getTeam() == isTeam)
-				list.add(com);
-		}
-		
-		return list;
+		removeCommitment(oldCommitment);
+		addCommitment(newCommitment);
 	}
 }
