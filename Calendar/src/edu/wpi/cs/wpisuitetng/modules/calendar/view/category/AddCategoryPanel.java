@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 
 public class AddCategoryPanel extends JPanel implements KeyListener, ActionListener {
 	
@@ -82,13 +83,21 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 	}
 
 	private void validateFields() {
+		nameErrorLabel.setVisible(false);
+		ok.setEnabled(true);
+		
 		if(nameTextField.getText().trim().length() == 0) {
+			nameErrorLabel.setText("Enter a Name");
 			nameErrorLabel.setVisible(true);
 			ok.setEnabled(false);
-		} else {
-			nameErrorLabel.setVisible(false);
-			ok.setEnabled(true);
+		} 
+		
+		if (CategoryListModel.getCategoryListModel().isReserved(nameTextField.getText())) {
+			nameErrorLabel.setText("The current name is already in use");
+			nameErrorLabel.setVisible(true);
+			ok.setEnabled(false);
 		}
+		
 		this.revalidate();
 	}
 	

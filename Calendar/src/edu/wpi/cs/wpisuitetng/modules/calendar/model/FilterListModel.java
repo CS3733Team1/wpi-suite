@@ -60,6 +60,12 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		return Arrays.asList(defaultFilters).contains(filter);
 	}
 
+	// Used to see if a filter is already named
+	public boolean isReserved(String filterName) {
+		for(Filter filter: filters) if(filter.getName().equals(filterName)) return true;
+		return false;
+	}
+
 	public void setFilters(Filter[] filters) {
 		this.emptyModel();
 

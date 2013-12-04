@@ -143,4 +143,9 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	public static List<Category> getList() {
 		return categoryModel.categories;
 	}
+
+	public boolean isReserved(String categoryName) {
+		for(Category category: categories) if(category.getName().equals(categoryName)) return true;
+		return false;
+	}
 }
