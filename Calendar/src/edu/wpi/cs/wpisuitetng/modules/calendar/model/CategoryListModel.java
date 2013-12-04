@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,6 +33,13 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 
 	/** The list of commitments on the calendar */
 	private List<Category> categories;
+
+	private final Category[] defaultCategories = {
+			new Category("None", Color.BLACK), 
+			new Category("Important", Color.RED),
+			new Category("Work", Color.BLUE),
+			new Category("Home", Color.ORANGE),
+			new Category("Holiday", Color.PINK)};
 
 	/**
 	 * Constructs a new calendar with no commitments.
@@ -69,21 +77,22 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 		}
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
-	
+
+	// Used to see if a category is a default or not
+	public boolean isDefault(Category category) {
+		return Arrays.asList(defaultCategories).contains(category);
+	}
+
 	public void setCategories(Category[] categories) {
 		this.emptyModel();
 
-		//DEFAULT CATEGORIES
-		this.categories.add(new Category("None", Color.BLACK));
-		this.categories.add(new Category("Important", Color.RED));
-		this.categories.add(new Category("Work", Color.BLUE));
-		this.categories.add(new Category("Home", Color.ORANGE));
-		this.categories.add(new Category("Holiday", Color.PINK));
-		
+		//DEFAULT CATEGORIES		
+		for(Category category: defaultCategories) this.categories.add(category);
+
 		for (int i = 0; i < categories.length; i++) {
 			if(!(this.categories.contains(categories[i]))) this.categories.add(categories[i]);
 		}
-		
+
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -114,17 +123,11 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	public Category getElementAt(int index) {
 		return categories.get(index);
 	}
-	
-	public void removeCategory(int index) {
-		categories.remove(index);
-		this.fireIntervalAdded(this, 0, 0);
-	}
 
 	public void removeCategory(Category cat) {
 		categories.remove(cat);
 		this.fireIntervalAdded(this, 0, 0);
 	}
-
 
 	/**
 	 * Returns the number of commitments in the model. Also used internally by the

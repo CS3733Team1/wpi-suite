@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -23,8 +24,10 @@ import javax.swing.AbstractListModel;
 
 public class FilterListModel extends AbstractListModel<Filter> {
 	private static FilterListModel filterListModel;
-	
+
 	List<FilterChangedListener> filterChangedListeners = new ArrayList<FilterChangedListener>();
+
+	private final Filter[] defaultFilters = {new Filter("None")};
 
 	/** The list of filter */
 	private List<Filter> filters;
@@ -52,12 +55,17 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
+	// Used to see if a filter is a default or not
+	public boolean isDefault(Filter filter) {
+		return Arrays.asList(defaultFilters).contains(filter);
+	}
+
 	public void setFilters(Filter[] filters) {
 		this.emptyModel();
-		
+
 		//DEFAULT FILTERS
-		this.filters.add(new Filter("None"));
-		
+		for(Filter filter: defaultFilters) this.filters.add(filter);
+
 		for (int i = 0; i < filters.length; i++) {
 			this.filters.add(filters[i]);
 		}
@@ -100,11 +108,6 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		return filters.get(index);
 	}
 
-	public void removeFilter(int index) {
-		filters.remove(index);
-		this.fireIntervalAdded(this, 0, 0);
-	}
-
 	public void removeFilter(Filter filter) {
 		filters.remove(filter);
 		this.fireIntervalAdded(this, 0, 0);
@@ -135,12 +138,12 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		if(activeFilter.getName().equals("None")) return commitmentList;
 		else return activeFilter.applyCommitmentFilter(commitmentList);
 	}
-	
+
 	public void fireFilterChanged() {
 		for(FilterChangedListener l: filterChangedListeners)
 			l.filterChanged();
 	}
-	
+
 	public void addFilterChangedListener(FilterChangedListener l) {
 		filterChangedListeners.add(l);
 	}
