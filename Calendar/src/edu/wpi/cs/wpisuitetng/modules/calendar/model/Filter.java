@@ -52,7 +52,7 @@ public class Filter extends DeletableAbstractModel {
 		return categories;
 	}
 	
-	public ArrayList<Event> apply(Event[] inlist) {
+	public ArrayList<Event> applyEventFilter(List<Event> inlist) {
 		ArrayList<Event> outlist = new ArrayList<Event>();
 		for(Event event: inlist) {
 			for(Category cat: this.categories) {
@@ -66,8 +66,7 @@ public class Filter extends DeletableAbstractModel {
 		return outlist;
 	}
 	
-	public ArrayList<Commitment> apply(Commitment[] inlist)
-	{
+	public ArrayList<Commitment> applyCommitmentFilter(List<Commitment> inlist) {
 		ArrayList<Commitment> outlist = new ArrayList<Commitment>();
 		
 		for(Commitment commitment: inlist)

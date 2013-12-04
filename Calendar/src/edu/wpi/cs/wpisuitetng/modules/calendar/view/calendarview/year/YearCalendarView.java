@@ -51,6 +51,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 		this.updateDates();
 
 		JScrollPane scrollPane = new JScrollPane(year, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
 		this.add(scrollPane, "grow");
 		this.addAncestorListener(this);
 		this.addComponentListener(this);
@@ -58,7 +59,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 
 	private void updateLayout() {
 		year.removeAll();
-		year.setLayout(new MigLayout("fill, insets 0, gap 1% 1%, wrap " + c));
+		year.setLayout(new MigLayout("fill, insets 0, wrap " + c));
 
 		for(Month month: monthList) year.add(month, "grow");
 	}
