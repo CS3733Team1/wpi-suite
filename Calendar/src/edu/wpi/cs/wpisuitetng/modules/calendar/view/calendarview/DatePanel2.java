@@ -2,14 +2,11 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
@@ -72,9 +69,9 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 		if(isDateEqual(d3,today)){
 			addEvent(eve1);
 		}
-		addEvent(eve);
+//		addEvent(eve);
 		
-		addEvent(ev2);
+//		addEvent(ev2);
 		updatePanel();
 		configurePanel();
 	}

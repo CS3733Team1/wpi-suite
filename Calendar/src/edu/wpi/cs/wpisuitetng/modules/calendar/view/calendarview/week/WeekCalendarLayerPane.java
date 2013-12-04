@@ -23,8 +23,6 @@ import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.EventView;
 
 public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListener{
 	private WeekView weekview;
@@ -120,8 +118,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 				iter.setDate(iter.getDate() + 1); //setDate knows where month boundaries are
 			}
 		}
-		multilistlist.get(0).add(new Event("SHIT", new Date(), new Date()));
-		multilistlist.get(1).add(new Event("SHIT", new Date(), new Date()));
+
 		multiview = new MultidayEventWeekView(multilistlist, this.getSize());
 		
 		this.add(multiview, layer, -1);

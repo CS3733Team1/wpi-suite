@@ -11,16 +11,12 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JLayeredPane;
-import javax.swing.Scrollable;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -78,8 +74,12 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 				else
 					multi.add(eve);	
 			}
+			else if(dayview.getDate().after(eve.getStartDate()) && dayview.getDate().before(eve.getEndDate()))
+			{
+				multi.add(eve);
+			}
 		}
-		multi.add(new Event("RAISE YOUR DONGERS", new Date(113, 12, 2), new Date(113, 12, 5)));
+		//multi.add(new Event("RAISE YOUR DONGERS", new Date(113, 12, 2), new Date(113, 12, 5)));
 		
 		eventviewlist = new EventView(test, this.getSize());
 		multiviewlist = new MultidayEventView(multi, this.getSize());
