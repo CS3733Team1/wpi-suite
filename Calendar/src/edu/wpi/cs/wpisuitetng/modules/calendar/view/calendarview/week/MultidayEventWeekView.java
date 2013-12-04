@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -10,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
@@ -35,6 +35,8 @@ public class MultidayEventWeekView extends JPanel{
 	 */
 	
 	public void showEvents(){
+		ArrayList<String> names = new ArrayList<String>();
+		
 		if (multidaye.size() == 0){
 			return;
 		}
@@ -72,12 +74,16 @@ public class MultidayEventWeekView extends JPanel{
 			StringBuilder bob = new StringBuilder();
 			bob.append("<html>");
 			for (Event eve: list){
+				if(names.contains(eve.getName()))
+					continue;
 				bob.append("<p>");
 				bob.append("<b>Name:</b> ");
 				bob.append(eve.getName());
 				bob.append("<br><b>Description:</b> ");
 				bob.append(eve.getDescription());
 				bob.append("</p>");
+				
+				names.add(eve.getName());
 			}
 			bob.append("</html>");
 			eventinfo.setToolTipText(bob.toString());

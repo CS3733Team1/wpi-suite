@@ -88,6 +88,10 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 					multilist.add(eve);
 				}
 			}
+			else if(current.after(eve.getStartDate()) && current.before(eve.getEndDate()))
+			{
+				multilist.add(eve);
+			}
 		}
 		
 		eventview = new EventWeekView(eventlist, this.getSize(), weekview.getStart());
