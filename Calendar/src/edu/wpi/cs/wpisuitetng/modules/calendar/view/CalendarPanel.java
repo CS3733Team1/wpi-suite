@@ -21,7 +21,8 @@ import javax.swing.JTabbedPane;
 public class CalendarPanel extends JTabbedPane {
 	private CalendarTabPanel teamCalendarPanel;
 	private CalendarTabPanel personalCalendarPanel;
-
+	private CalendarTabPanel BothCalendarPanel;
+	
 	public CalendarPanel() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
@@ -76,5 +77,18 @@ public class CalendarPanel extends JTabbedPane {
 	public void refreshSelectedPanel(){
 		if(this.getSelectedComponent() instanceof CalendarTabPanel)
 			((CalendarTabPanel)this.getSelectedComponent()).resetSelection();
+	}
+
+
+	public void createCalendar() {
+		BothCalendarPanel = new CalendarTabPanel(this);
+
+		ImageIcon calIcon = new ImageIcon();
+		try {
+			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/team_calendar.png")));
+		} catch (IOException e) {}
+
+		this.addTab("Both Calendars", calIcon, BothCalendarPanel, "Both Calendars");
+		
 	}
 }
