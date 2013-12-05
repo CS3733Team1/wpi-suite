@@ -226,9 +226,19 @@ public class EventWeekView extends JPanel{
 					infobuilder.append("</p></html>");
 					panel.setToolTipText(infobuilder.toString());
 					
-					panel.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
+					JLabel name = new JLabel(e.getName());
+					panel.add(name, "wmin 0, aligny center, alignx center");
 					if (e.getCategory() != null){
 						panel.setBackground(e.getCategory().getColor());
+						Color catColor = e.getCategory().getColor();
+						float[] hsb = new float[3];
+						hsb = Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
+						if(hsb[2]<0.5){
+							name.setForeground(Color.WHITE);
+						}
+						else{
+							name.setForeground(Color.BLACK);
+						}
 					}
 					else{
 						panel.setBackground(Color.CYAN);
