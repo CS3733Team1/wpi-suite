@@ -44,9 +44,9 @@ public class AddEventObserver implements RequestObserver {
 		
 		System.out.printf("Adding event with id %d to model\n",event.getUniqueID());
 		
-		EventListModel.getEventListModel().getList().add(event);
+		//EventListModel.getEventListModel().getList().add(event);
 		// Pass the messages back to the controller
-		//controller.addEventToModel(event);
+		controller.addEventToModel(event);
 	}
 
 	@Override

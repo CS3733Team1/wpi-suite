@@ -179,12 +179,14 @@ public class Event extends DeletableAbstractModel {
 	public String toString()
 	{
 		//TODO: Remember to change this when participants, recurrence etc. gets added
-		String str = "Name: " + this.name + " Start Date: " + this.startDate.toString()
+		String str = "UniqueId = " + this.UniqueID;
+				str += "Name: " + this.name + " Start Date: " + this.startDate.toString()
 				+ " End Date: " + this.endDate.toString();
 		if(this.category != null)
 			str += " Category: " + this.category.toJSON();
 		if(this.description != null)
 			str += " Description: " + this.description;
+		
 		str += "\n";
 		return str;
 	}
