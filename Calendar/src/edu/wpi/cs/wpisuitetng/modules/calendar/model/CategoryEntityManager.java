@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -58,12 +59,24 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		// Parse the message from JSON
 		final Category newMessage = Category.fromJSON(content);
 		
-		if (newMessage.isMarkedForDeletion())
+		newMessage.setOwner(s.getUsername());
+		//until we find a id that is unique assume another event might alreayd have it
+		boolean found=true;
+		long id=0;
+		while (found)
 		{
-			newMessage.unmarkForDeletion();
-			deleteCategory(newMessage);
-			return newMessage;
+			id = UUID.randomUUID().getMostSignificantBits();
+			for (Category e : this.getAll(s) )
+			{
+				if (e.getUniqueID()==id)
+				{
+					found=true;
+				}
+			}
+			found=false;
 		}
+		newMessage.setUniqueID(id);
+		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwner());
 		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -154,7 +167,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		System.out.println("Category entity manager delete id = " + id);
 		try
 		{
-			Category todelete= (Category) db.retrieve(Category.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+			Category todelete= (Category) db.retrieve(Category.class, "UniqueID",Long.parseLong(id), s.getProject()).get(0);
 			deleteCategory(todelete);
 			return true;
 		}
