@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -113,12 +114,29 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 				day.setBackground(Color.RED);
 				StringBuilder bob = new StringBuilder();
 				bob.append("<html>");
+				int i=1;
 				for (Commitment commit: foundyou.get(x)){
-					bob.append("<p>");
+					bob.append("<p style='width:175px'>");
+					if(i != 1)
+					{
+					bob.append("<br>");
+					}
+					bob.append("Commitment ");
+					bob.append(new Integer(i).toString()+":");
+					i++;
+					bob.append("<br>");
 					bob.append("<b>Name:</b> ");
 					bob.append(commit.getName());
-					bob.append("<br><b>Description:</b> ");
-					bob.append(commit.getDescription());
+					bob.append("<br><b>Due Date:</b> ");
+					bob.append(DateFormat.getInstance().format(commit.getDueDate()));
+					if(commit.getCategory()!=null){
+						bob.append("<br><b>Category: </b>");
+						bob.append(commit.getCategory().getName());
+					}
+					if(commit.getDescription().length()>0){
+						bob.append("<br><b>Description:</b> ");
+						bob.append(commit.getDescription());
+					}
 					bob.append("</p>");
 				}
 				bob.append("</html>");

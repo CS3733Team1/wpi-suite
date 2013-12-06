@@ -147,7 +147,12 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 				int i=1;
 				for (Commitment commit: foundyou.get(x)){
 					bob.append("<p style='width:175px'>");
-					bob.append(new Integer(i).toString()+".");
+					if(i != 1)
+					{
+					bob.append("<br>");
+					}
+					bob.append("Commitment ");
+					bob.append(new Integer(i).toString()+":");
 					i++;
 					bob.append("<br>");
 					bob.append("<b>Name:</b> ");
