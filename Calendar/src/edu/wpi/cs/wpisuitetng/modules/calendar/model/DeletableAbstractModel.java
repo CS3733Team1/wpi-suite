@@ -23,7 +23,8 @@ public abstract class DeletableAbstractModel extends AbstractModel{
 	//and so it shall be 
 	public long UniqueID = 0;//(int) UUID.randomUUID().getMostSignificantBits();
 	
-	protected String Owner;
+	protected int OwnerID=0;
+	protected String OwnerName;
 	protected boolean isTeam=true;
 	
 	public long getUniqueID()
@@ -42,13 +43,21 @@ public abstract class DeletableAbstractModel extends AbstractModel{
 	{
 		this.isTeam=teamhuh;
 	}
-	public void setOwner(String own)
+	public void setOwnerName(String own)
 	{
-		this.Owner=own;
+		this.OwnerName=own;
 	}
-	public String getOwner()
+	public String getOwnerName()
 	{
-		return this.Owner;
+		return this.OwnerName;
+	}
+	public void setOwnerID(int id)
+	{
+		this.OwnerID=id;
+	}
+	public int getOwnerID()
+	{
+		return this.OwnerID;
 	}
 	protected boolean MarkedForDeletion = false;
 	

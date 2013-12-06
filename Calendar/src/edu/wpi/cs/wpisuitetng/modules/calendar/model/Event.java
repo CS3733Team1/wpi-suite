@@ -48,6 +48,8 @@ public class Event extends DeletableAbstractModel {
 		super();
 		System.out.println("Event Copy Constructor");
 		this.UniqueID=other.getUniqueID();
+		this.OwnerID=other.getOwnerID();
+		this.OwnerName=other.getOwnerName();
 		this.name = other.name;
 		this.startDate = other.startDate;
 		this.endDate = other.endDate;

@@ -61,7 +61,8 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		
 		//System.out.println("EM: marked for delete:" + newMessage.isMarkedForDeletion());
 		
-		newMessage.setOwner(s.getUsername());
+		newMessage.setOwnerName(s.getUsername());
+		newMessage.setOwnerID(s.getUser().getIdNum());
 		//until we find a id that is unique assume another event might alreayd have it
 		boolean found=true;
 		long id=0;
