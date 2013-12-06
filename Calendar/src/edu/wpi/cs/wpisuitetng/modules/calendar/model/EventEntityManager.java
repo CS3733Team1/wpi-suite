@@ -153,7 +153,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
 				System.out.println("Trying to delete an event with id = " + id);
 				try {
-				Event todelete = (Event) db.retrieve(Event.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+				Event todelete = (Event) db.retrieve(Event.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
 				this.deleteEvent(todelete);
 				}
 				catch (Exception e) {
