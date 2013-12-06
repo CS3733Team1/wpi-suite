@@ -190,6 +190,11 @@ public class Event extends DeletableAbstractModel {
 			str += " Category: " + this.category.toJSON();
 		if(this.description != null)
 			str += " Description: " + this.description;
+<<<<<<< HEAD
+		
+=======
+		str+= " UniqueID: " + this.UniqueID;
+>>>>>>> 9261fd21c7e5b33e9e9b1158bb839abd4fb89ac6
 		str += "\n";
 		return str;
 	}
