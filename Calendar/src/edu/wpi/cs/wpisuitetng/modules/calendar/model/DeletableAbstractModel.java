@@ -12,6 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.UUID;
 
+import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 public abstract class DeletableAbstractModel extends AbstractModel{
@@ -19,13 +21,35 @@ public abstract class DeletableAbstractModel extends AbstractModel{
 	//In the beginning it was described in Model.java
 	//that models shall have a Unique Identifier int
 	//and so it shall be 
-	public int UniqueID = (int) UUID.randomUUID().getMostSignificantBits();
+	public long UniqueID = 0;//(int) UUID.randomUUID().getMostSignificantBits();
 	
-	public int getUniqueID()
+	protected String Owner;
+	protected boolean isTeam=true;
+	
+	public long getUniqueID()
 	{
 		return UniqueID;
 	}
-	@Deprecated
+	public void setUniqueID(long id)
+	{
+		this.UniqueID=id;
+	}
+	public boolean getisTeam()
+	{
+		return isTeam;
+	}
+	public void setisTeam(boolean teamhuh)
+	{
+		this.isTeam=teamhuh;
+	}
+	public void setOwner(String own)
+	{
+		this.Owner=own;
+	}
+	public String getOwner()
+	{
+		return this.Owner;
+	}
 	protected boolean MarkedForDeletion = false;
 	
 	@Deprecated

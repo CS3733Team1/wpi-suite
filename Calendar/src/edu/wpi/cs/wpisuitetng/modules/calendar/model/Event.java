@@ -29,7 +29,6 @@ public class Event extends DeletableAbstractModel {
 	private String description;
 	private Category category;
 	
-	private boolean isTeam;
 
 	/*
 	 * TO DO:

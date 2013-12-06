@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -40,8 +41,12 @@ public class AddEventObserver implements RequestObserver {
 		// Parse the message out of the response body
 		final Event event = Event.fromJSON(response.getBody());
 		
+		
+		System.out.printf("Adding event with id %d to model\n",event.getUniqueID());
+		
+		EventListModel.getEventListModel().getList().add(event);
 		// Pass the messages back to the controller
-		controller.addEventToModel(event);
+		//controller.addEventToModel(event);
 	}
 
 	@Override
