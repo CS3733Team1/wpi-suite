@@ -29,6 +29,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListMode
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
+/**
+ * This is the bottom layer of the week view hierarchy. 
+ */
+
 public class WeekView extends JPanel implements ICalendarView {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};

@@ -26,6 +26,10 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 
+/**
+ * Handles resizing and scrolling in week view.
+ */
+
 public class WeekCalendarScrollPane extends JScrollPane implements ListDataListener {
 	private WeekCalendarLayerPane weeklayer;
 	private List<JPanel> weekpanel;

@@ -22,6 +22,10 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
+/**
+ * The second level of the week view hierarchy. Holds the WeekCalendarLayerPane and the WeekCalendarScrollPane.
+ */
+
 public class WeekCalendarPanel extends JPanel implements ICalendarView {
 
 	private WeekCalendarScrollPane weekscroll;

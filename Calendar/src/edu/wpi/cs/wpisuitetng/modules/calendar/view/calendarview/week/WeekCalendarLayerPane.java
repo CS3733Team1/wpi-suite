@@ -24,6 +24,11 @@ import javax.swing.event.ListDataListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
+/**
+ * This class is used to display events in week view. It is the third level of the week view hierarchy:
+ * it is on top of the WeekCalendarPanel, and it holds an EventWeekView and a MultidayEventWeekView.
+ */
+
 public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListener{
 	private WeekView weekview;
 	private EventWeekView eventview;
@@ -60,6 +65,10 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		
 		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 	}
+	
+	/**
+	 * Clears and reassembles the event displays.
+	 */
 	
 	public void ChangeTheWorld(){
 		Date key;

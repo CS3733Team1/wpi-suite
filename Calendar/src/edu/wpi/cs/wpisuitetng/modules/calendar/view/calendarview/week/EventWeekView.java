@@ -25,6 +25,12 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
+
+/**
+ * This class shows single-day events in week view. It is a component of the WeekCalendarLayerPane, along
+ * with MultidayEventWeekView.
+ */
+
 public class EventWeekView extends JPanel{
 
 	private List<Event> events;
