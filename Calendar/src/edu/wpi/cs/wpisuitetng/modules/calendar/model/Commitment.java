@@ -33,9 +33,31 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			this.display = display;
 		}
 		
+		
+		
 		public String toString()
 		{
 			return display;
+		}
+	}
+	
+	private enum selectedCalendar 
+	{
+		PERSONAL ("Personal"),
+		TEAM ("Team");
+		
+		private String typeDisplay;
+		
+		selectedCalendar(String typeDisplay)
+		{
+			this.typeDisplay = typeDisplay;
+		}
+		
+		
+		
+		public String toString()
+		{
+			return typeDisplay;
 		}
 	}
 	
@@ -47,6 +69,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	private String description;
 	private Category category;
 	private State progress;
+	private selectedCalendar calType;
 	private int id;
 	
 	//------------ATTENTION---------
@@ -77,6 +100,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.progress = State.NEW; //Default
+		this.calType = selectedCalendar.PERSONAL;//Default
 		createID();
 	}
 
@@ -90,6 +114,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.category = category.cloneFake();
 		this.progress = State.NEW; //Default
+		this.calType = selectedCalendar.PERSONAL;//Default
 		createID();
 	}
 
@@ -106,6 +131,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = State.NEW; //Default
+		this.calType = selectedCalendar.PERSONAL;//Default
 		createID();
 
 	}
@@ -122,6 +148,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this(name, dueDate);
 		this.description = description;
 		this.progress=getStateFromString(progress);
+		this.calType = selectedCalendar.PERSONAL;//Default
 		createID();
 	}
 	
@@ -129,14 +156,33 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * Constructs a Commitment
 	 * @param name name of Commitment
 	 * @param dueDate due date of Commitment
+	 * @param description description of Commitment
+	 * @param progress progress of Commitment
+	 * @param selectedCalendar Personal or Team Calendar
+	 */
+	public Commitment(String name, Date dueDate, String description, 
+			String progress, String selectedCalendar) {
+		this(name, dueDate);
+		this.description = description;
+		this.progress=getStateFromString(progress);
+		this.calType = getCalFromString(selectedCalendar);
+		createID();
+	}
+		
+	/**
+	 * Constructs a Commitment
+	 * @param name name of Commitment
+	 * @param dueDate due date of Commitment
 	 * @param category category of Commitment
 	 * @param progress progress of Commitment
+	 * @param selectedCalendar Personal or Team Calendar
 	 */
 	public Commitment(String name, Date dueDate, Category category, 
-			String progress) {
+			String progress, String selectedCalendar) {
 		this(name, dueDate);
 		this.category = category.cloneFake();
 		this.progress = getStateFromString(progress);
+		this.calType = getCalFromString(selectedCalendar);
 		createID();
 	}
 	
@@ -147,13 +193,14 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param description description of Commitment
 	 * @param category category of Commitment
 	 * @param progress progress of Commitment
+	 * @param selectedCalendar Personal or Team Calendar
 	 */
 	public Commitment(String name, Date dueDate, String description,
-			Category category, String progress) {
+			Category category, String progress, String selectedCalendar) {
 		this(name, dueDate);
 		this.description = description;
 		this.category = category.cloneFake();
-		this.progress = getStateFromString(progress);
+		this.calType = getCalFromString(selectedCalendar);
 		createID();
 	}
 
@@ -242,6 +289,31 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		}
 		return null;
 	}
+	
+	public String getCalType(){
+		return calType.toString();
+	}
+
+	private selectedCalendar getCalTypeState(){
+		return calType;
+	}
+
+	/**
+	 * @param category the Category object to set the Commitment's Category to
+	 */
+	public void setcalType(selectedCalendar cal) {
+		this.calType = cal;
+	}
+
+	private selectedCalendar getCalFromString(String calendarString){
+		switch(calendarString){
+			case "Personal": 
+				return selectedCalendar.PERSONAL;
+			case "Team": 
+				return selectedCalendar.TEAM;
+		}
+		return null;
+	}
 
 	@Override
 	public void save() {
@@ -316,6 +388,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		
 		str += String.format("<br><b>Progress:</b> %s", progress.toString());
 		
+		str += String.format("<br><b>Progress:</b> %s", calType.toString());
+		
 		if(this.description != null)
 			str += "<br><b>Description:</b> " + getDescription();
 		
@@ -365,5 +439,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.id = toCopyFrom.getID();
 		this.name = toCopyFrom.getName();
 		this.progress = toCopyFrom.getProgressState();
+		this.calType = toCopyFrom.getCalTypeState();
 	}
 }//end Commitment
