@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
+import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWe
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
@@ -41,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabP
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 
 public class CalendarTabPanel extends JPanel {
+	private JButton personalCalButton, teamCalButton, bothCalButton;
 	private JButton prevButton, homeButton, nextButton;
 	private JButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
 
@@ -52,23 +54,27 @@ public class CalendarTabPanel extends JPanel {
 	private MonthCalendarView monthView;
 	private YearCalendarView yearView;
 
-	private JLabel calendarViewTitleLabel;
+	private JLabel calendarTitleLabel;
 	
 	private JTabbedPane filterCategoryTabbedPane;
 	
 	private CommitmentSubTabPanel commitmentSubTabPanel;
 	
-	public CalendarTabPanel(CalendarPanel calendarPanel) 
-	{
-		this.setLayout(new MigLayout());
+	public CalendarTabPanel(CalendarPanel calendarPanel) {
+		this.setLayout(new MigLayout("fill"));
 
 		filterCategoryTabbedPane = new JTabbedPane();
+		filterCategoryTabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 		
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		
+		personalCalButton = new JButton("Personal");
+		teamCalButton = new JButton("Team");
+		bothCalButton = new JButton("Both");
+		
 		try {
 			prevButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png"))));
-			homeButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/home.png"))));
+			homeButton = new JButton("Today");
 			nextButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/next.png"))));
 
 			dayViewButton = new JButton("Day",
@@ -89,35 +95,44 @@ public class CalendarTabPanel extends JPanel {
 			filterCategoryTabbedPane.addTab("Filters", new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))), new FilterTabPanel());
 		} catch (IOException e) {}
 
-		homeButton.setMargin(new Insets(0, 0, 0, 0));
 		prevButton.setMargin(new Insets(0, 0, 0, 0));
 		nextButton.setMargin(new Insets(0, 0, 0, 0));
 
 		prevButton.addActionListener(new CalendarViewPreviousController(this));
-		nextButton.addActionListener(new CalendarViewNextController(this));
 		homeButton.addActionListener(new CalendarViewTodayController(this));
-
+		nextButton.addActionListener(new CalendarViewNextController(this));
+		
 		dayViewButton.addActionListener(new DisplayDayViewController(this));
 		weekViewButton.addActionListener(new DisplayWeekViewController(this));
 		monthViewButton.addActionListener(new DisplayMonthViewController(this));
 		yearViewButton.addActionListener(new DisplayYearViewController(this));
 
-		calendarViewTitleLabel = new JLabel();
+		calendarTitleLabel = new JLabel();
+		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), calendarTitleLabel.getFont().getStyle(), 16));
 
-		this.add(prevButton, "split 4");
-		this.add(homeButton);
-		this.add(nextButton);
-		this.add(calendarViewTitleLabel);
+		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets top 0, insets bottom 0", "[]push[]", "[][]"));
+		
+		topButtonPanel.add(personalCalButton,	"cell 0 0");
+		topButtonPanel.add(teamCalButton,		"cell 0 0");
+		topButtonPanel.add(bothCalButton,		"cell 0 0");
 
-		this.add(yearViewButton, "align right, split 4");
-		this.add(monthViewButton);
-		this.add(weekViewButton);
-		this.add(dayViewButton);
+		topButtonPanel.add(yearViewButton,		"cell 1 0, align right");
+		topButtonPanel.add(monthViewButton,		"cell 1 0");
+		topButtonPanel.add(weekViewButton,		"cell 1 0");
+		topButtonPanel.add(dayViewButton,		"cell 1 0");
 
-		this.add(filterCategoryTabbedPane, "growy, wmin 265, span 1 2, wrap");
+		topButtonPanel.add(prevButton,			"cell 0 1");
+		topButtonPanel.add(homeButton,			"cell 0 1");
+		topButtonPanel.add(nextButton,			"cell 0 1");
+		
+		topButtonPanel.add(calendarTitleLabel,	"cell 1 1, align right");
+		
+		this.add(topButtonPanel, "growx");
+		
+		this.add(filterCategoryTabbedPane, "grow, span 1 2, wrap");
 		
 		calendarViewPanel = new JPanel(new MigLayout("fill"));
-		this.add(calendarViewPanel, "grow, push, span 2");
+		this.add(calendarViewPanel, "grow, push");
 		
 		dayView = new DayCalendarPanel();
 		weekView = new WeekCalendarPanel();
@@ -147,7 +162,7 @@ public class CalendarTabPanel extends JPanel {
 	}
 	
 	public void setCalendarViewTitle(String title) {
-		calendarViewTitleLabel.setText(title);
+		calendarTitleLabel.setText(title);
 	}
 
 	public void setCalendarViewNext() {
