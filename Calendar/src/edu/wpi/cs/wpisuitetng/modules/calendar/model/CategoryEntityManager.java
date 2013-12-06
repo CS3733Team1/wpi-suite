@@ -77,7 +77,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 			found=false;
 		}
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwner());
+		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwnerName());
 		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to

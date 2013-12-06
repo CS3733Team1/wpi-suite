@@ -76,7 +76,7 @@ public class EventEntityManager implements EntityManager<Event> {
 			found=false;
 		}
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwner());
+		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwnerName());
 		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -112,7 +112,10 @@ public class EventEntityManager implements EntityManager<Event> {
 		// Passing a dummy Event lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 		List<Model> messages = db.retrieveAll(new Event(), s.getProject());
-
+		
+		for (Event e: messages.toArray(new Event[0]) ){
+			System.err.println("DB: " + e.getUniqueID());
+		}
 		// Return the list of messages as an array
 		return messages.toArray(new Event[0]);
 	}
@@ -163,6 +166,7 @@ public class EventEntityManager implements EntityManager<Event> {
 				}
 				
 				return true;
+
 	}
 
 	/*
