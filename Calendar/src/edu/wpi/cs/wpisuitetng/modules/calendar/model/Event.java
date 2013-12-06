@@ -160,12 +160,14 @@ public class Event extends DeletableAbstractModel {
 	public String toJSON() {
 		//name, dueDate, description, category
 		String str = new Gson().toJson(this, Event.class);
+		System.err.println(str);
 		return str;
 	}
 	
 	public static Event[] fromJSONArray(String input)
 	{
 		final Gson parser = new Gson();
+		System.err.println(input);
 		return parser.fromJson(input, Event[].class);
 	}
 	
@@ -186,6 +188,7 @@ public class Event extends DeletableAbstractModel {
 			str += " Category: " + this.category.toJSON();
 		if(this.description != null)
 			str += " Description: " + this.description;
+		str+= " UniqueID: " + this.UniqueID;
 		str += "\n";
 		return str;
 	}

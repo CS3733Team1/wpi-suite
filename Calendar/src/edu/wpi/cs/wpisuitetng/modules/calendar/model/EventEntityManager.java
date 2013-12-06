@@ -96,7 +96,10 @@ public class EventEntityManager implements EntityManager<Event> {
 		// Passing a dummy Event lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 		List<Model> messages = db.retrieveAll(new Event(), s.getProject());
-
+		
+		for (Event e: messages.toArray(new Event[0]) ){
+			System.err.println("DB: " + e.getUniqueID());
+		}
 		// Return the list of messages as an array
 		return messages.toArray(new Event[0]);
 	}
@@ -136,17 +139,22 @@ public class EventEntityManager implements EntityManager<Event> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-				System.out.println("Trying to delete an event with id = " + id);
-				try {
-				Event todelete = (Event) db.retrieve(Event.class, "UniqueID", id, s.getProject()).get(0);
-				this.deleteEvent(todelete);
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-					return false;
-				}
-				
-				return true;
+		System.out.println("Trying to delete an event with id = " + id);
+		List<Model> messages = db.retrieveAll(new Event(), s.getProject());
+
+		for (Event e: messages.toArray(new Event[0]) ){
+			System.err.println("DBz: " + e.getUniqueID());
+		}
+		try {
+			Event todelete = (Event) db.retrieve(Event.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+			this.deleteEvent(todelete);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
 	}
 
 	/*

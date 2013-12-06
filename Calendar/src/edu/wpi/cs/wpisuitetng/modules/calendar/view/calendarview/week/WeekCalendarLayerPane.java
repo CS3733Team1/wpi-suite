@@ -103,7 +103,6 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		
 		for(Event e: multilist)
 		{
-			System.out.println("MULTIDAY EVENT" + e.toString());
 			if(current.before(e.getStartDate()))
 				iter = (Date) e.getStartDate().clone();
 			else

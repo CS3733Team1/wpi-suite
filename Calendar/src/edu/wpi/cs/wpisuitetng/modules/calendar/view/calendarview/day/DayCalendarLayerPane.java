@@ -62,8 +62,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		
 		
 		while(event.hasNext()){
-			Event eve = new Event(event.next());
-			System.out.println("Change the world has event: \n" + eve);
+			Event eve = event.next();
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){
@@ -82,7 +81,8 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		//multi.add(new Event("RAISE YOUR DONGERS", new Date(113, 12, 2), new Date(113, 12, 5)));
 		
 		eventviewlist = new EventView(test, this.getSize());
-		multiviewlist = new MultidayEventView(multi, this.getSize());
+		multiviewlist = new MultidayEventView(multi, this.getSize(), getDayViewDate());
+		
 		this.add(multiviewlist, layer, -1);
 		layer++;
 		this.add(eventviewlist, layer,-1);

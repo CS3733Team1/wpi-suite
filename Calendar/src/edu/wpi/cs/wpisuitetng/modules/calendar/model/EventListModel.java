@@ -116,7 +116,9 @@ public class EventListModel extends AbstractListModel<Event> {
 	}
 
 	public void removeEvent(Event event) {
+		System.err.println(events.size());
 		events.remove(event);
+		System.err.println("size:" +events.size());
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
