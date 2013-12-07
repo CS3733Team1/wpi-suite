@@ -28,13 +28,8 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	}
 
 	private void filterEvents() {
+		filteredEvents.clear();
 		List<Event> eventList = EventListModel.getEventListModel().getList();
-
-		int removed = filteredEvents.size();
-		
-		while(filteredEvents.size() != 0) filteredEvents.remove(0);
-		
-		this.fireIntervalRemoved(this, 0, Math.max(removed - 1, 0));
 		
 		for(Event e: FilterListModel.getFilterListModel().applyEventFilter(eventList)) filteredEvents.add(e);
 		

@@ -46,7 +46,6 @@ public class MultidayEventWeekView extends JPanel{
 			return;
 		}
 		
-		System.out.println("WHY U NO SHOWarh");
 		this.setLayout(new MigLayout("fill", 
 				"[8%][13%][13%][13%][13%][13%][13%][13%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
@@ -54,7 +53,6 @@ public class MultidayEventWeekView extends JPanel{
 		int y = 1;
 		for(List<Event> list: multidaye)
 		{
-			System.out.println("LIST SIZE: " + list.size());
 			if(list.size() == 0)
 				continue;
 

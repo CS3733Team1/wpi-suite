@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	 * Constructs a new calendar with no commitments.
 	 */
 	private CategoryListModel() {
-		categories = new ArrayList<Category>();
+		categories = Collections.synchronizedList(new ArrayList<Category>());
 	}
 
 	static public CategoryListModel getCategoryListModel() {

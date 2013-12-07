@@ -155,7 +155,7 @@ public class EventView extends JPanel {
 			}
 			
 			for (int z = 0; z < chain.size(); z++){
-				Event e = new Event(chain.get(z));
+				Event e = chain.get(z);
 				JPanel panel = new JPanel();
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
@@ -187,6 +187,7 @@ public class EventView extends JPanel {
 				}
 				infobuilder.append("</p></html>");
 				panel.setToolTipText(infobuilder.toString());
+				
 				panel.addMouseListener(new EventMouseListener(e, panel));
 				
 				if (e.getCategory() != null){

@@ -33,6 +33,7 @@ public class EventMouseListener implements MouseListener{
 	static ArrayList<JPanel> selectedPanels= new ArrayList<JPanel>();
 	
 	public EventMouseListener(Event e, JPanel epanel){
+		System.err.println("ML: " + e.getUniqueID());
 		this.e=e;
 		this.epanel=epanel;
 	}

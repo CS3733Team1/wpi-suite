@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,7 +35,8 @@ public class EventListModel extends AbstractListModel<Event> {
 	 * Constructs a new calendar with no events.
 	 */
 	private EventListModel() {
-		events = new ArrayList<Event>();
+		//Ask for a thread safe arrayList
+		events = Collections.synchronizedList(new ArrayList<Event>());
 	}
 
 	public static EventListModel getEventListModel()
@@ -114,7 +116,9 @@ public class EventListModel extends AbstractListModel<Event> {
 	}
 
 	public void removeEvent(Event event) {
+		System.err.println(events.size());
 		events.remove(event);
+		System.err.println("size:" +events.size());
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
@@ -136,15 +140,4 @@ public class EventListModel extends AbstractListModel<Event> {
 		return events;
 	}
 	
-	public List<Event> getList(boolean isTeam)
-	{
-		ArrayList<Event> list = new ArrayList<Event>();
-		for(Event eve: events)
-		{
-			if(eve.getTeam() == isTeam)
-				list.add(eve);
-		}
-		
-		return list;
-	}
 }
