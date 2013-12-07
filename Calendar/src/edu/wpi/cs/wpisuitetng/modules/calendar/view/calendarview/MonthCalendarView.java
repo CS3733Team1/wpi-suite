@@ -193,9 +193,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView, ListData
 	}
 	
 
-	/*
-	 * takes in a calendar and determines if it is the current month
-	 * returns boolean
+	/**
+	 * Takes in a calendar and determines if it is the current month
+	 * @param c calendar being checked
+	 * @return <b>true</b> if the calendar is on the current month and <b>false</b> otherwise
 	 * 
 	 */
 	public boolean isCurrentMonth(Calendar c)
