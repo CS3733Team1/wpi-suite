@@ -13,8 +13,10 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -120,6 +122,108 @@ public class EventView extends JPanel {
 	}
 	
 	/**
+	 * indicates whether e1 overlaps e2
+	 * @param e1 event to be tested
+	 * @param e2 event to test against
+	 * @return true if e1 starts before e2 ends
+	 */
+	private boolean overlapEvent(Event e1,Event e2){
+		if(e1.getStartDate().getHours() < e2.getEndDate().getHours()){
+			return true;
+		}
+		else if(e1.getStartDate().getHours() == e2.getEndDate().getHours()){
+			if(e1.getStartDate().getMinutes() < e2.getEndDate().getMinutes()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isBetween(Date test, Date start, Date end){
+		if(test.getHours() > start.getHours() &&
+				test.getHours() < end.getHours()){
+			return true;
+		}
+		else if(test.getHours() > start.getHours() &&
+				test.getHours() == end.getHours()){
+			if(test.getMinutes() < end.getMinutes()){
+				return true;
+			}
+		}
+		else if(test.getHours() == start.getHours() &&
+				test.getHours() < end.getHours()){
+			if(test.getMinutes() > start.getMinutes()){
+				return true;
+			}
+		}
+		else if(test.getHours() == start.getHours() &&
+				test.getHours() == end.getHours()){
+			if(test.getMinutes() > start.getMinutes() &&
+					test.getMinutes() < end.getMinutes()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private ArrayList<Event> overlapList(Event e1,ArrayList<Event> eventList){
+		ArrayList<Event> overlaps = new ArrayList<Event>();
+		for(Event e2:eventList){
+			if(isBetween(e1.getStartDate(),e2.getStartDate(),e2.getEndDate()) ||
+					isBetween(e1.getEndDate(),e2.getStartDate(),e2.getEndDate())||
+					isBetween(e2.getStartDate(),e1.getStartDate(),e1.getEndDate()) ||
+					isBetween(e2.getEndDate(),e1.getStartDate(),e1.getEndDate())){
+				overlaps.add(e2);
+				
+			}
+		}
+		return overlaps;
+	}
+	
+	private ArrayList<ArrayList<Event>> generateMap(){
+		sortEvents();
+		ArrayList<ArrayList<Event>> map = new ArrayList<ArrayList<Event>>();
+		
+		for(int i=0;i<events.size();i++){
+			boolean added=false;
+			for(int j=0;j<map.size();j++){
+				ArrayList<Event> testList = map.get(j);
+				if(!overlapEvent(events.get(i),testList.get(testList.size()-1))){
+					map.get(j).add(events.get(i));
+					added=true;
+				}
+			}
+			if(!added){
+				ArrayList<Event> newList = new ArrayList<Event>();
+				newList.add(events.get(i));
+				map.add(newList);
+			}
+		}
+		
+		return map;
+	}
+	
+	private void displayMap(ArrayList<ArrayList<Event>> map){
+		for(int i=0;i<map.size();i++){
+			for(Event test:map.get(i)){
+				ArrayList<Event> overlapEvents = new ArrayList<Event>();
+				int divisions=1;
+				for(int j=0;j<map.size();j++){
+					if(j!=i){
+						ArrayList<Event> overlaps = overlapList(test,map.get(j));
+						if(overlaps.size()>0){
+							divisions++;
+							overlapEvents.addAll(overlaps);
+						}
+					}
+				}
+				for(Event test2:overlapEvents){
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Creates a Mig-Layout panel to be displayed on the day view
 	 * @param e Event to be displayed
 	 * @return JPanel generated
@@ -127,6 +231,11 @@ public class EventView extends JPanel {
 	public void showEvent()
 	{
 		sortEvents();
+		
+		ArrayList<ArrayList<Event>> eventMap = new ArrayList<ArrayList<Event>>();
+		
+		eventMap=generateMap();
+		displayMap(eventMap);
 		
 		int maxwidth = findMaxWidth();
 		int sectionsize = 76 / maxwidth;
