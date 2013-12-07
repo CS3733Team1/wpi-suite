@@ -110,22 +110,22 @@ public class CalendarTabPanel extends JPanel {
 		calendarTitleLabel = new JLabel();
 		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), calendarTitleLabel.getFont().getStyle(), 16));
 
-		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets top 0, insets bottom 0", "[]push[]", "[][]"));
+		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets 0 n 0 n", "[33.3333%][33.3333%][33.3333%]", "[][]"));
 		
-		topButtonPanel.add(personalCalButton,	"cell 0 0");
-		topButtonPanel.add(teamCalButton,		"cell 0 0");
-		topButtonPanel.add(bothCalButton,		"cell 0 0");
+		topButtonPanel.add(yearViewButton,		"cell 0 0, center, span 3");
+		topButtonPanel.add(monthViewButton,		"cell 0 0");
+		topButtonPanel.add(weekViewButton,		"cell 0 0");
+		topButtonPanel.add(dayViewButton,		"cell 0 0");
 
-		topButtonPanel.add(yearViewButton,		"cell 1 0, align right");
-		topButtonPanel.add(monthViewButton,		"cell 1 0");
-		topButtonPanel.add(weekViewButton,		"cell 1 0");
-		topButtonPanel.add(dayViewButton,		"cell 1 0");
-
-		topButtonPanel.add(prevButton,			"cell 0 1");
+		topButtonPanel.add(prevButton,			"cell 0 1, align left");
 		topButtonPanel.add(homeButton,			"cell 0 1");
 		topButtonPanel.add(nextButton,			"cell 0 1");
 		
-		topButtonPanel.add(calendarTitleLabel,	"cell 1 1, align right");
+		topButtonPanel.add(personalCalButton,	"cell 1 1, center");
+		topButtonPanel.add(teamCalButton,		"cell 1 1");
+		topButtonPanel.add(bothCalButton,		"cell 1 1");
+		
+		topButtonPanel.add(calendarTitleLabel,	"cell 2 1, align right");
 		
 		this.add(topButtonPanel, "growx");
 		

@@ -15,7 +15,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.CalendarConstan
 public class MonthPanel extends JPanel {
 
 	// Stores all the days in a month
-	private ArrayList<JLabel> days;
+	private ArrayList<DayPanel> days;
 	
 	// The name of the month
 	private JLabel monthNameLabel;
@@ -27,9 +27,9 @@ public class MonthPanel extends JPanel {
 		this.setBackground(Color.WHITE);
 
 		// Instantiate the labels in days
-		this.days = new ArrayList<JLabel>();
-		for(int i = 0; i < 7*6; i++) {
-			JLabel day = new JLabel("", JLabel.CENTER);
+		this.days = new ArrayList<DayPanel>();
+		for(int i = 0; i < 42; i++) {
+			DayPanel day = new DayPanel();
 			days.add(day);
 			if((i+1)%7 == 0 || i >= 35) {
 				if((i+1)%7 == 0) {
@@ -49,7 +49,7 @@ public class MonthPanel extends JPanel {
 		for(String weekDay: CalendarConstants.weekNamesAbbr) this.add(new JLabel(weekDay, JLabel.CENTER), "growx, alignx center");
 
 		// Add all the day labels to the month
-		for(JLabel l: days) this.add(l, "grow, alignx center");
+		for(DayPanel dayPanel: days) this.add(dayPanel, "grow, alignx center");
 	}
 
 	/*
@@ -63,12 +63,12 @@ public class MonthPanel extends JPanel {
 		if(month.get(Calendar.DAY_OF_WEEK) == 1) month.add(Calendar.DATE, -7);
 		else month.add(Calendar.DATE, -month.get(Calendar.DAY_OF_WEEK)+1);
 
-		for(JLabel l: days) {
-			if(month.get(Calendar.MONTH) != currentMonth) l.setForeground(Color.LIGHT_GRAY);
-			else l.setForeground(Color.BLACK);
-
-			l.setOpaque(false);
-			l.setText(month.get(Calendar.DATE)+"");
+		for(int i = 0; i < days.size(); i++) {
+			DayPanel dayPanel = days.get(i);
+			dayPanel.setIsCurrentMonth(month.get(Calendar.MONTH) != currentMonth);
+			dayPanel.setIsWeekend(i%7 <= 1);
+			dayPanel.setDate(month.get(Calendar.DATE));
+			
 			month.add(Calendar.DATE, 1);
 		}
 	}
@@ -80,9 +80,7 @@ public class MonthPanel extends JPanel {
 		if(calendar.get(Calendar.DAY_OF_WEEK) == 1) index += 7;
 		else index += calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
-		JLabel today = days.get(index);
-		today.setOpaque(true);
-		today.setBackground(new Color(236,252,144));
+		days.get(index).setIsToday(true);
 	}
 
 	// Mark the date that has an event or commitment with red text
@@ -92,6 +90,6 @@ public class MonthPanel extends JPanel {
 		if(calendar.get(Calendar.DAY_OF_WEEK) == 1) index += 7;
 		else index += calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
-		days.get(index).setForeground(Color.RED);
+		days.get(index).addEvComm();
 	}
 }

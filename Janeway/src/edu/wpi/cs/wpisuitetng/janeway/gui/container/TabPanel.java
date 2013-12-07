@@ -100,7 +100,7 @@ public class TabPanel extends JPanel {
 				newPanelLayout.putConstraint(SpringLayout.NORTH, jtm.getToolbar(), 0, SpringLayout.NORTH, newPanel);
 				newPanelLayout.putConstraint(SpringLayout.WEST, jtm.getToolbar(), 0, SpringLayout.WEST, newPanel);
 				newPanelLayout.putConstraint(SpringLayout.EAST, jtm.getToolbar(), 0, SpringLayout.EAST, newPanel);
-				newPanelLayout.putConstraint(SpringLayout.SOUTH, jtm.getToolbar(), 100, SpringLayout.NORTH, jtm.getToolbar());
+				newPanelLayout.putConstraint(SpringLayout.SOUTH, jtm.getToolbar(), 50, SpringLayout.NORTH, jtm.getToolbar());
 				
 				// Constrain the main component
 				newPanelLayout.putConstraint(SpringLayout.NORTH, jtm.getMainComponent(), 0, SpringLayout.SOUTH, jtm.getToolbar());
