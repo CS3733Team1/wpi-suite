@@ -53,7 +53,7 @@ public class RetrieveCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Commitment[] errorMessage = {new Commitment("Error retrieving messages.", new Date())};
+		Commitment[] errorMessage = {new Commitment("Error retrieving messages.", new Date(), false)};
 		controller.receivedMessages(errorMessage);
 	}
 
