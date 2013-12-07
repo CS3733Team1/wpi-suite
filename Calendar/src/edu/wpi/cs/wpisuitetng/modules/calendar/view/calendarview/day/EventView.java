@@ -93,7 +93,7 @@ public class EventView extends JPanel {
 	 * @return length of event e
 	 */
 	public int getLength(Event e){
-		return ((e.getEndDate().getHours()*4 + (int) Math.round(e.getEndDate().getMinutes()/15.0)) - (e.getStartDate().getHours()*4 + (int) Math.round(e.getStartDate().getMinutes()/15.0)));
+		return ((e.getEndDate().getHours()*4 + (int) Math.round(e.getEndDate().getMinutes()/15.0)+4) - (e.getStartDate().getHours()*4 + (int) Math.round(e.getStartDate().getMinutes()/15.0)+4));
 	}
 	
 	/**
@@ -119,24 +119,6 @@ public class EventView extends JPanel {
 			}
 		}
 		return overlapchain;
-	}
-	
-	/**
-	 * indicates whether e1 overlaps e2
-	 * @param e1 event to be tested
-	 * @param e2 event to test against
-	 * @return true if e1 starts before e2 ends
-	 */
-	private boolean overlapEvent(Event e1,Event e2){
-		if(e1.getStartDate().getHours() < e2.getEndDate().getHours()){
-			return true;
-		}
-		else if(e1.getStartDate().getHours() == e2.getEndDate().getHours()){
-			if(e1.getStartDate().getMinutes() < e2.getEndDate().getMinutes()){
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	private boolean isBetween(Date test, Date start, Date end){
@@ -166,15 +148,22 @@ public class EventView extends JPanel {
 		return false;
 	}
 	
+	private boolean overlapEvent(Event e1,Event e2){
+		if(isBetween(e1.getStartDate(),e2.getStartDate(),e2.getEndDate()) ||
+				isBetween(e1.getEndDate(),e2.getStartDate(),e2.getEndDate())||
+				isBetween(e2.getStartDate(),e1.getStartDate(),e1.getEndDate()) ||
+				isBetween(e2.getEndDate(),e1.getStartDate(),e1.getEndDate()) ||
+				(e1.getStartDate() == e2.getStartDate() && e1.getEndDate() == e2.getEndDate())){
+			return true;
+		}
+		return false;
+	}
+	
 	private ArrayList<Event> overlapList(Event e1,ArrayList<Event> eventList){
 		ArrayList<Event> overlaps = new ArrayList<Event>();
 		for(Event e2:eventList){
-			if(isBetween(e1.getStartDate(),e2.getStartDate(),e2.getEndDate()) ||
-					isBetween(e1.getEndDate(),e2.getStartDate(),e2.getEndDate())||
-					isBetween(e2.getStartDate(),e1.getStartDate(),e1.getEndDate()) ||
-					isBetween(e2.getEndDate(),e1.getStartDate(),e1.getEndDate())){
+			if(overlapEvent(e1,e2)){
 				overlaps.add(e2);
-				
 			}
 		}
 		return overlaps;
@@ -204,6 +193,23 @@ public class EventView extends JPanel {
 	}
 	
 	private void displayMap(ArrayList<ArrayList<Event>> map){
+		String toomanyones = "";
+		
+		StringBuilder calclayout = new StringBuilder();
+		calclayout.append("[22%]");
+		for (int x = 0; x < 76; x++){
+			String size = "[1%]1";
+			calclayout.append(size);
+		}
+		calclayout.append("[2%]");
+		
+		for(int k = 0; k < 100; k++)
+			toomanyones += "[1%]1";
+		
+		this.setLayout(new MigLayout("fill",
+				calclayout.toString(),
+				toomanyones));
+		
 		for(int i=0;i<map.size();i++){
 			for(Event test:map.get(i)){
 				ArrayList<Event> overlapEvents = new ArrayList<Event>();
@@ -218,89 +224,54 @@ public class EventView extends JPanel {
 					}
 				}
 				for(Event test2:overlapEvents){
+					int eventDivs=0;
+					for(int j=0;j<map.size();j++){
+						if(overlapList(test2,map.get(j)).size()>0){
+							eventDivs++;
+						}
+					}
+					if(eventDivs>divisions){
+						divisions=eventDivs;
+					}
 				}
-			}
-		}
-	}
-	
-	/**
-	 * Creates a Mig-Layout panel to be displayed on the day view
-	 * @param e Event to be displayed
-	 * @return JPanel generated
-	 */
-	public void showEvent()
-	{
-		sortEvents();
-		
-		ArrayList<ArrayList<Event>> eventMap = new ArrayList<ArrayList<Event>>();
-		
-		eventMap=generateMap();
-		displayMap(eventMap);
-		
-		int maxwidth = findMaxWidth();
-		int sectionsize = 76 / maxwidth;
-		String toomanyones = "";
-		
-		StringBuilder calclayout = new StringBuilder();
-		calclayout.append("[22%]");
-		for (int x = 0; x < maxwidth; x++){
-			String size = "[" + sectionsize + "%]";
-			calclayout.append(size);
-		}
-		calclayout.append("[2%]");
-		
-		for(int i = 0; i < 100; i++)
-			toomanyones += "[1%]";
-		
-		this.setLayout(new MigLayout("fill",
-				calclayout.toString(),
-				toomanyones));
-		
-		int y = 0;
-		while (y < events.size()){
-			List<Event> chain = grabOverlapChain(y);
-			if (chain.size() == 0){
-				y = events.size();
-			}
-			
-			for (int z = 0; z < chain.size(); z++){
-				Event e = new Event(chain.get(z));
+				//TODO divide the column into "divisions" columns
 				JPanel panel = new JPanel();
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
-				evebuilder.append(new Integer(1 + z).toString());
+				//TODO pick which column to display this event in
+				evebuilder.append(new Integer(1 + i*(76/divisions)).toString());
 				evebuilder.append(" ");
-				evebuilder.append((new Integer((int)(4*(e.getStartDate().getHours()) + Math.round((e.getStartDate().getMinutes()/15.0) + 4))).toString()));
+				evebuilder.append((new Integer((int)(4*(test.getStartDate().getHours()) + Math.round((test.getStartDate().getMinutes()/15.0) + 4))).toString()));
 				evebuilder.append(" ");
-				evebuilder.append("0");
+				evebuilder.append(new Integer(76/divisions));
 				evebuilder.append(" ");
-				evebuilder.append(new Integer(getLength(e)).toString());
+				evebuilder.append(new Integer(getLength(test)).toString());
 				evebuilder.append(",grow, push, wmin 0");
-				JLabel name = new JLabel(e.getName());
+				JLabel name = new JLabel(test.getName());
 				panel.add(name, "wmin 0, aligny center, alignx center");
 				
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
-				infobuilder.append(e.getName());
+				infobuilder.append(test.getName());
 				infobuilder.append("<br><b>Start: </b>");
-				infobuilder.append(DateFormat.getInstance().format(e.getStartDate()));
+				infobuilder.append(DateFormat.getInstance().format(test.getStartDate()));
 				infobuilder.append("<br><b>End: </b>");
-				infobuilder.append(DateFormat.getInstance().format(e.getEndDate()));
-				if(e.getCategory()!=null){
+				infobuilder.append(DateFormat.getInstance().format(test.getEndDate()));
+				if(test.getCategory()!=null){
 					infobuilder.append("<br><b>Category: </b>");
-					infobuilder.append(e.getCategory().getName());
+					infobuilder.append(test.getCategory().getName());
 				}
-				if(e.getDescription().length()>0){
+				if(test.getDescription().length()>0){
 					infobuilder.append("<br><b>Description: </b>");
-					infobuilder.append(e.getDescription());
+					infobuilder.append(test.getDescription());
 				}
 				infobuilder.append("</p></html>");
 				panel.setToolTipText(infobuilder.toString());
-				panel.addMouseListener(new EventMouseListener(e, panel));
+				panel.addMouseListener(new EventMouseListener(test, panel));
 				
-				if (e.getCategory() != null){
-					panel.setBackground(e.getCategory().getColor());
-					Color catColor=e.getCategory().getColor();
+				if (test.getCategory() != null){
+					panel.setBackground(test.getCategory().getColor());
+					Color catColor=test.getCategory().getColor();
 					float[] hsb=new float[3];
 					hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
 					if(hsb[2]<0.5){
@@ -316,8 +287,21 @@ public class EventView extends JPanel {
 				panel.setFocusable(true);
 				this.add(panel, evebuilder.toString());
 			}
-			y = y + chain.size();
 		}
+	}
+	
+	/**
+	 * Creates a Mig-Layout panel to be displayed on the day view
+	 * @param e Event to be displayed
+	 * @return JPanel generated
+	 */
+	public void showEvent()
+	{
+		sortEvents();
+		
+		ArrayList<ArrayList<Event>> eventMap = new ArrayList<ArrayList<Event>>();
+		eventMap=generateMap();
+		displayMap(eventMap);
 	}
 	
 }
