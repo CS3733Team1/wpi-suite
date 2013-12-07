@@ -18,6 +18,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
+/**
+ * This class shows multi-day events in day view. It is a component of the DayCalendarLayerPane, along
+ * with EventdayView.
+ */
 public class MultidayEventView extends JPanel{
 	private List<Event> multidaye;
 	private List<JPanel> displayEvents;
@@ -96,8 +100,7 @@ public class MultidayEventView extends JPanel{
 		bob.append("</html>");
 		eventinfo.setToolTipText(bob.toString());
 		
-		
-	}
+		}
 	
 	/**
 	 * Getter Method for isEventShowing
@@ -157,9 +160,6 @@ public class MultidayEventView extends JPanel{
 			multipane.addMouseListener(new EventMouseListener(eve, multipane));
 			
 			JLabel eventinfo = new JLabel(bob.toString());
-			
-
-			
 			
 			Date evestart = eve.getStartDate();
 			if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).compareTo(cdate) != 0){

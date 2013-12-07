@@ -158,9 +158,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 * Validates the options of the fields inputed.
 	 * @return void
 	 */
-	private void validateFields() {
-//		System.out.println("Validating Event Fields");
-		
+	private void validateFields() {		
 		boolean enableAddEvent = true;
 
 		//Check the name
@@ -214,8 +212,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		
 		//check the time
 		if (!timeDurationPickerPanel.isValidTime()){
-//			System.out.println("\tCannot enable add Event button - bad time duration!");
-			enableAddEvent=false;
+			enableAddEvent = false;
 		}
 		
 //		if(timeDurationPickerPanel.isInvalidTime() == 1) {
@@ -262,8 +259,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		endCal.set(Calendar.MINUTE, timeDurationPickerPanel.getEndTime().getMinutes());
 		endCal.set(Calendar.SECOND, 0);
 		Date endDate = endCal.getTime();//convert the calendar back to a date
-
-		System.out.println(startDate + ":" + endDate);
 		
 		//make a new event with start and end times
 		return new Event(nameTextField.getText(), startDate, endDate,

@@ -15,6 +15,12 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+/**
+ * This class represents Filters for Events and Commitments based on Category. A Filter has:<br>
+ * -A name<br>
+ * -An ArrayList of Categories to allow<br>
+ * -A boolean that keeps track of whether this Filter is active
+ */
 public class Filter extends DeletableAbstractModel {
 	
 	public String name;
@@ -36,22 +42,42 @@ public class Filter extends DeletableAbstractModel {
 		}
 	}
 	
+	/**
+	 * Adds a Category to the list of allowed Categories for this Filter.
+	 * @param cat The Category to be added. The Category is cloned inside of this method, so it
+	 * can be passed directly.
+	 */
+	
 	public void addCategory(Category cat) {
-		Category dupedCat = new Category(cat.getName(), cat.getColor());
-		dupedCat.isReal = false;
+		Category dupedCat = cat.cloneFake();
 		categories.add(dupedCat);
 	}
 	
 	public String getName() {return this.name;}
 	
+	/**
+	 * Removes a Category from the list of allowed Categories for this Filter.
+	 * @param cat The Category to be removed. The Category is cloned inside of this method, so it
+	 * can be passed directly.
+	 */
+	
 	public void removeCategory(Category cat) {
-		categories.remove(cat);
+		categories.remove(cat.cloneFake());
 	}
 	
+	
+	/**
+	 * @return An ArrayList of the allowed Categories for this Filter.
+	 */
 	public ArrayList<Category> getCategories() {
 		return categories;
 	}
 	
+	/**
+	 * Applies this Filter to a List of Events.
+	 * @param inlist The List of Events to be filtered
+	 * @return An ArrayList of Events with Categories that belong to this Filter's whitelist
+	 */
 	public ArrayList<Event> applyEventFilter(List<Event> inlist) {
 		ArrayList<Event> outlist = new ArrayList<Event>();
 		for(Event event: inlist) {
@@ -66,6 +92,11 @@ public class Filter extends DeletableAbstractModel {
 		return outlist;
 	}
 	
+	/**
+	 * Applies this Filter to a List of Commitments.
+	 * @param inlist The List of Commitments to be filtered
+	 * @return An ArrayList of Commitments with Categories that belong to this Filter's whitelist
+	 */
 	public ArrayList<Commitment> applyCommitmentFilter(List<Commitment> inlist) {
 		ArrayList<Commitment> outlist = new ArrayList<Commitment>();
 		
