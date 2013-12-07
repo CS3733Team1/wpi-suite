@@ -128,9 +128,6 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 		singleDayPanel.add(eventPanel);
 		eventLabelList.add(jLab);
 	}
-
-	
-	
 	
 	private void addMultiDayEvents(Event eve)
 	{
@@ -291,7 +288,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 				}
 			}
 		}
-		configurePanel();
+//		configurePanel();
 	}
 	
 	int numMultiDayEvents(Date d)
@@ -378,6 +375,7 @@ public class DatePanel2 extends JPanel implements ListDataListener{
 	{	
 		super.repaint();
 		configurePanel();
+
 	}
 	@Override
 	public void intervalAdded(ListDataEvent e) {
