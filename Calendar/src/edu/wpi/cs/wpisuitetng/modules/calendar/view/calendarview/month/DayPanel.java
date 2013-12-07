@@ -13,7 +13,8 @@ import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class DayPanel extends JPanel {
 	private boolean isToday;
@@ -31,13 +32,17 @@ public class DayPanel extends JPanel {
 
 	public DayPanel(int indexInMonth) {
 		this.setLayout(new MigLayout("fill, insets 0"));
+		/*
 		if((indexInMonth+1)%7 == 0 || indexInMonth >= 35) {
 			if((indexInMonth+1)%7 == 0) {
 				if(indexInMonth < 35) this.setBorder(new MatteBorder(1, 1, 0, 1, Color.LIGHT_GRAY));
 				else this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			} else this.setBorder(new MatteBorder(1, 1, 1, 0, Color.LIGHT_GRAY));
 		} else this.setBorder(new MatteBorder(1, 1, 0, 0, Color.LIGHT_GRAY));
-
+		*/
+		
+		this.setBorder(new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+		
 		todayDate = Calendar.getInstance();
 		this.isToday = false;
 		
@@ -106,8 +111,8 @@ public class DayPanel extends JPanel {
 		JLabel eventNameLabel = new JLabel(event.getName());
 		eventNameLabel.setForeground(new Color(84, 84, 8));
 		
-		JLabel eventTimeLabel = new JLabel(" " + event.getStartDate().getHours() + ":"
-				+ event.getStartDate().getMinutes());
+		JLabel eventTimeLabel = new JLabel(DateUtils.timeToString(event.getStartDate()));
+		eventTimeLabel.setFont(new Font(eventTimeLabel.getFont().getName(), Font.PLAIN, 8));
 		eventTimeLabel.setForeground(new Color(84, 84, 8));
 
 		eventsPanel.add(eventNameLabel, "wmin 0");
@@ -132,8 +137,7 @@ public class DayPanel extends JPanel {
 		JLabel commitmentNameLabel = new JLabel(commitment.getName());
 		commitmentNameLabel.setForeground(new Color(84, 84, 8));
 		
-		JLabel commitmentTimeLabel = new JLabel(" " + commitment.getDueDate().getHours() + ":"
-				+ commitment.getDueDate().getMinutes());
+		JLabel commitmentTimeLabel = new JLabel(DateUtils.timeToString(commitment.getDueDate()));
 		commitmentTimeLabel.setFont(new Font(commitmentTimeLabel.getFont().getName(), Font.PLAIN, 8));
 		commitmentTimeLabel.setForeground(new Color(84, 84, 8));
 
