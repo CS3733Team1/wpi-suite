@@ -12,7 +12,7 @@ import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
 
 public class DayPanel extends JPanel {
 	private boolean isToday;

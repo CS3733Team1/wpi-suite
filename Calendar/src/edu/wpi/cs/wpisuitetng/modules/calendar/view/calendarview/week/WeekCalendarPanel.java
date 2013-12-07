@@ -105,11 +105,8 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	
 	public void DisplayCommitments(){
 		List<List<Commitment>> foundyou = bananaSplit(weeklayer.getWeek().CommitmentsOnCalendar());
-		System.err.println(weeklayer.getWeek().CommitmentsOnCalendar());
-		System.err.println(foundyou);
 		for (int x = 0; x < 7; x++){
 			if (foundyou.get(x).size() > 0){
-				System.out.println("I'm trying to add something");
 				JPanel day = weekpanel.get(x);
 				day.setBackground(Color.RED);
 				StringBuilder bob = new StringBuilder();

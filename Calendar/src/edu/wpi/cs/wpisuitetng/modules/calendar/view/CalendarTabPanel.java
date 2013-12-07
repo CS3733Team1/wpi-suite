@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -33,6 +33,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayMo
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWeekViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGroup;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
@@ -41,12 +44,16 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
 
 public class CalendarTabPanel extends JPanel {
-	private JButton personalCalButton, teamCalButton, bothCalButton;
-	private JButton prevButton, homeButton, nextButton;
-	private JButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
-
+	private JCheckBox personalCalCheckBox, teamCalCheckBox;
+	
+	private TransparentButton prevButton, homeButton, nextButton;
+	
+	private TransparentToggleButton yearViewButton, monthViewButton, weekViewButton, dayViewButton;
+	private TransparentButtonGroup viewButtonGroup;
+	
 	private JPanel calendarViewPanel;
 	
 	private ICalendarView calendarView;
@@ -61,6 +68,8 @@ public class CalendarTabPanel extends JPanel {
 	
 	private CommitmentSubTabPanel commitmentSubTabPanel;
 	
+	
+	
 	public CalendarTabPanel(CalendarPanel calendarPanel) {
 		this.setLayout(new MigLayout("fill"));
 		this.setBackground(Color.WHITE);
@@ -70,22 +79,30 @@ public class CalendarTabPanel extends JPanel {
 		
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		
-		personalCalButton = new JButton("Personal");
-		teamCalButton = new JButton("Team");
-		bothCalButton = new JButton("Both");
+		personalCalCheckBox = new JCheckBox("Personal");
+		teamCalCheckBox = new JCheckBox("Team");
+		
+		personalCalCheckBox.setBackground(Color.WHITE);
+		teamCalCheckBox.setBackground(Color.WHITE);
+		
+		personalCalCheckBox.setFocusable(false);
+		teamCalCheckBox.setFocusable(false);
 		
 		try {
-			prevButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png"))));
-			homeButton = new JButton("Today");
-			nextButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/next.png"))));
+			prevButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png"))));
+			homeButton = new TransparentButton("Today");
+			nextButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/next.png"))));
 
-			dayViewButton = new JButton("Day",
+			dayViewButton = new TransparentToggleButton("Day",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/day_cal.png"))));
-			weekViewButton = new JButton("Week",
+			
+			weekViewButton = new TransparentToggleButton("Week",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/week_cal.png"))));
-			monthViewButton = new JButton("Month",
+			
+			monthViewButton = new TransparentToggleButton("Month",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/month_cal.png"))));
-			yearViewButton = new JButton("Year",
+			
+			yearViewButton = new TransparentToggleButton("Year",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png"))));
 			
 			filterCategoryTabbedPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
@@ -104,13 +121,21 @@ public class CalendarTabPanel extends JPanel {
 		homeButton.addActionListener(new CalendarViewTodayController(this));
 		nextButton.addActionListener(new CalendarViewNextController(this));
 		
+		monthViewButton.setSelected(true);
+		viewButtonGroup = new TransparentButtonGroup();
+		viewButtonGroup.add(dayViewButton);
+		viewButtonGroup.add(weekViewButton);
+		viewButtonGroup.add(monthViewButton);
+		viewButtonGroup.add(yearViewButton);
+		
 		dayViewButton.addActionListener(new DisplayDayViewController(this));
 		weekViewButton.addActionListener(new DisplayWeekViewController(this));
 		monthViewButton.addActionListener(new DisplayMonthViewController(this));
 		yearViewButton.addActionListener(new DisplayYearViewController(this));
-
+		
 		calendarTitleLabel = new JLabel();
-		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), calendarTitleLabel.getFont().getStyle(), 16));
+		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), Font.BOLD, 16));
+		calendarTitleLabel.setForeground(CalendarUtils.titleNameColor);
 
 		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets 0 n 0 n", "[33.3333%][33.3333%][33.3333%]", "[][]"));
 		topButtonPanel.setBackground(Color.WHITE);
@@ -124,9 +149,8 @@ public class CalendarTabPanel extends JPanel {
 		topButtonPanel.add(homeButton,			"cell 0 1");
 		topButtonPanel.add(nextButton,			"cell 0 1");
 		
-		topButtonPanel.add(personalCalButton,	"cell 1 1, center");
-		topButtonPanel.add(teamCalButton,		"cell 1 1");
-		topButtonPanel.add(bothCalButton,		"cell 1 1");
+		topButtonPanel.add(personalCalCheckBox,	"cell 1 1, center");
+		topButtonPanel.add(teamCalCheckBox,		"cell 1 1");
 		
 		topButtonPanel.add(calendarTitleLabel,	"cell 2 1, align right");
 		
