@@ -204,7 +204,7 @@ public class Event extends DeletableAbstractModel {
 	{
 		//TODO: Remember to change this when participants, recurrence etc. gets added
 		String str = "UniqueId = " + this.UniqueID + " ";
-				str += "Name: " + this.name + " Start Date: " + this.startDate.toString()
+				str += " Name: " + this.name + " Start Date: " + this.startDate.toString()
 				+ " End Date: " + this.endDate.toString();
 		
 				str += String.format("<br><b>Calendar:</b> %s", (this.isTeam) ? "Team" : "Personal");
