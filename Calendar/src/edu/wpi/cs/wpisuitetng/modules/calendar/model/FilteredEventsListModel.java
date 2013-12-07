@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -15,13 +16,13 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	private ArrayList<Event> filteredEvents;
 
 	private FilteredEventsListModel() {
-		filteredEvents = new ArrayList<Event>();
+		filteredEvents = Collections.synchronizedList(new ArrayList<Event>());
 		EventListModel.getEventListModel().addListDataListener(this);
 		FilterListModel.getFilterListModel().addListDataListener(this);
 		filterEvents();
 	}
 
-	static public FilteredEventsListModel getFilteredEventsListModel() {
+	static public synchronized FilteredEventsListModel getFilteredEventsListModel() {
 		if (filteredEventsListModel == null)
 			filteredEventsListModel = new FilteredEventsListModel();
 		return filteredEventsListModel;
@@ -68,7 +69,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 		filterEvents();
 	}
 
-	public List<Event> getList() {
+	public synchronized List<Event> getList() {
 		return filteredEvents;
 	}
 }

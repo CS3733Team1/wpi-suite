@@ -65,6 +65,15 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	//the arguments of the most basic constructor.
 	public Commitment(){}
 	
+	
+	//Commitment copy constructor
+	public Commitment(Commitment other)
+	{
+		//Commitment(String name, Date dueDate, boolean Teamhuh, String description,
+				//Category category, String progress)
+		this(other.name,other.dueDate,other.isTeam,other.description,other.category);
+		this.progress=other.progress;
+	}
 	/**
 	 * Constructs a Commitment object
 	 * @param name name of Commitment

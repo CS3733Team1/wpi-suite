@@ -40,7 +40,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		this.filters = Collections.synchronizedList(new ArrayList<Filter>());
 	}
 
-	static public FilterListModel getFilterListModel() {
+	static public synchronized FilterListModel getFilterListModel() {
 		if (filterListModel == null)
 			filterListModel = new FilterListModel();
 		return filterListModel;
@@ -162,10 +162,8 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		return filters.size();
 	}
 
-	static public List<Filter> getList(){
-		List<Filter> rtnFilterList = new ArrayList<Filter>();
-		rtnFilterList.addAll(getFilterListModel().filters);
-		return rtnFilterList;
+	static public synchronized List<Filter> getList(){
+		return getFilterListModel().filters;
 	}
 
 	
