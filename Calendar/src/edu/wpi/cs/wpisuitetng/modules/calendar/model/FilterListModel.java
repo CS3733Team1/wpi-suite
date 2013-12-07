@@ -27,7 +27,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 	List<FilterChangedListener> filterChangedListeners = new ArrayList<FilterChangedListener>();
 
-	private final Filter[] defaultFilters = {new Filter("None")};
+	private final Filter[] defaultFilters = {new Filter("Unfiltered")};
 
 	/** The list of Filter */
 	private List<Filter> filters;
