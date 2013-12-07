@@ -18,6 +18,7 @@ public class CalendarUtils {
 	public static final String[] monthNamesAbbr = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
+	public static final Color selectionColor = new Color(204, 232, 252);
 	public static final Color titleNameColor = new Color(50, 50, 50);
 	public static final Color thatBlue = new Color(0, 139, 239);
 	public static final Color todayYellow = new Color(255, 244, 103);

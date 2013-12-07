@@ -10,10 +10,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
 
 public class DayPanel extends JPanel {
 	private static final Color highDensity = CalendarUtils.thatBlue;
-	private static final Color mediumHighDensity = CalendarUtils.blend(highDensity,Color.white, (float) 0.625);
-	private static final Color mediumDensity  =  CalendarUtils.blend(highDensity, Color.white, (float) 0.50);
-	private static final Color mediumLowDensity = CalendarUtils.blend(highDensity,Color.white, (float) 0.375);
-	private static final Color lowDensity = CalendarUtils.blend(highDensity,Color.white, (float) 0.25);
+	private static final Color mediumHighDensity = CalendarUtils.blend(highDensity, Color.white, (float) 0.8);
+	private static final Color mediumDensity  =  CalendarUtils.blend(highDensity, Color.white, (float) 0.6);
+	private static final Color mediumLowDensity = CalendarUtils.blend(highDensity, Color.white, (float) 0.4);
+	private static final Color lowDensity = CalendarUtils.blend(highDensity, Color.white, (float) 0.2);
 	
 	private int numEvComms;
 	private boolean isToday;
@@ -83,6 +83,7 @@ public class DayPanel extends JPanel {
 			case 4:
 				this.setBackground(mediumHighDensity);
 				day.setForeground(CalendarUtils.textColor(mediumHighDensity));
+				break;
 			default:
 				this.setBackground(highDensity);
 				day.setForeground(CalendarUtils.textColor(highDensity));

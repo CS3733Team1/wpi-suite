@@ -186,7 +186,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 	@Override
 	public String getTitle() {
-		return CalendarUtils.monthNames[currentMonth.get(Calendar.MONTH)] + ", " + currentMonth.get(Calendar.YEAR);
+		return CalendarUtils.monthNames[currentMonth.get(Calendar.MONTH)] + " " + currentMonth.get(Calendar.YEAR);
 	}
 
 	@Override

@@ -112,13 +112,10 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 			Date end = event.getEndDate();
 			Calendar endCal = Calendar.getInstance();
 			endCal.set(end.getYear()+1900, end.getMonth(), end.getDate());
-			
-			System.out.println("Event: " + event.getName());
-			
+
 			do {
 				if(startCal.get(Calendar.YEAR) == currentYear.get(Calendar.YEAR)) {
 					monthList.get(startCal.get(Calendar.MONTH)).markEventCommitmentDate((Calendar)startCal.clone());
-					System.out.println(startCal.get(Calendar.DAY_OF_YEAR));
 					startCal.add(Calendar.DATE, 1);
 				} else if (startCal.get(Calendar.YEAR) < currentYear.get(Calendar.YEAR)) {
 					startCal.set(Calendar.YEAR, currentYear.get(Calendar.YEAR));
@@ -159,7 +156,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 
 	@Override
 	public String getTitle() {
-		return "Year of " + currentYear.get(Calendar.YEAR);
+		return "" + currentYear.get(Calendar.YEAR);
 	}
 
 	@Override

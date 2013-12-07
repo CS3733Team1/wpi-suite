@@ -18,10 +18,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
 
 public class EventListCellRenderer extends JPanel implements ListCellRenderer<Event> {
 
@@ -46,13 +46,7 @@ public class EventListCellRenderer extends JPanel implements ListCellRenderer<Ev
 		startDate.setText("Date Start: " + event.getStartDate().toString());
 		endDate.setText("Date End: " + event.getEndDate().toString());
 
-		final Color background = UIManager.getDefaults().getColor("List.background");
-		final Color foreground = UIManager.getDefaults().getColor("List.foreground");
-		final Color selectionBackground = UIManager.getDefaults().getColor("List.selectionBackground");
-		final Color selectionForeground = UIManager.getDefaults().getColor("List.selectionForeground");
-
-		this.setBackground(isSelected ? selectionBackground : background);
-		this.setForeground(isSelected ? selectionForeground : foreground);
+		this.setBackground(isSelected ? CalendarUtils.selectionColor : Color.WHITE);
 
 		this.setBorder(new LineBorder(new Color(0, 0, 0)));
 

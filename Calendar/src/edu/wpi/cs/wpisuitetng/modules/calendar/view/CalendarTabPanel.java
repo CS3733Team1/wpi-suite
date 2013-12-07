@@ -44,6 +44,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
 
 public class CalendarTabPanel extends JPanel {
 	private JCheckBox personalCalCheckBox, teamCalCheckBox;
@@ -133,7 +134,8 @@ public class CalendarTabPanel extends JPanel {
 		yearViewButton.addActionListener(new DisplayYearViewController(this));
 		
 		calendarTitleLabel = new JLabel();
-		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), calendarTitleLabel.getFont().getStyle(), 16));
+		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), Font.BOLD, 16));
+		calendarTitleLabel.setForeground(CalendarUtils.titleNameColor);
 
 		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets 0 n 0 n", "[33.3333%][33.3333%][33.3333%]", "[][]"));
 		topButtonPanel.setBackground(Color.WHITE);
