@@ -161,7 +161,7 @@ public class EventWeekView extends JPanel{
 		StringBuilder layouts = new StringBuilder();
 		String toomanyones = "";
 		
-		layouts.append("[8%]");
+		layouts.append("[9%]");
 		for (int currentday = 0; currentday < 7; currentday++){
 			List<Event> currentlist = weekevents.get(currentday);
 			currentlist = sortEvents(currentlist);

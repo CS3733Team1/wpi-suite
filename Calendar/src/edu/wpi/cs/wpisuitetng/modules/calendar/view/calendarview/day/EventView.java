@@ -234,11 +234,9 @@ public class EventView extends JPanel {
 						divisions=eventDivs;
 					}
 				}
-				//TODO divide the column into "divisions" columns
 				JPanel panel = new JPanel();
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
-				//TODO pick which column to display this event in
 				evebuilder.append(new Integer(1 + i*(76/divisions)).toString());
 				evebuilder.append(" ");
 				evebuilder.append((new Integer((int)(4*(test.getStartDate().getHours()) + Math.round((test.getStartDate().getMinutes()/15.0) + 4))).toString()));

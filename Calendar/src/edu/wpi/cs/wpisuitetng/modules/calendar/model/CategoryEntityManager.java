@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -21,6 +22,10 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
+
+/**
+ * This class handles database entries for Categories. It runs server-side. It is a singleton.
+ */
 public class CategoryEntityManager implements EntityManager<Category> {
 	/** The database */
 	final Data db;
@@ -46,8 +51,8 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		this.db = db;
 	}
 
-	/*
-	 * Saves a Commitment when it is received from a client
+	/**
+	 * Saves a Category when it is received from a client
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
@@ -58,12 +63,25 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		// Parse the message from JSON
 		final Category newMessage = Category.fromJSON(content);
 		
-		if (newMessage.isMarkedForDeletion())
+		newMessage.setOwnerName(s.getUsername());
+		newMessage.setOwnerID(s.getUser().getIdNum());
+		//until we find a id that is unique assume another event might alreayd have it
+		boolean found=true;
+		long id=0;
+		while (found)
 		{
-			newMessage.unmarkForDeletion();
-			deleteCategory(newMessage);
-			return newMessage;
+			id = UUID.randomUUID().getMostSignificantBits();
+			for (Category e : this.getAll(s) )
+			{
+				if (e.getUniqueID()==id)
+				{
+					found=true;
+				}
+			}
+			found=false;
 		}
+		newMessage.setUniqueID(id);
+		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwnerName());
 		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -76,7 +94,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		return newMessage;
 	}
 
-	/*
+	/**
 	 * Individual messages cannot be retrieved. This message always throws an exception.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
@@ -85,13 +103,13 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	public Category[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
-		// retrieving specific Commitments.
+		// retrieving specific Categories.
 		System.out.println("Category retrieve");
 		return (Category []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
 
 	}
 
-	/* 
+	/**
 	 * Returns all of the messages that have been stored.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
@@ -110,7 +128,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		return messages.toArray(new Category[0]);
 	}
 
-	/*
+	/**
 	 * Message cannot be updated. This method always throws an exception.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
@@ -119,11 +137,11 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	public Category update(Session s, String content)
 			throws WPISuiteException {
 
-		// This module does not allow Commitments to be modified, so throw an exception
+		// This module does not allow Categories to be modified, so throw an exception
 		throw new WPISuiteException();
 	}
 
-	/*
+	/**
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
@@ -154,7 +172,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		System.out.println("Category entity manager delete id = " + id);
 		try
 		{
-			Category todelete= (Category) db.retrieve(Category.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+			Category todelete= (Category) db.retrieve(Category.class, "UniqueID",Long.parseLong(id), s.getProject()).get(0);
 			deleteCategory(todelete);
 			return true;
 		}
@@ -172,7 +190,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
 
-		// This module does not allow Commitments to be deleted, so throw an exception
+		// This module does not allow Categories to be deleted, so throw an exception
 		db.deleteAll(new Category());
 	}
 
@@ -181,8 +199,8 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public int Count() throws WPISuiteException {
-		// Return the number of Commitments currently in the database
-		return db.retrieveAll(new Commitment()).size();
+		// Return the number of Categories currently in the database
+		return db.retrieveAll(new Category()).size();
 	}
 
 	@Override

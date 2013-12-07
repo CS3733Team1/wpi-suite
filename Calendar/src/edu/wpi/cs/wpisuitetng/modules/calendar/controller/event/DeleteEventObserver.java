@@ -36,6 +36,10 @@ public class DeleteEventObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		System.out.println("The request to remove an event succeeded");
+		
+		//THIS IS TEMP! THE EVENT BEING PASSED TO MODEL BY CONTROLLER GOT CHANGED SOMEHOW.
+		RetrieveEventController update = new RetrieveEventController();
+		update.retrieveMessages();
 	}
 
 	@Override

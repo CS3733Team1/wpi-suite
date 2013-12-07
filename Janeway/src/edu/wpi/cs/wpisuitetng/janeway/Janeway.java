@@ -13,15 +13,19 @@
 
 package edu.wpi.cs.wpisuitetng.janeway;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.JanewayFrame;
 import edu.wpi.cs.wpisuitetng.janeway.gui.login.LoginController;
@@ -49,6 +53,19 @@ public class Janeway {
 		// the same across operating systems
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
+			// Sets all background colors to white
+			UIDefaults uiDefaults = UIManager.getDefaults();
+			Color bgColor = new ColorUIResource(Color.WHITE);
+			for (Enumeration<Object> e = uiDefaults.keys(); e.hasMoreElements(); ) {
+				Object obj = e.nextElement();
+				if (obj instanceof String) {
+					if (((String)obj).matches(".*\\.background$")
+							&& uiDefaults.get(obj) instanceof Color) {
+						uiDefaults.put(obj, bgColor);
+					}
+				}
+			}
 		} catch (Exception e) {
 			System.out.println("Error setting UI manager!");
 			e.printStackTrace();

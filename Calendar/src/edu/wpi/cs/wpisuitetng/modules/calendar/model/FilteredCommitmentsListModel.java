@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -12,10 +13,10 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 	private static FilteredCommitmentsListModel filteredCommitmentsListModel;
 
 	/** The list of filtered events on the calendar */
-	private ArrayList<Commitment> filteredCommitments;
+	private List<Commitment> filteredCommitments;
 	
 	private FilteredCommitmentsListModel() {
-		filteredCommitments = new ArrayList<Commitment>();
+		filteredCommitments = Collections.synchronizedList(new ArrayList<Commitment>());
 		CommitmentListModel.getCommitmentListModel().addListDataListener(this);
 		FilterListModel.getFilterListModel().addListDataListener(this);
 		filterCommitments();
