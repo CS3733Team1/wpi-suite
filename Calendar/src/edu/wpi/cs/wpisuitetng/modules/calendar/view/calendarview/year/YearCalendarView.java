@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year;
 
+import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 		this.filteredCommitmentsModel.addListDataListener(this);
 
 		this.setLayout(new MigLayout("fill, insets 0"));
+		this.setBackground(Color.WHITE);
 
 		this.currentYear = Calendar.getInstance();
 
@@ -78,7 +80,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 	 */
 	private void updateLayout() {
 		monthsContainerPanel.removeAll();
-		monthsContainerPanel.setLayout(new MigLayout("fill, insets 0, wrap " + columns));
+		monthsContainerPanel.setLayout(new MigLayout("fill, insets 0, gap 0, wrap " + columns));
 
 		for(MonthPanel month: monthList) monthsContainerPanel.add(month, "grow");
 	}

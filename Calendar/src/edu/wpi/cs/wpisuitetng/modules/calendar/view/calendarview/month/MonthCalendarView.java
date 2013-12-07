@@ -31,7 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.CalendarConstants;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 public class MonthCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener {
@@ -76,7 +76,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		this.isDisplayAbrrWeekDayNames = false;
 		weekDays = new ArrayList<JLabel>();
 
-		for(String weekDay: CalendarConstants.weekNames) {
+		for(String weekDay: CalendarUtils.weekNames) {
 			JPanel titlePanel = new JPanel(new MigLayout("fill, insets 0", "[center]"));
 			titlePanel.setBackground(new Color(138,173,209));
 			JLabel weekDayLabel = new JLabel(weekDay);
@@ -102,11 +102,11 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		if(this.getWidth() <= 550 && !isDisplayAbrrWeekDayNames) {
 			isDisplayAbrrWeekDayNames = true;
 			for(int i = 0; i < weekDays.size(); i++)
-				weekDays.get(i).setText(CalendarConstants.weekNamesAbbr[i]);
+				weekDays.get(i).setText(CalendarUtils.weekNamesAbbr[i]);
 		} else if(this.getWidth() > 550 && isDisplayAbrrWeekDayNames) {
 			isDisplayAbrrWeekDayNames = false;
 			for(int i = 0; i < weekDays.size(); i++)
-				weekDays.get(i).setText(CalendarConstants.weekNames[i]);
+				weekDays.get(i).setText(CalendarUtils.weekNames[i]);
 		}
 	}
 
@@ -186,7 +186,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 	@Override
 	public String getTitle() {
-		return CalendarConstants.monthNames[currentMonth.get(Calendar.MONTH)] + ", " + currentMonth.get(Calendar.YEAR);
+		return CalendarUtils.monthNames[currentMonth.get(Calendar.MONTH)] + ", " + currentMonth.get(Calendar.YEAR);
 	}
 
 	@Override

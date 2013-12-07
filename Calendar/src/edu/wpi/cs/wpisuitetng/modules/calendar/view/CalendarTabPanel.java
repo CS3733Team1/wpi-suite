@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
@@ -62,6 +63,7 @@ public class CalendarTabPanel extends JPanel {
 	
 	public CalendarTabPanel(CalendarPanel calendarPanel) {
 		this.setLayout(new MigLayout("fill"));
+		this.setBackground(Color.WHITE);
 
 		filterCategoryTabbedPane = new JTabbedPane();
 		filterCategoryTabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
@@ -111,6 +113,7 @@ public class CalendarTabPanel extends JPanel {
 		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), calendarTitleLabel.getFont().getStyle(), 16));
 
 		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets 0 n 0 n", "[33.3333%][33.3333%][33.3333%]", "[][]"));
+		topButtonPanel.setBackground(Color.WHITE);
 		
 		topButtonPanel.add(yearViewButton,		"cell 0 0, center, span 3");
 		topButtonPanel.add(monthViewButton,		"cell 0 0");
@@ -132,6 +135,7 @@ public class CalendarTabPanel extends JPanel {
 		this.add(filterCategoryTabbedPane, "grow, span 1 2, wrap");
 		
 		calendarViewPanel = new JPanel(new MigLayout("fill"));
+		calendarViewPanel.setBackground(Color.WHITE);
 		this.add(calendarViewPanel, "grow, push");
 		
 		dayView = new DayCalendarPanel();

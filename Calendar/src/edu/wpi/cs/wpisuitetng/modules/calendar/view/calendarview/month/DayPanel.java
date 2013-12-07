@@ -12,7 +12,7 @@ import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.CalendarConstants;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.CalendarUtils;
 
 public class DayPanel extends JPanel {
 	private boolean isToday;
@@ -68,7 +68,7 @@ public class DayPanel extends JPanel {
 
 	public void setDate(Calendar date, boolean isInCurrentMonth) {
 		if(indexInMonth == 0 || date.get(Calendar.DATE) == 1)
-			dateLabel.setText(CalendarConstants.monthNamesAbbr[date.get(Calendar.MONTH)] + " " + date.get(Calendar.DATE));
+			dateLabel.setText(CalendarUtils.monthNamesAbbr[date.get(Calendar.MONTH)] + " " + date.get(Calendar.DATE));
 		else dateLabel.setText(date.get(Calendar.DATE) + "");
 
 		if(isInCurrentMonth) dateLabel.setForeground(Color.BLACK);
