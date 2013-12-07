@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class MonthCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener {
 	// A List holding all of the Day Panels as to be able to modify the contents [No need to recreate a new day on view changes]
@@ -75,11 +76,14 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 		this.isDisplayAbrrWeekDayNames = false;
 		weekDays = new ArrayList<JLabel>();
-
-		for(String weekDay: CalendarUtils.weekNames) {
+		
+		for(String weekDay: CalendarUtils.weekNamesAbbr) {
 			JPanel titlePanel = new JPanel(new MigLayout("fill, insets 0", "[center]"));
-			titlePanel.setBackground(new Color(138,173,209));
+			titlePanel.setBackground(Color.WHITE);
 			JLabel weekDayLabel = new JLabel(weekDay);
+			weekDayLabel.setForeground(CalendarUtils.titleNameColor);
+			weekDayLabel.setFont(new Font(weekDayLabel.getFont().getName(), Font.BOLD, 14));
+			weekDayLabel.setBorder(new MatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
 			weekDays.add(weekDayLabel);
 			titlePanel.add(weekDayLabel, "grow");
 			this.add(titlePanel, "grow");
@@ -99,11 +103,11 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	 * Changes the week day names to abbreviations if the panel is too small
 	 */
 	private void updateLayout() {
-		if(this.getWidth() <= 550 && !isDisplayAbrrWeekDayNames) {
+		if(this.getWidth() <= 900 && !isDisplayAbrrWeekDayNames) {
 			isDisplayAbrrWeekDayNames = true;
 			for(int i = 0; i < weekDays.size(); i++)
 				weekDays.get(i).setText(CalendarUtils.weekNamesAbbr[i]);
-		} else if(this.getWidth() > 550 && isDisplayAbrrWeekDayNames) {
+		} else if(this.getWidth() > 900 && isDisplayAbrrWeekDayNames) {
 			isDisplayAbrrWeekDayNames = false;
 			for(int i = 0; i < weekDays.size(); i++)
 				weekDays.get(i).setText(CalendarUtils.weekNames[i]);

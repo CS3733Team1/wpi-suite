@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -12,10 +13,12 @@ import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class DayPanel extends JPanel {
 	private boolean isToday;
+	private boolean isWeekend;
 	
 	private int indexInMonth;
 	private JLabel dateLabel;
@@ -25,16 +28,22 @@ public class DayPanel extends JPanel {
 	private List<JPanel> multiDayEventsList;
 	private List<JPanel> eventsList;
 	private List<JPanel> commitmentsList;
+	private Calendar todayDate;
 
 	public DayPanel(int indexInMonth) {
 		this.setLayout(new MigLayout("fill, insets 0"));
+		/*
 		if((indexInMonth+1)%7 == 0 || indexInMonth >= 35) {
 			if((indexInMonth+1)%7 == 0) {
 				if(indexInMonth < 35) this.setBorder(new MatteBorder(1, 1, 0, 1, Color.LIGHT_GRAY));
 				else this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 			} else this.setBorder(new MatteBorder(1, 1, 1, 0, Color.LIGHT_GRAY));
 		} else this.setBorder(new MatteBorder(1, 1, 0, 0, Color.LIGHT_GRAY));
-
+		*/
+		
+		this.setBorder(new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+		
+		todayDate = Calendar.getInstance();
 		this.isToday = false;
 		
 		this.indexInMonth = indexInMonth;
@@ -42,7 +51,7 @@ public class DayPanel extends JPanel {
 		eventsList = new ArrayList<JPanel>();
 		commitmentsList = new ArrayList<JPanel>();
 
-		dateLabel = new JLabel();
+		dateLabel = new JLabel("test",JLabel.RIGHT);
 		containerPanel = new JPanel(new MigLayout("flowy, insets 0, gap 0 0 0 0"));
 
 		datePanel = new JPanel(new MigLayout("fill, insets 0"));
@@ -52,14 +61,25 @@ public class DayPanel extends JPanel {
 		this.add(containerPanel, "grow, push");
 	}
 	
+	public boolean isWeekend()
+	{
+		if((this.todayDate.get(Calendar.DAY_OF_WEEK)+1)%7 == 2|| (this.todayDate.get(Calendar.DAY_OF_WEEK)+1)%7 == 1)
+			return true;
+		return false;
+	}
+	
 	public void setIsToday(boolean isToday) {
 		this.isToday = isToday;
 		
 		if(isToday) {
-			this.setBackground(new Color(236,252,144));
-			datePanel.setBackground(new Color(236,252,144));
-			containerPanel.setBackground(new Color(236,252,144));
-		} else {
+			this.setBackground(CalendarUtils.todayYellow);
+			datePanel.setBackground(CalendarUtils.todayYellow);
+			containerPanel.setBackground(CalendarUtils.todayYellow);
+		} else if (isWeekend()){
+			this.setBackground(CalendarUtils.weekendColor);
+			datePanel.setBackground(CalendarUtils.weekendColor);
+			containerPanel.setBackground(CalendarUtils.weekendColor);
+		}else{
 			this.setBackground(Color.WHITE);
 			datePanel.setBackground(Color.WHITE);
 			containerPanel.setBackground(Color.WHITE);
@@ -67,12 +87,14 @@ public class DayPanel extends JPanel {
 	}
 
 	public void setDate(Calendar date, boolean isInCurrentMonth) {
+		this.todayDate = date;
 		if(indexInMonth == 0 || date.get(Calendar.DATE) == 1)
-			dateLabel.setText(CalendarUtils.monthNamesAbbr[date.get(Calendar.MONTH)] + " " + date.get(Calendar.DATE));
-		else dateLabel.setText(date.get(Calendar.DATE) + "");
+			dateLabel.setText(CalendarUtils.monthNamesAbbr[date.get(Calendar.MONTH)] + " " + date.get(Calendar.DATE)+" ");
+		else dateLabel.setText(date.get(Calendar.DATE) + " ");
 
 		if(isInCurrentMonth) dateLabel.setForeground(Color.BLACK);
 		else dateLabel.setForeground(Color.LIGHT_GRAY);
+		
 	}
 
 	public void clearEvComs() {
@@ -89,8 +111,8 @@ public class DayPanel extends JPanel {
 		JLabel eventNameLabel = new JLabel(event.getName());
 		eventNameLabel.setForeground(new Color(84, 84, 8));
 		
-		JLabel eventTimeLabel = new JLabel(" " + event.getStartDate().getHours() + ":"
-				+ event.getStartDate().getMinutes());
+		JLabel eventTimeLabel = new JLabel(DateUtils.timeToString(event.getStartDate()));
+		eventTimeLabel.setFont(new Font(eventTimeLabel.getFont().getName(), Font.PLAIN, 8));
 		eventTimeLabel.setForeground(new Color(84, 84, 8));
 
 		eventsPanel.add(eventNameLabel, "wmin 0");
@@ -115,8 +137,8 @@ public class DayPanel extends JPanel {
 		JLabel commitmentNameLabel = new JLabel(commitment.getName());
 		commitmentNameLabel.setForeground(new Color(84, 84, 8));
 		
-		JLabel commitmentTimeLabel = new JLabel(" " + commitment.getDueDate().getHours() + ":"
-				+ commitment.getDueDate().getMinutes());
+		JLabel commitmentTimeLabel = new JLabel(DateUtils.timeToString(commitment.getDueDate()));
+		commitmentTimeLabel.setFont(new Font(commitmentTimeLabel.getFont().getName(), Font.PLAIN, 8));
 		commitmentTimeLabel.setForeground(new Color(84, 84, 8));
 
 		commitmentsPanel.add(commitmentNameLabel, "wmin 0");

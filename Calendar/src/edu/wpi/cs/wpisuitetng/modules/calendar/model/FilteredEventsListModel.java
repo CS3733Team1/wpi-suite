@@ -13,7 +13,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	private static FilteredEventsListModel filteredEventsListModel;
 
 	/** The list of filtered events on the calendar */
-	private ArrayList<Event> filteredEvents;
+	private List<Event> filteredEvents;
 
 	private FilteredEventsListModel() {
 		filteredEvents = Collections.synchronizedList(new ArrayList<Event>());

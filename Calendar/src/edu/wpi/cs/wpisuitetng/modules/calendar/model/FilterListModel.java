@@ -162,6 +162,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		return filters.size();
 	}
 
+
 	static public synchronized List<Filter> getList(){
 		return getFilterListModel().filters;
 	}
