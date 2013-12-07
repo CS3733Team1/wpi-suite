@@ -29,7 +29,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterC
 public class MainView {
 
 	private List<JanewayTabModel> tabs;
-	private CalendarPanel calendarPanel;
+	public static CalendarPanel calendarPanel;
 	private CalendarToolBar calendarToolBar;
 
 	public MainView() {
@@ -82,7 +82,10 @@ public class MainView {
 		return this.calendarToolBar;
 	}
 	
-	public CalendarPanel getCalendarPanel(){
-		return this.calendarPanel;
+	public synchronized CalendarPanel getCalendarPanel(){
+		return MainView.calendarPanel;
+	}
+	public static synchronized CalendarPanel getCurrentCalendarPanel(){
+		return MainView.calendarPanel;
 	}
 }

@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -36,7 +37,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	private Filter activeFilter;
 
 	private FilterListModel() {
-		this.filters = new ArrayList<Filter>();
+		this.filters = Collections.synchronizedList(new ArrayList<Filter>());
 	}
 
 	static public FilterListModel getFilterListModel() {
@@ -126,8 +127,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		while(filters.size() != 0) filters.remove(0);
-
+		filters.clear();
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 

@@ -15,6 +15,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -186,7 +187,7 @@ public class CalendarTabPanel extends JPanel {
 	public List<Commitment> getSelectedCommitmentList(){
 		if(filterCategoryTabbedPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
 			return commitmentSubTabPanel.getCommitmentsList().getSelectedValuesList();
-		else return new ArrayList<Commitment>();
+		else return Collections.synchronizedList(new ArrayList<Commitment>());
 	}
 	
 	public void setCalendarViewTitle(String title) {
@@ -252,5 +253,12 @@ public class CalendarTabPanel extends JPanel {
 			this.setCalendarViewTitle(yearView.getTitle());
 			this.refreshCalendarView();
 		}
+	}
+	synchronized public boolean getIsOnTeamCal(){
+		boolean isTeam= false;
+		if(teamCalCheckBox != null && teamCalCheckBox.isSelected()){
+			return true;
+		}
+		return false;
 	}
 }

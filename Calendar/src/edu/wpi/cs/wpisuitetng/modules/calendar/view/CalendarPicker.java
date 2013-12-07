@@ -29,8 +29,8 @@ public class CalendarPicker extends JPanel {
 	}
 	
 	// Returns true if commitment or event is personal
-	public boolean isPersonal(){
-		return calendarComboBox.getSelectedItem().equals(selectedCalendar[0]);
+	public boolean isTeam(){
+		return calendarComboBox.getSelectedItem().equals(selectedCalendar[1]);
 	}
 	
 }
