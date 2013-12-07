@@ -22,9 +22,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	/**
 	 * This is a model for events. It contains all of the events to be
 	 * displayed on the calendar. It extends AbstractListModel so that it can provide
-	 * the model data to the JList component in the BoardPanel.
-	 * 
-	 * @author Thomas DeSilva, Zach Estep
+	 * the model data to the JList component in the BoardPanel. This class is a singleton.
 	 * 
 	 */
 

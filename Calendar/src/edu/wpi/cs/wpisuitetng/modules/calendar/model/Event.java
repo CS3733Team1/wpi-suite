@@ -16,7 +16,8 @@ import com.google.gson.Gson;
 
 /**
  * Data class for Events
- * An event has a name, a start Date, and an end Date
+ * An event must have a name, a start Date, and an end Date. It can contain a custom
+ * description and category.
  */
 public class Event extends DeletableAbstractModel {
 	// Required parameters
@@ -42,7 +43,11 @@ public class Event extends DeletableAbstractModel {
 
 	public Event(){}
 	
-	//A copy constructor to preserve UniqueID's when copying events.
+	/**
+	 * A copy constructor to preserve UniqueID's when copying events.
+	 * @param other event to copy
+	 * @return a copy of other
+	 */
 	public Event(Event other)
 	{
 		super();
@@ -165,12 +170,24 @@ public class Event extends DeletableAbstractModel {
 		return str;
 	}
 	
+	/**
+	 * Parses a string of an arbitrary number of JSON-serialized Events into an array of Events
+	 * @param input A string of JSON Events
+	 * @return An array of Events
+	 */
+	
 	public static Event[] fromJSONArray(String input)
 	{
 		final Gson parser = new Gson();
 		System.err.println(input);
 		return parser.fromJson(input, Event[].class);
 	}
+	
+	/**
+	 * Parses a single JSON string into an Event
+	 * @param input A string containing a single serialized Event
+	 * @return The Event represented by input
+	 */
 	
 	public static Event fromJSON(String input)
 	{
@@ -180,6 +197,9 @@ public class Event extends DeletableAbstractModel {
 	
 	
 	@Override
+	/**
+	 * @return Returns a human-readable String describing this Event
+	 */
 	public String toString()
 	{
 		//TODO: Remember to change this when participants, recurrence etc. gets added

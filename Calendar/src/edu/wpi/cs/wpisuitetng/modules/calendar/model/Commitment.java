@@ -16,7 +16,16 @@ import java.util.UUID;
 import com.google.gson.Gson;
 
 /**
- * Model for holding commitment data
+ * Class for holding Commitment data. A Commitment must have:<br>
+ * -A name<br>
+ * -A Date<br>
+ * <br>
+ * A Commitment can have:<br>
+ * -A description<br>
+ * -A Category<br>
+ * -A completion State<br>
+ * <br>
+ * Privately, a Commitment has a uniqueID to help distinguish it in the database.
  */
 public class Commitment extends DeletableAbstractModel implements Comparable<Commitment>{
 	
@@ -260,6 +269,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	{
 		id = UUID.randomUUID().hashCode();
 	}
+	/**
+	 * Set the uniquieID to a specific number
+	 */
 	
 	public void setID(int newID)
 	{
@@ -275,7 +287,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 
 	/**
-	 * @return a json String representation of the Commitment
+	 * @return a JSON String representation of this Commitment
 	 */
 	@Override
 	public String toJSON() {
@@ -285,9 +297,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 	
 	/**
-	 * Generates an array of Commitments from a json String
-	 * @param input json String representing an array of Commitments
-	 * @return Commitments built from json String
+	 * Generates an array of Commitments from a JSON String
+	 * @param input JSON String containing an arbitrary number of serialized Commitments
+	 * @return An array of Commitments
 	 */
 	public static Commitment[] fromJSONArray(String input)
 	{
@@ -296,16 +308,18 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 	
 	/**
-	 * Generates a Commitment from a json String
-	 * @param input json String representing a Commitment
-	 * @return Commitment built from json String
+	 * Generates a single Commitment from a JSON String
+	 * @param input JSON String representing one Commitment
+	 * @return Commitment built from the input
 	 */
 	public static Commitment fromJSON(String input)
 	{
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Commitment.class);
 	}
-	
+	/**
+	 * @return A human-readable string representation of this class
+	 */
 	@Override
 	public String toString()
 	{
@@ -330,15 +344,13 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		return null;
 	}
 
-	/** compareTo
-	 * 
-	 *  This function compares a commitment to this commitment and 
-	 *  the return value decides if this commitment begins before, after,
-	 *  or at the same time.
+	/** 
+	 *  This function compares another Commitment to this Commitment and 
+	 *  decides if this Commitment begins before, after, or at the same time.
 	 *  
-	 *  @return Returns -1 if this commitment begins after the given commitment
-	 *          Returns 0 if the commitments begin at the same time.
-	 *          Returns 1 if this commitment begins before the given commitment
+	 *  @return Returns <b>-1</b> if this Commitment begins after the input Commitment<br>
+	 *          Returns <b>0</b> if both Commitments begin at the same time.<br>
+	 *          Returns <b>1</b> if this Commitment begins before the input Commitment
 	 */
 	@Override
 	public int compareTo(Commitment commitment) 
@@ -357,6 +369,11 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		}//end else
 	}//end compareTo
 
+	/**
+	 * Copies all of the fields from the input Commitment into this Commitment.
+	 * @param toCopyFrom The Commitment to copy
+	 */
+	
 	public void copyFrom(Commitment toCopyFrom) 
 	{
 		this.category = toCopyFrom.getCategory();
