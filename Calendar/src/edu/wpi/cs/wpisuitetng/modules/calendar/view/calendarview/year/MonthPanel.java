@@ -21,7 +21,6 @@ public class MonthPanel extends JPanel {
 
 	// The name of the month
 	private JLabel monthNameLabel;
-
 	public MonthPanel() {
 		this.setMinimumSize(new Dimension(YearCalendarView.MIN_MONTH_WIDTH, 140));
 		this.setLayout(new MigLayout("fill, gap 0, wrap 7"));
@@ -83,6 +82,7 @@ public class MonthPanel extends JPanel {
 			dayPanel.setIsWeekend((i+1)%7 <= 1);
 			dayPanel.setDate(month.get(Calendar.DATE));
 			dayPanel.setIsToday(false);
+			dayPanel.setIsWeekend(false);
 			dayPanel.updateColors();
 
 			dayPanel.resetEvCommCount();

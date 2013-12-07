@@ -78,8 +78,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 		for(String weekDay: CalendarUtils.weekNames) {
 			JPanel titlePanel = new JPanel(new MigLayout("fill, insets 0", "[center]"));
-			titlePanel.setBackground(new Color(138,173,209));
-			JLabel weekDayLabel = new JLabel(weekDay);
+			titlePanel.setBackground(Color.WHITE);
+			JLabel weekDayLabel = new JLabel(weekDay, JLabel.CENTER);
 			weekDays.add(weekDayLabel);
 			titlePanel.add(weekDayLabel, "grow");
 			this.add(titlePanel, "grow");
@@ -125,6 +125,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		for(DayPanel dayPanel: days) {
 			dayPanel.setDate(month,  month.get(Calendar.MONTH) == savedMonth);
 			dayPanel.setIsToday(false);
+			
 
 			month.add(Calendar.DATE, 1);
 		}
