@@ -117,7 +117,7 @@ public class WeekView extends JPanel implements ICalendarView {
 				Date hue = new Date(currentYear-1900, currentMonth, currentDate + (currentday - 1), currenthour, 0);
 				thesecond.setDate(hue);
 				thesecond.setBackground(Color.WHITE);
-				thesecond.setBorder(new MatteBorder(1, 1, 1, 1, Color.gray));
+				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
 				this.add(thesecond, datebuilder.toString());
 				paneltracker.put(hue, thesecond);
 				nameList.add(thesecond);

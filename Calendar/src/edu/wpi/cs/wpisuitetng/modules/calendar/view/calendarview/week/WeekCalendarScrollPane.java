@@ -63,13 +63,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 	
 		JPanel cornertile = new JPanel();
 		cornertile.setBackground(Color.WHITE);
-		
-		
-		
-		
-		
-		//this.setCorner(UPPER_RIGHT_CORNER, cornertile);
-		//this.setColumnHeaderView(weektitle);
+
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
@@ -100,13 +94,6 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 		
 		JPanel cornertile = new JPanel();
 		cornertile.setBackground(Color.WHITE);
-		
-		
-		
-		
-		
-		//this.setCorner(UPPER_RIGHT_CORNER, cornertile);
-		//this.setColumnHeaderView(weektitle);
 	}
 	
 	public void DisplayCommitments(){
