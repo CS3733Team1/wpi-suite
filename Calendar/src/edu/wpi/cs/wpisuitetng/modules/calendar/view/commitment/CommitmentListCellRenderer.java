@@ -13,16 +13,15 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 import java.awt.Color;
 import java.awt.Component;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.MonthCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
 
 /**
  * This class is in charge of how the commitments display in the list.
@@ -36,47 +35,39 @@ public class CommitmentListCellRenderer extends JPanel implements ListCellRender
 	private JLabel dueDate;
 	private JLabel category;
 	
-	private static final String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-	
 	/**
 	 * Default constructor for CommitmentListCellRenderer
 	 * Sets up the general view and prepares it to have commitments placed in it
 	 */
 	public CommitmentListCellRenderer() {
-		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		this.setLayout(new MigLayout("flowy"));
 		commitmentName = new JLabel();
 		dueDate = new JLabel();
 		category = new JLabel();
 		this.add(commitmentName);
 		this.add(dueDate);
 		this.add(category);
+		
+		this.setBorder(new MatteBorder(0, 0, 1, 0, Color.GRAY));
 	}
 	
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Commitment> list, Commitment commitment,
 			int index, boolean isSelected, boolean cellHasFocus) {
-		commitmentName.setText("Name: " + commitment.getName());
-		dueDate.setText("Date: " + daysOfWeek[commitment.getDueDate().getDay()] + ", " + MonthCalendarView.monthNames[commitment.getDueDate().getMonth()] + " "
+		commitmentName.setText(commitment.getName());
+		dueDate.setText("Due: " + CalendarUtils.weekNamesAbbr[commitment.getDueDate().getDay()] + ", " + CalendarUtils.monthNames[commitment.getDueDate().getMonth()] + " "
 		+ commitment.getDueDate().getDate() + ", "
 				+ (commitment.getDueDate().getYear() + 1900));
 
-		if(commitment.getCategory()!= null && !commitment.getCategory().equals("None")) {
+		if(!commitment.getCategory().getName().equals("Uncategorized")) {
 			category.setVisible(true);
-			category.setText("Category: " + commitment.getCategory().getName());
+			category.setText(commitment.getCategory().getName());
 			category.setForeground(commitment.getCategory().getColor());
 		} else {
 			category.setVisible(false);
 		}
 		
-		final Color background = UIManager.getDefaults().getColor("List.background");
-		final Color foreground = UIManager.getDefaults().getColor("List.foreground");
-		final Color selectionBackground = UIManager.getDefaults().getColor("List.selectionBackground");
-		final Color selectionForeground = UIManager.getDefaults().getColor("List.selectionForeground");
-		
-		this.setBackground(isSelected ? selectionBackground : background);
-		this.setForeground(isSelected ? selectionForeground : foreground);
-		
-		this.setBorder(new LineBorder(new Color(0, 0, 0)));
+		this.setBackground(isSelected ? CalendarUtils.selectionColor : Color.WHITE);
 		
 		return this;
 	}

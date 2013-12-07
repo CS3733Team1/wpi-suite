@@ -51,7 +51,6 @@ public class Event extends DeletableAbstractModel {
 	public Event(Event other)
 	{
 		super();
-		System.out.println("Event Copy Constructor");
 		this.UniqueID=other.getUniqueID();
 		this.OwnerID=other.getOwnerID();
 		this.OwnerName=other.getOwnerName();
