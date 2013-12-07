@@ -108,8 +108,24 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 			Date start = event.getStartDate();
 			Calendar startCal = Calendar.getInstance();
 			startCal.set(start.getYear()+1900, start.getMonth(), start.getDate());
-			if(startCal.get(Calendar.YEAR) == currentYear.get(Calendar.YEAR))
-				monthList.get(startCal.get(Calendar.MONTH)).markEventCommitmentDate((Calendar)startCal.clone());
+			
+			Date end = event.getEndDate();
+			Calendar endCal = Calendar.getInstance();
+			endCal.set(end.getYear()+1900, end.getMonth(), end.getDate());
+			
+			System.out.println("Event: " + event.getName());
+			
+			do {
+				if(startCal.get(Calendar.YEAR) == currentYear.get(Calendar.YEAR)) {
+					monthList.get(startCal.get(Calendar.MONTH)).markEventCommitmentDate((Calendar)startCal.clone());
+					System.out.println(startCal.get(Calendar.DAY_OF_YEAR));
+					startCal.add(Calendar.DATE, 1);
+				} else if (startCal.get(Calendar.YEAR) < currentYear.get(Calendar.YEAR)) {
+					startCal.set(Calendar.YEAR, currentYear.get(Calendar.YEAR));
+					startCal.set(Calendar.DAY_OF_YEAR, 1);
+				} else break;
+			} while(startCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)	&&
+					startCal.get(Calendar.DAY_OF_YEAR) <= endCal.get(Calendar.DAY_OF_YEAR));
 		}
 
 		// Highlight the day text for the correct month red if there is a commitment
