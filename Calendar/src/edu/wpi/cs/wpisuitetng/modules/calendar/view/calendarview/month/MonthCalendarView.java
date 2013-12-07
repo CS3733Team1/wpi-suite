@@ -65,7 +65,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 				"[14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%]",
 				"[9%][13%][13%][13%][13%][13%][13%]"));
 		this.setBackground(Color.WHITE);
-		this.setBorder(new MatteBorder(1, 1, 1, 1, Color.GRAY));
+		this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 
 		this.currentMonth = Calendar.getInstance();
 
@@ -83,7 +83,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			JLabel weekDayLabel = new JLabel(weekDay);
 			weekDayLabel.setForeground(CalendarUtils.titleNameColor);
 			weekDayLabel.setFont(new Font(weekDayLabel.getFont().getName(), Font.BOLD, 14));
-			weekDayLabel.setBorder(new MatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
+			weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, Color.GRAY));
 			weekDays.add(weekDayLabel);
 			titlePanel.add(weekDayLabel, "grow");
 			this.add(titlePanel, "grow");
@@ -118,7 +118,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	 * Fills the Month with its respective dates as well as events or commitments
 	 */
 	private void updateDates() {
-		Calendar month = (Calendar)currentMonth.clone();
+		Calendar month = (Calendar) currentMonth.clone();
 		month.set(Calendar.DATE, 1);
 
 		int savedMonth = month.get(Calendar.MONTH);
@@ -129,15 +129,25 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		for(DayPanel dayPanel: days) {
 			dayPanel.setDate(month,  month.get(Calendar.MONTH) == savedMonth);
 			dayPanel.setIsToday(false);
-
+			dayPanel.updateColors();
+			
 			month.add(Calendar.DATE, 1);
 		}
 
 		// Set the current day to be highlighted yellow
 		Calendar today = Calendar.getInstance();
+		
 		if(today.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
 				today.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
-			days.get(getIndexofDay(today)).setIsToday(true);
+			
+			for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.selectionColor));
+			weekDays.get(today.get(Calendar.DAY_OF_WEEK)-1).setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+			
+			int index = getIndexofDay(today);
+			days.get(index).setIsToday(true);
+			days.get(index).updateColors();
+		} else {
+			for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, Color.LIGHT_GRAY));
 		}
 
 		updateEvComs();

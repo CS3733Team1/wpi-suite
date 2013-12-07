@@ -19,9 +19,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 public class DayPanel extends JPanel {
 	private boolean isToday;
 	private boolean isWeekend;
+	private boolean isInCurrentMonth;
 	
 	private int indexInMonth;
-	private JLabel dateLabel;
+	private JLabel day;
 	private JPanel datePanel;
 	private JPanel containerPanel;
 
@@ -43,7 +44,6 @@ public class DayPanel extends JPanel {
 		
 		this.setBorder(new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
 		
-		todayDate = Calendar.getInstance();
 		this.isToday = false;
 		
 		this.indexInMonth = indexInMonth;
@@ -51,50 +51,50 @@ public class DayPanel extends JPanel {
 		eventsList = new ArrayList<JPanel>();
 		commitmentsList = new ArrayList<JPanel>();
 
-		dateLabel = new JLabel("test",JLabel.RIGHT);
+		day = new JLabel("test",JLabel.RIGHT);
 		containerPanel = new JPanel(new MigLayout("flowy, insets 0, gap 0 0 0 0"));
 
 		datePanel = new JPanel(new MigLayout("fill, insets 0"));
-		datePanel.add(dateLabel, "grow, alignx center");
+		datePanel.add(day, "grow, alignx center");
 
+		this.isWeekend = (indexInMonth + 1)%7 <= 1;
+		
 		this.add(datePanel, "grow, wrap");
 		this.add(containerPanel, "grow, push");
 	}
-	
-	public boolean isWeekend()
-	{
-		if((this.todayDate.get(Calendar.DAY_OF_WEEK)+1)%7 == 2|| (this.todayDate.get(Calendar.DAY_OF_WEEK)+1)%7 == 1)
-			return true;
-		return false;
-	}
-	
+
 	public void setIsToday(boolean isToday) {
 		this.isToday = isToday;
-		
+	}
+	
+	public void updateColors() {
+		if(isInCurrentMonth) day.setForeground(Color.BLACK);
+		else day.setForeground(Color.LIGHT_GRAY);
 		if(isToday) {
-			this.setBackground(CalendarUtils.todayYellow);
-			datePanel.setBackground(CalendarUtils.todayYellow);
-			containerPanel.setBackground(CalendarUtils.todayYellow);
-		} else if (isWeekend()){
-			this.setBackground(CalendarUtils.weekendColor);
-			datePanel.setBackground(CalendarUtils.weekendColor);
-			containerPanel.setBackground(CalendarUtils.weekendColor);
-		}else{
-			this.setBackground(Color.WHITE);
-			datePanel.setBackground(Color.WHITE);
-			containerPanel.setBackground(Color.WHITE);
+			day.setForeground(CalendarUtils.thatBlue);
+			this.setBackground(CalendarUtils.selectionColor);
+			datePanel.setBackground(CalendarUtils.selectionColor);
+			containerPanel.setBackground(CalendarUtils.selectionColor);
+		} else {
+			if(isWeekend) {
+				this.setBackground(CalendarUtils.weekendColor);
+				datePanel.setBackground(CalendarUtils.weekendColor);
+				containerPanel.setBackground(CalendarUtils.weekendColor);
+			}
+			else {
+				this.setBackground(Color.WHITE);
+				datePanel.setBackground(Color.WHITE);
+				containerPanel.setBackground(Color.WHITE);
+			}
 		}
 	}
 
 	public void setDate(Calendar date, boolean isInCurrentMonth) {
+		this.isInCurrentMonth = isInCurrentMonth;
 		this.todayDate = date;
 		if(indexInMonth == 0 || date.get(Calendar.DATE) == 1)
-			dateLabel.setText(CalendarUtils.monthNamesAbbr[date.get(Calendar.MONTH)] + " " + date.get(Calendar.DATE)+" ");
-		else dateLabel.setText(date.get(Calendar.DATE) + " ");
-
-		if(isInCurrentMonth) dateLabel.setForeground(Color.BLACK);
-		else dateLabel.setForeground(Color.LIGHT_GRAY);
-		
+			day.setText(CalendarUtils.monthNamesAbbr[date.get(Calendar.MONTH)] + " " + date.get(Calendar.DATE)+" ");
+		else day.setText(date.get(Calendar.DATE) + " ");
 	}
 
 	public void clearEvComs() {
@@ -105,8 +105,11 @@ public class DayPanel extends JPanel {
 
 	public void addEvent(Event event) {		
 		JPanel eventsPanel = new JPanel(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
-		if(isToday) eventsPanel.setBackground(new Color(236,252,144));
-		else eventsPanel.setBackground(Color.WHITE);
+		if(isToday) eventsPanel.setBackground(CalendarUtils.selectionColor);
+		else {
+			if(isWeekend) eventsPanel.setBackground(CalendarUtils.weekendColor);
+			else eventsPanel.setBackground(Color.WHITE);
+		}
 		
 		JLabel eventNameLabel = new JLabel(event.getName());
 		eventNameLabel.setForeground(new Color(84, 84, 8));
@@ -131,8 +134,11 @@ public class DayPanel extends JPanel {
 
 	public void addCommitment(Commitment commitment) {
 		JPanel commitmentsPanel = new JPanel(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
-		if(isToday) commitmentsPanel.setBackground(new Color(236,252,144));
-		else commitmentsPanel.setBackground(Color.WHITE);
+		if(isToday) commitmentsPanel.setBackground(CalendarUtils.selectionColor);
+		else {
+			if(isWeekend) commitmentsPanel.setBackground(CalendarUtils.weekendColor);
+			else commitmentsPanel.setBackground(Color.WHITE);
+		}
 		
 		JLabel commitmentNameLabel = new JLabel(commitment.getName());
 		commitmentNameLabel.setForeground(new Color(84, 84, 8));
