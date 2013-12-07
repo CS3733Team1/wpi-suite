@@ -56,9 +56,10 @@ public class DayPanel extends JPanel {
 		if(isToday) {
 			this.setBackground(CalendarUtils.todayYellow);
 			day.setForeground(CalendarUtils.thatBlue);
-		} else this.setBackground(Color.WHITE);
-		
-		if(isWeekend) this.setBackground(CalendarUtils.weekendColor);
+		} else {
+			if(isWeekend) this.setBackground(CalendarUtils.weekendColor);
+			else this.setBackground(Color.WHITE);
+		}
 	}
 
 	public void resetEvCommCount() {numEvComms = 0;}
