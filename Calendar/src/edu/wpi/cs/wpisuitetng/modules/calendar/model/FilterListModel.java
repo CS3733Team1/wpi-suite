@@ -27,7 +27,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 	List<FilterChangedListener> filterChangedListeners = new ArrayList<FilterChangedListener>();
 
-	private final Filter[] defaultFilters = {new Filter("None")};
+	private final Filter[] defaultFilters = {new Filter("Unfiltered")};
 
 	/** The list of Filter */
 	private List<Filter> filters;
@@ -175,7 +175,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Events
 	 */
 	public List<Event> applyEventFilter(List<Event> eventList) {
-		if(activeFilter == null || activeFilter.getName().equals("None")) return eventList;
+		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return eventList;
 		else return activeFilter.applyEventFilter(eventList);
 	}
 
@@ -185,7 +185,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Commitments
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter == null || activeFilter.getName().equals("None")) return commitmentList;
+		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return commitmentList;
 		else return activeFilter.applyCommitmentFilter(commitmentList);
 	}
 
