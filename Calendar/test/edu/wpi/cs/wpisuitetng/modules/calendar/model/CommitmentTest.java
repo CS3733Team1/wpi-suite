@@ -10,14 +10,10 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
 import java.awt.Color;
-
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-
-
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +45,6 @@ public class CommitmentTest {
 		c3 = new Commitment("class", Date1, "CS 3733 class");
 		c4 = new Commitment("class", Date1, cat1);
 		c5 = new Commitment("class", Date1, "other class", cat2);
-		c6 = new Commitment("class", Date1, "Has Progress", Commitment.State.IN_PROGRESS.toString());
 	}
 	
 	@Test

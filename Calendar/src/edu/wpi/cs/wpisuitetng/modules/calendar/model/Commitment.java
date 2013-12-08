@@ -37,7 +37,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		
 		private String display;
 		
-		State(String display)
+		private State(String display)
 		{
 			this.display = display;
 		}
