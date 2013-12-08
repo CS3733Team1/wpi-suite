@@ -25,18 +25,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import sun.util.calendar.BaseCalendar.Date;
-
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.ClosableTabComponent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimePicker;
-import edu.wpi.cs.wpisuitetng.modules.calendar.Calendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 
 public class CommitmentTabPanel extends JPanel implements ActionListener, KeyListener {	
@@ -52,7 +48,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	private CategoryPickerPanel categoryPickerPanel;
 	private CommitmentProgressPanel commitmentProgressPanel;
 	private JTextArea descriptionTextArea;
-	
+
 	// Buttons
 	private JButton addCommitmentButton;
 	private JButton cancelButton;
@@ -60,24 +56,27 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	// Error Labels
 	private JLabel nameErrorLabel;
 	private JLabel dateErrorLabel;
-	
+
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
 	JEditorPane display;
 
-	public CommitmentTabPanel() 
-	{
+	public CommitmentTabPanel() {
 		this.buildLayout();
 	}
-	
+
 	public CommitmentTabPanel(JEditorPane display, Commitment c)
 	{
 		this.display = display;
-		
+
 		this.buildLayout();
 		nameTextField.setText(c.getName());
 		//nameErrorLabel.setVisible(false);
 		datePickerPanel.setDate(c.getDueDate());
+		
+		timePicker.setHours(c.getDueDate().getHours());
+		timePicker.setMinutes(c.getDueDate().getMinutes());
+		
 		commitmentProgressPanel.setSelected(c.getProgress());
 		descriptionTextArea.setText(c.getDescription());
 		addCommitmentButton.setText("Update Commitment");
@@ -104,7 +103,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		nameErrorLabel = new JLabel(EMPTY_NAME_ERROR);
 		nameErrorLabel.setForeground(Color.RED);
 		this.add(nameErrorLabel, "wrap");
-		
+
 		// Date
 		this.add(new JLabel("Date:"), "split 3");
 		datePickerPanel = new DatePickerPanel();
@@ -113,7 +112,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		dateErrorLabel = new JLabel(INVALID_DATE_ERROR);
 		dateErrorLabel.setForeground(Color.RED);
 		this.add(dateErrorLabel, "wrap");
-		
+
 		// Time
 		timePicker=new TimePicker("Time:");
 		timePicker.addTimeChangedEventListener(new TimeChangedEventListener() {
@@ -123,43 +122,43 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 			}
 		});
 		this.add(timePicker,"alignx left");
-		
+
 		// Category
 		this.add(new JLabel("Category:"), "split 2");
 		categoryPickerPanel = new CategoryPickerPanel();
 		this.add(categoryPickerPanel, "alignx left, wrap");
-		
+
 		//Progress
 		this.add(new JLabel("Progress:"), "split 2");
 		commitmentProgressPanel = new CommitmentProgressPanel();
 		this.add(commitmentProgressPanel, "alignx left, wrap");
-		
+
 		// Description
 		this.add(new JLabel("Description:"), "wrap");
-		
+
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
-		
+
 		JScrollPane scrollp = new JScrollPane(descriptionTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
+
 		this.add(scrollp, "grow, push, span, h 5000, wrap");
-		
+
 		// Add / Cancel buttons
 		addCommitmentButton = new JButton("Add Commitment");
 		addCommitmentButton.setActionCommand("addcommitment");
 		addCommitmentButton.addActionListener(new AddCommitmentController(this));
-		
+
 		this.add(addCommitmentButton, "alignx left, split 2");
-		
+
 		cancelButton = new JButton("Cancel");
 		cancelButton.setActionCommand("cancel");
-		
+
 		this.add(cancelButton, "alignx left");
-		
+
 		//Action Listener for Cancel Button
 		cancelButton.addActionListener(this);
-		
+
 		validateFields();
 	}
 
@@ -173,8 +172,6 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	 * @return void
 	 */
 	private void validateFields() {
-//		System.out.println("Validating Commitment Fields");
-		
 		boolean enableAddCommitment = true;
 
 		//check name
@@ -187,7 +184,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 			nameErrorPanelWrapper.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
 			nameErrorLabel.setVisible(false);
 		}
-		
+
 		//check date
 		datePickerPanel.validateDate();
 		if(datePickerPanel.isInvalidDate() == 1) {
@@ -204,17 +201,16 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 			datePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
 			dateErrorLabel.setVisible(false);
 		}
-		
+
 		//check time
 		if (!timePicker.hasValidTime()){
 			enableAddCommitment=false;
 		}
-		
+
 		addCommitmentButton.setEnabled(enableAddCommitment);
 	}
-	
-	public JEditorPane getCommitmentView()
-	{
+
+	public JEditorPane getCommitmentView() {
 		return display;
 	}
 
@@ -230,7 +226,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		return new Commitment(nameTextField.getText(), date,
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory(), commitmentProgressPanel.getSelectedState());
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("cancel")) {
@@ -242,7 +238,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	public void keyReleased(KeyEvent e) {
 		validateFields();
 	}
-	
+
 	// Unused
 	@Override
 	public void keyPressed(KeyEvent e) {}

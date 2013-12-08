@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,8 +28,8 @@ import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
@@ -70,7 +71,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		fillDayView();
 		DisplayCommitments();
 		
-		CommitmentListModel.getCommitmentListModel().addListDataListener(this);
+		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
 
 	public void fillDayView(){
@@ -83,8 +84,8 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		eventbuilder.append("0");
 		eventbuilder.append(",grow, push");
 
-		event.add(new JLabel(weekNames[(new Date(currentYear-1900, currentMonth, currentDate).getDay())]));
-		event.setBackground(new Color(138,173,209));
+		event.add(new JLabel(" "));
+		event.setBackground(Color.WHITE);
 		this.add(event, eventbuilder.toString());
 
 		JPanel time = new JPanel();
@@ -96,8 +97,8 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		timebuilder.append("0");
 		timebuilder.append(",grow, push");
 
-		time.add(new JLabel("Time"));
-		time.setBackground(new Color(138,173,209));
+		time.add(new JLabel(" "));
+		time.setBackground(Color.WHITE);
 		this.add(time, timebuilder.toString());
 
 		for (int currenthour=0; currenthour < 24; currenthour++){
@@ -143,12 +144,29 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 				hour.setBackground(Color.RED);
 				StringBuilder bob = new StringBuilder();
 				bob.append("<html>");
+				int i=1;
 				for (Commitment commit: foundyou.get(x)){
-					bob.append("<p>");
+					bob.append("<p style='width:175px'>");
+					if(i != 1)
+					{
+					bob.append("<br>");
+					}
+					bob.append("Commitment ");
+					bob.append(new Integer(i).toString()+":");
+					i++;
+					bob.append("<br>");
 					bob.append("<b>Name:</b> ");
 					bob.append(commit.getName());
-					bob.append("<br><b>Description:</b> ");
-					bob.append(commit.getDescription());
+					bob.append("<br><b>Due Date:</b> ");
+					bob.append(DateFormat.getInstance().format(commit.getDueDate()));
+					if(commit.getCategory()!=null){
+						bob.append("<br><b>Category: </b>");
+						bob.append(commit.getCategory().getName());
+					}
+					if(commit.getDescription().length()>0){
+						bob.append("<br><b>Description:</b> ");
+						bob.append(commit.getDescription());
+					}
 					bob.append("</p>");
 				}
 				bob.append("</html>");
@@ -206,13 +224,15 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 	 */
 	public List<Commitment> CommitmentsOnCalendar(){
 		List<Commitment> notevenclose = new LinkedList<Commitment>();
-		for (Commitment commit: CommitmentListModel.getCommitmentListModel().getList()){
+		for (Commitment commit: FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList()){
 			Date commitdate = commit.getDueDate();
 			Date teemo = new Date(commitdate.getYear(),commitdate.getMonth(),commitdate.getDate(),commitdate.getHours(),0);
-			if (paneltracker.containsKey(teemo)) {
+			if (paneltracker.containsKey(teemo)){
+				//System.out.println("I'm Invisible"); //never underestimate the power of the scout's code
 				notevenclose.add(commit);
 			}
 		}
+		
 		return notevenclose;
 	}
 	

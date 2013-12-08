@@ -24,6 +24,13 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
+
+/**
+ * This class shows single-day events in week view. It is a component of the WeekCalendarLayerPane, along
+ * with MultidayEventWeekView.
+ */
+
 public class EventWeekView extends JPanel{
 
 	private List<Event> events;
@@ -154,7 +161,7 @@ public class EventWeekView extends JPanel{
 		StringBuilder layouts = new StringBuilder();
 		String toomanyones = "";
 		
-		layouts.append("[8%]");
+		layouts.append("[9%]");
 		for (int currentday = 0; currentday < 7; currentday++){
 			List<Event> currentlist = weekevents.get(currentday);
 			currentlist = sortEvents(currentlist);
@@ -175,11 +182,11 @@ public class EventWeekView extends JPanel{
 		
 		for(int i = 0; i < 100; i++)
 			toomanyones += "[1%]";
-		
+
 		this.setLayout(new MigLayout("fill",
 				layouts.toString(),
 				toomanyones));
-		
+
 		int maxmove = 1;
 		
 		for (int currentday = 0; currentday < 7; currentday++){
@@ -225,14 +232,25 @@ public class EventWeekView extends JPanel{
 					infobuilder.append("</p></html>");
 					panel.setToolTipText(infobuilder.toString());
 					
-					panel.add(new JLabel(e.getName()), "wmin 0, aligny center, alignx center");
+					JLabel name = new JLabel(e.getName());
+					panel.add(name, "wmin 0, aligny center, alignx center");
 					if (e.getCategory() != null){
 						panel.setBackground(e.getCategory().getColor());
+						Color catColor = e.getCategory().getColor();
+						float[] hsb = new float[3];
+						hsb = Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
+						if(hsb[2]<0.5){
+							name.setForeground(Color.WHITE);
+						}
+						else{
+							name.setForeground(Color.BLACK);
+						}
 					}
 					else{
 						panel.setBackground(Color.CYAN);
 					}
 					panel.setFocusable(true);
+					panel.addMouseListener(new EventMouseListener(e, panel));
 					this.add(panel, evebuilder.toString());
 				}
 				y = y + chain.size();

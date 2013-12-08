@@ -16,14 +16,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+
+/**
+ * This is the bottom layer of the week view hierarchy. 
+ */
 
 public class WeekView extends JPanel implements ICalendarView {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -54,7 +62,7 @@ public class WeekView extends JPanel implements ICalendarView {
 		this.setBackground(Color.white);
 
 		this.setLayout(new MigLayout("fill", 
-				"[8%][13%][13%][13%][13%][13%][13%][13%]", 
+				"[9%][13%][13%][13%][13%][13%][13%][13%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 
 		this.setVisible(true);
@@ -63,7 +71,6 @@ public class WeekView extends JPanel implements ICalendarView {
 	}
 
 	public void fillDayView(){
-
 
 		JPanel time = new JPanel();
 
@@ -74,9 +81,9 @@ public class WeekView extends JPanel implements ICalendarView {
 		timebuilder.append("0");
 		timebuilder.append(",grow, push");
 
-//		time.add(new JLabel("Time"));
-//		time.setBackground(new Color(138,173,209));
-//		this.add(time, timebuilder.toString());
+		time.add(new JLabel(" "));
+		time.setBackground(new Color(255,255,255));
+		this.add(time, timebuilder.toString());
 
 		for (int currenthour=0; currenthour < 24; currenthour++){
 			JPanel hour = new JPanel();
@@ -109,13 +116,12 @@ public class WeekView extends JPanel implements ICalendarView {
 				Date hue = new Date(currentYear-1900, currentMonth, currentDate + (currentday - 1), currenthour, 0);
 				thesecond.setDate(hue);
 				thesecond.setBackground(Color.WHITE);
-				thesecond.setBorder(new MatteBorder(1, 1, 1, 1, Color.gray));
+				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
 				this.add(thesecond, datebuilder.toString());
 				paneltracker.put(hue, thesecond);
 				nameList.add(thesecond);
 			}
 		}
-
 
 		for (int day = 1; day < 8; day++){
 			JPanel event = new JPanel();
@@ -126,14 +132,31 @@ public class WeekView extends JPanel implements ICalendarView {
 			eventbuilder.append(" ");
 			eventbuilder.append("0");
 			eventbuilder.append(",grow, push");
-//
-//			event.add(new JLabel(weekNames[day-1]));
-//			event.setBackground(new Color(138,173,209));
-//			this.add(event, eventbuilder.toString());
+			event.add(new JLabel(" "));
+			event.setBackground(new Color(255,255,255));
+			this.add(event, eventbuilder.toString());
 
 		}
 	}
 
+	/**
+	 * Finds All Commitments Belonging to Calendar
+	 * @return List of Found Commitments
+	 */
+	public List<Commitment> CommitmentsOnCalendar(){
+		List<Commitment> notevenclose = new LinkedList<Commitment>();
+		for (Commitment commit: FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList()){
+			Date commitdate = commit.getDueDate();
+			Date teemo = new Date(commitdate.getYear(),commitdate.getMonth(),commitdate.getDate(),commitdate.getHours(),0);
+			if (paneltracker.containsKey(teemo)){
+				System.out.println("I'm Invisible"); //never underestimate the power of the scout's code
+				notevenclose.add(commit);
+			}
+		}
+		
+		return notevenclose;
+	}
+	
 	@Override
 	public String getTitle() {
 		Date datdate = new Date(currentYear-1900, currentMonth, currentDate+6);
@@ -191,7 +214,6 @@ public class WeekView extends JPanel implements ICalendarView {
 			fillDayView();
 		}
 	}
-
 
 	public HashMap<Date, DatePanel> getMap(){
 		return paneltracker;

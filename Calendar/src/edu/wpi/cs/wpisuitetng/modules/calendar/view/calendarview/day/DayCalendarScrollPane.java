@@ -28,37 +28,9 @@ public class DayCalendarScrollPane extends JScrollPane{
 		super(day);
 		
 		daylayer = day;
-		
-		JPanel daytitle = new JPanel(new MigLayout("fill, insets 6","[pref!][800px,grow,fill]", "[]"));
-		daytitle.setBackground(Color.WHITE);
-		
-		
-		dayLabel = new JLabel(weekNames[daylayer.getDayViewDate().getDay()]);
-		
-		JPanel dayname = new JPanel(new MigLayout("fill"));
-		dayname.add(dayLabel, "push, align center");
-		dayname.setBackground(new Color(138,173,209));
-
-		JPanel time = new JPanel(new MigLayout("fill","[175px,grow]", "[]"));
-		time.add(new JLabel("Time"), "push, align center");
-		time.setBackground(new Color(138,173,209));
-
-		daytitle.add(time, "cell 0 0");
-		daytitle.add(dayname,  "cell 1 0,wmin 80,alignx left,growy");
-		
-		JPanel cornertile = new JPanel();
-		cornertile.setBackground(Color.WHITE);
-		
-		this.setCorner(UPPER_RIGHT_CORNER, cornertile);
-		this.setColumnHeaderView(daytitle);
+	
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	
-	}
-	
-	
-	public void updateDay(){
-		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
-		repaint();
 	}
 	
 }

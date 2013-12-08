@@ -20,15 +20,15 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
 public class EventListPanel extends JPanel {
 
-	private EventListModel model;
+	private FilteredEventsListModel model;
 	private JList<Event> eventList;
 	
 	public EventListPanel() {
-		this.model = EventListModel.getEventListModel();
+		this.model = FilteredEventsListModel.getFilteredEventsListModel();
 		this.setLayout(new BorderLayout());
 		
 		eventList = new JList<Event>(model);

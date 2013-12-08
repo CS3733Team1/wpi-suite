@@ -1,34 +1,31 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
-public class Year extends JPanel implements Scrollable {
-
-	public Year() {
-		this.setBackground(Color.WHITE);
-	}
-	
+public class MonthsContainerPanel extends JPanel implements Scrollable {
 	@Override
 	public boolean getScrollableTracksViewportHeight() {
 		return false;
 	}
 	
+	/*
+	 * Used to disable horizontal scrolling.
+	 * @see javax.swing.Scrollable#getScrollableTracksViewportWidth()
+	 */
 	@Override
 	public boolean getScrollableTracksViewportWidth() {
 		return true;
 	}
 	
-	
 	// Unused
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {return null;}
 	@Override
-	public int getScrollableBlockIncrement(Rectangle arg0, int arg1, int arg2) {return 0;}
+	public int getScrollableBlockIncrement(Rectangle r, int i, int j) {return 0;}
 	@Override
-	public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {return 0;}
+	public int getScrollableUnitIncrement(Rectangle r, int i, int j) {return 0;}
 }
