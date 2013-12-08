@@ -51,13 +51,13 @@ public class DayPanel extends JPanel {
 		eventsList = new ArrayList<JPanel>();
 		commitmentsList = new ArrayList<JPanel>();
 
-		day = new JLabel("test",JLabel.RIGHT);
+		day = new JLabel("", JLabel.LEFT);
 		containerPanel = new JPanel(new MigLayout("flowy, insets 0, gap 0 0 0 0"));
 
 		datePanel = new JPanel(new MigLayout("fill, insets 0"));
-		datePanel.add(day, "grow, alignx center");
+		datePanel.add(day, "grow");
 
-		this.isWeekend = (indexInMonth + 1)%7 <= 1;
+		this.isWeekend = (indexInMonth + 1) % 7 <= 1;
 		
 		this.add(datePanel, "grow, wrap");
 		this.add(containerPanel, "grow, push");
