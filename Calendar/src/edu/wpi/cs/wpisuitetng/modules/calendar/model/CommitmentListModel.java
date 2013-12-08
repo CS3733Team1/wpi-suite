@@ -39,7 +39,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		commitments = Collections.synchronizedList(new ArrayList<Commitment>());
 	}
 
-	static public CommitmentListModel getCommitmentListModel() {
+	static public synchronized CommitmentListModel getCommitmentListModel() {
 		if (commitmentListModel == null)
 			commitmentListModel = new CommitmentListModel();
 		return commitmentListModel;
@@ -51,7 +51,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 * @param newCommitment
 	 *            the new commitment to add
 	 */
-	public void addCommitment(Commitment newCommitment) {
+	public synchronized void addCommitment(Commitment newCommitment) {
 		// Add the commitment
 		this.commitments.add(newCommitment);
 		Collections.sort(this.commitments);
@@ -67,7 +67,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 * @param commitments
 	 *            the array of commitments to add
 	 */
-	public void addCommitments(Commitment[] commitments) {
+	public synchronized void  addCommitments(Commitment[] commitments) {
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
@@ -110,16 +110,16 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments.get(commitments.size() - 1 - index);
 	}
 
-	public Commitment getElement(int index){
+	public synchronized Commitment getElement(int index){
 		return commitments.get(commitments.size() - 1 - index);
 	}
 
-	public void removeCommitment(int index) {
+	public synchronized void removeCommitment(int index) {
 		this.commitments.remove(index);
 		this.fireIntervalAdded(this, 0, 0);
 	}
 
-	public void removeCommitment(Commitment commitment) {
+	public synchronized void removeCommitment(Commitment commitment) {
 		this.commitments.remove(commitment);
 		this.fireIntervalAdded(this, 0, 0);
 	}
@@ -140,7 +140,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments;
 	}
 
-	public synchronzied void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
+	public synchronized void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
 		removeCommitment(oldCommitment);
 		addCommitment(newCommitment);
 	}
