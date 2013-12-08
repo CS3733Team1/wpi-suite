@@ -73,7 +73,7 @@ public class EventListModel extends AbstractListModel<Event> {
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
-	public synchronized void setEvents(Event[] events) {
+	public void setEvents(Event[] events) {
 		this.emptyModel();
 		for (int i = 0; i < events.length; i++) {
 			this.events.add(events[i]);
@@ -88,7 +88,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	 * other classes in this module have references to it. Hence, we manually
 	 * remove each event from the model.
 	 */
-	public synchronized void emptyModel() {
+	public void emptyModel() {
 		int oldSize = getSize();
 		Iterator<Event> iterator = events.iterator();
 		while (iterator.hasNext()) {
@@ -136,7 +136,7 @@ public class EventListModel extends AbstractListModel<Event> {
 
 	//** Note: avoid coping the events in the list here.
 	// use the copy constructor provided in Event() to avoid creating copies with dissimilar UniuqeID's
-	public List<Event> getList(){
+	public synchronized List<Event> getList(){
 		return events;
 	}
 	
