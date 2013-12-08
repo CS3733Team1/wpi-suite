@@ -76,13 +76,12 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		this.fireContentsChanged(this, 0, this.commitments.size()-1);
 	}
 
-	public void setCommitments(Commitment[] commitments) {
-		this.emptyModel();
+	public synchronized void setCommitments(Commitment[] commitments) {
+		this.commitments.clear();
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
 		Collections.sort(this.commitments);
-
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 

@@ -176,7 +176,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 	}
 	
 	public void rebuildHours(){
-		for (int x = 0; x < 24; x++){
+		for (int x = 0; x < hourlist.size(); x++){
 			this.remove(hourlist.get(x));
 		}
 		
