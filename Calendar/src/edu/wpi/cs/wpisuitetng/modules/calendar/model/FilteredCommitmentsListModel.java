@@ -16,6 +16,7 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 	private List<Commitment> filteredCommitments;
 	
 	private FilteredCommitmentsListModel() {
+		filteredCommitments = new ArrayList<Commitment>();
 		filteredCommitments =  Collections.synchronizedList(new ArrayList<Commitment>());
 		CommitmentListModel.getCommitmentListModel().addListDataListener(this);
 		FilterListModel.getFilterListModel().addListDataListener(this);
