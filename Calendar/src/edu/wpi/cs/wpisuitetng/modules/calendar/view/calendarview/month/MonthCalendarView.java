@@ -162,11 +162,41 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			Date start = event.getStartDate();
 			Calendar startCal = Calendar.getInstance();
 			startCal.set(start.getYear()+1900, start.getMonth(), start.getDate());
-			if(startCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
-					startCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
-				int index = getIndexofDay(startCal);
-				days.get(index).addEvent(event);
-				daysWithEvComs.add(days.get(index));
+			
+			Date end = event.getEndDate();
+			Calendar endCal = Calendar.getInstance();
+			endCal.set(end.getYear()+1900, end.getMonth(), end.getDate());
+
+			// If this event is not multiday
+			if(startCal.get(Calendar.YEAR) == endCal.get(Calendar.YEAR) &&
+					startCal.get(Calendar.MONTH) == endCal.get(Calendar.MONTH) &&
+					startCal.get(Calendar.DATE) == endCal.get(Calendar.DATE)) {
+				
+				// If this event appears in this month
+				if(startCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
+						startCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
+					int index = getIndexofDay(startCal);
+					days.get(index).addEvent(event);
+					daysWithEvComs.add(days.get(index));
+				}
+			} else { // Multiday event
+				// Will store the EventPanels that are multiday events and related
+				List<JPanel> multidayEvents = new ArrayList<JPanel>();
+				
+				do {
+					if(startCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
+							startCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
+						int index = getIndexofDay((Calendar)startCal.clone());
+						multidayEvents.add(days.get(index).addMultiDayEvent(event, false));
+						startCal.add(Calendar.DATE, 1);
+					} else if (startCal.get(Calendar.YEAR) <= currentMonth.get(Calendar.YEAR) &&
+							startCal.get(Calendar.MONTH) < currentMonth.get(Calendar.MONTH)) {
+						startCal.set(Calendar.YEAR, currentMonth.get(Calendar.YEAR));
+						startCal.set(Calendar.MONTH, currentMonth.get(Calendar.YEAR));
+						startCal.set(Calendar.DATE, 1);
+					} else break;
+				} while(startCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)	&&
+						startCal.get(Calendar.DAY_OF_YEAR) <= endCal.get(Calendar.DAY_OF_YEAR));
 			}
 		}
 
@@ -187,7 +217,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		}
 		
 		this.invalidate();
-		this.repaint();
+		this.updateUI();
 	}
 
 	private int getIndexofDay(Calendar cal) {
