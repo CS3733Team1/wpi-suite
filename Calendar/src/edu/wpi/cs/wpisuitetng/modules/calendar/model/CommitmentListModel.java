@@ -92,7 +92,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 * other classes in this module have references to it. Hence, we manually
 	 * remove each commitment from the model.
 	 */
-	public void emptyModel() {
+	public synchronized void emptyModel() {
 		int oldSize = getSize();
 		commitments.removeAll(getList());
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
