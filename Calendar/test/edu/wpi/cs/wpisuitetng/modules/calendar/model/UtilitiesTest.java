@@ -3,9 +3,9 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 import java.util.Date;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.DateUtilities;
+import static org.junit.Assert.*;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class UtilitiesTest {
 	
@@ -14,7 +14,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(12);
 		noon.setMinutes(0);
-		String strNoonToString=DateUtilities.timeToString(noon);
+		String strNoonToString=DateUtils.timeToString(noon);
 		assertEquals("Noon", strNoonToString);
 	}
 	
@@ -23,7 +23,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(0);
 		noon.setMinutes(0);
-		String strNoonToString=DateUtilities.timeToString(noon);
+		String strNoonToString=DateUtils.timeToString(noon);
 		assertEquals("Midnight", strNoonToString);
 	}
 	
@@ -32,7 +32,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(3);
 		noon.setMinutes(0);
-		String strNoonToString=DateUtilities.timeToString(noon);
+		String strNoonToString=DateUtils.timeToString(noon);
 		assertEquals("3 AM", strNoonToString);
 	}
 	
@@ -41,7 +41,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(3+12);
 		noon.setMinutes(0);
-		String strNoonToString=DateUtilities.timeToString(noon);
+		String strNoonToString=DateUtils.timeToString(noon);
 		assertEquals("3 PM", strNoonToString);
 	}
 	
@@ -50,7 +50,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(3);
 		noon.setMinutes(35);
-		String strNoonToString=DateUtilities.timeToString(noon);
+		String strNoonToString=DateUtils.timeToString(noon);
 		assertEquals("3:35 AM", strNoonToString);
 	}
 	
@@ -59,7 +59,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(12+3);
 		noon.setMinutes(35);
-		String strNoonToString=DateUtilities.timeToString(noon);
+		String strNoonToString=DateUtils.timeToString(noon);
 		assertEquals("3:35 PM", strNoonToString);
 	}
 }
