@@ -32,7 +32,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 		filteredEvents.clear();
 		List<Event> eventList = EventListModel.getEventListModel().getList();
 		
-		for(Event e: FilterListModel.getFilterListModel().applyEventFilter(eventList)) filteredEvents.add(e);
+		for(Event e: FilterListModel.getFilterListModel().applyEventFilter(eventList)) filteredEvents.add(new Event(e));
 		
 		this.fireIntervalAdded(this, 0, Math.max(filteredEvents.size() - 1, 0));
 	}
