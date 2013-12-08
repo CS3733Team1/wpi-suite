@@ -29,7 +29,7 @@ import com.google.gson.Gson;
  */
 public class Commitment extends DeletableAbstractModel implements Comparable<Commitment>{
 	
-	private enum State 
+	public static enum State 
 	{
 		NEW ("New"),
 		IN_PROGRESS ("In Progress"),

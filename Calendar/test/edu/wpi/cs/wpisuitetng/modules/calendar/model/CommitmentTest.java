@@ -33,6 +33,7 @@ public class CommitmentTest {
 	Commitment c3;
 	Commitment c4;
 	Commitment c5;
+	Commitment c6;
 	Category cat1;
 	Category cat2;
 	
@@ -48,6 +49,7 @@ public class CommitmentTest {
 		c3 = new Commitment("class", Date1, "CS 3733 class");
 		c4 = new Commitment("class", Date1, cat1);
 		c5 = new Commitment("class", Date1, "other class", cat2);
+		c6 = new Commitment("class", Date1, "Has Progress", Commitment.State.IN_PROGRESS.toString());
 	}
 	
 	@Test
