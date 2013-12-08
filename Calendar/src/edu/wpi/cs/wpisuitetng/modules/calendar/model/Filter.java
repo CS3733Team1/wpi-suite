@@ -84,18 +84,18 @@ public class Filter extends DeletableAbstractModel {
 	public List<Event> applyEventFilter(List<Event> inlist) {
 		List<Event> outlist = Collections.synchronizedList(new ArrayList<Event>());
 		for(Event event: inlist) {
-			 //if (!(MainView.getCurrentCalendarPanel() == null))
-			 //{
-				// if (event.isTeam == MainView.getCurrentCalendarPanel().getCalendarTabPanel().getIsOnTeamCal())
-				// {
+			 if (!(MainView.getCurrentCalendarPanel() == null))
+			 {
+				 if (event.isTeam == MainView.getCurrentCalendarPanel().getCalendarTabPanel().getIsOnTeamCal())
+				 {
 					 for(Category cat: this.categories) {
 						 if(event.getCategory().equals(cat)) {
 							 outlist.add(new Event(event));
 							 	break;
 						 }
 					 }
-				// }	
-			//}
+				 }	
+			}
 		}
 		
 		return outlist;
@@ -111,18 +111,18 @@ public class Filter extends DeletableAbstractModel {
 		
 		for(Commitment commitment: inlist)
 		{
-			//if (!(MainView.getCurrentCalendarPanel() == null))
-			 //{
-				 //if (commitment.isTeam == MainView.getCurrentCalendarPanel().getCalendarTabPanel().getIsOnTeamCal())
-				 //{
+			if (!(MainView.getCurrentCalendarPanel() == null))
+			 {
+				 if (commitment.isTeam == MainView.getCurrentCalendarPanel().getCalendarTabPanel().getIsOnTeamCal())
+				 {
 					 for(Category cat: this.categories) {
 						 if(commitment.getCategory().equals(cat)) {
 							 outlist.add(new Commitment(commitment));
 							 	break;
 						 }
 					 }
-				 //}	
-			//}
+				 }	
+			}
 		}
 		
 		return outlist;
