@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -116,6 +117,13 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		daylayer.today();
 		updateDay();
 
+	}
+
+
+	@Override
+	public void viewDate(Calendar date) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
