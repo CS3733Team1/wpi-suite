@@ -36,7 +36,7 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 		
 		this.fireIntervalRemoved(this, 0, Math.max(removed - 1, 0));
 		
-		for(Commitment c: FilterListModel.getFilterListModel().applyCommitmentFilter(commitmentList)) filteredCommitments.add(new Commitment(c));
+		for(Commitment c: FilterListModel.getFilterListModel().applyCommitmentFilter(commitmentList)) filteredCommitments.add(c);
 		
 		this.fireIntervalAdded(this, 0, Math.max(filteredCommitments.size() - 1, 0));
 	}

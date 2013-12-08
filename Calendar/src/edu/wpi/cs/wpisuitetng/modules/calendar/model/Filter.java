@@ -90,7 +90,7 @@ public class Filter extends DeletableAbstractModel {
 				 {
 					 for(Category cat: this.categories) {
 						 if(event.getCategory().equals(cat)) {
-							 outlist.add(event);
+							 outlist.add(new Event(event));
 							 	break;
 						 }
 					 }
@@ -111,13 +111,17 @@ public class Filter extends DeletableAbstractModel {
 		
 		for(Commitment commitment: inlist)
 		{
-			for(Category cat: this.categories)
-			{
-				if(commitment.getCategory().equals(cat))
-				{
-					outlist.add(commitment);
-					break;
-				}
+			if (!(MainView.getCurrentCalendarPanel() == null))
+			 {
+				 if (commitment.isTeam == MainView.getCurrentCalendarPanel().getCalendarTabPanel().getIsOnTeamCal())
+				 {
+					 for(Category cat: this.categories) {
+						 if(commitment.getCategory().equals(cat)) {
+							 outlist.add(new Commitment(commitment));
+							 	break;
+						 }
+					 }
+				 }	
 			}
 		}
 		
