@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -27,7 +28,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 	List<FilterChangedListener> filterChangedListeners = new ArrayList<FilterChangedListener>();
 
-	private final Filter[] defaultFilters = {new Filter("None")};
+	private final Filter[] defaultFilters = {new Filter("Unfiltered")};
 
 	/** The list of Filter */
 	private List<Filter> filters;
@@ -36,7 +37,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	private Filter activeFilter;
 
 	private FilterListModel() {
-		this.filters = new ArrayList<Filter>();
+		this.filters = Collections.synchronizedList(new ArrayList<Filter>());
 	}
 
 	static public FilterListModel getFilterListModel() {
@@ -163,9 +164,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	}
 
 	static public List<Filter> getList(){
-		List<Filter> rtnFilterList = new ArrayList<Filter>();
-		rtnFilterList.addAll(getFilterListModel().filters);
-		return rtnFilterList;
+		return getFilterListModel().filters;
 	}
 
 	
@@ -175,7 +174,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Events
 	 */
 	public List<Event> applyEventFilter(List<Event> eventList) {
-		if(activeFilter == null || activeFilter.getName().equals("None")) return eventList;
+		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return eventList;
 		else return activeFilter.applyEventFilter(eventList);
 	}
 
@@ -185,7 +184,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Commitments
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter == null || activeFilter.getName().equals("None")) return commitmentList;
+		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return commitmentList;
 		else return activeFilter.applyCommitmentFilter(commitmentList);
 	}
 

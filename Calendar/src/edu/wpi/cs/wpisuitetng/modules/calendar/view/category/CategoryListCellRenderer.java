@@ -18,12 +18,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class CategoryListCellRenderer extends JPanel implements ListCellRenderer<Category> {
 
@@ -38,6 +37,8 @@ public class CategoryListCellRenderer extends JPanel implements ListCellRenderer
 		colorSquare.setBorder(new MatteBorder(2, 2, 2, 2, Color.BLACK));
 		this.add(colorSquare, "split 2");
 		this.add(categoryName, "alignx left, wmax 200");
+		
+		this.setBorder(new MatteBorder(0, 0, 1, 0, Color.GRAY));
 	}
 	
 	@Override
@@ -49,15 +50,7 @@ public class CategoryListCellRenderer extends JPanel implements ListCellRenderer
 			categoryName.setText(category.getName());
 		}
 		
-		final Color background = UIManager.getDefaults().getColor("List.background");
-		final Color foreground = UIManager.getDefaults().getColor("List.foreground");
-		final Color selectionBackground = UIManager.getDefaults().getColor("List.selectionBackground");
-		final Color selectionForeground = UIManager.getDefaults().getColor("List.selectionForeground");
-		
-		this.setBackground(isSelected ? selectionBackground : background);
-		this.setForeground(isSelected ? selectionForeground : foreground);
-		
-		this.setBorder(new LineBorder(new Color(0, 0, 0)));
+		this.setBackground(isSelected ? CalendarUtils.selectionColor : Color.WHITE);
 		
 		return this;
 	}
