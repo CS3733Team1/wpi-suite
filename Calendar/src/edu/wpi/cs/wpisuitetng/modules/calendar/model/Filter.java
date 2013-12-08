@@ -120,6 +120,10 @@ public class Filter extends DeletableAbstractModel {
 	// the status of the Team/Personal calendar checkbox's
 	public <T extends DeletableAbstractModel> List<T> filterTeamPersonal(List<T> list)
 	{
+		if (MainView.getCurrentCalendarPanel() == null)
+		{
+			return list;
+		}
 		int state = MainView.getCurrentCalendarPanel().getCalendarTabPanel().getTeamPersonalState();
 		//3 = Both Checked
 		//2 = Personal
