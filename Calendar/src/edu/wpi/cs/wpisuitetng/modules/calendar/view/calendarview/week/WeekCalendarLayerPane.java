@@ -86,7 +86,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (weekview.getMap().containsKey(key)){
-				if(eve.getStartDate().getDay() == eve.getEndDate().getDay()
+				if(eve.getStartDate().getDate() == eve.getEndDate().getDate()
 				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
 				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
 					eventlist.add(eve);
