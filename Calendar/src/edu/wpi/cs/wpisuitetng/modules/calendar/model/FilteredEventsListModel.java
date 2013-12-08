@@ -17,7 +17,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 
 	private FilteredEventsListModel() {
 		filteredEvents=new ArrayList<Event>();
-		filteredEvents = Collections.synchronizedList(new ArrayList<Event>());
+		//filteredEvents = Collections.synchronizedList(new ArrayList<Event>());
 		EventListModel.getEventListModel().addListDataListener(this);
 		FilterListModel.getFilterListModel().addListDataListener(this);
 		filterEvents();

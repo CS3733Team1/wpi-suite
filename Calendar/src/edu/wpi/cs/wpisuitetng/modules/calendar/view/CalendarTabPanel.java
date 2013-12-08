@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.TeamPesonalCheckBoxChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewNextController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewPreviousController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewTodayController;
@@ -82,6 +83,8 @@ public class CalendarTabPanel extends JPanel {
 		
 		personalCalCheckBox = new JCheckBox("Personal");
 		teamCalCheckBox = new JCheckBox("Team");
+		personalCalCheckBox.addChangeListener(new TeamPesonalCheckBoxChangeListener());
+		teamCalCheckBox.addChangeListener(new TeamPesonalCheckBoxChangeListener());
 		
 		personalCalCheckBox.setBackground(Color.WHITE);
 		teamCalCheckBox.setBackground(Color.WHITE);
@@ -254,11 +257,24 @@ public class CalendarTabPanel extends JPanel {
 			this.refreshCalendarView();
 		}
 	}
-	synchronized public boolean getIsOnTeamCal(){
-		boolean isTeam= false;
+	/*
+	 * Returns 0 for both unchecked
+	 * returns 1 for Team checked
+	 * returns 2 for Personal Checked
+	 * returns 3 for Both Checked
+	 */
+	synchronized public int getTeamPersonalState(){
+		int state = 3;// Default to both checked, the harmless filter
 		if(teamCalCheckBox != null && teamCalCheckBox.isSelected()){
-			return true;
+			state=1;
 		}
-		return false;
+		if (personalCalCheckBox != null && personalCalCheckBox.isSelected())
+		{
+			if (state == 3) //team is unchecked
+				return 2;
+			else //team is checked
+				return 3;
+		}
+		return state;
 	}
 }

@@ -84,21 +84,15 @@ public class Filter extends DeletableAbstractModel {
 	public List<Event> applyEventFilter(List<Event> inlist) {
 		List<Event> outlist = Collections.synchronizedList(new ArrayList<Event>());
 		for(Event event: inlist) {
-			 if (!(MainView.getCurrentCalendarPanel() == null))
-			 {
-				 if (event.isTeam == MainView.getCurrentCalendarPanel().getCalendarTabPanel().getIsOnTeamCal())
-				 {
 					 for(Category cat: this.categories) {
 						 if(event.getCategory().equals(cat)) {
 							 outlist.add(new Event(event));
 							 	break;
 						 }
 					 }
-				 }	
-			}
 		}
 		
-		return outlist;
+		return filterTeamPersonal(outlist);
 	}
 	
 	/**
@@ -111,21 +105,50 @@ public class Filter extends DeletableAbstractModel {
 		
 		for(Commitment commitment: inlist)
 		{
-			if (!(MainView.getCurrentCalendarPanel() == null))
-			 {
-				 if (commitment.isTeam == MainView.getCurrentCalendarPanel().getCalendarTabPanel().getIsOnTeamCal())
-				 {
 					 for(Category cat: this.categories) {
 						 if(commitment.getCategory().equals(cat)) {
 							 outlist.add(new Commitment(commitment));
 							 	break;
 						 }
 					 }
-				 }	
-			}
 		}
 		
-		return outlist;
+		return filterTeamPersonal(outlist);
+	}
+	
+	//This method attempts to filter a list of things based on
+	// the status of the Team/Personal calendar checkbox's
+	public <T extends DeletableAbstractModel> List<T> filterTeamPersonal(List<T> list)
+	{
+		int state = MainView.getCurrentCalendarPanel().getCalendarTabPanel().getTeamPersonalState();
+		//3 = Both Checked
+		//2 = Personal
+		//1 = Team
+		//0 = none
+		switch (state)
+		{
+		default:
+		case 3://both
+			return list;
+		case 2: //personal events
+			for (T i : list)
+			{
+				if (i.isTeam)
+					list.remove(i);
+			}
+			return list;
+		case 1: //Team Events only
+			for (T i : list)
+			{
+				if (!i.isTeam)
+					list.remove(i);
+			}
+			return list;
+		case 0: //none
+			list.clear();
+			return list;
+		}
+		
 	}
 	
 	@Override
