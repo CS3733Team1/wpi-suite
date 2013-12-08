@@ -140,7 +140,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments;
 	}
 
-	public void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
+	public synchronzied void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
 		removeCommitment(oldCommitment);
 		addCommitment(newCommitment);
 	}
