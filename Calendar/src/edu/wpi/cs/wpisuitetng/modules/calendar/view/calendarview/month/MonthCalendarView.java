@@ -181,6 +181,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 				}
 			} else { // Multiday event
 				// Will store the EventPanels that are multiday events and related
+				/*
 				List<JPanel> multidayEvents = new ArrayList<JPanel>();
 				
 				do {
@@ -197,6 +198,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 					} else break;
 				} while(startCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)	&&
 						startCal.get(Calendar.DAY_OF_YEAR) <= endCal.get(Calendar.DAY_OF_YEAR));
+						*/
 			}
 		}
 
