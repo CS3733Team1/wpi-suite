@@ -178,6 +178,14 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 			this.updateDates();
 		}
 	}
+	
+	@Override
+	public void viewDate(Calendar date) {
+		if(this.currentYear.get(Calendar.YEAR) != date.get(Calendar.YEAR)) {
+			this.currentYear = date;
+			this.updateDates();
+		}
+	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
@@ -214,4 +222,5 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
+
 }

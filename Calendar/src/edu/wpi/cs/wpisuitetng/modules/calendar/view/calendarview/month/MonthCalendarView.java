@@ -259,4 +259,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
+
+	@Override
+	public void viewDate(Calendar date) {
+		// TODO Auto-generated method stub
+		
+	}
 }
