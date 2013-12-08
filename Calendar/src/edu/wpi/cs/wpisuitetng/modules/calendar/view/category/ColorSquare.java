@@ -15,6 +15,7 @@ import java.awt.Graphics;
 import java.awt.Insets;
 
 import javax.swing.JButton;
+import javax.swing.border.MatteBorder;
 
 public class ColorSquare extends JButton {
 
@@ -23,6 +24,7 @@ public class ColorSquare extends JButton {
 	public ColorSquare(Color color) {
 		this.color = color;
 		this.setMargin(new Insets(0, 0, 0, 0));
+		this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 	}
 	
 	@Override

@@ -186,8 +186,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			dayPanel.updateEveComs();
 		}
 		
+		this.invalidate();
 		this.repaint();
-		this.updateUI();
 	}
 
 	private int getIndexofDay(Calendar cal) {
