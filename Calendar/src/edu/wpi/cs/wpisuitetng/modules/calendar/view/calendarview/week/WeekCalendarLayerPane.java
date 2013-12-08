@@ -117,8 +117,8 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			iter.setDate(iter.getDate() + 1);
 		}
 		
-		System.out.println(String.format("weekdays: %d %d %d %d %d %d %d",
-				weekdays.get(0), weekdays.get(1), weekdays.get(2), weekdays.get(3), weekdays.get(4), weekdays.get(5), weekdays.get(6)));
+		//System.out.println(String.format("weekdays: %d %d %d %d %d %d %d",
+		//		weekdays.get(0), weekdays.get(1), weekdays.get(2), weekdays.get(3), weekdays.get(4), weekdays.get(5), weekdays.get(6)));
 		
 		for(Event e: multilist)
 		{
@@ -129,11 +129,11 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			eveenddate.setDate(e.getEndDate().getDate() + 1);
 			while(!(iter.getDate() == eveenddate.getDate() || iter.getDate() == weekenddate.getDate()))
 			{
-				System.out.println("Iter " + iter.getDate());
+				//System.out.println("Iter " + iter.getDate());
 				if(weekdays.contains(iter.getDate()))
 				{
 					multilistlist.get(weekdays.indexOf(iter.getDate())).add(e);
-					System.out.println("Event " + e.getName() + " added to index " + weekdays.indexOf(iter.getDate()));
+					//System.out.println("Event " + e.getName() + " added to index " + weekdays.indexOf(iter.getDate()));
 				}
 				iter.setDate(iter.getDate() + 1); //setDate knows where month boundaries are
 			}
