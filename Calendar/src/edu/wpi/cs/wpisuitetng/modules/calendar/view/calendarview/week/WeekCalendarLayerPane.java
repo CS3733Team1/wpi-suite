@@ -74,6 +74,9 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		Date key;
 		Date current = (Date) weekview.getStart().clone();
 		Date iter = new Date();
+		Date weekenddate = (Date) weekview.getStart().clone();
+		weekenddate.setDate(weekenddate.getDate() + 7);
+		Date eveenddate = new Date();
 		int startind, endind;
 		ArrayList<Integer> weekdays = new ArrayList<Integer>();
 		List<Event> multilist = new LinkedList<Event>();
@@ -86,29 +89,36 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (weekview.getMap().containsKey(key)){
-				if(eve.getStartDate().getDay() == eve.getEndDate().getDay()
+				if(eve.getStartDate().getDate() == eve.getEndDate().getDate()
 				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
 				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
+				{
 					eventlist.add(eve);
+				}
 				else
 				{
+					//System.out.println("Mutliday event " + eve.getName() + " found, if");
 					multilist.add(eve);
 				}
 			}
 			else if(current.after(eve.getStartDate()) && current.before(eve.getEndDate()))
 			{
+				//System.out.println("Mutliday event " + eve.getName() + " found, else");
 				multilist.add(eve);
 			}
 		}
 		
 		eventview = new EventWeekView(eventlist, this.getSize(), weekview.getStart());
 		
+		iter = (Date) current.clone();
 		for(int i = 0; i < 7; i++)
 		{
-			iter = (Date) current.clone();
 			weekdays.add(i, iter.getDate());
 			iter.setDate(iter.getDate() + 1);
 		}
+		
+		System.out.println(String.format("weekdays: %d %d %d %d %d %d %d",
+				weekdays.get(0), weekdays.get(1), weekdays.get(2), weekdays.get(3), weekdays.get(4), weekdays.get(5), weekdays.get(6)));
 		
 		for(Event e: multilist)
 		{
@@ -116,12 +126,14 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 				iter = (Date) e.getStartDate().clone();
 			else
 				iter = (Date) current.clone();
-			
-			while(!(iter.equals(e.getEndDate()) || iter.getDate() == weekdays.get(6)))
+			eveenddate.setDate(e.getEndDate().getDate() + 1);
+			while(!(iter.getDate() == eveenddate.getDate() || iter.getDate() == weekenddate.getDate()))
 			{
+				System.out.println("Iter " + iter.getDate());
 				if(weekdays.contains(iter.getDate()))
 				{
 					multilistlist.get(weekdays.indexOf(iter.getDate())).add(e);
+					System.out.println("Event " + e.getName() + " added to index " + weekdays.indexOf(iter.getDate()));
 				}
 				iter.setDate(iter.getDate() + 1); //setDate knows where month boundaries are
 			}
@@ -170,6 +182,11 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		}
 		
 		eventlist = new LinkedList<Event>();
+		multilistlist.clear();
+		for(int i = 0; i < 7; i++)
+		{
+			multilistlist.add(new LinkedList<Event>());
+		}
 	}
 	
 	public String getTitle() {
