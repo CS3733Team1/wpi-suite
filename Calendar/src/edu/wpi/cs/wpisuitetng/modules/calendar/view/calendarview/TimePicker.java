@@ -9,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
@@ -460,7 +461,9 @@ public class TimePicker extends JPanel {
 	 */
 	public void setMinutes(int minutes) {
 		setDisplayMinutes(minutes);
-		minutesTextField.setText(displayMinutesAreValid() ? Integer.toString(displayMinutes_) : "MM");
+		minutesTextField.setText(displayMinutesAreValid() ? Integer.toString(displayMinutes_) : Integer.toString(Calendar.getInstance().getTime().getMinutes()));
+		minutesChanged();
+		updateDebugLabel();
 	}
 
 	/**
@@ -469,7 +472,9 @@ public class TimePicker extends JPanel {
 	 */
 	public void setHours(int hours) {
 		setDisplayHours(hours);
-		hoursTextField.setText(displayHoursAreValid() ? Integer.toString(displayHours_) : "HH");
+		hoursTextField.setText(displayHoursAreValid() ? Integer.toString(displayHours_) : Integer.toString(Calendar.getInstance().getTime().getHours()));
+		hoursChanged();
+		updateDebugLabel();
 	}
 
 
