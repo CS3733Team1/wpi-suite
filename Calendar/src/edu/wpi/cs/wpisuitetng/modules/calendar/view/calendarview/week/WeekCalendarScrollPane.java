@@ -53,7 +53,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 			weekbuilder.append((new Integer(days)).toString());
 			weekbuilder.append(" ");
 			weekbuilder.append("0");
-			weekbuilder.append(",wmin 130, alignx left, growy");
+			weekbuilder.append(",wmin 100, alignx left, growy");
 			
 		
 			weekpanel.add(weekName);
@@ -86,7 +86,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 			weekbuilder.append((new Integer(days)).toString());
 			weekbuilder.append(" ");
 			weekbuilder.append("0");
-			weekbuilder.append(",wmin 130, alignx left, growy");
+			weekbuilder.append(",wmin 100, alignx left, growy");
 			
 			weekpanel.add(weekName);
 			weektitle.add(weekName, weekbuilder.toString());

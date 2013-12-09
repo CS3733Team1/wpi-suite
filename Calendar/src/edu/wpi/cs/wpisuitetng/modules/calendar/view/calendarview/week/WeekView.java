@@ -23,11 +23,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
+import com.toedter.calendar.DateUtil;
+
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 /**
  * This is the bottom layer of the week view hierarchy. 
@@ -61,9 +65,9 @@ public class WeekView extends JPanel implements ICalendarView {
 		mycal = new GregorianCalendar(currentYear, currentMonth, currentDate);
 		this.setBackground(Color.white);
 
-		this.setLayout(new MigLayout("fill", 
-				"[9%][13%][13%][13%][13%][13%][13%][13%]", 
-				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
+		this.setLayout(new MigLayout("fill, debug", 
+				"0[8.75%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]0", 
+				"0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0"));
 
 		this.setVisible(true);
 
@@ -74,17 +78,6 @@ public class WeekView extends JPanel implements ICalendarView {
 
 		JPanel time = new JPanel();
 
-		StringBuilder timebuilder = new StringBuilder();
-		timebuilder.append("cell ");
-		timebuilder.append("0");
-		timebuilder.append(" ");
-		timebuilder.append("0");
-		timebuilder.append(",grow, push");
-
-		time.add(new JLabel(" "));
-		time.setBackground(new Color(255,255,255));
-		this.add(time, timebuilder.toString());
-
 		for (int currenthour=0; currenthour < 24; currenthour++){
 			JPanel hour = new JPanel();
 
@@ -94,9 +87,12 @@ public class WeekView extends JPanel implements ICalendarView {
 			hourbuilder.append(" ");
 			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
+			
+			JLabel label = new JLabel(DateUtils.hourString(currenthour));
+			label.setForeground(CalendarUtils.timeColor);
 
-			hour.add(new JLabel(currenthour+":00"));
-			hour.setBackground(new Color(236,252,144));
+			hour.add(label);
+			hour.setBackground(Color.white);
 			this.add(hour, hourbuilder.toString());
 			hourlist.add(hour);
 		}
@@ -115,27 +111,15 @@ public class WeekView extends JPanel implements ICalendarView {
 
 				Date hue = new Date(currentYear-1900, currentMonth, currentDate + (currentday - 1), currenthour, 0);
 				thesecond.setDate(hue);
-				thesecond.setBackground(Color.WHITE);
+				if(currentday == 1 || currentday ==7)
+					thesecond.setBackground(CalendarUtils.weekendColor);
+				else 
+					thesecond.setBackground(Color.WHITE);	
 				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
 				this.add(thesecond, datebuilder.toString());
 				paneltracker.put(hue, thesecond);
 				nameList.add(thesecond);
 			}
-		}
-
-		for (int day = 1; day < 8; day++){
-			JPanel event = new JPanel();
-
-			StringBuilder eventbuilder = new StringBuilder();
-			eventbuilder.append("cell ");
-			eventbuilder.append((new Integer(day)).toString());
-			eventbuilder.append(" ");
-			eventbuilder.append("0");
-			eventbuilder.append(",grow, push");
-			event.add(new JLabel(" "));
-			event.setBackground(new Color(255,255,255));
-			this.add(event, eventbuilder.toString());
-
 		}
 	}
 
