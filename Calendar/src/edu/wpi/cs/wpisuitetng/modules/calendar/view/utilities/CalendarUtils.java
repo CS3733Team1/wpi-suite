@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.utils;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities;
 
 import java.awt.Color;
 

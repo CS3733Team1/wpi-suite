@@ -109,7 +109,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		//Date and Time
 		this.add(new JLabel("Due date:"), "split 2");
 		dateTimeChooser_=new DateTimeChooser("Due Date:");
-		dateTimeChooser_.addDateTimeChangedListener(new DateTimeChangedEventListener(){
+		dateTimeChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
 			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 				validateFields();

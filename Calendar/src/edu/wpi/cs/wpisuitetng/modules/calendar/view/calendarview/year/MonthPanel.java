@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 public class MonthPanel extends JPanel implements MouseListener {
 

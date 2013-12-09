@@ -26,6 +26,8 @@ import net.miginfocom.swing.MigLayout;
 
 import com.toedter.calendar.JDateChooser;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
+
 //TODO
 /*DayTimeChangedEvent -- break into day changed and time changed events?
  * input validation
@@ -43,8 +45,8 @@ import com.toedter.calendar.JDateChooser;
  *
  */
 public class DateTimeChooser extends JPanel {
-	private List<DateTimeChangedEventListener> listeners = new ArrayList<DateTimeChangedEventListener>();
-
+	List<DateTimeChangedEventListener> listeners = new ArrayList<DateTimeChangedEventListener>();
+	
 	private Date date_;
 	
 	private JDateChooser jDateChooser_;
@@ -62,25 +64,42 @@ public class DateTimeChooser extends JPanel {
 	private Color normalForgroundColor_;
 	private Color errorForgroundColor_;
 	
-	public void addDateTimeChangedListener(DateTimeChangedEventListener toAdd) {
-        listeners.add(toAdd);
+	public void addDateTimeChangedEventListener(DateTimeChangedEventListener toAdd) {
+		listeners.add(toAdd);
     }
+	public void removeTimeChangedEventListener(DateTimeChangedEventListener toRemove) {
+		listeners.remove(toRemove);
+	}
 	public void DateTimeChanged(){
-		// Notify everybody that may be interested.
+		System.out.println("\tFiring DateTimeChangedEvent!");
+
 		DateTimeChangedEvent evt = new DateTimeChangedEvent(date_.toString());
-        for (DateTimeChangedEventListener dtcel : listeners)
-            dtcel.DateTimeChangedEventOccurred(evt);
+		
+	    // Notify everybody that may be interested.
+        for (DateTimeChangedEventListener hl : listeners)
+            hl.DateTimeChangedEventOccurred(evt);
+//		// Notify everybody that may be interested.
+//        Object[] listeners = listenerList.getListenerList();
+//		for (int i = 0; i < listeners.length; i = i + 2) {
+//			if (listeners[i] == TimeChangedEventListener.class) {
+//				((DateTimeChangedEventListener) listeners[i + 1]).DateTimeChangedEventOccurred(evt);
+//			}
+//		}
 	}
 	
 	public DateTimeChooser(String name, Date date){
+		System.out.println("DTC: Making new DateTimeChooser with name "+name + " and date "+ date.toString());
 		date_=date;
 		System.out.println("Making DateTimeChooser with date: "+date_.toString());
 		buildLayout(name);
 	}
 	public DateTimeChooser(){
 		this("Date:");
+		System.out.println("DTC: Done making default DateTimeChooser");
 	}
 	public DateTimeChooser(String name){
+		System.out.println("DTC: Making new DateTimeChooser with name "+name);
+		
 		date_=new Date();
 		
 		//go to the nearest half hour time slot in the future
@@ -94,6 +113,8 @@ public class DateTimeChooser extends JPanel {
 	}
 	private void buildLayout(String name){
 		setLayout(new MigLayout("", "[][grow][grow][]", "[]"));
+		
+		date_.setSeconds(59);//don't care about seconds - put them as far in the future as we can
 		
 		//name label
 		add(new JLabel(name), "cell 0 0");
@@ -150,7 +171,7 @@ public class DateTimeChooser extends JPanel {
 		errorBorder_=BorderFactory.createLineBorder(new Color(255, 51, 51));
 		normalForgroundColor_=timeCombo_.getBackground();
 		errorForgroundColor_=Color.RED;
-		verifyDateTime();
+		validateDateTime();
 	}
 	
 	private int timeToHalfHourIndex(int hour, int minutes){
@@ -169,25 +190,28 @@ public class DateTimeChooser extends JPanel {
 	private void timeChanged(){
 		System.out.println("TIME CHANGED");
 		fillTime();
+		DateTimeChanged();
 	}
 	private void dayChanged(){
 		System.out.println("Day CHANGED");
 		fillDay();
+		DateTimeChanged();
 	}
 	
 	private void fillTime(){
 		//normally we'de use getSelectedItem() but this does not change as characters are changed in the ComboBox's internal editor (text box), so we get it directly
 		String strTime=(String)timeCombo_.getEditor().getItem();//(String)timeCombo_.getSelectedItem();
-		System.out.println("Converting "+strTime+" to time...");
+		System.out.println("\tConverting "+strTime+" to time...");
 		Date time = DateUtilities.stringToDate(strTime);
 		if (time!=null){
 			date_.setHours(time.getHours());
 			date_.setMinutes(time.getMinutes());
 			if (date_.after(new Date())){
 				timeValid_=true;
-				dtValid_=dayValid_;
+//				dtValid_=dayValid_;
 				updateError();
-			}else{
+			}else{//time in the past
+				System.out.println("\tDTC: ERROR: time in the past!");
 				setTimeError();
 			}
 		}else{
@@ -206,7 +230,7 @@ public class DateTimeChooser extends JPanel {
 				date_.setMonth(day.getMonth());
 				date_.setDate(day.getDate());
 				dayValid_=true;
-				dtValid_=timeValid_;
+//				dtValid_=timeValid_;
 				updateError();
 			}else{
 				setDayError();
@@ -217,11 +241,21 @@ public class DateTimeChooser extends JPanel {
 	}
 
 	public void setDate(Date date){
-		jDateChooser_.setDate(date_);
+		System.out.println("\t\t\tDTC: Setting date to " +date.toString());
+		date.setSeconds(59);
+		setDay(date);
+		setTime(date);
+		System.out.println("\t\tDTC: DONE setting date");
+	}
+	public void setDay(Date day){
+		System.out.println("\t\t\tDTC: Setting day to " +day.toString());
+		jDateChooser_.setDate(day);
 		fillDay();
 	}
 	public void setTime(Date date){
-		timeCombo_.setSelectedItem(DateUtilities.timeToString(date_));
+		String strTime=DateUtilities.timeToString(date_);
+		System.out.println("\t\t\tDTC: Setting time to " +DateUtilities.timeToString(date_));
+		timeCombo_.setSelectedItem(strTime);
 		fillTime();
 	}
 	
@@ -229,13 +263,8 @@ public class DateTimeChooser extends JPanel {
 //		fillTime();
 //		fillDay();
 //		verifyDateTime();
+		System.out.println("\tDTC: returning date " + date_.toString());
 		return date_;
-	}
-	public int getHour(){
-		return date_.getHours();
-	}
-	public int getMinutes(){
-		return date_.getMinutes();
 	}
 
 	private void setError(String errorText){
@@ -246,6 +275,7 @@ public class DateTimeChooser extends JPanel {
 	}
 	private void clearErrors(){
 		System.out.println("Clearing Error");
+		dtValid_=true;
 		errorLabel.setVisible(false);
 //		timeCombo_.setBorder(normalBorder_);
 //		jDateChooser_.setBorder(normalBorder_);
@@ -258,23 +288,21 @@ public class DateTimeChooser extends JPanel {
 		setError(invalidDayErrorText_);
 	}
 	private void setTimeError(){
-		System.out.println("Setting Time Error");
+		System.out.println("\tDTC: Setting Time Error");
 		timeValid_=false;
 //		timeCombo_.setForeground(errorForgroundColor_);
 		setError(invalidTimeErrorText_);
 	}
 	private void updateError(){
-		if (dtValid_){
-			clearErrors();
-		}else{
-			if (!dayValid_){
-				setDayError();
-			}else if (!timeValid_){
-				setTimeError();
-			}
+		if (!dayValid_){
+			setDayError();
+		}else if (!timeValid_){
+			setTimeError();
+		}else if (!dtValid_){//the day and time are both valid but dtValis is still false
+			clearErrors();		//clear all errors and set dt to True
 		}
 	}
-	private void verifyDateTime(){
+	private void validateDateTime(){
 		fillDay();
 		fillTime();
 	}

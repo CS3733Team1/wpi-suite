@@ -31,14 +31,15 @@ public class DateUtilities {
 		
 		hours%=12;	//divide 24 hour day into two 12-hour cycles
 		String strHours=Integer.toString(hours);
-		if (hours<0){
+		if (hours<10){
 			if (hours==0){
 				strHours="12";	//standard time is illogical
 			}else{
-				strHours=" "+strHours;
+				strHours=" "+strHours;//add a space so sinle-digit hours line up with the second digit of 2-digit hours
 			}
 		}
 
+		//uncomment if you prefer the 3 PM instead of 3:00 PM
 //		if (minutes==0){
 //			return strHours+" "+strAmPm;
 //		}else{
@@ -55,88 +56,138 @@ public class DateUtilities {
 
 		strDate=strDate.trim();
 		
-		String[] strHalves = strDate.split(":");
+		//check standard named-times
+		if (strDate.equalsIgnoreCase("midnight")){
+			return makeDateWithTime(0,0);
+		}else if (strDate.equalsIgnoreCase("noon")){
+			return makeDateWithTime(12,0);
+		}else if (strDate.equalsIgnoreCase("noon-ish")){
+			return makeDateWithTime(12,(int)Math.random()*15);
+		}else{
 		
-		if (strHalves.length>=2){
+			String[] strHalves = strDate.split(":");
+			
 			int hours = -1;
-			int minutes = -1;
-			boolean goodHour = true;
-			boolean goodMinute = true;
-	
-			String strFirstNum = strHalves[0].trim();
-	//		System.out.println("\tFirst Number string: "+ strFirstNum);
-			try {
-				hours = Integer.parseInt(strFirstNum);
-			} catch (NumberFormatException e) {
-	//			System.out.println("\tHours string could not be parsed to a number");
-				return null;
-			}
-	//		System.out.println("\tHours parsed to "+Integer.toString(hours));
-			
-			
-			String strSecondNum = strHalves[1].trim();
-	//		System.out.println("\tSecond Number string: "+strSecondNum);
-			try {
-				String strMinutes = strSecondNum.substring(0, 2).trim();
-	//			System.out.println("\tstrMinutes: ("+strMinutes+")");
-				minutes = Integer.parseInt(strMinutes);
-			} catch (NumberFormatException | StringIndexOutOfBoundsException e) {
-	//			System.out.println("\t2-digit Minutes string could not be parsed to a number - trying only the first digit");
-				
-				//try it again with only the first digit
+			if (strHalves.length>=2){
+				int minutes = -1;
+				boolean goodHour = true;
+				boolean goodMinute = true;
+		
+				String strFirstNum = strHalves[0].trim();
+		//		System.out.println("\tFirst Number string: "+ strFirstNum);
 				try {
-					String strMinutes = strSecondNum.substring(0, 1).trim();
-	//				System.out.println("\tstrMinutes: ("+strMinutes+")");
-					minutes = Integer.parseInt(strMinutes);
-				} catch (NumberFormatException | StringIndexOutOfBoundsException e2) {
-	//				System.out.println("\t1-digit Minutes string could not be parsed to a number");
+					hours = Integer.parseInt(strFirstNum);
+				} catch (NumberFormatException e) {
+		//			System.out.println("\tHours string could not be parsed to a number");
 					return null;
 				}
-			}
-			
-			if (hours >= 0 && hours <= 24 && minutes >= 0 && minutes < 60) {
-	//			System.out.println("\tHours and Minutes valid");
+		//		System.out.println("\tHours parsed to "+Integer.toString(hours));
 				
-				if (hours>12 || hours==0){
-	//				System.out.println("\tMilirary time detected...");
-				}else{
-	//				System.out.println("\tStandard time detected...");
-					
-					//Check if it's PM
-	//				System.out.println("\t\tchecking PM");
-					String[] strPms={"PM", "Pm", "pm", "p.m.","P.M.", "P.m.","p.m", "P.M", "P.m"};
-					boolean PM = false;
-					for (int i=0;i<strPms.length;i++){
-						if (strSecondNum.contains(strPms[i])){
-							PM=true;
-							break;
-						}
-					}
-					
-					//PM time Logic
-					if (PM){
-	//					System.out.println("\t\tPM detected");
-						if (hours!=12){
-	//						System.out.println("\t\t\tadding 12 to hours");
-							hours += 12;
-						}
-					}else{
-						if (hours==12){
-	//						System.out.println("\t\tMidnight detected - setting hours to zero");
-							hours=0;
-						}
-					}
+				
+				String strSecondNum = strHalves[1].trim();
+		//		System.out.println("\tSecond Number string: "+strSecondNum);
+				minutes=tryToGetNumberFromFirstTwoDigitsOf(strSecondNum);
+				if (minutes<0){
+					return null;
 				}
+				
+				if (hours >= 0 && hours <= 24 && minutes >= 0 && minutes < 60) {
+		//			System.out.println("\tHours and Minutes valid");
+					
+					if (hours>12 || hours==0){
+		//				System.out.println("\tMilirary time detected...");
+					}else{
+		//				System.out.println("\tStandard time detected...");
+						
+						//Check if it's PM
+		//				System.out.println("\t\tchecking PM");
+						boolean PM = findPM(strSecondNum);
+						
+						//PM time Logic
+						if (PM){
+		//					System.out.println("\t\tPM detected");
+							if (hours!=12){
+		//						System.out.println("\t\t\tadding 12 to hours");
+								hours += 12;
+							}
+						}else{
+							if (hours==12){
+		//						System.out.println("\t\tMidnight detected - setting hours to zero");
+								hours=0;
+							}
+						}
+					}
+		
+					//Reconstruct a date with the given time
+					return makeDateWithTime(hours, minutes);
 	
-				//Reconstruct a date with the given time
-				Date date = new Date();
-				date.setHours(hours);
-				date.setMinutes(minutes);
-				return date;
+				}
+			}else{//could not split around colon :, try to parse as things like 4PM
+				hours=tryToGetNumberFromFirstTwoDigitsOf(strDate);
+				if (hours<0){
+					return null;
+				}else{
+					if (findPM(strDate)){
+						hours+=12;
+					}
+					return makeDateWithTime(hours,0);
+				}
 			}
 		}
 //		System.out.println("\tMinutes or Hours were invalid");
 		return null;
 	}
 
+	private static Date makeDateWithTime(int hours, int minutes){
+		Date date = new Date();
+		date.setHours(hours);
+		date.setMinutes(minutes);
+		return date;
+	}
+	
+	/**
+	 * Helper
+	 * attempts to find a number either as the first two chars or the first char
+	 * for example, "12abcd" returns 12, "3abcd" returns 3, but "abcd" returns -1
+	 * @param string to try to parse as a number
+	 * @return the number if found, -1 otherwise
+	 */
+	private static int tryToGetNumberFromFirstTwoDigitsOf(String string){
+		int num=-1;
+		try {
+			String strMinutes = string.substring(0, 2).trim();
+//			System.out.println("\tstrMinutes: ("+strMinutes+")");
+			num = Integer.parseInt(strMinutes);
+		} catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+//			System.out.println("\t2-digit Minutes string could not be parsed to a number - trying only the first digit");
+			
+			//try it again with only the first digit
+			try {
+				String strMinutes = string.substring(0, 1).trim();
+//				System.out.println("\tstrMinutes: ("+strMinutes+")");
+				num = Integer.parseInt(strMinutes);
+			} catch (NumberFormatException | StringIndexOutOfBoundsException e2) {
+//				System.out.println("\t1-digit Minutes string could not be parsed to a number");
+				return -1;
+			}
+		}
+		return num;
+	}
+	
+	/**
+	 * Helper
+	 * attempts for find some form of "PM" in the string.
+	 * @param string the string to search
+	 * @return true if some form is found, false otherwise
+	 */
+	private static boolean findPM(String string){
+		String[] strPms={"PM", "Pm", "pm", "p.m.","P.M.", "P.m.","p.m", "P.M", "P.m"};
+		for (int i=0;i<strPms.length;i++){
+			if (string.contains(strPms[i])){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
