@@ -30,13 +30,13 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	private static CommitmentListModel commitmentListModel;
 
 	/** The list of commitments on the calendar */
-	private ArrayList<Commitment> commitments;
+	private List<Commitment> commitments;
 
 	/**
 	 * Constructs a new calendar with no commitments.
 	 */
 	private CommitmentListModel() {
-		commitments = new ArrayList<Commitment>();
+		commitments = Collections.synchronizedList(new ArrayList<Commitment>());
 	}
 
 	static public CommitmentListModel getCommitmentListModel() {

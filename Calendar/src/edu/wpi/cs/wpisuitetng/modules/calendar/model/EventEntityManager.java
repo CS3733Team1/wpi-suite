@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -52,15 +53,30 @@ public class EventEntityManager implements EntityManager<Event> {
 	@Override
 	public Event makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-
+		System.out.println("Trying to make an event");
+			
 		// Parse the message from JSON
 		final Event newMessage = Event.fromJSON(content);
-
-		if (newMessage.isMarkedForDeletion()){
-			newMessage.unmarkForDeletion();
-			deleteEvent(newMessage);
-			return newMessage;
+		
+		newMessage.setOwnerName(s.getUsername());
+		newMessage.setOwnerID(s.getUser().getIdNum());
+		//until we find a id that is unique assume another event might alreayd have it
+		boolean found=true;
+		long id=0;
+		while (found)
+		{
+			id = UUID.randomUUID().getMostSignificantBits();
+			for (Event e : this.getAll(s) )
+			{
+				if (e.getUniqueID()==id)
+				{
+					found=true;
+				}
+			}
+			found=false;
 		}
+		newMessage.setUniqueID(id);
+		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwnerName());
 		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -139,22 +155,18 @@ public class EventEntityManager implements EntityManager<Event> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.println("Trying to delete an event with id = " + id);
-		List<Model> messages = db.retrieveAll(new Event(), s.getProject());
+				System.out.println("Trying to delete an event with id = " + id);
+				try {
+				Event todelete = (Event) db.retrieve(Event.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
+				this.deleteEvent(todelete);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+				
+				return true;
 
-		for (Event e: messages.toArray(new Event[0]) ){
-			System.err.println("DBz: " + e.getUniqueID());
-		}
-		try {
-			Event todelete = (Event) db.retrieve(Event.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
-			this.deleteEvent(todelete);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		return true;
 	}
 
 	/*

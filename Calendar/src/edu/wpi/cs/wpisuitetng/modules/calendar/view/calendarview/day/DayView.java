@@ -147,7 +147,12 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 				int i=1;
 				for (Commitment commit: foundyou.get(x)){
 					bob.append("<p style='width:175px'>");
-					bob.append(new Integer(i).toString()+".");
+					if(i != 1)
+					{
+					bob.append("<br>");
+					}
+					bob.append("Commitment ");
+					bob.append(new Integer(i).toString()+":");
 					i++;
 					bob.append("<br>");
 					bob.append("<b>Name:</b> ");
@@ -282,6 +287,25 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 			currentDate = today.getDate();
 			currentMonth = today.getMonth();
 			currentYear = today.getYear() + 1900;
+
+			this.removeAll();
+			nameList = new ArrayList<DatePanel>();
+			paneltracker = new HashMap<Date, DatePanel>();
+			hourlist = new ArrayList<JPanel>();
+			fillDayView();
+			DisplayCommitments();
+		}
+	}
+	
+	@Override
+	public void viewDate(Calendar date) {
+		System.out.println("day of year");
+		System.out.println(date.get(Calendar.DAY_OF_YEAR));
+		Date aDate = date.getTime();
+		if(!(currentDate == aDate.getDate() && currentMonth == aDate.getMonth() && currentYear == aDate.getYear() + 1900)) {
+			currentDate = aDate.getDate();
+			currentMonth = aDate.getMonth();
+			currentYear = aDate.getYear() + 1900;
 
 			this.removeAll();
 			nameList = new ArrayList<DatePanel>();

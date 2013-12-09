@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,9 +22,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	/**
 	 * This is a model for events. It contains all of the events to be
 	 * displayed on the calendar. It extends AbstractListModel so that it can provide
-	 * the model data to the JList component in the BoardPanel.
-	 * 
-	 * @author Thomas DeSilva, Zach Estep
+	 * the model data to the JList component in the BoardPanel. This class is a singleton.
 	 * 
 	 */
 
@@ -36,7 +35,8 @@ public class EventListModel extends AbstractListModel<Event> {
 	 * Constructs a new calendar with no events.
 	 */
 	private EventListModel() {
-		events = new ArrayList<Event>();
+		//Ask for a thread safe arrayList
+		events = Collections.synchronizedList(new ArrayList<Event>());
 	}
 
 	public static EventListModel getEventListModel()
@@ -140,15 +140,4 @@ public class EventListModel extends AbstractListModel<Event> {
 		return events;
 	}
 	
-	public List<Event> getList(boolean isTeam)
-	{
-		ArrayList<Event> list = new ArrayList<Event>();
-		for(Event eve: events)
-		{
-			if(eve.getTeam() == isTeam)
-				list.add(eve);
-		}
-		
-		return list;
-	}
 }

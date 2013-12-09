@@ -35,7 +35,7 @@ import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
  * The main application window for the Janeway client
  *
  */
-@SuppressWarnings("serial")
+
 public class JanewayFrame extends JFrame {
 
 	/** A panel to contain the tabs */

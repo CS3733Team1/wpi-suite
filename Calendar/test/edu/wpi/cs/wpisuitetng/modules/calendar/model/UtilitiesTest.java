@@ -3,9 +3,10 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 import java.util.Date;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.*;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.DateUtilities;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class UtilitiesTest {
 	

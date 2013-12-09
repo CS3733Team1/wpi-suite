@@ -67,10 +67,7 @@ public class MainView {
 		// Add the tab to the list of tabs owned by this module
 		tabs.add(tab);
 
-		calendarPanel.createPersonalCalendar();
-		calendarPanel.createTeamCalendar();
 		calendarPanel.createCalendar();
-
 	}
 
 	public List<JanewayTabModel> getTabs() {

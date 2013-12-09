@@ -72,7 +72,6 @@ public class WeekView extends JPanel implements ICalendarView {
 
 	public void fillDayView(){
 
-
 		JPanel time = new JPanel();
 
 		StringBuilder timebuilder = new StringBuilder();
@@ -117,13 +116,12 @@ public class WeekView extends JPanel implements ICalendarView {
 				Date hue = new Date(currentYear-1900, currentMonth, currentDate + (currentday - 1), currenthour, 0);
 				thesecond.setDate(hue);
 				thesecond.setBackground(Color.WHITE);
-				thesecond.setBorder(new MatteBorder(1, 1, 1, 1, Color.gray));
+				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
 				this.add(thesecond, datebuilder.toString());
 				paneltracker.put(hue, thesecond);
 				nameList.add(thesecond);
 			}
 		}
-
 
 		for (int day = 1; day < 8; day++){
 			JPanel event = new JPanel();
@@ -134,7 +132,6 @@ public class WeekView extends JPanel implements ICalendarView {
 			eventbuilder.append(" ");
 			eventbuilder.append("0");
 			eventbuilder.append(",grow, push");
-//
 			event.add(new JLabel(" "));
 			event.setBackground(new Color(255,255,255));
 			this.add(event, eventbuilder.toString());
@@ -218,13 +215,18 @@ public class WeekView extends JPanel implements ICalendarView {
 		}
 	}
 
-
 	public HashMap<Date, DatePanel> getMap(){
 		return paneltracker;
 	}
 
 	public Date getStart(){
 		return new Date(currentYear-1900, currentMonth, currentDate);
+	}
+
+	@Override
+	public void viewDate(Calendar date) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

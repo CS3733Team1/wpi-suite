@@ -14,13 +14,21 @@ import java.awt.Color;
 
 import com.google.gson.Gson;
 /**
- * Model that holds data for a category
+ * Class that holds data for a Category. A Category has:<br>
+ * -A name<br>
+ * -A Color<br>
+ * 
+ * Privately, a Category also has a boolean (isReal) that says whether this is the real Category that
+ * exists in the database.
  */
 public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
 	public boolean isReal=true;
 	
+	/**
+	 * @return <b>true</b> if this Category is not a duplicate, <b>false</b> if it is
+	 */
 	public boolean getisReal()
 	{
 		return isReal;
@@ -49,7 +57,7 @@ public class Category extends DeletableAbstractModel {
 	}
 
 	/**
-	 * @param name the name of the Category
+	 * @param name the new name of the Category
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -87,9 +95,9 @@ public class Category extends DeletableAbstractModel {
 	}
 	
 	/**
-	 * Generates an array of Categories from a json String
-	 * @param input json String representing an array of Categories
-	 * @return array of Categories built from json String
+	 * Generates an array of Categories from a JSON String
+	 * @param input JSON String containing multiple serialized Categories
+	 * @return array of Categories
 	 */
 	public static Category[] fromJSONArray(String input)
 	{
@@ -98,9 +106,9 @@ public class Category extends DeletableAbstractModel {
 	}
 	
 	/**
-	 * Generates a Category from a json String
-	 * @param input json String representing a Category
-	 * @return Category built from json String
+	 * Generates a single Category from a JSON String
+	 * @param input JSON String representing one Category
+	 * @return the resulting Category
 	 */
 	public static Category fromJSON(String input)
 	{
@@ -122,6 +130,11 @@ public class Category extends DeletableAbstractModel {
 		} else return false;
 	}
 	
+	/**
+	 * Makes a fake copy of this. Should be used when constructing Events and Commitments with Categories
+	 * to prevent duplicate returns from the database.
+	 * @return A copy of this Category with isReal set to false
+	 */
 	public Category cloneFake()
 	{
 		Category cat = new Category(this.name, this.color);

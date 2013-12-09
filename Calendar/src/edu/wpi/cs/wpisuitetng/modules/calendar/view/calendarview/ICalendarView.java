@@ -10,6 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
+import java.util.Calendar;
+
 public interface ICalendarView {
 
 	public String getTitle();
@@ -17,4 +19,6 @@ public interface ICalendarView {
 	public void next();
 	public void previous();
 	public void today();
+
+	public void viewDate(Calendar date);
 }
