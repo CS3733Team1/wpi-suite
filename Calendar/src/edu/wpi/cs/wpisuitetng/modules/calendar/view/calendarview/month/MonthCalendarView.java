@@ -223,8 +223,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			}
 		}
 
-		for(DayPanel dayPanel: daysWithEvComs) {
-			dayPanel.updateEveComs();
+		for(int i = 0; i < daysWithEvComs.size(); i++) {
+			daysWithEvComs.get(i).updateEveComs();
 		}
 		
 		this.invalidate();
