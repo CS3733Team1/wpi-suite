@@ -124,8 +124,22 @@ public class DayPanel extends JPanel {
 		eventsList.add(eventsPanel);
 	}
 
-	public void addMultiDayEvent(Event event, boolean isAllDay) {
+	public JPanel addMultiDayEvent(Event event, boolean isAllDay) {
+		JPanel eventsPanel = new JPanel(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
+		eventsPanel.setBackground(event.getCategory().getColor());
+		
+		JLabel eventNameLabel = new JLabel(event.getName());
+		eventNameLabel.setForeground(CalendarUtils.textColor(event.getCategory().getColor()));
+		
+		JLabel eventTimeLabel = new JLabel(DateUtils.timeToString(event.getStartDate()));
+		eventTimeLabel.setFont(new Font(eventTimeLabel.getFont().getName(), Font.PLAIN, 8));
+		eventTimeLabel.setForeground(new Color(84, 84, 8));
 
+		eventsPanel.add(eventNameLabel, "wmin 0");
+		eventsPanel.add(eventTimeLabel);
+		
+		eventsList.add(eventsPanel);
+		return eventsPanel;
 	}
 	
 	public void addAllDayCommitment(Commitment commitment) {

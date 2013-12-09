@@ -15,6 +15,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -207,6 +208,12 @@ public class CalendarTabPanel extends JPanel {
 
 	public void setCalendarViewPrevious() {
 		calendarView.previous();
+		this.setCalendarViewTitle(calendarView.getTitle());
+		this.refreshCalendarView();
+	}
+	
+	public void setCalendarViewDate(Calendar date) {
+		calendarView.viewDate(date);
 		this.setCalendarViewTitle(calendarView.getTitle());
 		this.refreshCalendarView();
 	}
