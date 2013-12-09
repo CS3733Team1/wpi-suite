@@ -76,7 +76,7 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 	}
 
 	public synchronized List<Commitment> getList() {
-		filterCommitmens();
+		filterCommitments();
 		return filteredCommitments;
 	}
 }
