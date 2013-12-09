@@ -89,7 +89,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @param filters an array of Filters to put in 
 	 */
 	
-	public synchronized void setFilters(Filter[] filters) {
+	public void setFilters(Filter[] filters) {
 		this.emptyModel();
 
 		//DEFAULT FILTERS
@@ -127,7 +127,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * other classes in this module have references to it. Hence, we manually
 	 * remove each Filter from the model.
 	 */
-	public synchronized void emptyModel() {
+	public void emptyModel() {
 		int oldSize = getSize();
 		filters.clear();
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
