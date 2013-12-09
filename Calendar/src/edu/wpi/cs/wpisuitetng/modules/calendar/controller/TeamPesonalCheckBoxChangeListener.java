@@ -20,7 +20,7 @@ public class TeamPesonalCheckBoxChangeListener implements ChangeListener {
 		      if (buttonModel.isPressed() || buttonModel.isSelected())
 		      {
 		    	  System.out.println("In statechanged for Team/Personal Checkboxs");
-		    	  FilterListModel.getFilterListModel().fireFilterChanged();
+		    	  FilterListModel.getFilterListModel().Update();
 		    	  CommitmentListModel.getCommitmentListModel().Update();
 		    	  EventListModel.getEventListModel().Update();
 		      }
