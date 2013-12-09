@@ -28,13 +28,15 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 	List<FilterChangedListener> filterChangedListeners = new ArrayList<FilterChangedListener>();
 
-	private final Filter[] defaultFilters = {new Filter("Unfiltered")};
+	private final Filter[] defaultFilters = {new Filter(UNFILTERED)};
 
 	/** The list of Filter */
 	private List<Filter> filters;
 
 	/** The active Filter */
 	private Filter activeFilter;
+	
+	private static final String UNFILTERED = "Unfiltered";
 
 	private FilterListModel() {
 		this.filters = Collections.synchronizedList(new ArrayList<Filter>());
@@ -174,8 +176,12 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Events
 	 */
 	public List<Event> applyEventFilter(List<Event> eventList) {
-		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return Filter.filterTeamPersonal(eventList);
-		else return activeFilter.applyEventFilter(eventList);
+		if(activeFilter == null || activeFilter.getName().equals(UNFILTERED))
+		{
+			activeFilter = new Filter(UNFILTERED, CategoryListModel.getList());
+			
+		}
+		return activeFilter.applyEventFilter(eventList);
 	}
 
 	/**
@@ -184,8 +190,11 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Commitments
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return Filter.filterTeamPersonal(commitmentList);
-		else return activeFilter.applyCommitmentFilter(commitmentList);
+		if(activeFilter == null || activeFilter.getName().equals(UNFILTERED) )
+				{
+					activeFilter = new Filter(UNFILTERED,CategoryListModel.getList());
+				}
+		return activeFilter.applyCommitmentFilter(commitmentList);
 	}
 
 	public void fireFilterChanged() {

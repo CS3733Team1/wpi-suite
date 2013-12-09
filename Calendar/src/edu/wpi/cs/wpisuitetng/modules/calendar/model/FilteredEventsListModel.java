@@ -31,6 +31,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	}
 
 	private void filterEvents() {
+		System.out.println("Filtering events");
 		filteredEvents.clear();
 		List<Event> eventList = EventListModel.getEventListModel().getList();
 		
