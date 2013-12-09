@@ -133,10 +133,10 @@ public class Filter extends DeletableAbstractModel {
 		{
 		default:
 		case 3://both
-			System.out.println("Allow both team and personal events")
+			System.out.println("Allow both team and personal events");
 			return list;
 		case 2: //personal events
-			System.out.println("Allow only personal events")
+			System.out.println("Allow only personal events");
 			for (T i : list)
 			{
 				if (i.isTeam)
