@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -37,6 +40,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private JCheckBox chckbxThursday;
 	private JCheckBox chckbxFriday;
 	private JCheckBox chckbxSaturday;
+	private JTextField occurrencesTextField;
 
 	public EventRecurringPanel() {
 		this.buildLayout();
@@ -76,19 +80,72 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 		JLabel lblNumberOfOccurences = new JLabel("Number of Occurences: ");
 		add(lblNumberOfOccurences, "cell 0 1,alignx trailing");
 		
-		JTextField occurrencesTextField = new JTextField();
+		occurrencesTextField = new JTextField();
 		occurrencesTextField.setText("1");
 		add(occurrencesTextField, "cell 1 1,growx");
 		occurrencesTextField.setColumns(10);
-		validateFields();
 	}
 
 
 	/**
-	 * Validates the options of the fields inputed.
+	 * Validates the options of the fields inputed with today's date.
 	 * @return void
 	 */
-	private void validateFields() {		
+	public boolean validateRecurring() {
+		Date startDate =  new Date();
+		return validateRecurring(startDate);
+	}
+
+	/**
+	 * Validates the options of the fields inputed with given date.
+	 * @return True if valid
+	 */
+	public boolean validateRecurring(Date startDate) {
+		boolean isValid = true;
+		int dayToday = startDate.getDay();
+		try
+		{
+			if(Integer.parseInt(occurrencesTextField.getText()) > 0)
+				isValid = isValid && true;
+			else
+				isValid = false;
+		}
+		catch(NumberFormatException e)
+		{
+			isValid = false;
+		}
+		
+		switch(dayToday){
+			case 0: 
+				if(!chckbxSunday.isSelected())
+					isValid = false;
+				break;
+			case 1: 
+				if(!chckbxMonday.isSelected())
+					isValid = false;
+				break;
+			case 2: 
+				if(!chckbxTuesday.isSelected())
+					isValid = false;
+				break;
+			case 3: 
+				if(!chckbxWednesday.isSelected())
+					isValid = false;
+				break;
+			case 4: 
+				if(!chckbxThursday.isSelected())
+					isValid = false;
+				break;
+			case 5: 
+				if(!chckbxFriday.isSelected())
+					isValid = false;
+				break;
+			case 6: 
+				if(!chckbxSaturday.isSelected())
+					isValid = false;
+				break;
+		}
+		return isValid;
 	}
 
 	public Event getFilledEvent() {
@@ -97,7 +154,7 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			validateFields();
+			validateRecurring();
 	}
 
 	@Override
