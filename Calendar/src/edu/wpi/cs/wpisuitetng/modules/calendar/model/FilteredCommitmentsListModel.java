@@ -26,6 +26,7 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 	static public synchronized FilteredCommitmentsListModel getFilteredCommitmentsListModel() {
 		if (filteredCommitmentsListModel == null)
 			filteredCommitmentsListModel = new FilteredCommitmentsListModel();
+		filteredCommitmentsListModel.filterCommitments();
 		return filteredCommitmentsListModel;
 	}
 	private void filterCommitments() {
@@ -75,6 +76,7 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 	}
 
 	public synchronized List<Commitment> getList() {
+		filterCommitmens();
 		return filteredCommitments;
 	}
 }

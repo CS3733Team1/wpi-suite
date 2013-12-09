@@ -26,6 +26,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	static public synchronized FilteredEventsListModel getFilteredEventsListModel() {
 		if (filteredEventsListModel == null)
 			filteredEventsListModel = new FilteredEventsListModel();
+		filteredEventsListModel.filterEvents();
 		return filteredEventsListModel;
 	}
 
@@ -71,6 +72,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	}
 
 	public synchronized List<Event> getList() {
+		filterEvents();
 		return filteredEvents;
 	}
 }
