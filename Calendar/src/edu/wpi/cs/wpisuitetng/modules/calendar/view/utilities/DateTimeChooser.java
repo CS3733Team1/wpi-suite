@@ -30,13 +30,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEven
 
 //TODO
 /*DayTimeChangedEvent -- break into day changed and time changed events?
- * input validation
- * test
- * integrate into commitments
- * add all day commitment checkbox
- * integrate with events
  * -increment end time appropriately when start time changes
- * -input validation
+ * TEST
+ * add all day commitment checkbox
  * add all day event checkbox
  * */
 
