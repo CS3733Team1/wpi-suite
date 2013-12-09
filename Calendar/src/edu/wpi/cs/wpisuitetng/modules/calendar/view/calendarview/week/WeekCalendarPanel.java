@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +30,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
  * The second level of the week view hierarchy. Holds the WeekCalendarLayerPane and the WeekCalendarScrollPane.
@@ -40,46 +42,48 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	private WeekCalendarLayerPane weeklayer;
 	private JPanel weektitle;
 	private List<JPanel> weekpanel;
-	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", " "};
 	
 	
 	public WeekCalendarPanel(){
-		this.setBorder(BorderFactory.createTitledBorder(null,
-	            "Week View", TitledBorder.LEFT, TitledBorder.TOP,
-	            new Font("null", Font.BOLD, 12), Color.BLUE));
 		
-		
-		this.setLayout(new MigLayout("fill"));
+		this.setLayout(new MigLayout("fill, insets 0"));
 		
 		weeklayer = new WeekCalendarLayerPane();
 		weekpanel = new LinkedList<JPanel>();
-		weektitle = new JPanel(new MigLayout("fill, insets 0", "[9%][13%][13%][13%][13%][13%][13%][13%]18px"));
+		weektitle = new JPanel(new MigLayout("fill, insets 0", "0[8.66%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]0[4.43%]0"));
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
-		time.add(new JLabel("Time"), "grow, aligny center");
-		time.setBackground(new Color(138,173,209));
+		time.add(new JLabel("Time"), "grow, aligny bottom");
+		time.setBackground(Color.white);
 		
 		weektitle.add(time, "aligny center, w 5000, grow");
 		
-		for(int days = 1; days < 8; days++){
-			JPanel weekName = new JPanel(new MigLayout("fill"));
-			
-			weekName.add(new JLabel(weekNames[days-1]),"grow, aligny center");
-			weekName.setBackground(new Color(138,173,209));
-			weektitle.add(weekName, "aligny center, w 5000, grow");
+		for(int days = 1; days < 9; days++){
+			JPanel weekName = new JPanel(new MigLayout("fill, insets 0"));
+			JLabel label = new JLabel(weekNames[days-1]);
+			weekName.add(label,"grow, aligny bottom");
+			if(days == 1 || days == 7)
+				label.setForeground(CalendarUtils.timeColor);
+			weekName.setBackground(Color.white);
+			weektitle.add(weekName, "aligny bottom, w 5000, grow");
 			weekpanel.add(weekName);
 		}
 		
-		JPanel filler = new JPanel(new MigLayout("fill"));
-		filler.add(weektitle, "grow, wrap");
-		this.add(filler, "grow, wrap");
+		JPanel filler = new JPanel(new MigLayout("fill, insets 0"));
+		filler.add(weektitle, "growx, wrap");
+		this.add(filler, "growx, wrap");
 		
 		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		
-		this.add(weekscroll, "grow, push");
+		this.add(weekscroll, "grow");
 		
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 		DisplayCommitments();
+		
+		int end = weekscroll.getVerticalScrollBar().getMaximum();
+		weekscroll.getVerticalScrollBar().setValue(end * 3 / 4);
+		
 		repaint();
 	}
 	
@@ -88,16 +92,19 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		weekpanel = new LinkedList<JPanel>();
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
-		time.add(new JLabel("Time"), "grow, aligny center");
-		time.setBackground(new Color(138,173,209));
+		time.add(new JLabel("Time"), "grow, aligny bottom");
+		time.setBackground(Color.white);
 		
 		weektitle.add(time, "aligny center, w 5000, grow");
 		
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout("fill"));
 			
-			weekName.add(new JLabel(weekNames[days-1]),"grow, aligny center");
-			weekName.setBackground(new Color(138,173,209));
+			JLabel label = new JLabel(weekNames[days-1]);
+			weekName.add(label,"grow, aligny bottom");
+			if(days == 1 || days == 7)
+				label.setForeground(CalendarUtils.timeColor);
+			weekName.setBackground(Color.white);
 			weektitle.add(weekName, "aligny center, w 5000, grow");
 			weekpanel.add(weekName);
 		}
@@ -233,5 +240,11 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	public void contentsChanged(ListDataEvent e) {
 		rebuildDays();
 		DisplayCommitments();
+	}
+
+	@Override
+	public void viewDate(Calendar date) {
+		// TODO Auto-generated method stub
+		
 	}
 }

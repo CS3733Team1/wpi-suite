@@ -32,4 +32,19 @@ public class DateUtils {
 			return strHours + ":" + strMinutes + strAmPm;
 		}
 	}
+	
+	public static String  hourString(int hour)
+	{
+		String output;
+		
+		if(hour < 12){
+			output = ""+hour+ " AM";
+		}else if (hour == 12){
+			output = "NOON";
+		}else{
+			hour = hour- 12;
+			output = ""+hour+ " PM";
+		}
+		return output;
+	}
 }

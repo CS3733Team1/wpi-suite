@@ -23,6 +23,7 @@ public class CalendarUtils {
 	public static final Color thatBlue = new Color(0, 139, 239);
 	public static final Color todayYearColor = new Color(255, 244, 103);
 	public static final Color weekendColor = new Color(245, 245, 245);
+	public static final Color timeColor = new Color(181,181,181);
 	
 	public static Color blend(Color clOne, Color clTwo, float fAmount) {
 	    float fInverse = (float) (1.0 - fAmount);

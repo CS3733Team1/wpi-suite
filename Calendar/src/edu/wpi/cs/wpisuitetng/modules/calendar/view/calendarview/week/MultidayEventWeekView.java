@@ -47,14 +47,32 @@ public class MultidayEventWeekView extends JPanel{
 		}
 		
 		this.setLayout(new MigLayout("fill", 
-				"[8%][13%][13%][13%][13%][13%][13%][13%]", 
-				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
+				"0[9%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]0", 
+				"0[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 		
 		int y = 1;
 		for(List<Event> list: multidaye)
 		{
 			if(list.size() == 0)
+			{
+				JPanel eventinfo = new JPanel();
+				StringBuilder evebuilder = new StringBuilder();
+				evebuilder.append("cell ");
+				evebuilder.append(new Integer(y).toString());
+				evebuilder.append(" ");
+				evebuilder.append("0");
+				evebuilder.append(" ");
+				evebuilder.append("0");
+				evebuilder.append(" ");
+				evebuilder.append("0");
+				evebuilder.append(",grow, push");
+				
+				
+				eventinfo.setBackground(Color.WHITE);
+				this.add(eventinfo, evebuilder.toString());
+				y++;
 				continue;
+			}
 
 			JPanel eventinfo = new JPanel();
 			eventinfo.add(new JLabel("Multiday Event"), "wmin 0, aligny center, alignx center");
@@ -77,16 +95,12 @@ public class MultidayEventWeekView extends JPanel{
 			StringBuilder bob = new StringBuilder();
 			bob.append("<html>");
 			for (Event eve: list){
-				if(names.contains(eve.getName()))
-					continue;
 				bob.append("<p>");
 				bob.append("<b>Name:</b> ");
 				bob.append(eve.getName());
 				bob.append("<br><b>Description:</b> ");
 				bob.append(eve.getDescription());
 				bob.append("</p>");
-				
-				names.add(eve.getName());
 			}
 			bob.append("</html>");
 			eventinfo.setToolTipText(bob.toString());

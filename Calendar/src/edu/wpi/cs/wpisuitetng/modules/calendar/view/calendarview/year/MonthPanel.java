@@ -3,6 +3,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -12,8 +14,8 @@ import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
-
-public class MonthPanel extends JPanel {
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
+public class MonthPanel extends JPanel implements MouseListener {
 
 	// Stores all the days in a month
 	private ArrayList<DayPanel> days;
@@ -50,6 +52,7 @@ public class MonthPanel extends JPanel {
 
 		for(int i = 0; i < 42; i++) {
 			DayPanel day = new DayPanel();
+			day.addMouseListener(this);
 			days.add(day);
 			if((i+1)%7 == 0 || i >= 35) {
 				if((i+1)%7 == 0) {
@@ -81,7 +84,7 @@ public class MonthPanel extends JPanel {
 			DayPanel dayPanel = days.get(i);
 			dayPanel.setIsCurrentMonth(month.get(Calendar.MONTH) == currentMonth);
 			dayPanel.setIsWeekend((i+1)%7 <= 1);
-			dayPanel.setDate(month.get(Calendar.DATE));
+			dayPanel.setDate((Calendar)month.clone());
 			dayPanel.setIsToday(false);
 			dayPanel.updateColors();
 
@@ -113,5 +116,39 @@ public class MonthPanel extends JPanel {
 		else index += calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
 		days.get(index).addEvComm();
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		DayPanel day = (DayPanel)e.getSource();
+		Calendar clickedDay = day.getDate();
+		CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent().getParent().getParent().getParent().getParent());
+		
+		tab.displayDayView();
+		tab.setCalendarViewDate(clickedDay);
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Date;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -62,6 +63,9 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		dayscroll = new DayCalendarScrollPane(daylayer);
 
 		this.add(dayscroll, "grow, push");
+		
+		int end = dayscroll.getVerticalScrollBar().getMaximum();
+		dayscroll.getVerticalScrollBar().setValue(end * 3 / 4);
 
 	}
 
@@ -121,6 +125,13 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		daylayer.today();
 		updateDay();
 
+	}
+
+
+	@Override
+	public void viewDate(Calendar date) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
