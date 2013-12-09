@@ -94,8 +94,17 @@ public class MultidayEventWeekView extends JPanel{
 			
 			StringBuilder bob = new StringBuilder();
 			bob.append("<html>");
+			int i = 1;
 			for (Event eve: list){
 				bob.append("<p>");
+				if(i != 1)
+				{
+				bob.append("<br>");
+				}
+				bob.append("Event ");
+				bob.append(new Integer(i).toString()+":");
+				i++;
+				bob.append("<br>");
 				bob.append("<b>Name:</b> ");
 				bob.append(eve.getName());
 				bob.append("<br><b>Description:</b> ");
