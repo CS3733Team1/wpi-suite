@@ -15,7 +15,11 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import java.util.Collections;
+
+import java.util.Calendar;
+
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -46,6 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist.QuickListTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class CalendarTabPanel extends JPanel {
@@ -69,7 +74,7 @@ public class CalendarTabPanel extends JPanel {
 	private JTabbedPane filterCategoryTabbedPane;
 	
 	private CommitmentSubTabPanel commitmentSubTabPanel;
-	
+	private QuickListTabPanel quickListTabPanel;
 	
 	
 	public CalendarTabPanel(CalendarPanel calendarPanel) {
@@ -80,6 +85,7 @@ public class CalendarTabPanel extends JPanel {
 		filterCategoryTabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 		
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
+		quickListTabPanel = new QuickListTabPanel(calendarPanel);
 		
 		personalCalCheckBox = new JCheckBox("Personal");
 		teamCalCheckBox = new JCheckBox("Team");
@@ -111,7 +117,10 @@ public class CalendarTabPanel extends JPanel {
 			yearViewButton = new TransparentToggleButton("Year",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png"))));
 			
-			filterCategoryTabbedPane.addTab("Quick List", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
+			filterCategoryTabbedPane.addTab("Quick List", new ImageIcon(ImageIO.read(getClass().getResource("/images/quicklist.png"))), 
+					quickListTabPanel);
+			
+			filterCategoryTabbedPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
 					commitmentSubTabPanel);
 			
 			filterCategoryTabbedPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
@@ -187,12 +196,15 @@ public class CalendarTabPanel extends JPanel {
 
 	public void resetSelection() {
 		commitmentSubTabPanel.getCommitmentsList().clearSelection();
+		quickListTabPanel.getCommitmentsList().clearSelection();
 	}
 
 	public List<Commitment> getSelectedCommitmentList(){
 		if(filterCategoryTabbedPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
 			return commitmentSubTabPanel.getCommitmentsList().getSelectedValuesList();
-		else return Collections.synchronizedList(new ArrayList<Commitment>());
+		else if(filterCategoryTabbedPane.getSelectedComponent() instanceof QuickListTabPanel)
+			return quickListTabPanel.getCommitmentsList().getSelectedValuesList();
+		else return new ArrayList<Commitment>();
 	}
 	
 	public void setCalendarViewTitle(String title) {
@@ -213,6 +225,12 @@ public class CalendarTabPanel extends JPanel {
 
 	public void setCalendarViewPrevious() {
 		calendarView.previous();
+		this.setCalendarViewTitle(calendarView.getTitle());
+		this.refreshCalendarView();
+	}
+	
+	public void setCalendarViewDate(Calendar date) {
+		calendarView.viewDate(date);
 		this.setCalendarViewTitle(calendarView.getTitle());
 		this.refreshCalendarView();
 	}

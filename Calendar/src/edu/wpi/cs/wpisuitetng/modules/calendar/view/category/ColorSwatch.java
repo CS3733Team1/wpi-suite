@@ -25,20 +25,19 @@ public class ColorSwatch extends JPanel implements ActionListener {
 	private JPanel centerPanel;
 
 	public ColorSwatch() {
-		selectedColor = Color.BLACK;
+		selectedColor = Color.WHITE;
 		this.setLayout(new MigLayout("fill", "[10]2[10]2[10]2[10]2[10]2[10]", "[10]2[10]2[10]2[10]2[10]2[10]"));
 
 		centerPanel = new JPanel();
 		centerPanel.setBackground(selectedColor);
-		centerPanel.setBorder(new MatteBorder(5, 5, 5, 5, Color.BLACK));
+		centerPanel.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 
-		Color colors[] = {Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, null, Color.CYAN, Color.MAGENTA, Color.YELLOW, Color.WHITE};
+		Color colors[] = {new Color(255, 100, 100), new Color(100, 255, 100), new Color(100, 100, 255), Color.WHITE, null, Color.WHITE, Color.CYAN, Color.MAGENTA, Color.YELLOW};
 
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
-				if(i == 1 && j == 1) {
-					this.add(centerPanel, "cell 2 2, span 2 2, grow");
-				} else {
+				if(i == 1 && j == 1) this.add(centerPanel, "cell 2 2, span 2 2, grow");
+				else {
 					for(int x = 0; x < 2; x++) {
 						for(int y = 0; y < 2; y++) {
 							ColorSquare cs = new ColorSquare(generateRandomColor(colors[3*j + i]));
@@ -53,9 +52,9 @@ public class ColorSwatch extends JPanel implements ActionListener {
 
 	public Color generateRandomColor(Color mix) {
 		Random random = new Random();
-		int red = random.nextInt(256);
-		int green = random.nextInt(256);
-		int blue = random.nextInt(256);
+		int red = random.nextInt(128) + 128;
+		int green = random.nextInt(128) + 128;
+		int blue = random.nextInt(128) + 128;
 
 		// mix the color
 		if (mix != null) {
