@@ -1,7 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,51 +13,46 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class DayPanel extends JPanel {
 	private boolean isToday;
 	private boolean isWeekend;
 	private boolean isInCurrentMonth;
-	
+
 	private int indexInMonth;
 	private JLabel day;
 	private JPanel datePanel;
 	private JPanel containerPanel;
 
-	private List<JPanel> multiDayEventsList;
-	private List<JPanel> eventsList;
-	private List<JPanel> commitmentsList;
-	private Calendar todayDate;
+	private List<MultiDayEventPanel> multiDayEventsList;
+	private List<EventPanel> eventsList;
+	private List<CommitmentPanel> commitmentsList;
+	
+	private List<JPanel> multiDayEventPanelsWithFiller;
+	
+	private Calendar date;
 
 	public DayPanel(int indexInMonth) {
 		this.setLayout(new MigLayout("fill, insets 0"));
-		/*
-		if((indexInMonth+1)%7 == 0 || indexInMonth >= 35) {
-			if((indexInMonth+1)%7 == 0) {
-				if(indexInMonth < 35) this.setBorder(new MatteBorder(1, 1, 0, 1, Color.LIGHT_GRAY));
-				else this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
-			} else this.setBorder(new MatteBorder(1, 1, 1, 0, Color.LIGHT_GRAY));
-		} else this.setBorder(new MatteBorder(1, 1, 0, 0, Color.LIGHT_GRAY));
-		*/
-		
-		this.setBorder(new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
-		
-		this.isToday = false;
-		
-		this.indexInMonth = indexInMonth;
-		multiDayEventsList = new ArrayList<JPanel>();
-		eventsList = new ArrayList<JPanel>();
-		commitmentsList = new ArrayList<JPanel>();
 
-		day = new JLabel("", JLabel.LEFT);
+		this.setBorder(new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+
+		this.isToday = false;
+
+		this.indexInMonth = indexInMonth;
+		multiDayEventsList = new ArrayList<MultiDayEventPanel>();
+		eventsList = new ArrayList<EventPanel>();
+		commitmentsList = new ArrayList<CommitmentPanel>();
+		multiDayEventPanelsWithFiller = new ArrayList<JPanel>();
+
+		day = new JLabel("", JLabel.RIGHT);
 		containerPanel = new JPanel(new MigLayout("flowy, insets 0, gap 0 0 0 0"));
 
 		datePanel = new JPanel(new MigLayout("fill, insets 0"));
 		datePanel.add(day, "grow");
 
 		this.isWeekend = (indexInMonth + 1) % 7 <= 1;
-		
+
 		this.add(datePanel, "grow, wrap");
 		this.add(containerPanel, "grow, push");
 	}
@@ -66,7 +60,7 @@ public class DayPanel extends JPanel {
 	public void setIsToday(boolean isToday) {
 		this.isToday = isToday;
 	}
-	
+
 	public void updateColors() {
 		if(isInCurrentMonth) day.setForeground(Color.BLACK);
 		else day.setForeground(Color.LIGHT_GRAY);
@@ -91,80 +85,125 @@ public class DayPanel extends JPanel {
 
 	public void setDate(Calendar date, boolean isInCurrentMonth) {
 		this.isInCurrentMonth = isInCurrentMonth;
-		this.todayDate = date;
+		this.date = date;
 		if(indexInMonth == 0 || date.get(Calendar.DATE) == 1)
 			day.setText(CalendarUtils.monthNamesAbbr[date.get(Calendar.MONTH)] + " " + date.get(Calendar.DATE)+" ");
 		else day.setText(date.get(Calendar.DATE) + " ");
 	}
 
+	public Calendar getDate() {return this.date;}
+
 	public void clearEvComs() {
-		eventsList = new ArrayList<JPanel>();
-		commitmentsList = new ArrayList<JPanel>();
+		multiDayEventsList = new ArrayList<MultiDayEventPanel>();
+		eventsList = new ArrayList<EventPanel>();
+		commitmentsList = new ArrayList<CommitmentPanel>();
+		multiDayEventPanelsWithFiller = new ArrayList<JPanel>();
 		containerPanel.removeAll();
 	}
 
-	public void addEvent(Event event) {		
-		JPanel eventsPanel = new JPanel(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
-		if(isToday) eventsPanel.setBackground(CalendarUtils.selectionColor);
+	public EventPanel addEvent(Event event) {
+		Color backgroundColor, selectedBackgroundColor;
+		Color textColor, selectedTextColor;
+
+		selectedBackgroundColor = event.getCategory().getColor();
+		textColor = new Color(84, 84, 8);
+		selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
+
+		if(isToday) backgroundColor = CalendarUtils.selectionColor;
 		else {
-			if(isWeekend) eventsPanel.setBackground(CalendarUtils.weekendColor);
-			else eventsPanel.setBackground(Color.WHITE);
+			if(isWeekend) backgroundColor = CalendarUtils.weekendColor;
+			else backgroundColor = Color.WHITE;
+		}
+
+		EventPanel eventPanel = new EventPanel(event, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
+
+		eventsList.add(eventPanel);
+		
+		return eventPanel;
+	}
+
+	public MultiDayEventPanel addMultiDayEvent(int indexOfMultiDay, Event event, Calendar startCal, Calendar endCal, boolean isFirstPanel, boolean isAllDay) {
+		Color backgroundColor, selectedBackgroundColor;
+		Color textColor, selectedTextColor;
+
+		selectedBackgroundColor = event.getCategory().getColor();
+		backgroundColor = CalendarUtils.blend(selectedBackgroundColor, Color.white, (float) 0.4);
+		textColor = new Color(84, 84, 8);
+		selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
+
+		int textType = 0;
+		
+		if(isAllDay) { // No Event times shown
+			if(isFirstPanel) textType = 2;
+		} else { // Event times shown
+			// If this EventPanel is on the first day show the start time
+			if(startCal.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+					startCal.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) {
+				textType = 1;
+			}
+			
+			// Else if its not the start day but it's the first panel visible, only show the name
+			else if(isFirstPanel) textType = 2;
+
+			// Else If this EventPanel is on the last day show the end time
+			else if(endCal.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+					endCal.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) {
+				textType = 3;
+			}
+
+			// Else don't show any times or text i.e. Do nothing
 		}
 		
-		JLabel eventNameLabel = new JLabel(event.getName());
-		eventNameLabel.setForeground(new Color(84, 84, 8));
+		if(isFirstPanel) indexOfMultiDay = multiDayEventsList.size();
+		else {
+			Color fillerBackgroundColor;
+			if(isToday) fillerBackgroundColor = CalendarUtils.selectionColor;
+			else {
+				if(isWeekend) fillerBackgroundColor = CalendarUtils.weekendColor;
+				else fillerBackgroundColor = Color.WHITE;
+			}
+			
+			// We must put in filler panels so multiday events between days are aligned
+			for(int i = 0; i < indexOfMultiDay - multiDayEventPanelsWithFiller.size(); i++) {
+				JPanel filler = new JPanel(new MigLayout("insets 0"));
+				filler.setBackground(fillerBackgroundColor);
+				filler.add(new JLabel(""));
+				multiDayEventPanelsWithFiller.add(filler);
+			}
+		}
 		
-		JLabel eventTimeLabel = new JLabel(DateUtils.timeToString(event.getStartDate()));
-		eventTimeLabel.setFont(new Font(eventTimeLabel.getFont().getName(), Font.PLAIN, 8));
-		eventTimeLabel.setForeground(new Color(84, 84, 8));
+		MultiDayEventPanel multiDayEventPanel = new MultiDayEventPanel(indexOfMultiDay, event, textType, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
 
-		eventsPanel.add(eventNameLabel, "wmin 0");
-		eventsPanel.add(eventTimeLabel);
+		multiDayEventsList.add(multiDayEventPanel);
+		multiDayEventPanelsWithFiller.add(multiDayEventPanel);
 		
-		eventsList.add(eventsPanel);
+		return multiDayEventPanel;
 	}
 
-	public JPanel addMultiDayEvent(Event event, boolean isAllDay) {
-		JPanel eventsPanel = new JPanel(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
-		eventsPanel.setBackground(event.getCategory().getColor());
-		
-		JLabel eventNameLabel = new JLabel(event.getName());
-		eventNameLabel.setForeground(CalendarUtils.textColor(event.getCategory().getColor()));
-		
-		JLabel eventTimeLabel = new JLabel(DateUtils.timeToString(event.getStartDate()));
-		eventTimeLabel.setFont(new Font(eventTimeLabel.getFont().getName(), Font.PLAIN, 8));
-		eventTimeLabel.setForeground(new Color(84, 84, 8));
-
-		eventsPanel.add(eventNameLabel, "wmin 0");
-		eventsPanel.add(eventTimeLabel);
-		
-		eventsList.add(eventsPanel);
-		return eventsPanel;
-	}
-	
 	public void addAllDayCommitment(Commitment commitment) {
 
 	}
 
-	public void addCommitment(Commitment commitment) {
-		JPanel commitmentsPanel = new JPanel(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
-		if(isToday) commitmentsPanel.setBackground(CalendarUtils.selectionColor);
+	public CommitmentPanel addCommitment(Commitment commitment) {
+		Color backgroundColor, selectedBackgroundColor;
+		Color textColor, selectedTextColor;
+
+		selectedBackgroundColor = commitment.getCategory().getColor();
+		textColor = new Color(84, 84, 8);
+		selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
+
+		if(isToday) backgroundColor = CalendarUtils.selectionColor;
 		else {
-			if(isWeekend) commitmentsPanel.setBackground(CalendarUtils.weekendColor);
-			else commitmentsPanel.setBackground(Color.WHITE);
+			if(isWeekend) backgroundColor = CalendarUtils.weekendColor;
+			else backgroundColor = Color.WHITE;
 		}
 		
-		JLabel commitmentNameLabel = new JLabel(commitment.getName());
-		commitmentNameLabel.setForeground(new Color(84, 84, 8));
-		
-		JLabel commitmentTimeLabel = new JLabel(DateUtils.timeToString(commitment.getDueDate()));
-		commitmentTimeLabel.setFont(new Font(commitmentTimeLabel.getFont().getName(), Font.PLAIN, 8));
-		commitmentTimeLabel.setForeground(new Color(84, 84, 8));
+		CommitmentPanel commitmentPanel = new CommitmentPanel(commitment, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
 
-		commitmentsPanel.add(commitmentNameLabel, "wmin 0");
-		commitmentsPanel.add(commitmentTimeLabel);
+		commitmentsList.add(commitmentPanel);
+		multiDayEventPanelsWithFiller.add(commitmentPanel);
 		
-		commitmentsList.add(commitmentsPanel);
+		return commitmentPanel;
 	}
 
 	// Updates the layout [if there are new commitments or events or a resize]
@@ -172,23 +211,29 @@ public class DayPanel extends JPanel {
 		containerPanel.removeAll();
 		JLabel temp = new JLabel("I have Height!");
 
-		int numEveComs = eventsList.size() + commitmentsList.size();
+		int numEveComs = multiDayEventPanelsWithFiller.size() + eventsList.size() + commitmentsList.size();
 		int width = this.getParent().getWidth()/7;
 
 		if(numEveComs > 0) {
 			int numRows = Math.max(1, (int)((float)containerPanel.getHeight() / (float)temp.getPreferredSize().height + 0.5));
 			int savedRows = numRows;
 			if(numRows >= numEveComs) {
-				for(JPanel eventLabel: eventsList) containerPanel.add(eventLabel, "gap left 5, gap right 5, aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
-				for(JPanel commitmentLabel: commitmentsList) containerPanel.add(commitmentLabel, "gap left 5, gap right 5, aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
+				for(JPanel panel: multiDayEventPanelsWithFiller) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
+				for(JPanel panel: eventsList) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
+				for(JPanel panel: commitmentsList) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
 			} else {
-				for(JPanel eventLabel: eventsList) {
-					if(numRows-- > 1) containerPanel.add(eventLabel, "gap left 5, gap right 5, aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
+				for(JPanel panel: multiDayEventPanelsWithFiller) {
+					if(numRows-- > 1) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
+					else break;
+				}
+				
+				for(JPanel panel: eventsList) {
+					if(numRows-- > 1) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
 					else break;
 				}
 
-				for(JPanel commitmentLabel: commitmentsList) {
-					if(numRows-- > 1) containerPanel.add(commitmentLabel, "gap left 5, gap right 5, aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
+				for(JPanel panel: commitmentsList) {
+					if(numRows-- > 1) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
 					else break;
 				}
 

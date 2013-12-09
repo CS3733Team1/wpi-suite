@@ -80,7 +80,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		for(String weekDay: CalendarUtils.weekNamesAbbr) {
 			JPanel titlePanel = new JPanel(new MigLayout("fill, insets 0", "[center]"));
 			titlePanel.setBackground(Color.WHITE);
-			JLabel weekDayLabel = new JLabel(weekDay);
+			JLabel weekDayLabel = new JLabel(weekDay, JLabel.RIGHT);
 			weekDayLabel.setForeground(CalendarUtils.titleNameColor);
 			weekDayLabel.setFont(new Font(weekDayLabel.getFont().getName(), Font.BOLD, 14));
 			weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, Color.GRAY));
@@ -175,28 +175,39 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 				// If this event appears in this month
 				if(startCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
 						startCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
-					int index = getIndexofDay(startCal);
+					int index = getIndexofDay((Calendar)startCal.clone());
 					days.get(index).addEvent(event);
 					daysWithEvComs.add(days.get(index));
 				}
 			} else { // Multiday event
 				// Will store the EventPanels that are multiday events and related
-				List<JPanel> multidayEvents = new ArrayList<JPanel>();
+				List<MultiDayEventPanel> multidayEvents = new ArrayList<MultiDayEventPanel>();
+				
+				Calendar iterCal = (Calendar)startCal.clone();
+				
+				int indexOfMultiDay = 0;
+				boolean isFirstPanel = true;
 				
 				do {
-					if(startCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
-							startCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
-						int index = getIndexofDay((Calendar)startCal.clone());
-						multidayEvents.add(days.get(index).addMultiDayEvent(event, false));
-						startCal.add(Calendar.DATE, 1);
-					} else if (startCal.get(Calendar.YEAR) <= currentMonth.get(Calendar.YEAR) &&
-							startCal.get(Calendar.MONTH) < currentMonth.get(Calendar.MONTH)) {
-						startCal.set(Calendar.YEAR, currentMonth.get(Calendar.YEAR));
-						startCal.set(Calendar.MONTH, currentMonth.get(Calendar.YEAR));
-						startCal.set(Calendar.DATE, 1);
+					if(iterCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
+							iterCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
+						int index = getIndexofDay((Calendar)iterCal.clone());
+						MultiDayEventPanel multiDayEventPanel = days.get(index).addMultiDayEvent(indexOfMultiDay, event, startCal, endCal, isFirstPanel, false);
+						indexOfMultiDay = multiDayEventPanel.getIndex();
+						multidayEvents.add(multiDayEventPanel);
+						System.out.println("MultiDayEvent " + event.getName() + ": " + iterCal.get(Calendar.DATE));
+						iterCal.add(Calendar.DATE, 1);
+					} else if (iterCal.get(Calendar.YEAR) <= currentMonth.get(Calendar.YEAR) &&
+							iterCal.get(Calendar.MONTH) < currentMonth.get(Calendar.MONTH)) {
+						iterCal.set(Calendar.YEAR, currentMonth.get(Calendar.YEAR));
+						iterCal.set(Calendar.MONTH, currentMonth.get(Calendar.YEAR));
+						iterCal.set(Calendar.DATE, 1);
 					} else break;
-				} while(startCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)	&&
-						startCal.get(Calendar.DAY_OF_YEAR) <= endCal.get(Calendar.DAY_OF_YEAR));
+				} while(iterCal.get(Calendar.YEAR) <= endCal.get(Calendar.YEAR)	&&
+						iterCal.get(Calendar.DAY_OF_YEAR) <= endCal.get(Calendar.DAY_OF_YEAR));
+				
+				MultiDayEventMouseListener mouseListener = new MultiDayEventMouseListener(multidayEvents);
+				for(MultiDayEventPanel multiDayEventPanel: multidayEvents) multiDayEventPanel.addMouseListener(mouseListener);
 			}
 		}
 
