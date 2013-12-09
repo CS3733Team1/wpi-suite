@@ -10,8 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +20,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JEditorPane;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -51,8 +48,6 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	private JButton updateCommitmentButton;
 	private JButton cancelButton;
 	private Commitment selectedCommitment;
-	private JCheckBox commitmentCheckBox, eventCheckBox;
-	private JPanel quickListPanel;
 	/**
 	 * Constructor for the CommitmentListPanel creates both the list of commitments
 	 * and the scroll pane that they are displayed on.
@@ -117,19 +112,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		this.setLayout(new MigLayout("fill, insets 0 0","[]","[][]"));
 
 		commitmentList = new JList<Commitment>(model);
-		commitmentCheckBox = new JCheckBox("Commitments");
-		eventCheckBox = new JCheckBox("Events");
 		
-		commitmentCheckBox.setBackground(Color.WHITE);
-		eventCheckBox.setBackground(Color.WHITE);
-		
-		commitmentCheckBox.setFocusable(false);
-		eventCheckBox.setFocusable(false);
-		
-		quickListPanel = new JPanel(new MigLayout());
-		
-		quickListPanel.add(commitmentCheckBox,	"split 2, center");
-		quickListPanel.add(eventCheckBox);
 		commitmentList.setCellRenderer(new CommitmentListCellRenderer());
 		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -138,7 +121,6 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		commitmentList.setVisibleRowCount(0);
 
 		JScrollPane scrollPane = new JScrollPane(commitmentList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		this.add(quickListPanel, "grow, center, wrap");
 		this.add(scrollPane, "grow, push");
 
 		commitmentList.addMouseListener(this);

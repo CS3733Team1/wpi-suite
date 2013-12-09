@@ -19,7 +19,7 @@ import com.google.gson.Gson;
  * An event must have a name, a start Date, and an end Date. It can contain a custom
  * description and category.
  */
-public class Event extends DeletableAbstractModel {
+public class Event extends DeletableAbstractModel implements Comparable<Event> {
 	// Required parameters
 	private String name;
 	private Date startDate;
@@ -230,4 +230,29 @@ public class Event extends DeletableAbstractModel {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/** 
+	 *  This function compares another Event to this Event and 
+	 *  decides if this Event begins before, after, or at the same time.
+	 *  
+	 *  @return Returns <b>1</b> if this Event begins after the input Event<br>
+	 *          Returns <b>0</b> if both Event begin at the same time.<br>
+	 *          Returns <b>-1</b> if this Event begins before the input Event
+	 */
+	@Override
+	public int compareTo(Event event) 
+	{
+		if (this.startDate.after(event.getStartDate()) == true)
+		{
+			return 1;
+		}//end if
+		else if (this.startDate.before(event.getStartDate()) == true)
+		{
+			return -1;
+		}//end else if
+		else 
+		{
+			return 0;
+		}//end else
+	}//end compareTo
 }

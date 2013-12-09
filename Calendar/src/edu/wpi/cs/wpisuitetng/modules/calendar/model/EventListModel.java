@@ -55,6 +55,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	public void addEvent(Event newEvent) {
 		// Add the event
 		events.add(newEvent);
+		Collections.sort(this.events);
 
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
@@ -70,6 +71,8 @@ public class EventListModel extends AbstractListModel<Event> {
 		for (int i = 0; i < events.length; i++) {
 			this.events.add(events[i]);
 		}
+		Collections.sort(this.events);
+		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
@@ -78,6 +81,8 @@ public class EventListModel extends AbstractListModel<Event> {
 		for (int i = 0; i < events.length; i++) {
 			this.events.add(events[i]);
 		}
+		Collections.sort(this.events);
+		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -112,14 +117,14 @@ public class EventListModel extends AbstractListModel<Event> {
 	
 	public void removeEvent(int index) {
 		events.remove(index);
-		this.fireIntervalAdded(this, 0, 0);
+		this.fireIntervalRemoved(this, 0, 0);
 	}
 
 	public void removeEvent(Event event) {
 		System.err.println(events.size());
 		events.remove(event);
-		System.err.println("size:" +events.size());
-		this.fireIntervalAdded(this, 0, 0);
+		System.err.println("size:" + events.size());
+		this.fireIntervalRemoved(this, 0, 0);
 	}
 
 
