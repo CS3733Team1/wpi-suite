@@ -41,8 +41,9 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private JCheckBox chckbxFriday;
 	private JCheckBox chckbxSaturday;
 	private JTextField occurrencesTextField;
+	private Date startDate;
 
-	public EventRecurringPanel() {
+	public EventRecurringPanel(Date startDate) {
 		this.buildLayout();
 	}
 
@@ -91,16 +92,16 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 	 * Validates the options of the fields inputed with today's date.
 	 * @return void
 	 */
-	public boolean validateRecurring() {
-		Date startDate =  new Date();
-		return validateRecurring(startDate);
+	public boolean validateRecurring(Date startDate) {
+		this.startDate =  startDate;
+		return validateRecurring();
 	}
 
 	/**
 	 * Validates the options of the fields inputed with given date.
 	 * @return True if valid
 	 */
-	public boolean validateRecurring(Date startDate) {
+	public boolean validateRecurring() {
 		boolean isValid = true;
 		int dayToday = startDate.getDay();
 		try
@@ -154,11 +155,12 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			validateRecurring();
+		validateRecurring();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		validateRecurring();
 	}
 
 	// Unused

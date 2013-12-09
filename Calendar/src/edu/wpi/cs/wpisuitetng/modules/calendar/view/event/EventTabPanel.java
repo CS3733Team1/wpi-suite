@@ -118,7 +118,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		this.add(timeErrorLabel, "cell 0 3,aligny center");
 		
 		// Recurring Events
-		eventRecurringPanel = new EventRecurringPanel();
+		eventRecurringPanel = new EventRecurringPanel(new Date());
 		add(eventRecurringPanel, "cell 0 5,alignx left");
 
 		// Category
