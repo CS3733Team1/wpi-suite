@@ -65,7 +65,7 @@ public class WeekView extends JPanel implements ICalendarView {
 		mycal = new GregorianCalendar(currentYear, currentMonth, currentDate);
 		this.setBackground(Color.white);
 
-		this.setLayout(new MigLayout("fill, debug", 
+		this.setLayout(new MigLayout("fill", 
 				"0[8.75%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]0", 
 				"0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0"));
 

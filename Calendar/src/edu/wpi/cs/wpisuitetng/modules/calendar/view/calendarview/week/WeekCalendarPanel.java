@@ -47,11 +47,11 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	
 	public WeekCalendarPanel(){
 		
-		this.setLayout(new MigLayout("fill, insets 0, debug"));
+		this.setLayout(new MigLayout("fill, insets 0"));
 		
 		weeklayer = new WeekCalendarLayerPane();
 		weekpanel = new LinkedList<JPanel>();
-		weektitle = new JPanel(new MigLayout("fill, debug, insets 0", "0[8.66%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]0[4.43%]0"));
+		weektitle = new JPanel(new MigLayout("fill, insets 0", "0[8.66%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]0[4.43%]0"));
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
 		time.add(new JLabel("Time"), "grow, aligny bottom");
