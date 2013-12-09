@@ -205,10 +205,10 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	public void addFilterChangedListener(FilterChangedListener l) {
 		filterChangedListeners.add(l);
 	}
-	public void Update()
+	public synchronized void Update()
 	{
 		System.out.println("Filter list model update");
-		fireFilterChanged();
+		//fireFilterChanged();
 		this.fireIntervalAdded(this, 0, this.filters.size() == 0 ? 0 : filters.size() -1);
 	}
 }

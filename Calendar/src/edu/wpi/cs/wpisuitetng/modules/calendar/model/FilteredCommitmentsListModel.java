@@ -31,7 +31,7 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 	}
 	private void filterCommitments() {
 		System.out.println("Filtering comitmentlist");
-		List<Commitment> commitmentList = CommitmentListModel.getCommitmentListModel().getList();
+		List<Commitment> commitmentList = new ArrayList<Commitment> (CommitmentListModel.getCommitmentListModel().getList());
 
 		int removed = filteredCommitments.size();
 		

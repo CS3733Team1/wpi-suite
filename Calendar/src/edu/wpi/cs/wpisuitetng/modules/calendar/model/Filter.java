@@ -82,11 +82,11 @@ public class Filter extends DeletableAbstractModel {
 	 * @return An ArrayList of Events with Categories that belong to this Filter's whitelist
 	 */
 	public List<Event> applyEventFilter(List<Event> inlist) {
-		List<Event> outlist = Collections.synchronizedList(new ArrayList<Event>());
+		List<Event> outlist = (new ArrayList<Event>());
 		for(Event event: inlist) {
 					 for(Category cat: this.categories) {
 						 if(event.getCategory().equals(cat)) {
-							 outlist.add(new Event(event));
+							 outlist.add(event);
 							 	break;
 						 }
 					 }
@@ -101,13 +101,13 @@ public class Filter extends DeletableAbstractModel {
 	 * @return An ArrayList of Commitments with Categories that belong to this Filter's whitelist
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> inlist) {
-		List<Commitment> outlist = Collections.synchronizedList(new ArrayList<Commitment>());
+		List<Commitment> outlist = (new ArrayList<Commitment>());
 		
 		for(Commitment commitment: inlist)
 		{
 					 for(Category cat: this.categories) {
 						 if(commitment.getCategory().equals(cat)) {
-							 outlist.add(new Commitment(commitment));
+							 outlist.add(commitment);
 							 	break;
 						 }
 					 }
@@ -120,6 +120,7 @@ public class Filter extends DeletableAbstractModel {
 	// the status of the Team/Personal calendar checkbox's
 	public static  <T extends DeletableAbstractModel> List<T> filterTeamPersonal(List<T> list)
 	{
+		List<T> removeList = new ArrayList<T>();
 		if (MainView.getCurrentCalendarPanel() == null)
 		{
 			System.out.println("Current Calendar Panel null, not filtering based on Team/Personal");
@@ -132,6 +133,7 @@ public class Filter extends DeletableAbstractModel {
 		}
 		catch (Exception e)
 		{
+			state = -1;
 		}
 		//3 = Both Checked
 		//2 = Personal
@@ -148,22 +150,24 @@ public class Filter extends DeletableAbstractModel {
 			for (T i : list)
 			{
 				if (i.isTeam)
-					list.remove(i);
+					removeList.add(i);
 			}
-			return list;
+			break;
 		case 1: //Team Events only
 			System.out.println("Allow only Team Events");
 			for (T i : list)
 			{
 				if (!i.isTeam)
-					list.remove(i);
+					removeList.add(i);
 			}
-			return list;
+			break;
 		case 0: //none
 			System.out.println("Allow no events");
 			list.clear();
 			return list;
 		}
+		list.removeAll(removeList);
+		return list;
 		
 	}
 	
