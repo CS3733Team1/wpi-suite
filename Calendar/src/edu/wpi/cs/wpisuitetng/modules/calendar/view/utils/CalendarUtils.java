@@ -21,7 +21,7 @@ public class CalendarUtils {
 	public static final Color selectionColor = new Color(204, 232, 252);
 	public static final Color titleNameColor = new Color(50, 50, 50);
 	public static final Color thatBlue = new Color(0, 139, 239);
-	public static final Color todayYellow = new Color(255, 244, 103);
+	public static final Color todayYearColor = new Color(255, 244, 103);
 	public static final Color weekendColor = new Color(245, 245, 245);
 	
 	public static Color blend(Color clOne, Color clTwo, float fAmount) {

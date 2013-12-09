@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -237,5 +238,11 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	public void contentsChanged(ListDataEvent e) {
 		rebuildDays();
 		DisplayCommitments();
+	}
+
+	@Override
+	public void viewDate(Calendar date) {
+		// TODO Auto-generated method stub
+		
 	}
 }

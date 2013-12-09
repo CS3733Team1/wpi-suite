@@ -10,14 +10,10 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
 import java.awt.Color;
-
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-
-
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +29,7 @@ public class CommitmentTest {
 	Commitment c3;
 	Commitment c4;
 	Commitment c5;
+	Commitment c6;
 	Category cat1;
 	Category cat2;
 	

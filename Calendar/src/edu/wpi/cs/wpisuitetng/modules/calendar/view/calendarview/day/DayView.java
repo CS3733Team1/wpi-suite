@@ -296,6 +296,25 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 			DisplayCommitments();
 		}
 	}
+	
+	@Override
+	public void viewDate(Calendar date) {
+		System.out.println("day of year");
+		System.out.println(date.get(Calendar.DAY_OF_YEAR));
+		Date aDate = date.getTime();
+		if(!(currentDate == aDate.getDate() && currentMonth == aDate.getMonth() && currentYear == aDate.getYear() + 1900)) {
+			currentDate = aDate.getDate();
+			currentMonth = aDate.getMonth();
+			currentYear = aDate.getYear() + 1900;
+
+			this.removeAll();
+			nameList = new ArrayList<DatePanel>();
+			paneltracker = new HashMap<Date, DatePanel>();
+			hourlist = new ArrayList<JPanel>();
+			fillDayView();
+			DisplayCommitments();
+		}
+	}
 
 	public Date getDate()
 	{
