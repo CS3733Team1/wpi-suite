@@ -200,5 +200,6 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	{
 		System.out.println("Filter list model update");
 		fireFilterChanged();
+		this.fireIntervalAdded(this, 0, this.filters.size() == 0 ? 0 : filters.size() -1);
 	}
 }
