@@ -139,6 +139,10 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	public synchronized List<Commitment> getList(){
 		return commitments;
 	}
+	public synchronized void Update()
+	{
+		this.fireContentsChanged(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
+	}
 
 	public synchronized void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
 		removeCommitment(oldCommitment);

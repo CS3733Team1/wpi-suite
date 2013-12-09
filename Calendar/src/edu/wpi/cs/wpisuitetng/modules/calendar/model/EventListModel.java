@@ -139,5 +139,9 @@ public class EventListModel extends AbstractListModel<Event> {
 	public synchronized List<Event> getList(){
 		return events;
 	}
+	public synchronized void Update()
+	{
+		this.fireContentsChanged(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
+	}
 	
 }

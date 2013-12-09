@@ -5,6 +5,8 @@ import javax.swing.ButtonModel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
@@ -18,9 +20,10 @@ public class TeamPesonalCheckBoxChangeListener implements ChangeListener {
 		      if (buttonModel.isPressed() || buttonModel.isSelected())
 		      {
 		    	  System.out.println("In statechanged for Team/Personal Checkboxs");
-		    	  MainView.getCurrentCalendarPanel().repaint();
-		    	  MainView.getCurrentCalendarPanel().refreshSelectedPanel();
+		    	  
 		    	  FilterListModel.getFilterListModel().fireFilterChanged();
+		    	  CommitmentListModel.getCommitmentListModel().Update();
+		    	  EventListModel.getEventListModel().Update();
 		      }
 		
 	}
