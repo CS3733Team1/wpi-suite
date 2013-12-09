@@ -72,7 +72,7 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	}
 
 	public synchronized List<Event> getList() {
-		filterEvents();
+		//filterEvents();
 		return filteredEvents;
 	}
 }
