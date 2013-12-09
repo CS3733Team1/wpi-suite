@@ -92,7 +92,7 @@ public class CalendarTabPanel extends JPanel {
 		personalCalCheckBox.addItemListener(new TeamPesonalCheckBoxChangeListener());
 		teamCalCheckBox.addItemListener(new TeamPesonalCheckBoxChangeListener());
 		teamCalCheckBox.doClick();
-		personalCalCheckBox.doClick();
+		personalCalCheckBox.setSelected(true);
 		
 		personalCalCheckBox.setBackground(Color.WHITE);
 		teamCalCheckBox.setBackground(Color.WHITE);
