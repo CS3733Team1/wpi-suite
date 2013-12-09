@@ -15,6 +15,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -105,7 +106,7 @@ public class CalendarTabPanel extends JPanel {
 			yearViewButton = new TransparentToggleButton("Year",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png"))));
 			
-			filterCategoryTabbedPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
+			filterCategoryTabbedPane.addTab("Quick List", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
 					commitmentSubTabPanel);
 			
 			filterCategoryTabbedPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
@@ -207,6 +208,12 @@ public class CalendarTabPanel extends JPanel {
 
 	public void setCalendarViewPrevious() {
 		calendarView.previous();
+		this.setCalendarViewTitle(calendarView.getTitle());
+		this.refreshCalendarView();
+	}
+	
+	public void setCalendarViewDate(Calendar date) {
+		calendarView.viewDate(date);
 		this.setCalendarViewTitle(calendarView.getTitle());
 		this.refreshCalendarView();
 	}

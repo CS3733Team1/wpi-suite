@@ -26,8 +26,8 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	 * displayed on the calendar. It extends AbstractListModel so that it can provide
 	 * the model data to the JList component in the CalendarPanel.
 	 * 
-	 * @author Thomas DeSilva, Zach Estep
-	 * 
+	 *
+	 * Team TART
 	 */
 
 	private static CategoryListModel categoryModel;
@@ -36,11 +36,11 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	private List<Category> categories;
 
 	private final Category[] defaultCategories = {
-			new Category("Uncategorized", Color.LIGHT_GRAY), 
-			new Category("Important", Color.RED),
-			new Category("Work", Color.BLUE),
-			new Category("Home", Color.ORANGE),
-			new Category("Holiday", Color.PINK)};
+			new Category("Uncategorized", Color.WHITE), 
+			new Category("Important", new Color(251,110,90)),
+			new Category("Work", new Color(159, 226, 254)),
+			new Category("Home", new Color(250, 179,86)),
+			new Category("Holiday", new Color(251,120,191))};
 
 	/**
 	 * Constructs a new calendar with no commitments.

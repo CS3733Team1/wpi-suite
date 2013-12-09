@@ -223,4 +223,10 @@ public class WeekView extends JPanel implements ICalendarView {
 		return new Date(currentYear-1900, currentMonth, currentDate);
 	}
 
+	@Override
+	public void viewDate(Calendar date) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
