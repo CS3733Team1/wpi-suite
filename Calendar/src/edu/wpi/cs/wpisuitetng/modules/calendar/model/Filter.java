@@ -122,6 +122,7 @@ public class Filter extends DeletableAbstractModel {
 	{
 		if (MainView.getCurrentCalendarPanel() == null)
 		{
+			System.out.println("Current Calendar Panel null, not filtering based on Team/Personal");
 			return list;
 		}
 		int state = MainView.getCurrentCalendarPanel().getCalendarTabPanel().getTeamPersonalState();
