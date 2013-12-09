@@ -33,7 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListMode
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
-public class DayView extends JPanel implements ICalendarView, ListDataListener {
+public class DayView extends JPanel implements ListDataListener {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
@@ -236,8 +236,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		return notevenclose;
 	}
 	
-	
-	@Override
 	public String getTitle() {
 		return monthNames[currentMonth] + " "+ currentDate+ ", " + currentYear;
 	}
@@ -248,7 +246,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		}
 	}
 
-	@Override
 	public void next() {
 		currentDate++;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -264,7 +261,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		DisplayCommitments();
 	}
 
-	@Override
 	public void previous() {
 		currentDate--;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -280,7 +276,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		DisplayCommitments();
 	}
 
-	@Override
 	public void today() {
 		Date today = new Date();
 		if(!(currentDate == today.getDate() && currentMonth == today.getMonth() && currentYear == today.getYear() + 1900)) {
@@ -297,15 +292,11 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		}
 	}
 	
-	@Override
-	public void viewDate(Calendar date) {
-		System.out.println("day of year");
-		System.out.println(date.get(Calendar.DAY_OF_YEAR));
-		Date aDate = date.getTime();
-		if(!(currentDate == aDate.getDate() && currentMonth == aDate.getMonth() && currentYear == aDate.getYear() + 1900)) {
-			currentDate = aDate.getDate();
-			currentMonth = aDate.getMonth();
-			currentYear = aDate.getYear() + 1900;
+	public void viewDate(Date day) {
+		if(!(currentDate == day.getDate() && currentMonth == day.getMonth() && currentYear == day.getYear() + 1900)) {
+			currentDate = day.getDate();
+			currentMonth = day.getMonth();
+			currentYear = day.getYear() + 1900;
 
 			this.removeAll();
 			nameList = new ArrayList<DatePanel>();
