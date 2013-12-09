@@ -6,6 +6,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 public class TeamPesonalCheckBoxChangeListener implements ChangeListener {
 
@@ -16,7 +17,8 @@ public class TeamPesonalCheckBoxChangeListener implements ChangeListener {
 		        ButtonModel buttonModel = abstractButton.getModel();
 		      if (buttonModel.isPressed() || buttonModel.isSelected())
 		      {
-		    	  System.out.println("In statechanged for Team/Personal Checkbox's");
+		    	  System.out.println("In statechanged for Team/Personal Checkboxs");
+		    	  MainView.getCurrentCalendarPanel().repaint();
 		    	  MainView.getCurrentCalendarPanel().refreshSelectedPanel();
 		    	  FilterListModel.getFilterListModel().fireFilterChanged();
 		      }

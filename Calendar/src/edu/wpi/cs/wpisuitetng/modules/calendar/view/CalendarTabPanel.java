@@ -264,13 +264,13 @@ public class CalendarTabPanel extends JPanel {
 	 * returns 3 for Both Checked
 	 */
 	synchronized public int getTeamPersonalState(){
-		int state = 3;// Default to both checked, the harmless filter
+		int state = 0;// Default to both checked, the harmless filter
 		if(teamCalCheckBox != null && teamCalCheckBox.isSelected()){
 			state=1;
 		}
 		if (personalCalCheckBox != null && personalCalCheckBox.isSelected())
 		{
-			if (state == 3) //team is unchecked
+			if (state == 0) //team is unchecked
 				return 2;
 			else //team is checked
 				return 3;
