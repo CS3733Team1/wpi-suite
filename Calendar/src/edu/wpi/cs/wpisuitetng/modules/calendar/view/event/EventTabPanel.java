@@ -64,14 +64,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
-	private JLabel lblRecurring;
-	private JCheckBox chckbxNewCheckBox;
-	private JCheckBox checkBox;
-	private JCheckBox chckbxTuesday;
-	private JCheckBox chckbxWednesday;
-	private JCheckBox chckbxThursday;
-	private JCheckBox chckbxFriday;
-	private final JCheckBox chckbxSaturday = new JCheckBox("Saturday");
+	private EventRecurringPanel eventRecurringPanel;
 
 	public EventTabPanel() {
 		this.buildLayout();
@@ -81,7 +74,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 * Builds the GUI layout for the Event panel
 	 */
 	private void buildLayout() {
-		this.setLayout(new MigLayout("fill", "[]", "[][][][][][][][][][]"));
+		this.setLayout(new MigLayout("fill", "[]", "[][][][][][][][][][][]"));
 
 		// Name
 		this.add(new JLabel("Event Name:"), "cell 0 0");
@@ -124,16 +117,17 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		timeErrorLabel.setForeground(Color.RED);
 		this.add(timeErrorLabel, "cell 0 3,aligny center");
 		
-		lblRecurring = new JLabel("Recurring:");
-		add(lblRecurring, "flowx,cell 0 4");
+		// Recurring Events
+		eventRecurringPanel = new EventRecurringPanel();
+		add(eventRecurringPanel, "cell 0 5,alignx left");
 
 		// Category
-		this.add(new JLabel("Category:"), "cell 0 6");
+		this.add(new JLabel("Category:"), "cell 0 7");
 		categoryPickerPanel = new CategoryPickerPanel();
-		this.add(categoryPickerPanel, "cell 0 6,alignx left");
+		this.add(categoryPickerPanel, "cell 0 7,alignx left");
 
 		// Description
-		this.add(new JLabel("Description:"), "cell 0 7");
+		this.add(new JLabel("Description:"), "cell 0 8");
 
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setLineWrap(true);
@@ -141,41 +135,22 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		JScrollPane scrollp = new JScrollPane(descriptionTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(scrollp, "cell 0 8,push ,height 5000,grow");
+		this.add(scrollp, "cell 0 9,push ,height 5000,grow");
 
 		// Add / Cancel buttons
 		addEventButton = new JButton("Add Event");
 		addEventButton.setActionCommand("addevent");
 		addEventButton.addActionListener(new AddEventController(this));
 
-		this.add(addEventButton, "cell 0 9,alignx left");
+		this.add(addEventButton, "cell 0 10,alignx left");
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.setActionCommand("cancel");
 
-		this.add(cancelButton, "cell 0 9,alignx left");
+		this.add(cancelButton, "cell 0 10,alignx left");
 
 		//Action Listener for Cancel Button
 		cancelButton.addActionListener(this);
-		
-		chckbxNewCheckBox = new JCheckBox("Sunday");
-		add(chckbxNewCheckBox, "cell 0 4");
-		
-		checkBox = new JCheckBox("Monday");
-		add(checkBox, "cell 0 4");
-		
-		chckbxTuesday = new JCheckBox("Tuesday");
-		add(chckbxTuesday, "cell 0 4");
-		
-		chckbxWednesday = new JCheckBox("Wednesday");
-		add(chckbxWednesday, "cell 0 4");
-		
-		chckbxThursday = new JCheckBox("Thursday");
-		add(chckbxThursday, "cell 0 4,aligny baseline");
-		
-		chckbxFriday = new JCheckBox("Friday");
-		add(chckbxFriday, "cell 0 4");
-		add(chckbxSaturday, "cell 0 4");
 
 		validateFields();
 	}
