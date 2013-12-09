@@ -24,7 +24,6 @@ public class DayPanel extends JPanel {
 	private JPanel datePanel;
 	private JPanel containerPanel;
 
-	private List<MultiDayEventPanel> multiDayEventsList;
 	private List<EventPanel> eventsList;
 	private List<CommitmentPanel> commitmentsList;
 	
@@ -40,7 +39,6 @@ public class DayPanel extends JPanel {
 		this.isToday = false;
 
 		this.indexInMonth = indexInMonth;
-		multiDayEventsList = new ArrayList<MultiDayEventPanel>();
 		eventsList = new ArrayList<EventPanel>();
 		commitmentsList = new ArrayList<CommitmentPanel>();
 		multiDayEventPanelsWithFiller = new ArrayList<JPanel>();
@@ -94,10 +92,9 @@ public class DayPanel extends JPanel {
 	public Calendar getDate() {return this.date;}
 
 	public void clearEvComs() {
-		multiDayEventsList = new ArrayList<MultiDayEventPanel>();
-		eventsList = new ArrayList<EventPanel>();
-		commitmentsList = new ArrayList<CommitmentPanel>();
-		multiDayEventPanelsWithFiller = new ArrayList<JPanel>();
+		multiDayEventPanelsWithFiller.clear();
+		eventsList.clear();
+		commitmentsList.clear();
 		containerPanel.removeAll();
 	}
 
@@ -135,6 +132,7 @@ public class DayPanel extends JPanel {
 		
 		if(isAllDay) { // No Event times shown
 			if(isFirstPanel) textType = 2;
+			else if((indexInMonth+1)%7 == 1) textType = 2;
 		} else { // Event times shown
 			// If this EventPanel is on the first day show the start time
 			if(startCal.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
@@ -149,34 +147,36 @@ public class DayPanel extends JPanel {
 			else if(endCal.get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
 					endCal.get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) {
 				textType = 3;
-			}
+			} else if((indexInMonth+1)%7 == 1) textType = 2;
 
 			// Else don't show any times or text i.e. Do nothing
 		}
 		
-		if(isFirstPanel) indexOfMultiDay = multiDayEventsList.size();
+		if(isFirstPanel) indexOfMultiDay = multiDayEventPanelsWithFiller.size();
 		else {
-			Color fillerBackgroundColor;
-			if(isToday) fillerBackgroundColor = CalendarUtils.selectionColor;
+			Color fillerColor;
+			if(isToday) fillerColor = CalendarUtils.selectionColor;
 			else {
-				if(isWeekend) fillerBackgroundColor = CalendarUtils.weekendColor;
-				else fillerBackgroundColor = Color.WHITE;
+				if(isWeekend) fillerColor = CalendarUtils.weekendColor;
+				else fillerColor = Color.WHITE;
 			}
 			
 			// We must put in filler panels so multiday events between days are aligned
 			for(int i = 0; i < indexOfMultiDay - multiDayEventPanelsWithFiller.size(); i++) {
 				JPanel filler = new JPanel(new MigLayout("insets 0"));
-				filler.setBackground(fillerBackgroundColor);
-				filler.add(new JLabel(""));
+				filler.setBackground(fillerColor);
+				JLabel fillerLabel = new JLabel("filler");
+				fillerLabel.setForeground(fillerColor);
+				filler.add(fillerLabel);
 				multiDayEventPanelsWithFiller.add(filler);
+				System.out.println("Added Filler Panel on day: " + day.getText() + " for event: " + event.getName());
 			}
 		}
 		
 		MultiDayEventPanel multiDayEventPanel = new MultiDayEventPanel(indexOfMultiDay, event, textType, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
 
-		multiDayEventsList.add(multiDayEventPanel);
 		multiDayEventPanelsWithFiller.add(multiDayEventPanel);
-		
+
 		return multiDayEventPanel;
 	}
 
@@ -201,7 +201,6 @@ public class DayPanel extends JPanel {
 		CommitmentPanel commitmentPanel = new CommitmentPanel(commitment, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
 
 		commitmentsList.add(commitmentPanel);
-		multiDayEventPanelsWithFiller.add(commitmentPanel);
 		
 		return commitmentPanel;
 	}
@@ -210,13 +209,14 @@ public class DayPanel extends JPanel {
 	public void updateEveComs() {
 		containerPanel.removeAll();
 		JLabel temp = new JLabel("I have Height!");
-
+		
 		int numEveComs = multiDayEventPanelsWithFiller.size() + eventsList.size() + commitmentsList.size();
 		int width = this.getParent().getWidth()/7;
-
+		
 		if(numEveComs > 0) {
 			int numRows = Math.max(1, (int)((float)containerPanel.getHeight() / (float)temp.getPreferredSize().height + 0.5));
 			int savedRows = numRows;
+			
 			if(numRows >= numEveComs) {
 				for(JPanel panel: multiDayEventPanelsWithFiller) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
 				for(JPanel panel: eventsList) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);

@@ -58,7 +58,6 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
-		this.fireContentsChanged(this, 0, commitments.size()-1);
 	}
 
 	/**
@@ -117,12 +116,12 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 
 	public void removeCommitment(int index) {
 		this.commitments.remove(index);
-		this.fireIntervalAdded(this, 0, 0);
+		this.fireIntervalRemoved(this, 0, 0);
 	}
 
 	public void removeCommitment(Commitment commitment) {
 		this.commitments.remove(commitment);
-		this.fireIntervalAdded(this, 0, 0);
+		this.fireIntervalRemoved(this, 0, 0);
 	}
 
 

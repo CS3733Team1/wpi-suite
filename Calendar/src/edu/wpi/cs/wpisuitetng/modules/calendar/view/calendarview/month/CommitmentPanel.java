@@ -19,8 +19,8 @@ public class CommitmentPanel extends JPanel {
 	
 	private boolean isSelected;
 	
-	private JLabel eventNameLabel;
-	private JLabel eventTimeLabel;
+	private JLabel commitmentNameLabel;
+	private JLabel commitmentTimeLabel;
 	
 	public CommitmentPanel(Commitment commitment, Color backgroundColor, Color selectedBackgroundColor, Color textColor, Color selectedTextColor) {
 		
@@ -35,10 +35,10 @@ public class CommitmentPanel extends JPanel {
 		
 		this.setBackground(backgroundColor);
 		
-		JLabel commitmentNameLabel = new JLabel(commitment.getName());
+		commitmentNameLabel = new JLabel(commitment.getName());
 		commitmentNameLabel.setForeground(this.textColor);
 
-		JLabel commitmentTimeLabel = new JLabel(DateUtils.timeToString(commitment.getDueDate()));
+		commitmentTimeLabel = new JLabel(DateUtils.timeToString(commitment.getDueDate()));
 		commitmentTimeLabel.setFont(new Font(commitmentTimeLabel.getFont().getName(), Font.PLAIN, 8));
 		commitmentTimeLabel.setForeground(this.textColor);
 		
@@ -51,10 +51,12 @@ public class CommitmentPanel extends JPanel {
 		
 		if(this.isSelected) {
 			this.setBackground(selectedBackgroundColor);
-			eventNameLabel.setForeground(selectedTextColor);
+			commitmentNameLabel.setForeground(selectedTextColor);
+			commitmentTimeLabel.setForeground(selectedTextColor);
 		} else {
 			this.setBackground(backgroundColor);
-			eventNameLabel.setForeground(textColor);
+			commitmentNameLabel.setForeground(textColor);
+			commitmentTimeLabel.setForeground(textColor);
 		}
 	}
 	

@@ -52,9 +52,11 @@ public class EventPanel extends JPanel {
 		if(this.isSelected) {
 			this.setBackground(selectedBackgroundColor);
 			eventNameLabel.setForeground(selectedTextColor);
+			eventTimeLabel.setForeground(selectedTextColor);
 		} else {
 			this.setBackground(backgroundColor);
 			eventNameLabel.setForeground(textColor);
+			eventTimeLabel.setForeground(textColor);
 		}
 	}
 	

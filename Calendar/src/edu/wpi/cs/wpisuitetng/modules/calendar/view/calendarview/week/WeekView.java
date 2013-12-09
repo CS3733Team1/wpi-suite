@@ -149,7 +149,7 @@ public class WeekView extends JPanel implements ICalendarView {
 			Date commitdate = commit.getDueDate();
 			Date teemo = new Date(commitdate.getYear(),commitdate.getMonth(),commitdate.getDate(),commitdate.getHours(),0);
 			if (paneltracker.containsKey(teemo)){
-				System.out.println("I'm Invisible"); //never underestimate the power of the scout's code
+				//System.out.println("I'm Invisible"); //never underestimate the power of the scout's code
 				notevenclose.add(commit);
 			}
 		}
