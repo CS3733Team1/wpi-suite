@@ -44,13 +44,13 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private Date startDate;
 
 	public EventRecurringPanel(Date startDate) {
-		this.buildLayout();
+		this.buildLayout(startDate);
 	}
 
 	/**
 	 * Builds the GUI layout for the Event panel
 	 */
-	private void buildLayout() {
+	private void buildLayout(Date startDate) {
 		
 setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 		
@@ -85,6 +85,7 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 		occurrencesTextField.setText("1");
 		add(occurrencesTextField, "cell 1 1,growx");
 		occurrencesTextField.setColumns(10);
+		validateRecurring(startDate);
 	}
 
 
