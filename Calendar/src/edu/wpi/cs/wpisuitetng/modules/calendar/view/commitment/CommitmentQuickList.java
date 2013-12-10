@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
 import java.util.ArrayList;
@@ -17,6 +26,17 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 
+/**
+ * This class is used to calculate a list of the user's commitments that fall
+ * within current view of the user's calendar.
+ * 
+ * A CommitmentQuickList has:
+ * -The user's current view in the calendar
+ * -An ArrayList of the commitments within the current view
+ * 
+ * @author Team TART
+ *
+ */
 public class CommitmentQuickList extends AbstractListModel<Commitment> implements ListDataListener {
 
 	private ICalendarView currentView;
@@ -26,6 +46,11 @@ public class CommitmentQuickList extends AbstractListModel<Commitment> implement
 		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
 	}
 	
+	/**
+	 * Calculates which commitments in a list are within the user's current view.
+	 * @param list A List of commitments.
+	 * @return inView An ArrayList of commitments in the user's current view.
+	 */
 	private ArrayList<Commitment> commitmentsInView(List<Commitment> list){
 		ArrayList<Commitment> inView = new ArrayList<Commitment>();
 
