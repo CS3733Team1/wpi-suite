@@ -25,13 +25,14 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 public class EventView extends JPanel {
 
-	private List<Event> events;
+	private List<ISchedulable> events;
 	
-	public EventView(List<Event> events, Dimension size)
+	public EventView(List<ISchedulable> events, Dimension size)
 	{
 		this.setSize(size);
 		this.setPreferredSize(size);
@@ -46,8 +47,8 @@ public class EventView extends JPanel {
 	 * Sorts the List of Events by StartDate
 	 */
 	public void sortEvents(){
-		Collections.sort(events, new Comparator<Event>(){
-			public int compare(Event o1, Event o2) {
+		Collections.sort(events, new Comparator<ISchedulable>(){
+			public int compare(ISchedulable o1, ISchedulable o2) {
 				return o1.getStartDate().compareTo(o2.getStartDate());
 			}
 			
@@ -77,8 +78,8 @@ public class EventView extends JPanel {
 	 * @param e2 The Event that occurs right after e1 in Timeline
 	 * @return True if events overlap or False if they don't
 	 */
-	public boolean overlaps(Event e1, List<Event> elist){
-		for (Event e2: elist){
+	public boolean overlaps(ISchedulable e1, List<ISchedulable> elist){
+		for (ISchedulable e2: elist){
 			if (e2.getStartDate().getHours() <= e1.getStartDate().getHours() && 
 				e2.getEndDate().getHours() >= e1.getStartDate().getHours()){
 				return true;
@@ -92,7 +93,7 @@ public class EventView extends JPanel {
 	 * @param e Event to calculate length of
 	 * @return length of event e
 	 */
-	public int getLength(Event e){
+	public int getLength(ISchedulable e){
 		return ((e.getEndDate().getHours()*4 + (int) Math.round(e.getEndDate().getMinutes()/15.0)+4) - (e.getStartDate().getHours()*4 + (int) Math.round(e.getStartDate().getMinutes()/15.0)+4));
 	}
 	
@@ -101,8 +102,8 @@ public class EventView extends JPanel {
 	 * @param start Index to Start Counting overlap
 	 * @return List of Overlapping Events
 	 */
-	public List<Event> grabOverlapChain(int start){
-		List<Event> overlapchain = new LinkedList<Event>();
+	public List<ISchedulable> grabOverlapChain(int start){
+		List<ISchedulable> overlapchain = new LinkedList<ISchedulable>();
 		if (start >= events.size()){
 			return overlapchain;
 		}
@@ -148,7 +149,7 @@ public class EventView extends JPanel {
 		return false;
 	}
 	
-	private boolean overlapEvent(Event e1,Event e2){
+	private boolean overlapEvent(ISchedulable e1,ISchedulable e2){
 		if(isBetween(e1.getStartDate(),e2.getStartDate(),e2.getEndDate()) ||
 				isBetween(e1.getEndDate(),e2.getStartDate(),e2.getEndDate())||
 				isBetween(e2.getStartDate(),e1.getStartDate(),e1.getEndDate()) ||
@@ -159,9 +160,9 @@ public class EventView extends JPanel {
 		return false;
 	}
 	
-	private ArrayList<Event> overlapList(Event e1,ArrayList<Event> eventList){
-		ArrayList<Event> overlaps = new ArrayList<Event>();
-		for(Event e2:eventList){
+	private ArrayList<ISchedulable> overlapList(ISchedulable e1, ArrayList<ISchedulable> eventList){
+		ArrayList<ISchedulable> overlaps = new ArrayList<ISchedulable>();
+		for(ISchedulable e2:eventList){
 			if(overlapEvent(e1,e2)){
 				overlaps.add(e2);
 			}
@@ -169,21 +170,21 @@ public class EventView extends JPanel {
 		return overlaps;
 	}
 	
-	private ArrayList<ArrayList<Event>> generateMap(){
+	private ArrayList<ArrayList<ISchedulable>> generateMap(){
 		sortEvents();
-		ArrayList<ArrayList<Event>> map = new ArrayList<ArrayList<Event>>();
+		ArrayList<ArrayList<ISchedulable>> map = new ArrayList<ArrayList<ISchedulable>>();
 		
 		for(int i=0;i<events.size();i++){
 			boolean added=false;
 			for(int j=0;j<map.size();j++){
-				ArrayList<Event> testList = map.get(j);
+				ArrayList<ISchedulable> testList = map.get(j);
 				if(!overlapEvent(events.get(i),testList.get(testList.size()-1))){
 					map.get(j).add(events.get(i));
 					added=true;
 				}
 			}
 			if(!added){
-				ArrayList<Event> newList = new ArrayList<Event>();
+				ArrayList<ISchedulable> newList = new ArrayList<ISchedulable>();
 				newList.add(events.get(i));
 				map.add(newList);
 			}
@@ -192,7 +193,7 @@ public class EventView extends JPanel {
 		return map;
 	}
 	
-	private void displayMap(ArrayList<ArrayList<Event>> map){
+	private void displayMap(ArrayList<ArrayList<ISchedulable>> map){
 		String toomanyones = "";
 		
 		StringBuilder calclayout = new StringBuilder();
@@ -211,19 +212,19 @@ public class EventView extends JPanel {
 				toomanyones));
 		
 		for(int i=0;i<map.size();i++){
-			for(Event test:map.get(i)){
-				ArrayList<Event> overlapEvents = new ArrayList<Event>();
+			for(ISchedulable test:map.get(i)){
+				ArrayList<ISchedulable> overlapEvents = new ArrayList<ISchedulable>();
 				int divisions=1;
 				for(int j=0;j<map.size();j++){
 					if(j!=i){
-						ArrayList<Event> overlaps = overlapList(test,map.get(j));
+						ArrayList<ISchedulable> overlaps = overlapList(test,map.get(j));
 						if(overlaps.size()>0){
 							divisions++;
 							overlapEvents.addAll(overlaps);
 						}
 					}
 				}
-				for(Event test2:overlapEvents){
+				for(ISchedulable test2:overlapEvents){
 					int eventDivs=0;
 					for(int j=0;j<map.size();j++){
 						if(overlapList(test2,map.get(j)).size()>0){
@@ -265,7 +266,8 @@ public class EventView extends JPanel {
 				}
 				infobuilder.append("</p></html>");
 				panel.setToolTipText(infobuilder.toString());
-				panel.addMouseListener(new EventMouseListener(test, panel));
+				if(test instanceof Event)
+					panel.addMouseListener(new EventMouseListener((Event) test, panel));
 				
 				if (test.getCategory() != null){
 					panel.setBackground(test.getCategory().getColor());
@@ -297,7 +299,7 @@ public class EventView extends JPanel {
 	{
 		sortEvents();
 		
-		ArrayList<ArrayList<Event>> eventMap = new ArrayList<ArrayList<Event>>();
+		ArrayList<ArrayList<ISchedulable>> eventMap = new ArrayList<ArrayList<ISchedulable>>();
 		eventMap=generateMap();
 		displayMap(eventMap);
 	}

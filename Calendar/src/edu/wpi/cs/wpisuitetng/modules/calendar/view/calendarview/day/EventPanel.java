@@ -18,8 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import net.miginfocom.swing.MigLayout;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 
 public class EventPanel extends JPanel{
 	/**
@@ -29,7 +29,7 @@ public class EventPanel extends JPanel{
 	private JTextArea titleTextArea;
 	private JTextArea dataTextArea;
 	
-	public EventPanel(Event eve){
+	public EventPanel(ISchedulable eve){
 		
 		this.setLayout(new MigLayout("fill", 
 				"[100%]", 

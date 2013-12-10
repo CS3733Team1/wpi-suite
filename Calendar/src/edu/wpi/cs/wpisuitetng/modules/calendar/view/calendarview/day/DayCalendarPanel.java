@@ -64,7 +64,7 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		this.add(dayscroll, "grow, push");
 		
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
-		dayscroll.getVerticalScrollBar().setValue(end * 3 / 4);
+		dayscroll.getVerticalScrollBar().setValue(3*end/8);
 
 	}
 
@@ -93,6 +93,8 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
+		int end = dayscroll.getVerticalScrollBar().getMaximum();
+		dayscroll.getVerticalScrollBar().setValue(3*end/8);
 		return daylayer.getTitle();
 	}
 

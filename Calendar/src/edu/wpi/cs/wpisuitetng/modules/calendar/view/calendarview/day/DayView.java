@@ -72,7 +72,7 @@ public class DayView extends JPanel implements ListDataListener {
 		this.setVisible(true);
 
 		fillDayView();
-		DisplayCommitments();
+		//DisplayCommitments();
 		
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
