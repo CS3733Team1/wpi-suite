@@ -11,6 +11,9 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,9 +24,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	/**
 	 * This is a model for events. It contains all of the events to be
 	 * displayed on the calendar. It extends AbstractListModel so that it can provide
-	 * the model data to the JList component in the BoardPanel.
-	 * 
-	 * @author Thomas DeSilva, Zach Estep
+	 * the model data to the JList component in the BoardPanel. This class is a singleton.
 	 * 
 	 */
 
@@ -36,7 +37,8 @@ public class EventListModel extends AbstractListModel<Event> {
 	 * Constructs a new calendar with no events.
 	 */
 	private EventListModel() {
-		events = new ArrayList<Event>();
+		//Ask for a thread safe arrayList
+		events = Collections.synchronizedList(new ArrayList<Event>());
 	}
 
 	public static EventListModel getEventListModel()
@@ -55,6 +57,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	public void addEvent(Event newEvent) {
 		// Add the event
 		events.add(newEvent);
+		Collections.sort(this.events);
 
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
@@ -70,14 +73,16 @@ public class EventListModel extends AbstractListModel<Event> {
 		for (int i = 0; i < events.length; i++) {
 			this.events.add(events[i]);
 		}
+		Collections.sort(this.events);
+		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
-	public void setEvents(Event[] events) {
+	public synchronized void setEvents(Event[] events) {
 		this.emptyModel();
-		for (int i = 0; i < events.length; i++) {
-			this.events.add(events[i]);
-		}
+		this.events.addAll(Arrays.asList(events));
+		Collections.sort(this.events);
+		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -88,7 +93,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	 * other classes in this module have references to it. Hence, we manually
 	 * remove each event from the model.
 	 */
-	public void emptyModel() {
+	public synchronized void emptyModel() {
 		int oldSize = getSize();
 		Iterator<Event> iterator = events.iterator();
 		while (iterator.hasNext()) {
@@ -112,12 +117,14 @@ public class EventListModel extends AbstractListModel<Event> {
 	
 	public void removeEvent(int index) {
 		events.remove(index);
-		this.fireIntervalAdded(this, 0, 0);
+		this.fireIntervalRemoved(this, 0, 0);
 	}
 
 	public void removeEvent(Event event) {
+		System.err.println(events.size());
 		events.remove(event);
-		this.fireIntervalAdded(this, 0, 0);
+		System.err.println("size:" + events.size());
+		this.fireIntervalRemoved(this, 0, 0);
 	}
 
 
@@ -134,19 +141,13 @@ public class EventListModel extends AbstractListModel<Event> {
 
 	//** Note: avoid coping the events in the list here.
 	// use the copy constructor provided in Event() to avoid creating copies with dissimilar UniuqeID's
-	public List<Event> getList(){
+	public synchronized List<Event> getList(){
 		return events;
 	}
-	
-	public List<Event> getList(boolean isTeam)
+	public synchronized void Update()
 	{
-		ArrayList<Event> list = new ArrayList<Event>();
-		for(Event eve: events)
-		{
-			if(eve.getTeam() == isTeam)
-				list.add(eve);
-		}
-		
-		return list;
+		System.out.println("Event list model update");
+		this.fireIntervalAdded(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
 	}
+	
 }

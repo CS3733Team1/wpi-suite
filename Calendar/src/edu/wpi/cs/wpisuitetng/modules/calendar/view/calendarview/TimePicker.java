@@ -7,6 +7,7 @@
  * 
  * Contributors: Team TART
  ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
@@ -18,6 +19,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
@@ -30,10 +32,6 @@ import javax.swing.event.EventListenerList;
 
 import net.miginfocom.swing.MigLayout;
 
-/**
- * @author DanF
- * 
- */
 public class TimePicker extends JPanel {
 
 	//time changed events
@@ -82,14 +80,14 @@ public class TimePicker extends JPanel {
 	}
 
 	private void TimeChanged() {
-		fireTimeChangedEvent(new TimeChangedEvent(getTimeAsSting()));
+		fireTimeChangedEvent(new TimeChangedEvent(getTimeAsString()));
 	}
 
 	/**
 	 * gives the internally represented time as a string
 	 * @return the time in "HH:MM:AM" format
 	 */
-	public String getTimeAsSting() {
+	public String getTimeAsString() {
 		int hours=displayHours_;
 		String txtAmPm="AM";
 		if (displayHours_>=12){
@@ -289,7 +287,7 @@ public class TimePicker extends JPanel {
 
 	/*
 	 * gets the hours from the text field, validates, and sets as displayHours_ if it's valid 
-	 * called whenver a key is typed in the hours text field
+	 * called whenever a key is typed in the hours text field
 	 */
 	private void hoursChanged() {
 		int hours = getNumberFromTextField(hoursTextField);	//hour will be the hour if the text us a number>0, -1 otherwise
@@ -469,7 +467,9 @@ public class TimePicker extends JPanel {
 	 */
 	public void setMinutes(int minutes) {
 		setDisplayMinutes(minutes);
-		minutesTextField.setText(displayMinutesAreValid() ? Integer.toString(displayMinutes_) : "MM");
+		minutesTextField.setText(displayMinutesAreValid() ? Integer.toString(displayMinutes_) : Integer.toString(Calendar.getInstance().getTime().getMinutes()));
+		minutesChanged();
+		updateDebugLabel();
 	}
 
 	/**
@@ -478,7 +478,9 @@ public class TimePicker extends JPanel {
 	 */
 	public void setHours(int hours) {
 		setDisplayHours(hours);
-		hoursTextField.setText(displayHoursAreValid() ? Integer.toString(displayHours_) : "HH");
+		hoursTextField.setText(displayHoursAreValid() ? Integer.toString(displayHours_) : Integer.toString(Calendar.getInstance().getTime().getHours()));
+		hoursChanged();
+		updateDebugLabel();
 	}
 
 

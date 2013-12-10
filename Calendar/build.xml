@@ -15,7 +15,6 @@
 		</fileset>
 		<fileset dir="${janeway-lib}">
 			<include name="miglayout-4.0-swing.jar"/>
-			<include name="swingx-all-1.6.4.jar"/>
 		</fileset>
 		<pathelement path="build"/>
 	</path>

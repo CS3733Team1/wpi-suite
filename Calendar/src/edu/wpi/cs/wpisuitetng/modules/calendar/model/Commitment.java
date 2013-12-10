@@ -16,11 +16,20 @@ import java.util.UUID;
 import com.google.gson.Gson;
 
 /**
- * Model for holding commitment data
+ * Class for holding Commitment data. A Commitment must have:<br>
+ * -A name<br>
+ * -A Date<br>
+ * <br>
+ * A Commitment can have:<br>
+ * -A description<br>
+ * -A Category<br>
+ * -A completion State<br>
+ * <br>
+ * Privately, a Commitment has a uniqueID to help distinguish it in the database.
  */
-public class Commitment extends DeletableAbstractModel implements Comparable<Commitment>{
+public class Commitment extends DeletableAbstractModel implements Comparable<Commitment> {
 	
-	private enum State 
+	public static enum State 
 	{
 		NEW ("New"),
 		IN_PROGRESS ("In Progress"),
@@ -28,7 +37,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		
 		private String display;
 		
-		State(String display)
+		private State(String display)
 		{
 			this.display = display;
 		}
@@ -38,6 +47,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			return display;
 		}
 	}
+	
 	
 	// Required parameters
 	private String name;
@@ -55,15 +65,30 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	//the arguments of the most basic constructor.
 	public Commitment(){}
 	
+	
+	//Commitment copy constructor
+	public Commitment(Commitment other)
+	{
+		//Commitment(String name, Date dueDate, boolean Teamhuh, String description,
+				//Category category, String progress)
+		this(other.name,other.dueDate,other.isTeam,other.description,other.category);
+		this.progress=other.progress;
+		this.UniqueID=other.UniqueID;
+		this.OwnerID=other.OwnerID;
+		this.OwnerName=other.OwnerName;
+		this.id=other.id;
+	}
 	/**
 	 * Constructs a Commitment object
 	 * @param name name of Commitment
 	 * @param dueDate due date of Commitment
 	 */
-	public Commitment(String name, Date dueDate) {
+	public Commitment(String name, Date dueDate, boolean Teamhuh) {
 		this.name = name;
 		this.dueDate = dueDate;
 		this.progress = State.NEW; //Default
+		this.isTeam = Teamhuh;
+		
 		createID();
 	}
 
@@ -73,8 +98,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param dueDate due date of Commitment
 	 * @param description description of Commitment
 	 */
-	public Commitment(String name, Date dueDate, String description) {
-		this(name, dueDate);
+	public Commitment(String name, Date dueDate, boolean Teamhuh, String description) {
+		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.progress = State.NEW; //Default
 		createID();
@@ -86,8 +111,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param dueDate due date of Commitment
 	 * @param category Category of Commitment
 	 */
-	public Commitment(String name, Date dueDate, Category category) {
-		this(name, dueDate);
+	public Commitment(String name, Date dueDate, boolean Teamhuh, Category category) {
+		this(name, dueDate, Teamhuh);
 		this.category = category.cloneFake();
 		this.progress = State.NEW; //Default
 		createID();
@@ -100,9 +125,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param description description of Commitment
 	 * @param category Category of Commitment
 	 */
-	public Commitment(String name, Date dueDate, String description,
+	public Commitment(String name, Date dueDate, boolean Teamhuh, String description,
 			Category category) {
-		this(name, dueDate);
+		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = State.NEW; //Default
@@ -117,9 +142,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param description description of Commitment
 	 * @param progress progress of Commitment
 	 */
-	public Commitment(String name, Date dueDate, String description, 
+	public Commitment(String name, Date dueDate, boolean Teamhuh, String description, 
 			String progress) {
-		this(name, dueDate);
+		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.progress=getStateFromString(progress);
 		createID();
@@ -132,9 +157,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param category category of Commitment
 	 * @param progress progress of Commitment
 	 */
-	public Commitment(String name, Date dueDate, Category category, 
+	public Commitment(String name, Date dueDate, boolean Teamhuh, Category category, 
 			String progress) {
-		this(name, dueDate);
+		this(name, dueDate, Teamhuh);
 		this.category = category.cloneFake();
 		this.progress = getStateFromString(progress);
 		createID();
@@ -148,9 +173,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param category category of Commitment
 	 * @param progress progress of Commitment
 	 */
-	public Commitment(String name, Date dueDate, String description,
+	public Commitment(String name, Date dueDate, boolean Teamhuh, String description,
 			Category category, String progress) {
-		this(name, dueDate);
+		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = getStateFromString(progress);
@@ -260,6 +285,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	{
 		id = UUID.randomUUID().hashCode();
 	}
+	/**
+	 * Set the uniquieID to a specific number
+	 */
 	
 	public void setID(int newID)
 	{
@@ -275,7 +303,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 
 	/**
-	 * @return a json String representation of the Commitment
+	 * @return a JSON String representation of this Commitment
 	 */
 	@Override
 	public String toJSON() {
@@ -285,9 +313,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 	
 	/**
-	 * Generates an array of Commitments from a json String
-	 * @param input json String representing an array of Commitments
-	 * @return Commitments built from json String
+	 * Generates an array of Commitments from a JSON String
+	 * @param input JSON String containing an arbitrary number of serialized Commitments
+	 * @return An array of Commitments
 	 */
 	public static Commitment[] fromJSONArray(String input)
 	{
@@ -296,16 +324,18 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	}
 	
 	/**
-	 * Generates a Commitment from a json String
-	 * @param input json String representing a Commitment
-	 * @return Commitment built from json String
+	 * Generates a single Commitment from a JSON String
+	 * @param input JSON String representing one Commitment
+	 * @return Commitment built from the input
 	 */
 	public static Commitment fromJSON(String input)
 	{
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Commitment.class);
 	}
-	
+	/**
+	 * @return A human-readable string representation of this class
+	 */
 	@Override
 	public String toString()
 	{
@@ -315,6 +345,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 			str += "<br><b>Category:</b> " + getCategory().getName();
 		
 		str += String.format("<br><b>Progress:</b> %s", progress.toString());
+		
+		str += String.format("<br><b>Calendar:</b> %s", (this.isTeam) ? "Team" : "Personal");
 		
 		if(this.description != null)
 			str += "<br><b>Description:</b> " + getDescription();
@@ -330,15 +362,13 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		return null;
 	}
 
-	/** compareTo
-	 * 
-	 *  This function compares a commitment to this commitment and 
-	 *  the return value decides if this commitment begins before, after,
-	 *  or at the same time.
+	/** 
+	 *  This function compares another Commitment to this Commitment and 
+	 *  decides if this Commitment begins before, after, or at the same time.
 	 *  
-	 *  @return Returns -1 if this commitment begins after the given commitment
-	 *          Returns 0 if the commitments begin at the same time.
-	 *          Returns 1 if this commitment begins before the given commitment
+	 *  @return Returns <b>-1</b> if this Commitment begins after the input Commitment<br>
+	 *          Returns <b>0</b> if both Commitments begin at the same time.<br>
+	 *          Returns <b>1</b> if this Commitment begins before the input Commitment
 	 */
 	@Override
 	public int compareTo(Commitment commitment) 
@@ -357,6 +387,11 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		}//end else
 	}//end compareTo
 
+	/**
+	 * Copies all of the fields from the input Commitment into this Commitment.
+	 * @param toCopyFrom The Commitment to copy
+	 */
+	
 	public void copyFrom(Commitment toCopyFrom) 
 	{
 		this.category = toCopyFrom.getCategory();

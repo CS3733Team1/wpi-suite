@@ -11,17 +11,14 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.Component;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
 public class CalendarPanel extends JTabbedPane {
-	private CalendarTabPanel teamCalendarPanel;
-	private CalendarTabPanel personalCalendarPanel;
-
+	private CalendarTabPanel calendarPanel;
+	
 	public CalendarPanel() {
 		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
@@ -38,39 +35,20 @@ public class CalendarPanel extends JTabbedPane {
 	 */
 	@Override
 	public void addTab(String title, Icon icon, Component component) {
-		int index=this.getTabCount();
+		int index = this.getTabCount();
 		super.addTab(title, icon, component);
 		if (!(component instanceof CalendarTabPanel)) {
 			setTabComponentAt(index, new ClosableTabComponent(this));
 		}
 	}
 	
-	// Create TeamCalendar
-	public void createTeamCalendar() {
-		teamCalendarPanel = new CalendarTabPanel(this);
-
-		ImageIcon calIcon = new ImageIcon();
-		try {
-			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/team_calendar.png")));
-		} catch (IOException e) {}
-
-		this.addTab("Team Calendar", calIcon, teamCalendarPanel, "Team Calendar");
-	}
-	
-	// Create PersonalCalendar
-	public void createPersonalCalendar() {
-		personalCalendarPanel = new CalendarTabPanel(this);
-
-		ImageIcon calIcon = new ImageIcon();
-		try {
-			calIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/personal_calendar.png")));
-		} catch (IOException e) {}
-
-		this.addTab("Personal Calendar", calIcon, personalCalendarPanel, "Personal Calendar");
+	public void createCalendar() {
+		calendarPanel = new CalendarTabPanel(this);
+		this.addTab("Calendar", new ImageIcon(), calendarPanel, "Calendar");
 	}
 
-	public CalendarTabPanel getCalendarTabPanel() {
-		return (CalendarTabPanel)this.getSelectedComponent();
+	public synchronized CalendarTabPanel getCalendarTabPanel() {
+		return calendarPanel;
 	}
 	
 	public void refreshSelectedPanel(){

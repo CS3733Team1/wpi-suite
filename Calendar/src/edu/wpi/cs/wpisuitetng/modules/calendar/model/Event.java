@@ -16,21 +16,42 @@ import com.google.gson.Gson;
 
 /**
  * Data class for Events
- * An event has a name, a start Date, and an end Date
+ * An event must have a name, a start Date, and an end Date. It can contain a custom
+ * description and category.
  */
-public class Event extends DeletableAbstractModel {
+
+public class Event extends DeletableAbstractModel implements Comparable<Event>{
+	
+	private enum CalType 
+	{
+		PERSONAL ("Personal"),
+		TEAM ("Team");
+		
+		private String typeDisplay;
+		
+		CalType(String typeDisplay)
+		{
+			this.typeDisplay = typeDisplay;
+		}
+		
+		
+		
+		public String toString()
+		{
+			return typeDisplay;
+		}
+	}
+	
 	// Required parameters
 	private String name;
 	private Date startDate;
 	private Date endDate;
-	
 
 	// Optional parameters
 	private String description;
 	private Category category;
 	
-	private boolean isTeam;
-
+	
 	/*
 	 * TO DO:
 	 * 
@@ -43,17 +64,23 @@ public class Event extends DeletableAbstractModel {
 
 	public Event(){}
 	
-	//A copy constructor to preserve UniqueID's when copying events.
+	/**
+	 * A copy constructor to preserve UniqueID's when copying events.
+	 * @param other event to copy
+	 * @return a copy of other
+	 */
 	public Event(Event other)
 	{
 		super();
-		System.out.println("Event Copy Constructor");
 		this.UniqueID=other.getUniqueID();
+		this.OwnerID=other.getOwnerID();
+		this.OwnerName=other.getOwnerName();
 		this.name = other.name;
 		this.startDate = other.startDate;
 		this.endDate = other.endDate;
 		this.description=other.description;
 		this.category=other.category;
+		this.isTeam=other.isTeam;
 	}
 	
 	public Event(String name, Date startDate, Date endDate) {
@@ -70,37 +97,17 @@ public class Event extends DeletableAbstractModel {
 		this.isTeam = isTeam;
 	}
 	
-	public Event(String name, Date startDate, Date endDate, String description) {
-		this(name, startDate, endDate);
-		this.description = description;
-		this.isTeam = false;
-	}
-	
-	public Event(String name, Date startDate, Date endDate, String description, boolean isTeam) {
+	public Event(String name, Date startDate, Date endDate, boolean isTeam, String description) {
 		this(name, startDate, endDate, isTeam);
 		this.description = description;
 	}
 	
-	public Event(String name, Date startDate, Date endDate, Category category) {
-		this(name, startDate, endDate);
-		this.category = category.cloneFake();
-		this.isTeam = false;
-	}
-	
-	public Event(String name, Date startDate, Date endDate, Category category, boolean isTeam) {
+	public Event(String name, Date startDate, Date endDate, boolean isTeam, Category category) {
 		this(name, startDate, endDate, isTeam);
 		this.category = category.cloneFake();
 	}
 	
-	public Event(String name, Date startDate, Date endDate, String description, Category category) {
-		this(name, startDate, endDate);
-		this.description = description;
-		this.category = category.cloneFake();
-		this.isTeam = false;
-	}
-	
-	public Event(String name, Date startDate, Date endDate, String description, Category category,
-				boolean isTeam) {
+	public Event(String name, Date startDate, Date endDate, boolean isTeam, String description, Category category) {
 		this(name, startDate, endDate, isTeam);
 		this.description = description;
 		this.category = category.cloneFake();
@@ -160,14 +167,28 @@ public class Event extends DeletableAbstractModel {
 	public String toJSON() {
 		//name, dueDate, description, category
 		String str = new Gson().toJson(this, Event.class);
+		System.err.println(str);
 		return str;
 	}
+	
+	/**
+	 * Parses a string of an arbitrary number of JSON-serialized Events into an array of Events
+	 * @param input A string of JSON Events
+	 * @return An array of Events
+	 */
 	
 	public static Event[] fromJSONArray(String input)
 	{
 		final Gson parser = new Gson();
+		System.err.println(input);
 		return parser.fromJson(input, Event[].class);
 	}
+	
+	/**
+	 * Parses a single JSON string into an Event
+	 * @param input A string containing a single serialized Event
+	 * @return The Event represented by input
+	 */
 	
 	public static Event fromJSON(String input)
 	{
@@ -177,11 +198,18 @@ public class Event extends DeletableAbstractModel {
 	
 	
 	@Override
+	/**
+	 * @return Returns a human-readable String describing this Event
+	 */
 	public String toString()
 	{
 		//TODO: Remember to change this when participants, recurrence etc. gets added
-		String str = "Name: " + this.name + " Start Date: " + this.startDate.toString()
+		String str = "UniqueId = " + this.UniqueID + " ";
+				str += " Name: " + this.name + " Start Date: " + this.startDate.toString()
 				+ " End Date: " + this.endDate.toString();
+		
+				str += String.format("<br><b>Calendar:</b> %s", (this.isTeam) ? "Team" : "Personal");
+				
 		if(this.category != null)
 			str += " Category: " + this.category.toJSON();
 		if(this.description != null)
@@ -207,4 +235,29 @@ public class Event extends DeletableAbstractModel {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/** 
+	 *  This function compares another Event to this Event and 
+	 *  decides if this Event begins before, after, or at the same time.
+	 *  
+	 *  @return Returns <b>1</b> if this Event begins after the input Event<br>
+	 *          Returns <b>0</b> if both Event begin at the same time.<br>
+	 *          Returns <b>-1</b> if this Event begins before the input Event
+	 */
+	@Override
+	public int compareTo(Event event) 
+	{
+		if (this.startDate.after(event.getStartDate()) == true)
+		{
+			return 1;
+		}//end if
+		else if (this.startDate.before(event.getStartDate()) == true)
+		{
+			return -1;
+		}//end else if
+		else 
+		{
+			return 0;
+		}//end else
+	}//end compareTo
 }

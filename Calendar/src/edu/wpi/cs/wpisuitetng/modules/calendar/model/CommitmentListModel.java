@@ -30,16 +30,16 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	private static CommitmentListModel commitmentListModel;
 
 	/** The list of commitments on the calendar */
-	private ArrayList<Commitment> commitments;
+	private List<Commitment> commitments;
 
 	/**
 	 * Constructs a new calendar with no commitments.
 	 */
 	private CommitmentListModel() {
-		commitments = new ArrayList<Commitment>();
+		commitments = Collections.synchronizedList(new ArrayList<Commitment>());
 	}
 
-	static public CommitmentListModel getCommitmentListModel() {
+	static public synchronized CommitmentListModel getCommitmentListModel() {
 		if (commitmentListModel == null)
 			commitmentListModel = new CommitmentListModel();
 		return commitmentListModel;
@@ -51,14 +51,13 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 * @param newCommitment
 	 *            the new commitment to add
 	 */
-	public void addCommitment(Commitment newCommitment) {
+	public synchronized void addCommitment(Commitment newCommitment) {
 		// Add the commitment
 		this.commitments.add(newCommitment);
 		Collections.sort(this.commitments);
 
 		// Notify the model that it has changed so the GUI will be udpated
 		this.fireIntervalAdded(this, 0, 0);
-		this.fireContentsChanged(this, 0, commitments.size()-1);
 	}
 
 	/**
@@ -67,7 +66,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 * @param commitments
 	 *            the array of commitments to add
 	 */
-	public void addCommitments(Commitment[] commitments) {
+	public synchronized void  addCommitments(Commitment[] commitments) {
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
@@ -76,13 +75,12 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		this.fireContentsChanged(this, 0, this.commitments.size()-1);
 	}
 
-	public void setCommitments(Commitment[] commitments) {
-		this.emptyModel();
+	public synchronized void setCommitments(Commitment[] commitments) {
+		this.commitments.clear();
 		for (int i = 0; i < commitments.length; i++) {
 			this.commitments.add(commitments[i]);
 		}
 		Collections.sort(this.commitments);
-
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 
@@ -93,7 +91,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 * other classes in this module have references to it. Hence, we manually
 	 * remove each commitment from the model.
 	 */
-	public void emptyModel() {
+	public synchronized void emptyModel() {
 		int oldSize = getSize();
 		commitments.removeAll(getList());
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
@@ -111,18 +109,18 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments.get(commitments.size() - 1 - index);
 	}
 
-	public Commitment getElement(int index){
+	public synchronized Commitment getElement(int index){
 		return commitments.get(commitments.size() - 1 - index);
 	}
 
-	public void removeCommitment(int index) {
+	public synchronized void removeCommitment(int index) {
 		this.commitments.remove(index);
-		this.fireIntervalAdded(this, 0, 0);
+		this.fireIntervalRemoved(this, 0, 0);
 	}
 
-	public void removeCommitment(Commitment commitment) {
+	public synchronized void removeCommitment(Commitment commitment) {
 		this.commitments.remove(commitment);
-		this.fireIntervalAdded(this, 0, 0);
+		this.fireIntervalRemoved(this, 0, 0);
 	}
 
 
@@ -137,11 +135,16 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments.size();
 	}
 
-	public List<Commitment> getList(){
+	public synchronized List<Commitment> getList(){
 		return commitments;
 	}
+	public synchronized void Update()
+	{
+		System.out.println("Commitment list update");
+		this.fireIntervalAdded(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
+	}
 
-	public void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
+	public synchronized void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
 		removeCommitment(oldCommitment);
 		addCommitment(newCommitment);
 	}

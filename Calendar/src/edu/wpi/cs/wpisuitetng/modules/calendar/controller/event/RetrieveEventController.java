@@ -48,7 +48,7 @@ public class RetrieveEventController implements AncestorListener, ActionListener
 	 * 
 	 * @param messages an array of messages received from the server
 	 */
-	public void receivedMessages(Event[] events) {		
+	public synchronized void receivedMessages(Event[] events) {
 		// Make sure the response was not null
 		if (events != null) {
 			// set the messages to the local model

@@ -33,7 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListMode
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
-public class DayView extends JPanel implements ICalendarView, ListDataListener {
+public class DayView extends JPanel implements ListDataListener {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
@@ -147,7 +147,12 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 				int i=1;
 				for (Commitment commit: foundyou.get(x)){
 					bob.append("<p style='width:175px'>");
-					bob.append(new Integer(i).toString()+".");
+					if(i != 1)
+					{
+					bob.append("<br>");
+					}
+					bob.append("Commitment ");
+					bob.append(new Integer(i).toString()+":");
 					i++;
 					bob.append("<br>");
 					bob.append("<b>Name:</b> ");
@@ -171,7 +176,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 	}
 	
 	public void rebuildHours(){
-		for (int x = 0; x < 24; x++){
+		for (int x = 0; x < hourlist.size(); x++){
 			this.remove(hourlist.get(x));
 		}
 		
@@ -223,7 +228,7 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 			Date commitdate = commit.getDueDate();
 			Date teemo = new Date(commitdate.getYear(),commitdate.getMonth(),commitdate.getDate(),commitdate.getHours(),0);
 			if (paneltracker.containsKey(teemo)){
-				System.out.println("I'm Invisible"); //never underestimate the power of the scout's code
+				//System.out.println("I'm Invisible"); //never underestimate the power of the scout's code
 				notevenclose.add(commit);
 			}
 		}
@@ -231,8 +236,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		return notevenclose;
 	}
 	
-	
-	@Override
 	public String getTitle() {
 		return monthNames[currentMonth] + " "+ currentDate+ ", " + currentYear;
 	}
@@ -243,7 +246,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		}
 	}
 
-	@Override
 	public void next() {
 		currentDate++;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -259,7 +261,6 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		DisplayCommitments();
 	}
 
-	@Override
 	public void previous() {
 		currentDate--;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -275,13 +276,27 @@ public class DayView extends JPanel implements ICalendarView, ListDataListener {
 		DisplayCommitments();
 	}
 
-	@Override
 	public void today() {
 		Date today = new Date();
 		if(!(currentDate == today.getDate() && currentMonth == today.getMonth() && currentYear == today.getYear() + 1900)) {
 			currentDate = today.getDate();
 			currentMonth = today.getMonth();
 			currentYear = today.getYear() + 1900;
+
+			this.removeAll();
+			nameList = new ArrayList<DatePanel>();
+			paneltracker = new HashMap<Date, DatePanel>();
+			hourlist = new ArrayList<JPanel>();
+			fillDayView();
+			DisplayCommitments();
+		}
+	}
+	
+	public void viewDate(Date day) {
+		if(!(currentDate == day.getDate() && currentMonth == day.getMonth() && currentYear == day.getYear() + 1900)) {
+			currentDate = day.getDate();
+			currentMonth = day.getMonth();
+			currentYear = day.getYear() + 1900;
 
 			this.removeAll();
 			nameList = new ArrayList<DatePanel>();

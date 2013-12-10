@@ -19,12 +19,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+
+/**
+ * Handles resizing and scrolling in week view.
+ */
 
 public class WeekCalendarScrollPane extends JScrollPane implements ListDataListener {
 	private WeekCalendarLayerPane weeklayer;
@@ -41,6 +46,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 		weekpanel = new LinkedList<JPanel>();
 		
 		
+		this.setBorder(new MatteBorder(0, 1, 1, 1, Color.LIGHT_GRAY));
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout());
 			
@@ -49,7 +55,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 			weekbuilder.append((new Integer(days)).toString());
 			weekbuilder.append(" ");
 			weekbuilder.append("0");
-			weekbuilder.append(",wmin 130, alignx left, growy");
+			weekbuilder.append(",wmin 100, alignx left, growy");
 			
 		
 			weekpanel.add(weekName);
@@ -59,13 +65,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 	
 		JPanel cornertile = new JPanel();
 		cornertile.setBackground(Color.WHITE);
-		
-		
-		
-		
-		
-		//this.setCorner(UPPER_RIGHT_CORNER, cornertile);
-		//this.setColumnHeaderView(weektitle);
+
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
@@ -88,7 +88,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 			weekbuilder.append((new Integer(days)).toString());
 			weekbuilder.append(" ");
 			weekbuilder.append("0");
-			weekbuilder.append(",wmin 130, alignx left, growy");
+			weekbuilder.append(",wmin 100, alignx left, growy");
 			
 			weekpanel.add(weekName);
 			weektitle.add(weekName, weekbuilder.toString());
@@ -96,13 +96,6 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 		
 		JPanel cornertile = new JPanel();
 		cornertile.setBackground(Color.WHITE);
-		
-		
-		
-		
-		
-		//this.setCorner(UPPER_RIGHT_CORNER, cornertile);
-		//this.setColumnHeaderView(weektitle);
 	}
 	
 	public void DisplayCommitments(){

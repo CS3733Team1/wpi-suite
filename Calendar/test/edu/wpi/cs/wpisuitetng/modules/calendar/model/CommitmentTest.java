@@ -10,14 +10,10 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
 import java.awt.Color;
-
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-
-
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +29,7 @@ public class CommitmentTest {
 	Commitment c3;
 	Commitment c4;
 	Commitment c5;
+	Commitment c6;
 	Category cat1;
 	Category cat2;
 	
@@ -43,11 +40,11 @@ public class CommitmentTest {
 		Date3 = new Date(100, 1, 1);
 		cat1 = new Category("school", Color.blue);
 		cat2 = new Category("Work", Color.red);
-		c1 = new Commitment("CS 3733", Date1);
-		c2 = new Commitment("meeting1", Date2);
-		c3 = new Commitment("class", Date1, "CS 3733 class");
-		c4 = new Commitment("class", Date1, cat1);
-		c5 = new Commitment("class", Date1, "other class", cat2);
+		c1 = new Commitment("CS 3733", Date1,true);
+		c2 = new Commitment("meeting1", Date2,true);
+		c3 = new Commitment("class", Date1, false, "CS 3733 class");
+		c4 = new Commitment("class", Date1, false, cat1);
+		c5 = new Commitment("class", Date1, true, "other class", cat2);
 	}
 	
 	@Test
