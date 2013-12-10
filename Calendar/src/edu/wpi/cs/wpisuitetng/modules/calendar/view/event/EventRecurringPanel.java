@@ -33,6 +33,8 @@ import javax.swing.border.Border;
 public class EventRecurringPanel extends JPanel implements KeyListener, ActionListener {
 	// Errors strings
 	private final String INVALID_OCCURRENCES_ERROR = 	"Events must occur at least once.";
+	private final String INVALID_DAY_SELECTION_ERROR = 	"Today's date must be recurring.";
+
 	// Error Labels
 
 	// Error wrappers
@@ -47,6 +49,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private Date startDate;
 	private JLabel occurrencesErrorLabel;
 	private Border defaultBorder;
+	private JLabel wrongDaySelectionErrorLabel;
 	public EventRecurringPanel(Date startDate) {
 		this.buildLayout(startDate);
 	}
@@ -56,7 +59,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	 */
 	private void buildLayout(Date startDate) {
 		
-		setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
+		setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][][]"));
 		defaultBorder = this.getBorder();
 		JLabel lblRecurring = new JLabel("Recurring: ");
 		add(lblRecurring, "cell 0 0");
@@ -102,6 +105,11 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 		add(occurrencesTextField, "cell 2 1,alignx left");
 		occurrencesTextField.setColumns(10);
 		occurrencesTextField.addKeyListener(this);
+		
+		wrongDaySelectionErrorLabel = new JLabel(INVALID_DAY_SELECTION_ERROR);
+		wrongDaySelectionErrorLabel.setForeground(Color.RED);
+		wrongDaySelectionErrorLabel.setVisible(false);
+		add(wrongDaySelectionErrorLabel, "cell 0 2 6 1");
 		validateRecurring(startDate);
 	}
 
@@ -143,33 +151,59 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 			case 0: 
 				if(!chckbxSunday.isSelected())
 					isValid = false;
+				else
+					wrongDaySelectionErrorLabel.setVisible(false);
 				break;
 			case 1: 
-				if(!chckbxMonday.isSelected())
+				if(!chckbxMonday.isSelected()){
 					isValid = false;
+					wrongDaySelectionErrorLabel.setVisible(true);
+				}
+				else
+					wrongDaySelectionErrorLabel.setVisible(false);
 				break;
 			case 2: 
-				if(!chckbxTuesday.isSelected())
+				if(!chckbxTuesday.isSelected()) {
 					isValid = false;
+					wrongDaySelectionErrorLabel.setVisible(true);
+				}
+				else
+					wrongDaySelectionErrorLabel.setVisible(false);
 				break;
 			case 3: 
-				if(!chckbxWednesday.isSelected())
+				if(!chckbxWednesday.isSelected()) {
 					isValid = false;
+					wrongDaySelectionErrorLabel.setVisible(true);
+				}
+				else
+					wrongDaySelectionErrorLabel.setVisible(false);
 				break;
 			case 4: 
-				if(!chckbxThursday.isSelected())
+				if(!chckbxThursday.isSelected()) {
 					isValid = false;
+					wrongDaySelectionErrorLabel.setVisible(true);
+				}
+				else
+					wrongDaySelectionErrorLabel.setVisible(false);
 				break;
 			case 5: 
-				if(!chckbxFriday.isSelected())
+				if(!chckbxFriday.isSelected()) {
 					isValid = false;
+					wrongDaySelectionErrorLabel.setVisible(true);
+				}
+				else
+					wrongDaySelectionErrorLabel.setVisible(false);
 				break;
 			case 6: 
-				if(!chckbxSaturday.isSelected())
+				if(!chckbxSaturday.isSelected()) {
 					isValid = false;
+					wrongDaySelectionErrorLabel.setVisible(true);
+				}
+				else
+					wrongDaySelectionErrorLabel.setVisible(false);
 				break;
+				
 		}
-		Border errorBorder_;
 		if(!isValid)
 			this.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
 		else
