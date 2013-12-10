@@ -17,6 +17,7 @@ import java.util.List;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -50,6 +51,7 @@ public class DeleteCommitmentController implements ActionListener {
 			request.addObserver(new DeleteCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
+		FilterListModel.getFilterListModel().Update();
 		CommitmentListModel.getCommitmentListModel().Update();
 		EventListModel.getEventListModel().Update();
 		calendarPanel.getCalendarTabPanel().resetSelection();
