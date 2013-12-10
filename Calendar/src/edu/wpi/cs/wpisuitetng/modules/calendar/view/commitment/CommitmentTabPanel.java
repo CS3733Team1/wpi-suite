@@ -82,7 +82,9 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		nameTextField.setText(c.getName());
 		dateTimeChooser_.setDate(c.getDueDate());
 		commitmentProgressPanel.setSelected(c.getProgress());
+		categoryPickerPanel.setSelectedCategory(c.getCategory());
 		descriptionTextArea.setText(c.getDescription());
+		calendarPicker.setSelected(c.getisTeam() ? "Team": "Personal");
 		addCommitmentButton.setText("Update Commitment");
 		addCommitmentButton.setActionCommand("updatecommitment");
 		addCommitmentButton.removeActionListener(addCommitmentButton.getActionListeners()[0]); //Remove the addCommitment action listener
