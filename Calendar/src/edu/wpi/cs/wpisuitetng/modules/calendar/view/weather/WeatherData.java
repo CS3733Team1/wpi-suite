@@ -57,8 +57,6 @@ public class WeatherData {
 	private void parseData(List<String> d) {
 		StringBuilder loc = new StringBuilder();
 		loc.append(d.get(7));
-		loc.append(", ");
-		loc.append(d.get(8));
 		location = loc.toString();
 
 		StringBuilder temp = new StringBuilder();
@@ -68,20 +66,22 @@ public class WeatherData {
 		temperature = temp.toString();
 
 		StringBuilder srise = new StringBuilder();
-		srise.append(d.get(12));
+		srise.append(d.get(11));
 		sunrise = srise.toString();
 
 		StringBuilder sset = new StringBuilder();
-		sset.append(d.get(13));
+		sset.append(d.get(12));
 		sunset = sset.toString();
 
 		StringBuilder ctime = new StringBuilder();
-		ctime.append(d.get(15));
+		ctime.append(d.get(14));
 		currentTime = ctime.toString();
 
 		StringBuilder wtype = new StringBuilder();
-		wtype.append(d.get(21));
+		wtype.append(d.get(18));
 		weatherType = wtype.toString();
+		
+		System.err.println(d);
 	}
 	
 	public String getLocation(){return location;}
