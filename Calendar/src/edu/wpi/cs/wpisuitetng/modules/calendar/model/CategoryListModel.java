@@ -36,7 +36,7 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	private List<Category> categories;
 
 	private final Category[] defaultCategories = {
-			new Category("Uncategorized", Color.WHITE), 
+			new Category("Uncategorized", new Color(255,234,170)), 
 			new Category("Important", new Color(251,110,90)),
 			new Category("Work", new Color(159, 226, 254)),
 			new Category("Home", new Color(250, 179,86)),
