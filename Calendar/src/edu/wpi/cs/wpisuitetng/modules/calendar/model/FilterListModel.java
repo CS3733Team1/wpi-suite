@@ -176,11 +176,15 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Events
 	 */
 	public List<Event> applyEventFilter(List<Event> eventList) {
-		if(activeFilter == null || activeFilter.getName().equals(UNFILTERED))
+		if (activeFilter == null)
 		{
-			activeFilter = new Filter(UNFILTERED, CategoryListModel.getList());
-			
+			return eventList;
 		}
+		else if (activeFilter.getName().equalsIgnoreCase(UNFILTERED) )
+				{
+					System.out.println("Applying Unfiltered Filter");
+					return Filter.filterTeamPersonal(eventList);
+				}
 		return activeFilter.applyEventFilter(eventList);
 	}
 
@@ -190,9 +194,14 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Commitments
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter == null || activeFilter.getName().equals(UNFILTERED) )
+		if (activeFilter == null)
+		{
+			return commitmentList;
+		}
+		else if (activeFilter.getName().equalsIgnoreCase(UNFILTERED) )
 				{
-					activeFilter = new Filter(UNFILTERED,CategoryListModel.getList());
+					System.out.println("Applying Unfiltered Filter");
+					return Filter.filterTeamPersonal(commitmentList);
 				}
 		return activeFilter.applyCommitmentFilter(commitmentList);
 	}
