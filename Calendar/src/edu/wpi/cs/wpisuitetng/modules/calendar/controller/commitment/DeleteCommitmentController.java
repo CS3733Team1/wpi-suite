@@ -41,7 +41,7 @@ public class DeleteCommitmentController implements ActionListener {
 		System.out.println("Called Delete Commitments...");
 		
 		for (Commitment commit:list) {
-			commit.markForDeletion();
+			System.out.println("Removing commitment: \n\t " + commit);
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
 			final Request request = Network.getInstance().makeRequest("calendar/commitment/" + commit.getUniqueID(), HttpMethod.GET); // PUT == create
