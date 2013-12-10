@@ -251,7 +251,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	}
 	
 	public int getMonth() {
-		return currentMonth.MONTH;
+		return currentMonth.get(Calendar.MONTH);
 	}
 	
 	private Calendar cloneCalendar(Calendar toBeCloned) {
@@ -344,11 +344,26 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public void componentResized(ComponentEvent e) {
 		this.updateLayout();
 		this.updateEvComs();
+		
+		//TEST CODE
+		int total = 0;
+		total += days.get(0).getContainerPanelHeight();
+		total += days.get(7).getContainerPanelHeight();
+		total += days.get(14).getContainerPanelHeight();
+		total += days.get(21).getContainerPanelHeight();
+		total += days.get(28).getContainerPanelHeight();
+		total += days.get(35).getContainerPanelHeight();
+		
+		int totalEvComsDisplayable = (int)(total / (new JLabel("I have Height!")).getPreferredSize().getHeight());
+		System.out.println("totalEvComsDisplayable per column: " + totalEvComsDisplayable);
+		int evComsPerDay = totalEvComsDisplayable/6;
+		
+		System.out.println("evComsPerDay: " + evComsPerDay);
 	}
 	
 	@Override
 	public void viewDate(Calendar date) {
-		if(this.currentMonth.get(Calendar.MONTH) != date.MONTH) {
+		if(this.currentMonth.get(Calendar.MONTH) != date.get(Calendar.MONTH)) {
 			this.currentMonth = date;
 			this.updateDates();
 		}
