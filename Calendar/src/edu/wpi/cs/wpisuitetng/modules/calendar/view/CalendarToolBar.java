@@ -10,45 +10,67 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class CalendarToolBar extends JPanel {
+import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.weather.WeatherPanel;
+
+public class CalendarToolBar extends JPanel implements ActionListener {
 	// Always visible
-	private JButton refreshButton;
+	private TransparentButton refreshButton;
 
 	// Always Visible
-	private JButton addCommitmentButton;
-	private JButton addEventButton;
+	private TransparentButton addCommitmentButton;
+	private TransparentButton addEventButton;
 
 	// Visible only when commitments/events are selected on either calendar tab
-	private JButton deleteCommitmentButton;
-	private JButton deleteEventButton;
+	private TransparentButton deleteCommitmentButton;
+	private TransparentButton deleteEventButton;
+
+	private TransparentButton easterEgg;
+	
+	private ImageIcon[] easterEggIcons;
+
+	int eggState;
+	boolean eggHatched;
+	
+	private WeatherPanel weatherPanel;
 
 	public CalendarToolBar() {
 		try {
-			refreshButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
+			refreshButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
 
-			addCommitmentButton = new JButton("<html>New<br/>Commitment</html>",
+			addCommitmentButton = new TransparentButton("<html>New<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png"))));
-			deleteCommitmentButton = new JButton("<html>Delete<br/>Commitment</html>",
+			deleteCommitmentButton = new TransparentButton("<html>Delete<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_commitment.png"))));
 
-			addEventButton = new JButton("<html>New<br/>Event</html>",
+			addEventButton = new TransparentButton("<html>New<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
-			deleteEventButton = new JButton("<html>Delete<br/>Event</html>",
+			deleteEventButton = new TransparentButton("<html>Delete<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_event.png"))));
+
+			easterEggIcons = new ImageIcon[4];
+			easterEggIcons[0] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[1] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[2] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[3] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			
+			easterEgg =  new TransparentButton(easterEggIcons[0]);
 		} catch (IOException e) {}
 
-		
-		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		weatherPanel = new WeatherPanel();
+		eggHatched = false;
+		eggState = 0;
+		easterEgg.addActionListener(this);
+
 		this.setToolBarCalendarTab();
 	}
 
@@ -56,34 +78,35 @@ public class CalendarToolBar extends JPanel {
 	// Delete Event and Commitment disabled until Events or Commitments are selected.
 	public void setToolBarCalendarTab() {
 		this.removeAll();
+		this.setLayout(new MigLayout("fill", "[][][][][]push[]"));
 
 		this.add(refreshButton);
-		
-		this.add(Box.createHorizontalStrut(25));
 
 		this.add(addCommitmentButton);
 		this.add(deleteCommitmentButton);
 
-		this.add(Box.createHorizontalStrut(25));
-
 		this.add(addEventButton);
 		this.add(deleteEventButton);
+
+		if(eggHatched) {
+			this.add(weatherPanel);
+		} else this.add(easterEgg);
+		
+		this.updateUI();
 	}
 
 	// Notifies CalendarToolBar that the buttons should switch to the Event/CommitmentTab button arrangement.
 	// Delete Event and Commitment removed.
 	public void setToolBarEventCommitment() {
 		this.removeAll();
-
+		this.setLayout(new MigLayout());
 		this.add(refreshButton);
-
-		this.add(Box.createHorizontalStrut(25));
 
 		this.add(addCommitmentButton);
 
-		this.add(Box.createHorizontalStrut(25));
-
 		this.add(addEventButton);
+
+		this.repaint();
 	}
 
 	// Functions to set listeners for the buttons
@@ -106,5 +129,21 @@ public class CalendarToolBar extends JPanel {
 
 	public void deleteCommitmentButtonListener(ActionListener l) {
 		deleteCommitmentButton.addActionListener(l);
+	}
+
+	public synchronized void clickRefreshButton() {
+		this.refreshButton.doClick();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		eggState++;
+		if(eggState > 3) {
+			eggHatched = true;
+			setToolBarCalendarTab();
+		} else {
+			easterEgg.setIcon(easterEggIcons[eggState]);
+			easterEgg.setText("" + eggState);
+		}
 	}
 }

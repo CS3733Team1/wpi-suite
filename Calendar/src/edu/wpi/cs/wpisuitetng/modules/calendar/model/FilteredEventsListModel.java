@@ -16,24 +16,29 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	private List<Event> filteredEvents;
 
 	private FilteredEventsListModel() {
-		filteredEvents = Collections.synchronizedList(new ArrayList<Event>());
+		filteredEvents=new ArrayList<Event>();
+		//filteredEvents = Collections.synchronizedList(new ArrayList<Event>());
 		EventListModel.getEventListModel().addListDataListener(this);
 		FilterListModel.getFilterListModel().addListDataListener(this);
 		filterEvents();
 	}
 
-	static public FilteredEventsListModel getFilteredEventsListModel() {
+	static public synchronized FilteredEventsListModel getFilteredEventsListModel() {
 		if (filteredEventsListModel == null)
 			filteredEventsListModel = new FilteredEventsListModel();
+		//filteredEventsListModel.filterEvents();
 		return filteredEventsListModel;
 	}
 
 	private void filterEvents() {
+		System.out.println("Filtering events");
 		filteredEvents.clear();
-		List<Event> eventList = EventListModel.getEventListModel().getList();
+		List<Event> eventList = new ArrayList<Event>(EventListModel.getEventListModel().getList());
+		List<Event> toadd = new ArrayList<Event>();
 		
-		for(Event e: FilterListModel.getFilterListModel().applyEventFilter(eventList)) filteredEvents.add(e);
-		
+		for(Event e: FilterListModel.getFilterListModel().applyEventFilter(eventList)) 
+			toadd.add(new Event(e));
+		filteredEvents.addAll(toadd);
 		this.fireIntervalAdded(this, 0, Math.max(filteredEvents.size() - 1, 0));
 	}
 
@@ -69,7 +74,8 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 		filterEvents();
 	}
 
-	public List<Event> getList() {
+	public synchronized List<Event> getList() {
+		//filterEvents();
 		return filteredEvents;
 	}
 }

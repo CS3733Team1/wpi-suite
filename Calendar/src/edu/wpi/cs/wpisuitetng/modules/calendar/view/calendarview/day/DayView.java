@@ -48,6 +48,9 @@ public class DayView extends JPanel implements ListDataListener {
 
 	private ArrayList<Event> eventlist = new ArrayList();
 
+	/**
+	 * DayView Constructor, which setups the initial dayview view
+	 */
 	public DayView (){
 		nameList = new ArrayList<DatePanel>();
 		paneltracker = new HashMap<Date, DatePanel>();
@@ -64,16 +67,19 @@ public class DayView extends JPanel implements ListDataListener {
 
 		this.setLayout(new MigLayout("fill", 
 				"[20%][80%]", 
-				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
+				"[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1"));
 
 		this.setVisible(true);
 
 		fillDayView();
-		DisplayCommitments();
+		//DisplayCommitments();
 		
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
 
+	/**
+	 * Fills In Dayview with various panels and labels
+	 */
 	public void fillDayView(){
 		JPanel event = new JPanel();
 
@@ -135,6 +141,9 @@ public class DayView extends JPanel implements ListDataListener {
 		}
 	}
 	
+	/**
+	 * Displays Commitments on DayView 
+	 */
 	public void DisplayCommitments(){
 		List<List<Commitment>> foundyou = bananaSplit(CommitmentsOnCalendar());
 		
@@ -175,6 +184,9 @@ public class DayView extends JPanel implements ListDataListener {
 		}
 	}
 	
+	/**
+	 * Rebuilds the hour panels, so that they are normalized
+	 */
 	public void rebuildHours(){
 		for (int x = 0; x < hourlist.size(); x++){
 			this.remove(hourlist.get(x));
@@ -236,16 +248,26 @@ public class DayView extends JPanel implements ListDataListener {
 		return notevenclose;
 	}
 	
+	/**
+	 * Gets the Title for the current Day
+	 * @return String title of the day in Month Date, Year
+	 */
 	public String getTitle() {
 		return monthNames[currentMonth] + " "+ currentDate+ ", " + currentYear;
 	}
 
+	/**
+	 * Clears the events from the currentview
+	 */
 	public void ClearEvents(){
 		for (int x = 0;x < nameList.size(); x++){
 			nameList.get(x).removeEventPanel();
 		}
 	}
 
+	/**
+	 * Moves the Calendar Ahead by 1 Day
+	 */
 	public void next() {
 		currentDate++;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -261,6 +283,9 @@ public class DayView extends JPanel implements ListDataListener {
 		DisplayCommitments();
 	}
 
+	/**
+	 * Moves the Calendar Back by 1 Day
+	 */
 	public void previous() {
 		currentDate--;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -276,6 +301,9 @@ public class DayView extends JPanel implements ListDataListener {
 		DisplayCommitments();
 	}
 
+	/**
+	 * Moves the Calendar to Current Day
+	 */
 	public void today() {
 		Date today = new Date();
 		if(!(currentDate == today.getDate() && currentMonth == today.getMonth() && currentYear == today.getYear() + 1900)) {
@@ -292,6 +320,10 @@ public class DayView extends JPanel implements ListDataListener {
 		}
 	}
 	
+	/**
+	 * ViewDate changes the date of Calendar to current date
+	 * @param day The Date to change Calendar to
+	 */
 	public void viewDate(Date day) {
 		if(!(currentDate == day.getDate() && currentMonth == day.getMonth() && currentYear == day.getYear() + 1900)) {
 			currentDate = day.getDate();
@@ -307,11 +339,19 @@ public class DayView extends JPanel implements ListDataListener {
 		}
 	}
 
+	/**
+	 * Getter For Date of Calendar
+	 * @return current Date
+	 */
 	public Date getDate()
 	{
 		return new Date(currentYear-1900,currentMonth,currentDate);
 	}
 	
+	/**
+	 * Getter Method for Hashmap of Dates to Panels
+	 * @return The Hashmap containing the current dates supported in view
+	 */
 	public HashMap<Date,DatePanel> getMap()
 	{
 		return paneltracker;

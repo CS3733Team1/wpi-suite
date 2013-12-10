@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.ListDataEvent;
@@ -48,6 +49,8 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	private List<JPanel> weekpanel;
 	List<JLabel> weekdays;
 	private boolean isDisplayAbrrWeekDayNames;
+	private int todayIndex;
+	private int currentDay; 
 	
 	public WeekCalendarPanel(){
 		
@@ -63,7 +66,12 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		
 		weektitle.add(time, "aligny center, w 5000, grow");
 		weekdays = new ArrayList<JLabel>();
+		
 		isDisplayAbrrWeekDayNames = true;
+		todayIndex = 0;
+		currentDay = 0; 
+		
+		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout("fill, insets 0"));
 			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
@@ -72,6 +80,18 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 			weekName.add(label,"grow, aligny bottom");
 			if(days == 1 || days == 7)
 				label.setForeground(CalendarUtils.timeColor);
+			
+			WeekView week = weeklayer.getWeek();
+			if(week.isToday())
+			{
+				todayIndex = week.getIndex();
+				if(days == todayIndex)
+				{
+					label.setForeground(CalendarUtils.thatBlue);
+				}
+			}
+			
+	
 			weekName.setBackground(Color.white);
 			weektitle.add(weekName, "aligny bottom, w 5000, grow");
 			weekpanel.add(weekName);
@@ -83,7 +103,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		filler.add(weektitle, "growx, wrap");
 		this.add(filler, "growx, wrap");
 		
-		weekscroll = new WeekCalendarScrollPane(weeklayer);
+		
 		
 		
 		this.add(weekscroll, "grow");
@@ -107,16 +127,30 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		time.setBackground(Color.white);
 		
 		weektitle.add(time, "aligny center, w 5000, grow");
-		
+		todayIndex = 0;
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout("fill"));
-			
-			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
+			WeekView week = weeklayer.getWeek();
+			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1] + " " + week.getDate(days));
 			label.setFont(new Font(label.getName(), Font.BOLD, 14));
 			weekdays.add(label);
 			weekName.add(label,"grow, aligny bottom");
 			if(days == 1 || days == 7)
 				label.setForeground(CalendarUtils.timeColor);
+			
+			System.out.println(week.isToday());
+			if(week.isToday())
+			{
+				todayIndex = week.getIndex();
+				if(days == todayIndex){
+					label.setForeground(CalendarUtils.thatBlue);
+					weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+				}
+				else
+					weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.selectionColor));
+			}
+			else
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
 			weekName.setBackground(Color.white);
 			weektitle.add(weekName, "aligny center, w 5000, grow");
 			weekpanel.add(weekName);
@@ -206,6 +240,11 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		}
 		super.repaint();
 	}
+	
+	public Date getWeekStart()
+	{
+		return weeklayer.getWeek().getStart();
+	}
 	/*
 	 * Changes the week day names to abbreviations if the panel is too small
 	 */
@@ -225,6 +264,9 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
+		int end = weekscroll.getVerticalScrollBar().getMaximum();
+		weekscroll.getVerticalScrollBar().setValue(3*end/8);
+		
 		return weeklayer.getTitle();
 	}
 
@@ -272,8 +314,9 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 
 	@Override
 	public void viewDate(Calendar date) {
-		// TODO Auto-generated method stub
-		
+		weeklayer.viewDate(date.getTime());
+		updateWeekHeader();
+		repaint();
 	}
 	
 	@Override

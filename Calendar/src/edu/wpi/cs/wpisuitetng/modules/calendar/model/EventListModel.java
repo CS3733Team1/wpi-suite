@@ -11,6 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -76,11 +78,9 @@ public class EventListModel extends AbstractListModel<Event> {
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 	
-	public void setEvents(Event[] events) {
+	public synchronized void setEvents(Event[] events) {
 		this.emptyModel();
-		for (int i = 0; i < events.length; i++) {
-			this.events.add(events[i]);
-		}
+		this.events.addAll(Arrays.asList(events));
 		Collections.sort(this.events);
 		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
@@ -93,7 +93,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	 * other classes in this module have references to it. Hence, we manually
 	 * remove each event from the model.
 	 */
-	public void emptyModel() {
+	public synchronized void emptyModel() {
 		int oldSize = getSize();
 		Iterator<Event> iterator = events.iterator();
 		while (iterator.hasNext()) {
@@ -141,8 +141,13 @@ public class EventListModel extends AbstractListModel<Event> {
 
 	//** Note: avoid coping the events in the list here.
 	// use the copy constructor provided in Event() to avoid creating copies with dissimilar UniuqeID's
-	public List<Event> getList(){
+	public synchronized List<Event> getList(){
 		return events;
+	}
+	public synchronized void Update()
+	{
+		System.out.println("Event list model update");
+		this.fireIntervalAdded(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
 	}
 	
 }

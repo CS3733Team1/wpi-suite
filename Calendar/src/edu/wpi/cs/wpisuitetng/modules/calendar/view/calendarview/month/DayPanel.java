@@ -12,9 +12,7 @@ import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class DayPanel extends JPanel {
 	private boolean isToday;
@@ -28,6 +26,8 @@ public class DayPanel extends JPanel {
 
 	private List<EventPanel> eventsList;
 	private List<CommitmentPanel> commitmentsList;
+	
+	private List<MultiDayEventPanel> multiDayEventList;
 	
 	private List<JPanel> multiDayEventPanelsWithFiller;
 	
@@ -43,6 +43,7 @@ public class DayPanel extends JPanel {
 		this.indexInMonth = indexInMonth;
 		eventsList = new ArrayList<EventPanel>();
 		commitmentsList = new ArrayList<CommitmentPanel>();
+		multiDayEventList = new ArrayList<MultiDayEventPanel>();
 		multiDayEventPanelsWithFiller = new ArrayList<JPanel>();
 
 		day = new JLabel("", JLabel.RIGHT);
@@ -57,6 +58,18 @@ public class DayPanel extends JPanel {
 		this.add(containerPanel, "grow, push");
 	}
 
+	public List<EventPanel> getEventsList() {
+		return eventsList;
+	}
+	
+	public List<CommitmentPanel> getCommitmentsList() {
+		return commitmentsList;
+	}
+	
+	public List<MultiDayEventPanel> getMultiDayEventList() {
+		return multiDayEventList;
+	}
+	
 	public void setIsToday(boolean isToday) {
 		this.isToday = isToday;
 	}
@@ -95,6 +108,7 @@ public class DayPanel extends JPanel {
 
 	public void clearEvComs() {
 		multiDayEventPanelsWithFiller.clear();
+		multiDayEventList.clear();
 		eventsList.clear();
 		commitmentsList.clear();
 		containerPanel.removeAll();
@@ -172,13 +186,13 @@ public class DayPanel extends JPanel {
 				fillerLabel.setForeground(fillerColor);
 				filler.add(fillerLabel);
 				multiDayEventPanelsWithFiller.add(filler);
-				System.out.println("Added Filler Panel on day: " + day.getText() + " for event: " + event.getName());
 			}
 		}
 		
 		MultiDayEventPanel multiDayEventPanel = new MultiDayEventPanel(indexOfMultiDay, event, textType, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
 
 		multiDayEventPanelsWithFiller.add(multiDayEventPanel);
+		multiDayEventList.add(multiDayEventPanel);
 
 		return multiDayEventPanel;
 	}
@@ -219,13 +233,7 @@ public class DayPanel extends JPanel {
 		int width = this.getParent().getWidth()/7;
 		
 		if(numEvComs > 0) {
-			System.out.println("container Height: " + containerPanel.getHeight());
-			int containerHeight;
-			if(containerPanel.getHeight()%5 == 0) containerHeight = ((containerPanel.getHeight()-4)/5)*5;
-			else containerHeight = ((containerPanel.getHeight())/5)*5;
-			System.out.println("new container Height: " + containerHeight);
-			int numRows = Math.max(1, (int)((float)containerHeight / (float)temp.getPreferredSize().height));
-			System.out.println("numRows: " + numRows);
+			int numRows = Math.max(1, (int)((float)containerPanel.getHeight() / (float)temp.getPreferredSize().height));
 			int savedRows = numRows;
 			
 			if(numRows >= numEvComs) {

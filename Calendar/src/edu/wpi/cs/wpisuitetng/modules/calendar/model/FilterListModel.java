@@ -28,19 +28,21 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 	List<FilterChangedListener> filterChangedListeners = new ArrayList<FilterChangedListener>();
 
-	private final Filter[] defaultFilters = {new Filter("Unfiltered")};
+	private final Filter[] defaultFilters = {new Filter(UNFILTERED)};
 
 	/** The list of Filter */
 	private List<Filter> filters;
 
 	/** The active Filter */
 	private Filter activeFilter;
+	
+	private static final String UNFILTERED = "Unfiltered";
 
 	private FilterListModel() {
 		this.filters = Collections.synchronizedList(new ArrayList<Filter>());
 	}
 
-	static public FilterListModel getFilterListModel() {
+	static public synchronized FilterListModel getFilterListModel() {
 		if (filterListModel == null)
 			filterListModel = new FilterListModel();
 		return filterListModel;
@@ -127,8 +129,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		while(filters.size() != 0) filters.remove(0);
-
+		filters.clear();
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 
@@ -163,7 +164,8 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		return filters.size();
 	}
 
-	static public List<Filter> getList(){
+
+	static public synchronized List<Filter> getList(){
 		return getFilterListModel().filters;
 	}
 
@@ -174,8 +176,16 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Events
 	 */
 	public List<Event> applyEventFilter(List<Event> eventList) {
-		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return eventList;
-		else return activeFilter.applyEventFilter(eventList);
+		if (activeFilter == null)
+		{
+			return eventList;
+		}
+		else if (activeFilter.getName().equalsIgnoreCase(UNFILTERED) )
+				{
+					System.out.println("Applying Unfiltered Filter");
+					return Filter.filterTeamPersonal(eventList);
+				}
+		return activeFilter.applyEventFilter(eventList);
 	}
 
 	/**
@@ -184,8 +194,16 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Commitments
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return commitmentList;
-		else return activeFilter.applyCommitmentFilter(commitmentList);
+		if (activeFilter == null)
+		{
+			return commitmentList;
+		}
+		else if (activeFilter.getName().equalsIgnoreCase(UNFILTERED) )
+				{
+					System.out.println("Applying Unfiltered Filter");
+					return Filter.filterTeamPersonal(commitmentList);
+				}
+		return activeFilter.applyCommitmentFilter(commitmentList);
 	}
 
 	public void fireFilterChanged() {
@@ -195,5 +213,11 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 	public void addFilterChangedListener(FilterChangedListener l) {
 		filterChangedListeners.add(l);
+	}
+	public synchronized void Update()
+	{
+		System.out.println("Filter list model update");
+		//fireFilterChanged();
+		this.fireIntervalAdded(this, 0, this.filters.size() == 0 ? 0 : filters.size() -1);
 	}
 }

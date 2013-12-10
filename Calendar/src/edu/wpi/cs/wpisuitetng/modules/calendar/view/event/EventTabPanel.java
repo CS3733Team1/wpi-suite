@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
@@ -42,6 +43,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	private JTextField nameTextField;
 	private TimeDurationChooser durationChooser_;
 	private CategoryPickerPanel categoryPickerPanel;
+	private CalendarPicker calendarPicker;
 	private JTextArea descriptionTextArea;
 
 	// Buttons
@@ -90,6 +92,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		this.add(new JLabel("Category:"), "split 2");
 		categoryPickerPanel = new CategoryPickerPanel();
 		this.add(categoryPickerPanel, "alignx left, wrap");
+
+		// Calendar
+		this.add(new JLabel("Calendar:"), "split 2");
+		calendarPicker = new CalendarPicker();
+		this.add(calendarPicker, "alignx left, wrap");
 
 		// Description
 		this.add(new JLabel("Description:"), "wrap");
@@ -156,7 +163,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		Date endDate=durationChooser_.getEndDate();
 		
 		//make a new event with start and end times
-		return new Event(nameTextField.getText(), startDate, endDate,
+		return new Event(nameTextField.getText(), startDate, endDate, calendarPicker.isTeam(), 
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory());
 	}
 

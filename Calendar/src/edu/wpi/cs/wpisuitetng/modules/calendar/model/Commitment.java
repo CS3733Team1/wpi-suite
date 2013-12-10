@@ -27,7 +27,7 @@ import com.google.gson.Gson;
  * <br>
  * Privately, a Commitment has a uniqueID to help distinguish it in the database.
  */
-public class Commitment extends DeletableAbstractModel implements Comparable<Commitment> {
+public class Commitment extends DeletableAbstractModel implements Comparable<ISchedulable>, ISchedulable {
 	
 	public static enum State 
 	{
@@ -48,6 +48,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		}
 	}
 	
+	
 	// Required parameters
 	private String name;
 	private Date dueDate;
@@ -64,15 +65,30 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	//the arguments of the most basic constructor.
 	public Commitment(){}
 	
+	
+	//Commitment copy constructor
+	public Commitment(Commitment other)
+	{
+		//Commitment(String name, Date dueDate, boolean Teamhuh, String description,
+				//Category category, String progress)
+		this(other.name,other.dueDate,other.isTeam,other.description,other.category);
+		this.progress=other.progress;
+		this.UniqueID=other.UniqueID;
+		this.OwnerID=other.OwnerID;
+		this.OwnerName=other.OwnerName;
+		this.id=other.id;
+	}
 	/**
 	 * Constructs a Commitment object
 	 * @param name name of Commitment
 	 * @param dueDate due date of Commitment
 	 */
-	public Commitment(String name, Date dueDate) {
+	public Commitment(String name, Date dueDate, boolean Teamhuh) {
 		this.name = name;
 		this.dueDate = dueDate;
 		this.progress = State.NEW; //Default
+		this.isTeam = Teamhuh;
+		
 		createID();
 	}
 
@@ -82,8 +98,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param dueDate due date of Commitment
 	 * @param description description of Commitment
 	 */
-	public Commitment(String name, Date dueDate, String description) {
-		this(name, dueDate);
+	public Commitment(String name, Date dueDate, boolean Teamhuh, String description) {
+		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.progress = State.NEW; //Default
 		createID();
@@ -95,8 +111,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param dueDate due date of Commitment
 	 * @param category Category of Commitment
 	 */
-	public Commitment(String name, Date dueDate, Category category) {
-		this(name, dueDate);
+	public Commitment(String name, Date dueDate, boolean Teamhuh, Category category) {
+		this(name, dueDate, Teamhuh);
 		this.category = category.cloneFake();
 		this.progress = State.NEW; //Default
 		createID();
@@ -109,9 +125,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param description description of Commitment
 	 * @param category Category of Commitment
 	 */
-	public Commitment(String name, Date dueDate, String description,
+	public Commitment(String name, Date dueDate, boolean Teamhuh, String description,
 			Category category) {
-		this(name, dueDate);
+		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = State.NEW; //Default
@@ -126,9 +142,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param description description of Commitment
 	 * @param progress progress of Commitment
 	 */
-	public Commitment(String name, Date dueDate, String description, 
+	public Commitment(String name, Date dueDate, boolean Teamhuh, String description, 
 			String progress) {
-		this(name, dueDate);
+		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.progress=getStateFromString(progress);
 		createID();
@@ -141,9 +157,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param category category of Commitment
 	 * @param progress progress of Commitment
 	 */
-	public Commitment(String name, Date dueDate, Category category, 
+	public Commitment(String name, Date dueDate, boolean Teamhuh, Category category, 
 			String progress) {
-		this(name, dueDate);
+		this(name, dueDate, Teamhuh);
 		this.category = category.cloneFake();
 		this.progress = getStateFromString(progress);
 		createID();
@@ -157,9 +173,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 * @param category category of Commitment
 	 * @param progress progress of Commitment
 	 */
-	public Commitment(String name, Date dueDate, String description,
+	public Commitment(String name, Date dueDate, boolean Teamhuh, String description,
 			Category category, String progress) {
-		this(name, dueDate);
+		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = getStateFromString(progress);
@@ -330,6 +346,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		
 		str += String.format("<br><b>Progress:</b> %s", progress.toString());
 		
+		str += String.format("<br><b>Calendar:</b> %s", (this.isTeam) ? "Team" : "Personal");
+		
 		if(this.description != null)
 			str += "<br><b>Description:</b> " + getDescription();
 		
@@ -353,13 +371,13 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 *          Returns <b>1</b> if this Commitment begins before the input Commitment
 	 */
 	@Override
-	public int compareTo(Commitment commitment) 
+	public int compareTo(ISchedulable other) 
 	{
-		if (this.dueDate.after(commitment.getDueDate()) == true)
+		if (this.dueDate.after(other.getStartDate()) == true)
 		{
 			return -1;
 		}//end if
-		else if (this.dueDate.before(commitment.getDueDate()) == true)
+		else if (this.dueDate.before(other.getStartDate()) == true)
 		{
 			return 1;
 		}//end else if
@@ -382,5 +400,17 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.id = toCopyFrom.getID();
 		this.name = toCopyFrom.getName();
 		this.progress = toCopyFrom.getProgressState();
+	}
+
+	@Override
+	public Date getStartDate() {
+		return this.dueDate;
+	}
+
+	@Override
+	public Date getEndDate() {
+		Date temp = (Date) this.dueDate.clone();
+		temp.setMinutes(temp.getMinutes() + 30);
+		return temp;
 	}
 }//end Commitment
