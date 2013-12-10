@@ -50,7 +50,22 @@ public class DateUtils {
 			return strHours+":"+strMinutes+strAmPm;
 //		}
 	}
-	
+	public static String  hourString(int hour)
+	{
+		String output = "";
+		if(hour == 0)
+		{
+			output = "";
+		}
+		else if(hour < 12){
+			output = ""+hour+ " AM";
+		}else if (hour == 12){
+			output = "NOON";
+		}
+		return output;
+	}
+			
+
 	public static Date stringToDate(String strDate){	
 //		System.out.println("Parsing string time: "+strDate);
 

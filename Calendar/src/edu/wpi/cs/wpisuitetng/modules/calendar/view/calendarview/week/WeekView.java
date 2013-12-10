@@ -45,12 +45,20 @@ public class WeekView extends JPanel{
 	private ArrayList<JPanel> hourlist;
 	private HashMap<Date, DatePanel> paneltracker;
 
+	private int numDays;
+	
 	private Calendar mycal;
 	private int currentMonth;
 	private int currentYear;
 	private int currentDate;
+	private boolean todayWithinWeek;
+	private int todayIndex;
+	private int todayDate;
 
 	public WeekView(){
+		todayDate = 0;
+		todayIndex = 0;
+		todayWithinWeek = false;
 		nameList = new ArrayList<DatePanel>();
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
@@ -75,7 +83,8 @@ public class WeekView extends JPanel{
 	}
 
 	public void fillDayView(){
-
+		todayWithinWeek = false;
+		System.out.println("FILLER UP");
 		JPanel time = new JPanel();
 
 		for (int currenthour=0; currenthour < 24; currenthour++){
@@ -114,7 +123,6 @@ public class WeekView extends JPanel{
 				
 				Calendar cal = Calendar.getInstance();
 				
-				
 				if(currentday == 1 || currentday ==7)
 					thesecond.setBackground(CalendarUtils.weekendColor);
 				else 
@@ -123,12 +131,10 @@ public class WeekView extends JPanel{
 				if(cal.get(Calendar.MONTH) == currentMonth &&
 						cal.get(Calendar.YEAR) == currentYear && 
 						cal.get(Calendar.DATE) == currentDate + (currentday - 1)){
-							
+							todayWithinWeek = true;
+							todayIndex = currentday;
 							thesecond.setBackground(CalendarUtils.selectionColor);
 							thesecond.setBorder(new MatteBorder(0, 0, 1, 0, CalendarUtils.thatBlue));
-				}else{
-					thesecond.setBackground(Color.white);
-					
 				}
 				
 				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
@@ -137,6 +143,26 @@ public class WeekView extends JPanel{
 				nameList.add(thesecond);
 			}
 		}
+	}
+	public boolean isToday()
+	{
+		return todayWithinWeek;
+	}
+	
+	public int getDate(int index)
+	{
+		Calendar cal = new GregorianCalendar(currentYear, currentMonth, 1);
+		
+		if(cal.getActualMaximum(Calendar.DAY_OF_MONTH) >= currentDate + (index -1))
+			return currentDate + (index - 1);
+		else
+			return (currentDate + (index -1))- cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		
+	}
+	
+	public int getIndex()
+	{
+		return todayIndex;
 	}
 
 	/**
