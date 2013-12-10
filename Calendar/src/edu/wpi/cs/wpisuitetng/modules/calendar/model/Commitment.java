@@ -27,7 +27,7 @@ import com.google.gson.Gson;
  * <br>
  * Privately, a Commitment has a uniqueID to help distinguish it in the database.
  */
-public class Commitment extends DeletableAbstractModel implements Comparable<Commitment> {
+public class Commitment extends DeletableAbstractModel implements Comparable<ISchedulable>, ISchedulable {
 	
 	public static enum State 
 	{
@@ -353,13 +353,13 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 	 *          Returns <b>1</b> if this Commitment begins before the input Commitment
 	 */
 	@Override
-	public int compareTo(Commitment commitment) 
+	public int compareTo(ISchedulable other) 
 	{
-		if (this.dueDate.after(commitment.getDueDate()) == true)
+		if (this.dueDate.after(other.getStartDate()) == true)
 		{
 			return -1;
 		}//end if
-		else if (this.dueDate.before(commitment.getDueDate()) == true)
+		else if (this.dueDate.before(other.getStartDate()) == true)
 		{
 			return 1;
 		}//end else if
@@ -382,5 +382,17 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		this.id = toCopyFrom.getID();
 		this.name = toCopyFrom.getName();
 		this.progress = toCopyFrom.getProgressState();
+	}
+
+	@Override
+	public Date getStartDate() {
+		return this.dueDate;
+	}
+
+	@Override
+	public Date getEndDate() {
+		Date temp = (Date) this.dueDate.clone();
+		temp.setMinutes(temp.getMinutes() + 30);
+		return temp;
 	}
 }//end Commitment
