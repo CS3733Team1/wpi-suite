@@ -169,7 +169,6 @@ public class DayPanel extends JPanel {
 				fillerLabel.setForeground(fillerColor);
 				filler.add(fillerLabel);
 				multiDayEventPanelsWithFiller.add(filler);
-				System.out.println("Added Filler Panel on day: " + day.getText() + " for event: " + event.getName());
 			}
 		}
 		
@@ -214,13 +213,7 @@ public class DayPanel extends JPanel {
 		int width = this.getParent().getWidth()/7;
 		
 		if(numEvComs > 0) {
-			System.out.println("container Height: " + containerPanel.getHeight());
-			int containerHeight;
-			if(containerPanel.getHeight()%5 == 0) containerHeight = ((containerPanel.getHeight()-4)/5)*5;
-			else containerHeight = ((containerPanel.getHeight())/5)*5;
-			System.out.println("new container Height: " + containerHeight);
-			int numRows = Math.max(1, (int)((float)containerHeight / (float)temp.getPreferredSize().height));
-			System.out.println("numRows: " + numRows);
+			int numRows = Math.max(1, (int)((float)containerPanel.getHeight() / (float)temp.getPreferredSize().height));
 			int savedRows = numRows;
 			
 			if(numRows >= numEvComs) {

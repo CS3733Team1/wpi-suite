@@ -14,41 +14,41 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 
 public class CalendarToolBar extends JPanel {
 	// Always visible
-	private JButton refreshButton;
+	private TransparentButton refreshButton;
 
 	// Always Visible
-	private JButton addCommitmentButton;
-	private JButton addEventButton;
+	private TransparentButton addCommitmentButton;
+	private TransparentButton addEventButton;
 
 	// Visible only when commitments/events are selected on either calendar tab
-	private JButton deleteCommitmentButton;
-	private JButton deleteEventButton;
+	private TransparentButton deleteCommitmentButton;
+	private TransparentButton deleteEventButton;
 
 	public CalendarToolBar() {
 		try {
-			refreshButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
+			refreshButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
 
-			addCommitmentButton = new JButton("<html>New<br/>Commitment</html>",
+			addCommitmentButton = new TransparentButton("<html>New<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png"))));
-			deleteCommitmentButton = new JButton("<html>Delete<br/>Commitment</html>",
+			deleteCommitmentButton = new TransparentButton("<html>Delete<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_commitment.png"))));
 
-			addEventButton = new JButton("<html>New<br/>Event</html>",
+			addEventButton = new TransparentButton("<html>New<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
-			deleteEventButton = new JButton("<html>Delete<br/>Event</html>",
+			deleteEventButton = new TransparentButton("<html>Delete<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_event.png"))));
 		} catch (IOException e) {}
 
 		
-		this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		this.setLayout(new MigLayout());
 		this.setToolBarCalendarTab();
 	}
 
@@ -58,13 +58,9 @@ public class CalendarToolBar extends JPanel {
 		this.removeAll();
 
 		this.add(refreshButton);
-		
-		this.add(Box.createHorizontalStrut(25));
 
 		this.add(addCommitmentButton);
 		this.add(deleteCommitmentButton);
-
-		this.add(Box.createHorizontalStrut(25));
 
 		this.add(addEventButton);
 		this.add(deleteEventButton);
@@ -77,11 +73,7 @@ public class CalendarToolBar extends JPanel {
 
 		this.add(refreshButton);
 
-		this.add(Box.createHorizontalStrut(25));
-
 		this.add(addCommitmentButton);
-
-		this.add(Box.createHorizontalStrut(25));
 
 		this.add(addEventButton);
 	}
