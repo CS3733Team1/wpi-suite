@@ -126,7 +126,8 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 	@Override
 	public void viewDate(Calendar date) {
 		// TODO Auto-generated method stub
-		
+		daylayer.viewDate(date.getTime());
+		updateDay();
 	}
 
 }

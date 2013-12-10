@@ -50,8 +50,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist.QuickListTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+
 
 public class CalendarTabPanel extends JPanel {
 	private JCheckBox personalCalCheckBox, teamCalCheckBox;
@@ -237,6 +239,7 @@ public class CalendarTabPanel extends JPanel {
 
 	public void displayDayView() {
 		if(!(calendarView instanceof DayCalendarPanel)) {
+			viewButtonGroup.setSelectedButton(0);
 			calendarViewPanel.removeAll();
 			calendarView = dayView;
 			calendarViewPanel.add(dayView, "w 5000, h 5000");
@@ -247,6 +250,7 @@ public class CalendarTabPanel extends JPanel {
 	}
 	public void displayWeekView() {
 		if(!(calendarView instanceof WeekCalendarPanel)){
+			viewButtonGroup.setSelectedButton(1);
 			calendarViewPanel.removeAll();
 			calendarView = weekView;
 			calendarViewPanel.add(weekView, "w 5000, h 5000");
@@ -258,6 +262,7 @@ public class CalendarTabPanel extends JPanel {
 
 	public void displayMonthView() {
 		if(!(calendarView instanceof MonthCalendarView)) {
+			viewButtonGroup.setSelectedButton(2);
 			calendarViewPanel.removeAll();
 			calendarView = monthView;
 			calendarViewPanel.add(monthView, "w 5000, h 5000");
@@ -269,6 +274,7 @@ public class CalendarTabPanel extends JPanel {
 
 	public void displayYearView() {
 		if(!(calendarView instanceof YearCalendarView)){
+			viewButtonGroup.setSelectedButton(3);
 			calendarViewPanel.removeAll();
 			calendarView = yearView;
 			calendarViewPanel.add(yearView, "w 5000, h 5000");

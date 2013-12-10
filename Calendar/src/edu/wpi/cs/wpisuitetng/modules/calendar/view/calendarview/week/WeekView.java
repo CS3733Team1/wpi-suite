@@ -65,7 +65,7 @@ public class WeekView extends JPanel implements ICalendarView {
 		mycal = new GregorianCalendar(currentYear, currentMonth, currentDate);
 		this.setBackground(Color.white);
 
-		this.setLayout(new MigLayout("fill, debug", 
+		this.setLayout(new MigLayout("fill", 
 				"0[8.75%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]3[12.667%]0", 
 				"0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0[4%]0"));
 
@@ -88,7 +88,7 @@ public class WeekView extends JPanel implements ICalendarView {
 			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 			
-			JLabel label = new JLabel(DateUtils.hourString(currenthour));
+			JLabel label = new JLabel(DateUtils.timeToString(currenthour,0));
 			label.setForeground(CalendarUtils.timeColor);
 
 			hour.add(label);

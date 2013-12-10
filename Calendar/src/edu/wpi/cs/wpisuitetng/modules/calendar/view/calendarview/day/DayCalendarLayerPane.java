@@ -147,6 +147,12 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		repaint();
 	}
 	
+	public void viewDate(Date day){
+		dayview.viewDate(day);
+		ChangeTheWorld();
+		repaint();
+	}
+	
 	public void contentsChanged(ListDataEvent arg0) {
 		ChangeTheWorld();
 		repaint();

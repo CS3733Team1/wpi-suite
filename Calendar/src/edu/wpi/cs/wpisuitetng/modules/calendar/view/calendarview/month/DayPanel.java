@@ -12,7 +12,11 @@ import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
+
 
 public class DayPanel extends JPanel {
 	private boolean isToday;
@@ -154,6 +158,7 @@ public class DayPanel extends JPanel {
 				textType = 3;
 			} else if((indexInMonth+1)%7 == 1) textType = 2;
 
+
 			// Else don't show any times or text i.e. Do nothing
 		}
 		
@@ -174,7 +179,6 @@ public class DayPanel extends JPanel {
 				fillerLabel.setForeground(fillerColor);
 				filler.add(fillerLabel);
 				multiDayEventPanelsWithFiller.add(filler);
-				System.out.println("Added Filler Panel on day: " + day.getText() + " for event: " + event.getName());
 			}
 		}
 		
@@ -203,7 +207,9 @@ public class DayPanel extends JPanel {
 			else backgroundColor = Color.WHITE;
 		}
 		
+
 		CommitmentPanel commitmentPanel = new CommitmentPanel(commitment, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
+
 
 		commitmentsList.add(commitmentPanel);
 		
@@ -215,14 +221,14 @@ public class DayPanel extends JPanel {
 		containerPanel.removeAll();
 		JLabel temp = new JLabel("I have Height!");
 		
-		int numEveComs = multiDayEventPanelsWithFiller.size() + eventsList.size() + commitmentsList.size();
+		int numEvComs = multiDayEventPanelsWithFiller.size() + eventsList.size() + commitmentsList.size();
 		int width = this.getParent().getWidth()/7;
 		
-		if(numEveComs > 0) {
-			int numRows = Math.max(1, (int)((float)containerPanel.getHeight() / (float)temp.getPreferredSize().height + 0.5));
+		if(numEvComs > 0) {
+			int numRows = Math.max(1, (int)((float)containerPanel.getHeight() / (float)temp.getPreferredSize().height));
 			int savedRows = numRows;
 			
-			if(numRows >= numEveComs) {
+			if(numRows >= numEvComs) {
 				for(JPanel panel: multiDayEventPanelsWithFiller) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
 				for(JPanel panel: eventsList) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
 				for(JPanel panel: commitmentsList) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
@@ -242,7 +248,7 @@ public class DayPanel extends JPanel {
 					else break;
 				}
 
-				containerPanel.add(new JLabel((numEveComs-savedRows+1) + " more..."), "gap left 5");
+				containerPanel.add(new JLabel((numEvComs-savedRows+1) + " more..."), "gap left 5");
 			}
 		}
 	}

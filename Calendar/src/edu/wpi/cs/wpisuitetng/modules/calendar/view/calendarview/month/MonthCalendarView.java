@@ -89,6 +89,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			this.add(titlePanel, "grow");
 		}
 
+		weekDays.get(0).setForeground(CalendarUtils.timeColor);
+		weekDays.get(CalendarUtils.weekNamesAbbr.length - 1).setForeground(CalendarUtils.timeColor);
+		
 		// Add all the day labels to the month
 		for(DayPanel dayPanel: days) this.add(dayPanel, "grow, hmin 27");
 
@@ -184,7 +187,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 					if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
 				}
 			} else { // Multiday event
-				System.out.println(event.getName());
 				// Will store the EventPanels that are multiday events and related
 				List<MultiDayEventPanel> multidayEvents = new ArrayList<MultiDayEventPanel>();
 
@@ -251,7 +253,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	private Calendar cloneCalendar(Calendar toBeCloned) {
 		Calendar clonedCal = Calendar.getInstance();
 		clonedCal.set(Calendar.YEAR, toBeCloned.get(Calendar.YEAR));
-		clonedCal.set(Calendar.DAY_OF_YEAR, toBeCloned.get(Calendar.DAY_OF_YEAR));
+		clonedCal.set(Calendar.MONTH, toBeCloned.get(Calendar.MONTH));
+		clonedCal.set(Calendar.DATE, toBeCloned.get(Calendar.DATE));
 		return clonedCal;
 	}
 

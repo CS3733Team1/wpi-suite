@@ -1,6 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.filter;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,9 +12,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
 
-public class FilterPanel extends JPanel{
+public class FilterPanel extends JPanel implements MouseListener{
 	FilterListPanel filterListPanel;
 
 	private JButton addFilterButton, deleteFilterButton;
@@ -29,6 +34,8 @@ public class FilterPanel extends JPanel{
 		} catch (IOException e) {e.printStackTrace();}
 
 		this.filterListPanel = new FilterListPanel();
+		
+		this.filterListPanel.getFilterList().addMouseListener(this);
 		
 		addFilterButton.setActionCommand("add");
 		deleteFilterButton.setActionCommand("delete");
@@ -56,4 +63,29 @@ public class FilterPanel extends JPanel{
 	public void clearSelection() {
 		filterListPanel.clearSelection();
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		boolean deleteEnabled = true;
+		for( Filter c: getSelectedFilters()){
+			if(FilterListModel.getFilterListModel().isDefault(c))
+			{
+				deleteEnabled = false;
+			}
+		}
+		deleteFilterButton.setEnabled(deleteEnabled);
+		repaint();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
 }
