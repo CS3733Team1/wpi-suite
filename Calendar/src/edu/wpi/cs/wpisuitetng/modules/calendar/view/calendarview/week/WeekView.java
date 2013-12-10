@@ -88,7 +88,7 @@ public class WeekView extends JPanel{
 			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 			
-			JLabel label = new JLabel(DateUtils.hourString(currenthour));
+			JLabel label = new JLabel(DateUtils.timeToString(currenthour,0));
 			label.setForeground(CalendarUtils.timeColor);
 
 			hour.add(label);

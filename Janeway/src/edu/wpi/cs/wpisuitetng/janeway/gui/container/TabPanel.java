@@ -18,8 +18,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.SpringLayout;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 
@@ -93,24 +93,11 @@ public class TabPanel extends JPanel {
 			for (JanewayTabModel jtm : ijm.getTabs()) {				
 				// Create a panel to hold the buttons and tab contents
 				JPanel newPanel = new JPanel();
-				SpringLayout newPanelLayout = new SpringLayout();
-				newPanel.setLayout(newPanelLayout);
-				
-				// Constrain the toolbar
-				newPanelLayout.putConstraint(SpringLayout.NORTH, jtm.getToolbar(), 0, SpringLayout.NORTH, newPanel);
-				newPanelLayout.putConstraint(SpringLayout.WEST, jtm.getToolbar(), 0, SpringLayout.WEST, newPanel);
-				newPanelLayout.putConstraint(SpringLayout.EAST, jtm.getToolbar(), 0, SpringLayout.EAST, newPanel);
-				newPanelLayout.putConstraint(SpringLayout.SOUTH, jtm.getToolbar(), 50, SpringLayout.NORTH, jtm.getToolbar());
-				
-				// Constrain the main component
-				newPanelLayout.putConstraint(SpringLayout.NORTH, jtm.getMainComponent(), 0, SpringLayout.SOUTH, jtm.getToolbar());
-				newPanelLayout.putConstraint(SpringLayout.WEST, jtm.getMainComponent(), 0, SpringLayout.WEST, newPanel);
-				newPanelLayout.putConstraint(SpringLayout.EAST, jtm.getMainComponent(), 0, SpringLayout.EAST, newPanel);
-				newPanelLayout.putConstraint(SpringLayout.SOUTH, jtm.getMainComponent(), 0, SpringLayout.SOUTH, newPanel);
+				newPanel.setLayout(new MigLayout("fill"));
 				
 				// Add the toolbar and main component to the new panel
-				newPanel.add(jtm.getToolbar());
-				newPanel.add(jtm.getMainComponent());
+				newPanel.add(jtm.getToolbar(), "grow, wrap");
+				newPanel.add(jtm.getMainComponent(), "grow, push");
 				newPanel.setName(jtm.getName());
 				
 				// Add a tab to the tabbed pane containing the new panel

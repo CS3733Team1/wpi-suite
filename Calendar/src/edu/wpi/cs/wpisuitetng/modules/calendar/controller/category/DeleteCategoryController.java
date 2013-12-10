@@ -32,7 +32,7 @@ public class DeleteCategoryController {
 		for (Category cat: list) {
 			if(!model.isDefault(cat)) {
 				// Send a request to the core to save this message 
-				final Request request = Network.getInstance().makeRequest("calendar/category/"+cat.getUniqueID(), HttpMethod.GET); // PUT == create
+				final Request request = Network.getInstance().makeRequest("calendar/category/" + cat.getUniqueID(), HttpMethod.GET); // PUT == create
 				request.addHeader("X-HTTP-Method-Override", "DELETE");
 				//request.setBody(cat.toJSON()); // put the new message in the body of the request
 				request.addObserver(new DeleteCategoryObserver(this)); // add an observer to process the response
