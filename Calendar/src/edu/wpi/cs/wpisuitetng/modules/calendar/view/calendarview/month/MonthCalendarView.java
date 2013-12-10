@@ -347,7 +347,12 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	}
 	
 	@Override
-	public void viewDate(Calendar date) {}
+	public void viewDate(Calendar date) {
+		if(this.currentMonth.get(Calendar.MONTH) != date.MONTH) {
+			this.currentMonth = date;
+			this.updateDates();
+		}
+	}
 
 	// Unused
 	@Override

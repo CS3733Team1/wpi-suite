@@ -264,6 +264,9 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
+		int end = weekscroll.getVerticalScrollBar().getMaximum();
+		weekscroll.getVerticalScrollBar().setValue(3*end/8);
+		
 		return weeklayer.getTitle();
 	}
 
@@ -311,8 +314,9 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 
 	@Override
 	public void viewDate(Calendar date) {
-		// TODO Auto-generated method stub
-		
+		weeklayer.viewDate(date.getTime());
+		updateWeekHeader();
+		repaint();
 	}
 	
 	@Override

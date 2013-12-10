@@ -37,7 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
  * This is the bottom layer of the week view hierarchy. 
  */
 
-public class WeekView extends JPanel implements ICalendarView {
+public class WeekView extends JPanel{
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
@@ -183,7 +183,6 @@ public class WeekView extends JPanel implements ICalendarView {
 		return notevenclose;
 	}
 	
-	@Override
 	public String getTitle() {
 		Date datdate = new Date(currentYear-1900, currentMonth, currentDate+6);
 		int nextyear = datdate.getYear() + 1900;
@@ -193,7 +192,6 @@ public class WeekView extends JPanel implements ICalendarView {
 		return monthNames[currentMonth] + " "+ currentDate + ", " + currentYear + " - " + monthNames[nextmonth] + " "+ nextdate + ", " + nextyear;
 	}
 
-	@Override
 	public void next() {
 		currentDate = currentDate + 7;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -208,7 +206,6 @@ public class WeekView extends JPanel implements ICalendarView {
 		fillDayView();
 	}
 
-	@Override
 	public void previous() {
 		currentDate = currentDate - 7;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -223,7 +220,6 @@ public class WeekView extends JPanel implements ICalendarView {
 		fillDayView();
 	}
 
-	@Override
 	public void today() {
 		Date today = new Date();
 		int correctday = today.getDay();
@@ -249,10 +245,20 @@ public class WeekView extends JPanel implements ICalendarView {
 		return new Date(currentYear-1900, currentMonth, currentDate);
 	}
 
-	@Override
-	public void viewDate(Calendar date) {
-		// TODO Auto-generated method stub
-		
+	public void viewDate(Date date) {
+		int correctday = date.getDay();
+		if(!(currentDate == date.getDate() - correctday && currentMonth == date.getMonth() && currentYear == date.getYear() + 1900)) {
+
+			currentDate = date.getDate() - correctday;
+			currentMonth = date.getMonth();
+			currentYear = date.getYear() + 1900;
+
+			this.removeAll();
+			nameList = new ArrayList<DatePanel>();
+			paneltracker = new HashMap<Date, DatePanel>();
+			hourlist = new ArrayList<JPanel>();
+			fillDayView();
+		}
 	}
 
 }
