@@ -15,6 +15,8 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -29,8 +31,8 @@ public class EventMouseListener implements MouseListener{
 	Event e;
 	JPanel epanel;
 	
-	static ArrayList<Event> selectedEvents= new ArrayList<Event>();
-	static ArrayList<JPanel> selectedPanels= new ArrayList<JPanel>();
+	static List<Event> selectedEvents= Collections.synchronizedList(new ArrayList<Event>());
+	static List<JPanel> selectedPanels= Collections.synchronizedList(new ArrayList<JPanel>());
 	
 	public EventMouseListener(Event e, JPanel epanel){
 		this.e=e;
@@ -116,7 +118,7 @@ public class EventMouseListener implements MouseListener{
 	public void mouseReleased(MouseEvent e) {
 	}
 	
-	public static ArrayList<Event> getSelected(){
+	public static List<Event> getSelected(){
 		return selectedEvents;
 	}
 	
