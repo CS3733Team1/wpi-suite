@@ -80,10 +80,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		nameErrorLabel = new JLabel(EMPTY_NAME_ERROR);
 		nameErrorLabel.setForeground(Color.RED);
 		this.add(nameErrorLabel, "cell 0 0");
-		// Recurring Events
-		eventRecurringPanel = new EventRecurringPanel(new Date());
-		add(eventRecurringPanel, "cell 0 5,alignx left");
-
+		
 		//duration
 		durationChooser_=new TimeDurationChooser();
 		durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
@@ -93,15 +90,20 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				validateFields();
 			}
 		});
-		add(durationChooser_, "alignx left");
+		add(durationChooser_, "cell 0 2, alignx left");
+		
+		// Recurring Events
+		eventRecurringPanel = new EventRecurringPanel(new Date());
+		add(eventRecurringPanel, "cell 0 3,alignx left");
+
 
 		// Category
-		this.add(new JLabel("Category:"), "cell 0 7");
+		this.add(new JLabel("Category:"), "cell 0 4");
 		categoryPickerPanel = new CategoryPickerPanel();
-		this.add(categoryPickerPanel, "cell 0 7,alignx left");
+		this.add(categoryPickerPanel, "cell 0 4,alignx left");
 
 		// Description
-		this.add(new JLabel("Description:"), "cell 0 8");
+		this.add(new JLabel("Description:"), "cell 0 5");
 
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setLineWrap(true);
