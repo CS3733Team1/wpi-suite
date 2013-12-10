@@ -62,6 +62,9 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		dayscroll = new DayCalendarScrollPane(daylayer);
 
 		this.add(dayscroll, "grow, push");
+		
+		int end = dayscroll.getVerticalScrollBar().getMaximum();
+		dayscroll.getVerticalScrollBar().setValue(end * 3 / 4);
 
 	}
 
@@ -123,7 +126,8 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 	@Override
 	public void viewDate(Calendar date) {
 		// TODO Auto-generated method stub
-		
+		daylayer.viewDate(date.getTime());
+		updateDay();
 	}
 
 }

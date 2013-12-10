@@ -59,7 +59,7 @@ public class TimeDurationPickerPanel extends JPanel {
 	}
 	
 	private void TimeChanged(){
-		fireTimeChangedEvent(new TimeChangedEvent(StartTimePicker.getTimeAsSting()+"-"+EndTimePicker.getTimeAsSting()));
+		fireTimeChangedEvent(new TimeChangedEvent(StartTimePicker.getTimeAsString()+"-"+EndTimePicker.getTimeAsString()));
 	}
 	
 	public void setStartDay(Date day){

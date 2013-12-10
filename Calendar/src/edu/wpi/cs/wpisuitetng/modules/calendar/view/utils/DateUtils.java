@@ -1,9 +1,9 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.utils;
 
 import java.text.DateFormat;
 import java.util.Date;
 
-public class DateUtilities {
+public class DateUtils {
 
 	/**
 	 * Helper function to get a string representation of a time contained in a Date.

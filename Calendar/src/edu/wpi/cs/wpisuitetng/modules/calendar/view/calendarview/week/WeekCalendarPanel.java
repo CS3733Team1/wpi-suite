@@ -13,7 +13,10 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -23,6 +26,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.AncestorEvent;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -30,75 +34,90 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
  * The second level of the week view hierarchy. Holds the WeekCalendarLayerPane and the WeekCalendarScrollPane.
  */
 
-public class WeekCalendarPanel extends JPanel implements ICalendarView, ListDataListener {
+public class WeekCalendarPanel extends JPanel implements ICalendarView, ListDataListener, ComponentListener {
 
 	private WeekCalendarScrollPane weekscroll;
 	private WeekCalendarLayerPane weeklayer;
 	private JPanel weektitle;
 	private List<JPanel> weekpanel;
-	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-	
+	List<JLabel> weekdays;
+	private boolean isDisplayAbrrWeekDayNames;
 	
 	public WeekCalendarPanel(){
-		this.setBorder(BorderFactory.createTitledBorder(null,
-	            "Week View", TitledBorder.LEFT, TitledBorder.TOP,
-	            new Font("null", Font.BOLD, 12), Color.BLUE));
 		
-		
-		this.setLayout(new MigLayout("fill"));
+		this.setLayout(new MigLayout("fill, insets 0"));
 		
 		weeklayer = new WeekCalendarLayerPane();
 		weekpanel = new LinkedList<JPanel>();
-		weektitle = new JPanel(new MigLayout("fill, insets 0", "[9%][13%][13%][13%][13%][13%][13%][13%]18px"));
+		weektitle = new JPanel(new MigLayout("fill, insets 0", "0[8.66%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]0[45]0"));
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
-		time.add(new JLabel("Time"), "grow, aligny center");
-		time.setBackground(new Color(138,173,209));
+		time.add(new JLabel(""), "grow, aligny bottom");
+		time.setBackground(Color.white);
 		
 		weektitle.add(time, "aligny center, w 5000, grow");
-		
+		weekdays = new ArrayList<JLabel>();
+		isDisplayAbrrWeekDayNames = true;
 		for(int days = 1; days < 8; days++){
-			JPanel weekName = new JPanel(new MigLayout("fill"));
-			
-			weekName.add(new JLabel(weekNames[days-1]),"grow, aligny center");
-			weekName.setBackground(new Color(138,173,209));
-			weektitle.add(weekName, "aligny center, w 5000, grow");
+			JPanel weekName = new JPanel(new MigLayout("fill, insets 0"));
+			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
+			label.setFont(new Font(label.getName(), Font.BOLD, 14));
+			weekdays.add(label);
+			weekName.add(label,"grow, aligny bottom");
+			if(days == 1 || days == 7)
+				label.setForeground(CalendarUtils.timeColor);
+			weekName.setBackground(Color.white);
+			weektitle.add(weekName, "aligny bottom, w 5000, grow");
 			weekpanel.add(weekName);
 		}
+		JPanel space = new JPanel(new MigLayout("fill, insets 0"));
+		weektitle.add(space);
 		
-		JPanel filler = new JPanel(new MigLayout("fill"));
-		filler.add(weektitle, "grow, wrap");
-		this.add(filler, "grow, wrap");
+		JPanel filler = new JPanel(new MigLayout("fill, insets 0"));
+		filler.add(weektitle, "growx, wrap");
+		this.add(filler, "growx, wrap");
 		
 		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		
-		this.add(weekscroll, "grow, push");
+		
+		this.add(weekscroll, "grow");
 		
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 		DisplayCommitments();
+		
+		int end = weekscroll.getVerticalScrollBar().getMaximum();
+		weekscroll.getVerticalScrollBar().setValue(end * 3 / 4);
+		
 		repaint();
 	}
 	
 	public void rebuildDays(){
+		weekdays.clear();
 		weektitle.removeAll();
 		weekpanel = new LinkedList<JPanel>();
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
-		time.add(new JLabel("Time"), "grow, aligny center");
-		time.setBackground(new Color(138,173,209));
+		time.add(new JLabel(""), "grow, aligny bottom");
+		time.setBackground(Color.white);
 		
 		weektitle.add(time, "aligny center, w 5000, grow");
 		
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout("fill"));
 			
-			weekName.add(new JLabel(weekNames[days-1]),"grow, aligny center");
-			weekName.setBackground(new Color(138,173,209));
+			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
+			label.setFont(new Font(label.getName(), Font.BOLD, 14));
+			weekdays.add(label);
+			weekName.add(label,"grow, aligny bottom");
+			if(days == 1 || days == 7)
+				label.setForeground(CalendarUtils.timeColor);
+			weekName.setBackground(Color.white);
 			weektitle.add(weekName, "aligny center, w 5000, grow");
 			weekpanel.add(weekName);
 		}
@@ -187,6 +206,21 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		}
 		super.repaint();
 	}
+	/*
+	 * Changes the week day names to abbreviations if the panel is too small
+	 */
+	private void updateLayout() {
+		if(this.getWidth() <= 900 && !isDisplayAbrrWeekDayNames) {
+			isDisplayAbrrWeekDayNames = true;
+			for(int i = 0; i < weekdays.size(); i++)
+				weekdays.get(i).setText(CalendarUtils.weekNamesAbbr[i]);
+		} else if(this.getWidth() > 900 && isDisplayAbrrWeekDayNames) {
+			isDisplayAbrrWeekDayNames = false;
+			for(int i = 0; i < weekdays.size(); i++)
+				weekdays.get(i).setText(CalendarUtils.weekNames[i]);
+		}
+	}
+	
 	
 	@Override
 	public String getTitle() {
@@ -241,4 +275,17 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void componentResized(ComponentEvent e) {
+		this.updateLayout();
+	}
+	
+	// Unused
+	@Override
+	public void componentHidden(ComponentEvent e) {}
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+	@Override
+	public void componentShown(ComponentEvent e) {}
 }
