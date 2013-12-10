@@ -42,6 +42,8 @@ public class CategoryPanel extends JPanel implements MouseListener{
 		} catch (IOException e) {e.printStackTrace();}
 
 		this.categoryListPanel = new CategoryListPanel();
+
+		this.categoryListPanel.getCategoryList().addMouseListener(this);
 		
 		addCategoryButton.setActionCommand("add");
 		deleteCategoryButton.setActionCommand("delete");
@@ -52,6 +54,7 @@ public class CategoryPanel extends JPanel implements MouseListener{
 		
 		this.add(p, "wrap");
 		this.add(categoryListPanel, "grow, push");
+
 	}
 	
 	public void setAddCategoryListener(ActionListener al) {
@@ -80,6 +83,7 @@ public class CategoryPanel extends JPanel implements MouseListener{
 			}
 		}
 		deleteCategoryButton.setEnabled(deleteEnabled);
+		repaint();
 	}
 
 	@Override
