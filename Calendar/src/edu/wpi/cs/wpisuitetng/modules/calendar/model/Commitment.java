@@ -73,6 +73,10 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 				//Category category, String progress)
 		this(other.name,other.dueDate,other.isTeam,other.description,other.category);
 		this.progress=other.progress;
+		this.UniqueID=other.UniqueID;
+		this.OwnerID=other.OwnerID;
+		this.OwnerName=other.OwnerName;
+		this.id=other.id;
 	}
 	/**
 	 * Constructs a Commitment object
