@@ -100,7 +100,7 @@ public class MultidayEventView extends JPanel{
 		bob.append("</html>");
 		eventinfo.setToolTipText(bob.toString());
 		
-		}
+	}
 	
 	/**
 	 * Getter Method for isEventShowing

@@ -139,7 +139,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			}
 		}
 
-		multiview = new MultidayEventWeekView(multilistlist, this.getSize());
+		multiview = new MultidayEventWeekView(multilistlist, this.getSize(), weekview.getStart());
 		
 		this.add(multiview, layer, -1);
 		layer++;
