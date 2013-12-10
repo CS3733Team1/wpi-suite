@@ -36,7 +36,6 @@ public class DeleteEventController implements ActionListener {
 		//calendarPanel.getCalendarTabPanel().getSelectedEventList()
 		Event event=null;
 		ArrayList<Event> selected = EventMouseListener.getSelected();
-		System.err.println("Del: "+ selected.get(0).getUniqueID());
 		
 		for (int i =0; i< selected.size();i++) {
 //			Event event=EventMouseListener.getSelected();
