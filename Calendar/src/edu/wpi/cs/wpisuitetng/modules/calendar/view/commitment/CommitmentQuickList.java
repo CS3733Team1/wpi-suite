@@ -3,6 +3,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Date;
 
 import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataEvent;
@@ -26,28 +27,53 @@ public class CommitmentQuickList extends AbstractListModel<Commitment> implement
 	
 	private List<Commitment> commitmentsInView(List<Commitment> list){
 		List<Commitment> inView = new ArrayList<Commitment>();
-		
+
 		currentView = CalendarTabPanel.getCalendarView();
 		Iterator<Commitment> iterator = list.iterator();
+		Commitment temp = new Commitment();
 		if (currentView instanceof DayCalendarPanel)
 		{
 			while(iterator.hasNext())
 			{
-				if(iterator.next().getDueDate() == ((DayCalendarPanel) currentView).getDate())
-					inView.add(iterator.next());
+				temp = iterator.next();
+				if(temp.getDueDate() == ((DayCalendarPanel) currentView).getDate())
+					inView.add(temp);
 			}
 			return inView;
 		}
 		else if (currentView instanceof WeekCalendarPanel)
 		{
+			while(iterator.hasNext()) {
+				temp = iterator.next();
+				Date tempDate = temp.getDueDate();
+				tempDate.setDate(tempDate.getDate() - tempDate.getDay());
+				if(temp.getDueDate() == ((WeekCalendarPanel) currentView).getWeekStart()) {
+					inView.add(temp);
+				}
+			}
 			return inView;
 		}
 		else if (currentView instanceof MonthCalendarView)
 		{
+			while(iterator.hasNext()) {
+				temp = iterator.next();
+				int month = ((MonthCalendarView) currentView).getMonth();
+				if(temp.getDueDate().getMonth() == month) {
+					inView.add(temp);
+				}
+			}
 			return inView;
 		}
 		else if (currentView instanceof YearCalendarView)
 		{
+			while(iterator.hasNext()) {
+				temp = iterator.next();
+				int year = ((YearCalendarView) currentView).getYear();
+				if(temp.getDueDate().getYear() == year) {
+					inView.add(temp);
+				}
+
+			}
 			return inView;
 		}
 		else return inView;
