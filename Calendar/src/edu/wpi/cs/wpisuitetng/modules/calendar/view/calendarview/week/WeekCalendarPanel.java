@@ -206,6 +206,11 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		}
 		super.repaint();
 	}
+	
+	public Date getWeekStart()
+	{
+		return weeklayer.getWeek().getStart();
+	}
 	/*
 	 * Changes the week day names to abbreviations if the panel is too small
 	 */
