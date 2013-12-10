@@ -45,8 +45,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist.QuickListTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+
 
 public class CalendarTabPanel extends JPanel {
 	private JCheckBox personalCalCheckBox, teamCalCheckBox;

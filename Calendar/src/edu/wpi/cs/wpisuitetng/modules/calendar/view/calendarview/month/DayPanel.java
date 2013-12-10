@@ -12,7 +12,11 @@ import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
+
 
 public class DayPanel extends JPanel {
 	private boolean isToday;
@@ -149,6 +153,7 @@ public class DayPanel extends JPanel {
 				textType = 3;
 			} else if((indexInMonth+1)%7 == 1) textType = 2;
 
+
 			// Else don't show any times or text i.e. Do nothing
 		}
 		
@@ -197,7 +202,9 @@ public class DayPanel extends JPanel {
 			else backgroundColor = Color.WHITE;
 		}
 		
+
 		CommitmentPanel commitmentPanel = new CommitmentPanel(commitment, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
+
 
 		commitmentsList.add(commitmentPanel);
 		
