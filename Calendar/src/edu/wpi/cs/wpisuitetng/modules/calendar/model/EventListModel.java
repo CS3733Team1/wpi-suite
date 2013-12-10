@@ -11,6 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -78,9 +80,7 @@ public class EventListModel extends AbstractListModel<Event> {
 	
 	public synchronized void setEvents(Event[] events) {
 		this.emptyModel();
-		for (int i = 0; i < events.length; i++) {
-			this.events.add(events[i]);
-		}
+		this.events.addAll(Arrays.asList(events));
 		Collections.sort(this.events);
 		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
