@@ -250,12 +250,47 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		return index;
 	}
 	
+	public int getMonth() {
+		return currentMonth.MONTH;
+	}
+	
 	private Calendar cloneCalendar(Calendar toBeCloned) {
 		Calendar clonedCal = Calendar.getInstance();
 		clonedCal.set(Calendar.YEAR, toBeCloned.get(Calendar.YEAR));
 		clonedCal.set(Calendar.MONTH, toBeCloned.get(Calendar.MONTH));
 		clonedCal.set(Calendar.DATE, toBeCloned.get(Calendar.DATE));
 		return clonedCal;
+	}
+	
+	public List<Event> getSelectedEvents() {
+		List<Event> selectedEvents = new ArrayList<Event>();
+		
+		for(DayPanel dayPanel: days) {
+			for(EventPanel eventPanel: dayPanel.getEventsList()) {
+				if(eventPanel.getSelected())
+					if(!selectedEvents.contains(eventPanel.getEvent())) selectedEvents.add(eventPanel.getEvent());
+			}
+			
+			for(MultiDayEventPanel multiDayEventPanel: dayPanel.getMultiDayEventList()) {
+				if(multiDayEventPanel.getSelected())
+					if(!selectedEvents.contains(multiDayEventPanel.getEvent())) selectedEvents.add(multiDayEventPanel.getEvent());
+			}
+		}
+		
+		return selectedEvents;
+	}
+	
+	public List<Commitment> getSelectedCommitments() {
+		List<Commitment> selectedCommitments = new ArrayList<Commitment>();
+		
+		for(DayPanel dayPanel: days) {
+			for(CommitmentPanel commitmentPanel: dayPanel.getCommitmentsList()) {
+				if(commitmentPanel.getSelected())
+					if(!selectedCommitments.contains(commitmentPanel.getCommitment())) selectedCommitments.add(commitmentPanel.getCommitment());
+			}
+		}
+		
+		return selectedCommitments;
 	}
 
 	@Override
@@ -312,7 +347,12 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	}
 	
 	@Override
-	public void viewDate(Calendar date) {}
+	public void viewDate(Calendar date) {
+		if(this.currentMonth.get(Calendar.MONTH) != date.MONTH) {
+			this.currentMonth = date;
+			this.updateDates();
+		}
+	}
 
 	// Unused
 	@Override

@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.Date;
 import java.util.Calendar;
 
 import javax.swing.BorderFactory;
@@ -64,7 +65,7 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		this.add(dayscroll, "grow, push");
 		
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
-		dayscroll.getVerticalScrollBar().setValue(end * 3 / 4);
+		dayscroll.getVerticalScrollBar().setValue(3*end/8);
 
 	}
 
@@ -81,6 +82,10 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
 //		daytitle.resize(size());
 	}
+	
+	public Date getDate(){
+		return daylayer.getDayViewDate();
+	}
 
 	public void repaint(){
 		if (daylayer != null){
@@ -93,6 +98,8 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
+		int end = dayscroll.getVerticalScrollBar().getMaximum();
+		dayscroll.getVerticalScrollBar().setValue(3*end/8);
 		return daylayer.getTitle();
 	}
 

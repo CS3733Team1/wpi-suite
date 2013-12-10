@@ -42,6 +42,12 @@ public class CalendarUtils {
 	    return new Color (afResult[0], afResult[1], afResult[2]);
 	}
 	
+	public static Color darken(Color cl)
+	{
+		return blend(Color.black,cl,(float)0.25);
+	}
+	
+	
 	public static Color textColor(Color backgroundColor) {
 		if(backgroundColor.equals(Color.white))
 			return Color.black;

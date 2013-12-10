@@ -12,10 +12,7 @@ import javax.swing.border.MatteBorder;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 
 public class DayPanel extends JPanel {
@@ -31,6 +28,8 @@ public class DayPanel extends JPanel {
 	private List<EventPanel> eventsList;
 	private List<CommitmentPanel> commitmentsList;
 	
+	private List<MultiDayEventPanel> multiDayEventList;
+	
 	private List<JPanel> multiDayEventPanelsWithFiller;
 	
 	private Calendar date;
@@ -45,6 +44,7 @@ public class DayPanel extends JPanel {
 		this.indexInMonth = indexInMonth;
 		eventsList = new ArrayList<EventPanel>();
 		commitmentsList = new ArrayList<CommitmentPanel>();
+		multiDayEventList = new ArrayList<MultiDayEventPanel>();
 		multiDayEventPanelsWithFiller = new ArrayList<JPanel>();
 
 		day = new JLabel("", JLabel.RIGHT);
@@ -59,6 +59,18 @@ public class DayPanel extends JPanel {
 		this.add(containerPanel, "grow, push");
 	}
 
+	public List<EventPanel> getEventsList() {
+		return eventsList;
+	}
+	
+	public List<CommitmentPanel> getCommitmentsList() {
+		return commitmentsList;
+	}
+	
+	public List<MultiDayEventPanel> getMultiDayEventList() {
+		return multiDayEventList;
+	}
+	
 	public void setIsToday(boolean isToday) {
 		this.isToday = isToday;
 	}
@@ -97,6 +109,7 @@ public class DayPanel extends JPanel {
 
 	public void clearEvComs() {
 		multiDayEventPanelsWithFiller.clear();
+		multiDayEventList.clear();
 		eventsList.clear();
 		commitmentsList.clear();
 		containerPanel.removeAll();
@@ -180,6 +193,7 @@ public class DayPanel extends JPanel {
 		MultiDayEventPanel multiDayEventPanel = new MultiDayEventPanel(indexOfMultiDay, event, textType, backgroundColor, selectedBackgroundColor, textColor, selectedTextColor);
 
 		multiDayEventPanelsWithFiller.add(multiDayEventPanel);
+		multiDayEventList.add(multiDayEventPanel);
 
 		return multiDayEventPanel;
 	}

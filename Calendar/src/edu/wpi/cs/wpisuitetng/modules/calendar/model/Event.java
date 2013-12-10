@@ -19,9 +19,7 @@ import com.google.gson.Gson;
  * An event must have a name, a start Date, and an end Date. It can contain a custom
  * description and category.
  */
-
-public class Event extends DeletableAbstractModel implements Comparable<Event>{
-	
+public class Event extends DeletableAbstractModel implements Comparable<ISchedulable>, ISchedulable {
 	private enum CalType 
 	{
 		PERSONAL ("Personal"),
@@ -41,7 +39,6 @@ public class Event extends DeletableAbstractModel implements Comparable<Event>{
 			return typeDisplay;
 		}
 	}
-	
 	// Required parameters
 	private String name;
 	private Date startDate;
@@ -245,13 +242,13 @@ public class Event extends DeletableAbstractModel implements Comparable<Event>{
 	 *          Returns <b>-1</b> if this Event begins before the input Event
 	 */
 	@Override
-	public int compareTo(Event event) 
+	public int compareTo(ISchedulable other) 
 	{
-		if (this.startDate.after(event.getStartDate()) == true)
+		if (this.startDate.after(other.getStartDate()) == true)
 		{
 			return 1;
 		}//end if
-		else if (this.startDate.before(event.getStartDate()) == true)
+		else if (this.startDate.before(other.getStartDate()) == true)
 		{
 			return -1;
 		}//end else if

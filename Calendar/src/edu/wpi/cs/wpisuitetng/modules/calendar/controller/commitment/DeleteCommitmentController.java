@@ -16,8 +16,6 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.network.Network;

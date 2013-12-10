@@ -78,11 +78,11 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	// Delete Event and Commitment disabled until Events or Commitments are selected.
 	public void setToolBarCalendarTab() {
 		this.removeAll();
-		this.setLayout(new MigLayout("fill", "[][][][][]push[]"));
+		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
 
 		this.add(refreshButton);
 
-		this.add(addCommitmentButton);
+		this.add(addCommitmentButton, "align center, split 4");
 		this.add(deleteCommitmentButton);
 
 		this.add(addEventButton);
@@ -99,11 +99,10 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	// Delete Event and Commitment removed.
 	public void setToolBarEventCommitment() {
 		this.removeAll();
-		this.setLayout(new MigLayout());
+		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
 		this.add(refreshButton);
 
-		this.add(addCommitmentButton);
-
+		this.add(addCommitmentButton, "align center, split 2");
 		this.add(addEventButton);
 
 		this.repaint();

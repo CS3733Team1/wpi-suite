@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
  * This class shows single-day events in week view. It is a component of the WeekCalendarLayerPane, along
@@ -236,15 +237,7 @@ public class EventWeekView extends JPanel{
 					panel.add(name, "wmin 0, aligny center, alignx center");
 					if (e.getCategory() != null){
 						panel.setBackground(e.getCategory().getColor());
-						Color catColor = e.getCategory().getColor();
-						float[] hsb = new float[3];
-						hsb = Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
-						if(hsb[2]<0.5){
-							name.setForeground(Color.WHITE);
-						}
-						else{
-							name.setForeground(Color.BLACK);
-						}
+						name.setForeground(CalendarUtils.textColor(panel.getBackground()));
 					}
 					else{
 						panel.setBackground(Color.CYAN);
