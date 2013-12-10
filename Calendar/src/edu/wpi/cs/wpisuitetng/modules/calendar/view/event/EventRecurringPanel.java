@@ -61,38 +61,45 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 		
 		chckbxSunday = new JCheckBox("Sunday");
 		add(chckbxSunday, "cell 1 0");
+		chckbxSunday.addActionListener(this);
 		
 		chckbxMonday = new JCheckBox("Monday");
 		add(chckbxMonday, "cell 2 0");
+		chckbxMonday.addActionListener(this);
 		
 		chckbxTuesday = new JCheckBox("Tuesday");
 		add(chckbxTuesday, "cell 3 0");
+		chckbxTuesday.addActionListener(this);
 		
 		chckbxWednesday = new JCheckBox("Wednesday");
 		add(chckbxWednesday, "cell 4 0");
+		chckbxWednesday.addActionListener(this);
 		
 		chckbxThursday = new JCheckBox("Thursday");
 		add(chckbxThursday, "cell 5 0");
+		chckbxThursday.addActionListener(this);
 		
 		chckbxFriday = new JCheckBox("Friday");
 		add(chckbxFriday, "cell 6 0");
+		chckbxFriday.addActionListener(this);
 		
 		chckbxSaturday = new JCheckBox("Saturday");
 		add(chckbxSaturday, "cell 7 0");
+		chckbxSaturday.addActionListener(this);
 		
 		JLabel lblNumberOfOccurences = new JLabel("Number of Occurences: ");
-		add(lblNumberOfOccurences, "cell 0 1,alignx trailing");
-		
-		occurrencesTextField = new JTextField();
-		occurrencesTextField.setText("1");
-		add(occurrencesTextField, "cell 1 1,growx");
-		occurrencesTextField.setColumns(10);
+		add(lblNumberOfOccurences, "flowx,cell 0 1 3 1,alignx left");
 		
 		occurrencesErrorLabel = new JLabel(INVALID_OCCURRENCES_ERROR);
 		occurrencesErrorLabel.setForeground(Color.RED);
 		occurrencesErrorLabel.setVisible(false);
-		add(occurrencesErrorLabel, "cell 2 1");
+		add(occurrencesErrorLabel, "cell 3 1 3 1,alignx left");
 		
+		occurrencesTextField = new JTextField();
+		occurrencesTextField.setText("1");
+		add(occurrencesTextField, "cell 2 1,alignx left");
+		occurrencesTextField.setColumns(10);
+		occurrencesTextField.addKeyListener(this);
 		validateRecurring(startDate);
 	}
 
@@ -115,8 +122,10 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 		int dayToday = startDate.getDay();
 		try
 		{
-			if(Integer.parseInt(occurrencesTextField.getText()) > 0)
+			if(Integer.parseInt(occurrencesTextField.getText()) > 0){
 				isValid = isValid && true;
+				occurrencesErrorLabel.setVisible(false);
+			}
 			else{
 				isValid = false;
 				occurrencesErrorLabel.setVisible(true);
@@ -125,6 +134,7 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 		catch(NumberFormatException e)
 		{
 			isValid = false;
+			occurrencesErrorLabel.setVisible(true);
 		}
 		
 		switch(dayToday){
