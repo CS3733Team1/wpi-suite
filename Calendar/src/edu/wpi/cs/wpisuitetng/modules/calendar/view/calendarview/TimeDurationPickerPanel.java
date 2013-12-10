@@ -64,12 +64,10 @@ public class TimeDurationPickerPanel extends JPanel {
 	
 	public void setStartDay(Date day){
 		startDay_=day;
-//		System.out.println("Setting start Date: "+startDay_.toString());
-//		validateStartEndTime();
+
 	}
 	public void setEndDay(Date day){
 		endDay_=day;
-//		System.out.println("Setting end Date: "+endDay_.toString());
 		validateStartEndTime();
 	}
 	
@@ -124,7 +122,6 @@ public class TimeDurationPickerPanel extends JPanel {
 			endTime.setDate(endDay_.getDate());
 			endTime.setSeconds(0);
 			
-//			System.out.println("Validating time duration for start time "+startTime.toString()+" end time "+endTime.toString());
 
 			boolean endTimeIsAfterStartTime=true;
 			if (startTime.after(endTime)){
@@ -143,7 +140,6 @@ public class TimeDurationPickerPanel extends JPanel {
 			return endTimeIsAfterStartTime;
 			
 		}else{	//one of the timePickers has a bad time
-//			System.out.println("One of the timepickers is bad - time duration is not valid");
 			this.setBorder(errorBorder);	//let the user know something is wrong within this component
 			return false;
 		}
