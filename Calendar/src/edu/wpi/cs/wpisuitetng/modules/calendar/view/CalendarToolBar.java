@@ -35,6 +35,8 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	private TransparentButton deleteEventButton;
 
 	private TransparentButton easterEgg;
+	
+	private ImageIcon[] easterEggIcons;
 
 	int eggState;
 	boolean eggHatched;
@@ -53,7 +55,13 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 			deleteEventButton = new TransparentButton("<html>Delete<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_event.png"))));
 
-			easterEgg = new TransparentButton("0");//new ImageIcon(ImageIO.read(getClass().getResource("/images/egg0.png"))));
+			easterEggIcons = new ImageIcon[4];
+			easterEggIcons[0] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[1] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[2] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[3] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			
+			easterEgg =  new TransparentButton(easterEggIcons[0]);
 		} catch (IOException e) {}
 
 		eggHatched = false;
@@ -127,10 +135,12 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		eggState++;
-		easterEgg.setText("" + eggState);
-		if(eggState > 5) {
+		if(eggState > 3) {
 			eggHatched = true;
 			setToolBarCalendarTab();
+		} else {
+			easterEgg.setIcon(easterEggIcons[eggState]);
+			easterEgg.setText("" + eggState);
 		}
 	}
 }
