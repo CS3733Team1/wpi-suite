@@ -189,7 +189,7 @@ public class WeekView extends JPanel{
 		int nextmonth = datdate.getMonth();
 		int nextdate = datdate.getDate();
 
-		return monthNames[currentMonth] + " "+ currentDate + ", " + currentYear + " - " + monthNames[nextmonth] + " "+ nextdate + ", " + nextyear;
+		return monthNames[nextmonth] + " " + nextyear;
 	}
 
 	public void next() {
