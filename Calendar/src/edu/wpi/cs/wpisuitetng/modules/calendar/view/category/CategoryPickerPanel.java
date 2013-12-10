@@ -34,4 +34,9 @@ public class CategoryPickerPanel extends JPanel {
 	public Category getSelectedCategory() {
 		return (Category)categoryComboBox.getSelectedItem();
 	}
+	
+	public void setSelectedCategory(Category toSelect)
+	{
+		categoryComboBox.setSelectedItem(toSelect);
+	}
 }
