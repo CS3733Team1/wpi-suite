@@ -20,13 +20,14 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListMode
 public class CommitmentQuickList extends AbstractListModel<Commitment> implements ListDataListener {
 
 	private ICalendarView currentView;
+	private ArrayList<Commitment> quickList;
 	
 	private CommitmentQuickList(List<Commitment> list){
-		commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
+		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
 	}
 	
-	private List<Commitment> commitmentsInView(List<Commitment> list){
-		List<Commitment> inView = new ArrayList<Commitment>();
+	private ArrayList<Commitment> commitmentsInView(List<Commitment> list){
+		ArrayList<Commitment> inView = new ArrayList<Commitment>();
 
 		currentView = CalendarTabPanel.getCalendarView();
 		Iterator<Commitment> iterator = list.iterator();
@@ -82,19 +83,19 @@ public class CommitmentQuickList extends AbstractListModel<Commitment> implement
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 		// TODO Auto-generated method stub
-
+		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
 		// TODO Auto-generated method stub
-
+		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
 		// TODO Auto-generated method stub
-
+		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
 	}
 
 	@Override
