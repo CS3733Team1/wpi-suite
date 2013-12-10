@@ -110,9 +110,36 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 		wrongDaySelectionErrorLabel.setForeground(Color.RED);
 		wrongDaySelectionErrorLabel.setVisible(false);
 		add(wrongDaySelectionErrorLabel, "cell 0 2 6 1");
+		setChkBox(startDate);
 		validateRecurring(startDate);
 	}
 
+
+	private void setChkBox(Date startDate) {
+		switch(startDate.getDay()){
+		case 0: 
+			chckbxSunday.setSelected(true);
+			break;
+		case 1: 
+			chckbxMonday.setSelected(true);
+			break;
+		case 2: 
+			chckbxTuesday.setSelected(true);
+			break;
+		case 3: 
+			chckbxWednesday.setSelected(true);
+			break;
+		case 4: 
+			chckbxThursday.setSelected(true);
+			break;
+		case 5: 
+			chckbxFriday.setSelected(true);
+			break;
+		case 6: 
+			chckbxSaturday.setSelected(true);
+			break;
+		}
+	}
 
 	/**
 	 * Validates the options of the fields inputed with today's date.
