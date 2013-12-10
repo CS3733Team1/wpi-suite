@@ -248,6 +248,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		return index;
 	}
 	
+	public int getMonth() {
+		return currentMonth.MONTH;
+	}
+	
 	private Calendar cloneCalendar(Calendar toBeCloned) {
 		Calendar clonedCal = Calendar.getInstance();
 		clonedCal.set(Calendar.YEAR, toBeCloned.get(Calendar.YEAR));
