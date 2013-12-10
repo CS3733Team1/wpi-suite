@@ -13,6 +13,9 @@
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar"/>
 		</fileset>
+		<fileset dir="${janeway-lib}">
+			<include name="miglayout-4.0-swing.jar"/>
+		</fileset>
 		<pathelement path="build"/>
 	</path>
 

@@ -107,6 +107,8 @@ public class MultidayEventWeekView extends JPanel{
 				bob.append("<br>");
 				bob.append("<b>Name:</b> ");
 				bob.append(eve.getName());
+				bob.append("<br><b>Category:</b> ");
+				bob.append(eve.getCategory().getName());
 				bob.append("<br><b>Description:</b> ");
 				bob.append(eve.getDescription());
 				bob.append("</p>");

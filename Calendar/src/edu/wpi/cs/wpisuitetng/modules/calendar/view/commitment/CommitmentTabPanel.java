@@ -29,24 +29,31 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimePicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChooser;
 
 public class CommitmentTabPanel extends JPanel implements ActionListener, KeyListener {	
 	//Errors strings
 	private final String EMPTY_NAME_ERROR =		"Name is required.";
-	private final String INVALID_DATE_ERROR =	"Invalid date. Use: www mm/dd/yyyy ----EX: Sun 04/06/2014";
-	private final String PAST_DATE_ERROR =		"Commitment cannot occur in the past.";
+//	private final String INVALID_DATE_ERROR =	"Invalid date. Use: www mm/dd/yyyy ----EX: Sun 04/06/2014";
+//	private final String PAST_DATE_ERROR =		"Commitment cannot occur in the past.";
 
 	// Data entry components
 	private JTextField nameTextField;
-	private DatePickerPanel datePickerPanel;
-	private TimePicker timePicker;
+//	private DatePickerPanel datePickerPanel;
+//	private TimePicker timePicker;
+	private DateTimeChooser dateTimeChooser_;
+	
 	private CategoryPickerPanel categoryPickerPanel;
 	private CommitmentProgressPanel commitmentProgressPanel;
+	private CalendarPicker calendarPicker;
 	private JTextArea descriptionTextArea;
 
 	// Buttons
@@ -55,7 +62,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 
 	// Error Labels
 	private JLabel nameErrorLabel;
-	private JLabel dateErrorLabel;
+//	private JLabel dateErrorLabel;
 
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
@@ -70,15 +77,14 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		this.display = display;
 
 		this.buildLayout();
+		
+		//fill the fields with information from the provided Commitment
 		nameTextField.setText(c.getName());
-		//nameErrorLabel.setVisible(false);
-		datePickerPanel.setDate(c.getDueDate());
-		
-		timePicker.setHours(c.getDueDate().getHours());
-		timePicker.setMinutes(c.getDueDate().getMinutes());
-		
+		dateTimeChooser_.setDate(c.getDueDate());
 		commitmentProgressPanel.setSelected(c.getProgress());
+		categoryPickerPanel.setSelectedCategory(c.getCategory());
 		descriptionTextArea.setText(c.getDescription());
+		calendarPicker.setSelected(c.getisTeam() ? "Team": "Personal");
 		addCommitmentButton.setText("Update Commitment");
 		addCommitmentButton.setActionCommand("updatecommitment");
 		addCommitmentButton.removeActionListener(addCommitmentButton.getActionListeners()[0]); //Remove the addCommitment action listener
@@ -104,25 +110,18 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		nameErrorLabel.setForeground(Color.RED);
 		this.add(nameErrorLabel, "wrap");
 
-		// Date
-		this.add(new JLabel("Date:"), "split 3");
-		datePickerPanel = new DatePickerPanel();
-		datePickerPanel.setKeyListener(this);
-		this.add(datePickerPanel, "alignx left");
-		dateErrorLabel = new JLabel(INVALID_DATE_ERROR);
-		dateErrorLabel.setForeground(Color.RED);
-		this.add(dateErrorLabel, "wrap");
-
-		// Time
-		timePicker=new TimePicker("Time:");
-		timePicker.addTimeChangedEventListener(new TimeChangedEventListener() {
+		//Date and Time
+		this.add(new JLabel("Due date:"), "split 2");
+		dateTimeChooser_=new DateTimeChooser("Due Date:");
+		dateTimeChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
-			public void TimeChangedEventOccurred(TimeChangedEvent evt) {
+			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 				validateFields();
 			}
 		});
-		this.add(timePicker,"alignx left");
-
+		this.add(dateTimeChooser_, "alignx left, wrap");
+		
+		
 		// Category
 		this.add(new JLabel("Category:"), "split 2");
 		categoryPickerPanel = new CategoryPickerPanel();
@@ -132,6 +131,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		this.add(new JLabel("Progress:"), "split 2");
 		commitmentProgressPanel = new CommitmentProgressPanel();
 		this.add(commitmentProgressPanel, "alignx left, wrap");
+
+		// Calendar
+		this.add(new JLabel("Calendar:"), "split 2");
+		calendarPicker = new CalendarPicker();
+		this.add(calendarPicker, "alignx left, wrap");
 
 		// Description
 		this.add(new JLabel("Description:"), "wrap");
@@ -162,7 +166,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		validateFields();
 	}
 
-	// Kills the add commitment tab
+	// Kills this add commitment tab
 	public void killCommitmentPanel() {
 		this.getParent().remove(this);
 	}
@@ -185,25 +189,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 			nameErrorLabel.setVisible(false);
 		}
 
-		//check date
-		datePickerPanel.validateDate();
-		if(datePickerPanel.isInvalidDate() == 1) {
-			datePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			dateErrorLabel.setText(INVALID_DATE_ERROR);
-			dateErrorLabel.setVisible(true);
-			enableAddCommitment = false;
-		} else if (datePickerPanel.isInvalidDate() == 2) {
-			datePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			dateErrorLabel.setText(PAST_DATE_ERROR);
-			dateErrorLabel.setVisible(true);
-			enableAddCommitment = false;
-		} else {
-			datePickerPanel.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
-			dateErrorLabel.setVisible(false);
-		}
-
-		//check time
-		if (!timePicker.hasValidTime()){
+		if (! dateTimeChooser_.hasValidDateTime()){
 			enableAddCommitment=false;
 		}
 
@@ -219,11 +205,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	 * @return Commitment: A filled in Commitment
 	 */
 	public Commitment getFilledCommitment() {
-		java.util.Date date=datePickerPanel.getDate();
-		java.util.Date timeDate=timePicker.getTime();
-		date.setHours(timeDate.getHours());
-		date.setMinutes(timeDate.getMinutes());
-		return new Commitment(nameTextField.getText(), date,
+		return new Commitment(nameTextField.getText(), dateTimeChooser_.getDate(), calendarPicker.isTeam(),
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory(), commitmentProgressPanel.getSelectedState());
 	}
 

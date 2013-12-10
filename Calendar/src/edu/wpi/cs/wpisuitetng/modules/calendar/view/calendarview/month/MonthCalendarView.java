@@ -89,6 +89,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			this.add(titlePanel, "grow");
 		}
 
+		weekDays.get(0).setForeground(CalendarUtils.timeColor);
+		weekDays.get(CalendarUtils.weekNamesAbbr.length - 1).setForeground(CalendarUtils.timeColor);
+		
 		// Add all the day labels to the month
 		for(DayPanel dayPanel: days) this.add(dayPanel, "grow, hmin 27");
 
@@ -184,7 +187,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 					if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
 				}
 			} else { // Multiday event
-				System.out.println(event.getName());
 				// Will store the EventPanels that are multiday events and related
 				List<MultiDayEventPanel> multidayEvents = new ArrayList<MultiDayEventPanel>();
 
@@ -254,6 +256,37 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		clonedCal.set(Calendar.MONTH, toBeCloned.get(Calendar.MONTH));
 		clonedCal.set(Calendar.DATE, toBeCloned.get(Calendar.DATE));
 		return clonedCal;
+	}
+	
+	public List<Event> getSelectedEvents() {
+		List<Event> selectedEvents = new ArrayList<Event>();
+		
+		for(DayPanel dayPanel: days) {
+			for(EventPanel eventPanel: dayPanel.getEventsList()) {
+				if(eventPanel.getSelected())
+					if(!selectedEvents.contains(eventPanel.getEvent())) selectedEvents.add(eventPanel.getEvent());
+			}
+			
+			for(MultiDayEventPanel multiDayEventPanel: dayPanel.getMultiDayEventList()) {
+				if(multiDayEventPanel.getSelected())
+					if(!selectedEvents.contains(multiDayEventPanel.getEvent())) selectedEvents.add(multiDayEventPanel.getEvent());
+			}
+		}
+		
+		return selectedEvents;
+	}
+	
+	public List<Commitment> getSelectedCommitments() {
+		List<Commitment> selectedCommitments = new ArrayList<Commitment>();
+		
+		for(DayPanel dayPanel: days) {
+			for(CommitmentPanel commitmentPanel: dayPanel.getCommitmentsList()) {
+				if(commitmentPanel.getSelected())
+					if(!selectedCommitments.contains(commitmentPanel.getCommitment())) selectedCommitments.add(commitmentPanel.getCommitment());
+			}
+		}
+		
+		return selectedCommitments;
 	}
 
 	@Override

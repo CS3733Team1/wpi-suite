@@ -11,6 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 import java.util.Date;
 
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -34,8 +36,13 @@ public class RetrieveCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		Commitment[] commit = Commitment.fromJSONArray(iReq.getResponse().getBody());
-		controller.receivedMessages(commit);
+		final Commitment[] commit = Commitment.fromJSONArray(iReq.getResponse().getBody());
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				controller.receivedMessages(commit);
+			}
+		});
 	}
 
 	/*
@@ -53,8 +60,14 @@ public class RetrieveCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Commitment[] errorMessage = {new Commitment("Error retrieving messages.", new Date())};
-		controller.receivedMessages(errorMessage);
+		final Commitment[] errorMessage = {new Commitment("Error retrieving messages.", new Date(), false)};
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				controller.receivedMessages(errorMessage);
+			}
+		});
+
 	}
 
 }

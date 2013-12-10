@@ -19,18 +19,39 @@ import com.google.gson.Gson;
  * An event must have a name, a start Date, and an end Date. It can contain a custom
  * description and category.
  */
-public class Event extends DeletableAbstractModel implements Comparable<Event> {
+
+public class Event extends DeletableAbstractModel implements Comparable<Event>{
+	
+	private enum CalType 
+	{
+		PERSONAL ("Personal"),
+		TEAM ("Team");
+		
+		private String typeDisplay;
+		
+		CalType(String typeDisplay)
+		{
+			this.typeDisplay = typeDisplay;
+		}
+		
+		
+		
+		public String toString()
+		{
+			return typeDisplay;
+		}
+	}
+	
 	// Required parameters
 	private String name;
 	private Date startDate;
 	private Date endDate;
-	
 
 	// Optional parameters
 	private String description;
 	private Category category;
 	
-
+	
 	/*
 	 * TO DO:
 	 * 
@@ -59,6 +80,7 @@ public class Event extends DeletableAbstractModel implements Comparable<Event> {
 		this.endDate = other.endDate;
 		this.description=other.description;
 		this.category=other.category;
+		this.isTeam=other.isTeam;
 	}
 	
 	public Event(String name, Date startDate, Date endDate) {
@@ -75,37 +97,17 @@ public class Event extends DeletableAbstractModel implements Comparable<Event> {
 		this.isTeam = isTeam;
 	}
 	
-	public Event(String name, Date startDate, Date endDate, String description) {
-		this(name, startDate, endDate);
-		this.description = description;
-		this.isTeam = false;
-	}
-	
-	public Event(String name, Date startDate, Date endDate, String description, boolean isTeam) {
+	public Event(String name, Date startDate, Date endDate, boolean isTeam, String description) {
 		this(name, startDate, endDate, isTeam);
 		this.description = description;
 	}
 	
-	public Event(String name, Date startDate, Date endDate, Category category) {
-		this(name, startDate, endDate);
-		this.category = category.cloneFake();
-		this.isTeam = false;
-	}
-	
-	public Event(String name, Date startDate, Date endDate, Category category, boolean isTeam) {
+	public Event(String name, Date startDate, Date endDate, boolean isTeam, Category category) {
 		this(name, startDate, endDate, isTeam);
 		this.category = category.cloneFake();
 	}
 	
-	public Event(String name, Date startDate, Date endDate, String description, Category category) {
-		this(name, startDate, endDate);
-		this.description = description;
-		this.category = category.cloneFake();
-		this.isTeam = false;
-	}
-	
-	public Event(String name, Date startDate, Date endDate, String description, Category category,
-				boolean isTeam) {
+	public Event(String name, Date startDate, Date endDate, boolean isTeam, String description, Category category) {
 		this(name, startDate, endDate, isTeam);
 		this.description = description;
 		this.category = category.cloneFake();
@@ -202,9 +204,12 @@ public class Event extends DeletableAbstractModel implements Comparable<Event> {
 	public String toString()
 	{
 		//TODO: Remember to change this when participants, recurrence etc. gets added
-		String str = "UniqueId = " + this.UniqueID;
-				str += "Name: " + this.name + " Start Date: " + this.startDate.toString()
+		String str = "UniqueId = " + this.UniqueID + " ";
+				str += " Name: " + this.name + " Start Date: " + this.startDate.toString()
 				+ " End Date: " + this.endDate.toString();
+		
+				str += String.format("<br><b>Calendar:</b> %s", (this.isTeam) ? "Team" : "Personal");
+				
 		if(this.category != null)
 			str += " Category: " + this.category.toJSON();
 		if(this.description != null)
