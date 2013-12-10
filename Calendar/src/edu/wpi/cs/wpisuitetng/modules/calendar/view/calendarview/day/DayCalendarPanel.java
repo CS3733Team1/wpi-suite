@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.Date;
 import java.util.Calendar;
 
 import javax.swing.BorderFactory;
@@ -80,6 +81,10 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 	public void updateDay(){
 		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
 //		daytitle.resize(size());
+	}
+	
+	public Date getDate(){
+		return daylayer.getDayViewDate();
 	}
 
 	public void repaint(){

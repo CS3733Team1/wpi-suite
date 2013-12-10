@@ -153,6 +153,10 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 			}
 		}
 	}
+	
+	public int getYear() {
+		return currentYear.YEAR;
+	}
 
 	@Override
 	public String getTitle() {

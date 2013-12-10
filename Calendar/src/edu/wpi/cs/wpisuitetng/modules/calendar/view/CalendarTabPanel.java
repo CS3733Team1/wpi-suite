@@ -61,7 +61,7 @@ public class CalendarTabPanel extends JPanel {
 	
 	private JPanel calendarViewPanel;
 	
-	private ICalendarView calendarView;
+	static private ICalendarView calendarView;
 	private DayCalendarPanel dayView;
 	private WeekCalendarPanel weekView;
 	private MonthCalendarView monthView;
@@ -183,7 +183,7 @@ public class CalendarTabPanel extends JPanel {
 		displayMonthView();
 	}
 
-	public ICalendarView getCalendarView(){
+	public static ICalendarView getCalendarView(){
 		return calendarView;
 	}
 
