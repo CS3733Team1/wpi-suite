@@ -15,11 +15,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import java.util.Collections;
-
 import java.util.Calendar;
-
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -39,6 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayMo
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWeekViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGroup;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
@@ -50,7 +47,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist.QuickListTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
@@ -201,12 +197,22 @@ public class CalendarTabPanel extends JPanel {
 		quickListTabPanel.getCommitmentsList().clearSelection();
 	}
 
-	public List<Commitment> getSelectedCommitmentList(){
+	public List<Commitment> getSelectedCommitmentList() {
+		List<Commitment> selectedCommitments =  new ArrayList<Commitment>();
+		if(calendarView instanceof MonthCalendarView)
+			selectedCommitments.addAll(((MonthCalendarView)calendarView).getSelectedCommitments());
+		
 		if(filterCategoryTabbedPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
-			return commitmentSubTabPanel.getCommitmentsList().getSelectedValuesList();
+			selectedCommitments.addAll(commitmentSubTabPanel.getCommitmentsList().getSelectedValuesList());
 		else if(filterCategoryTabbedPane.getSelectedComponent() instanceof QuickListTabPanel)
-			return quickListTabPanel.getCommitmentsList().getSelectedValuesList();
-		else return new ArrayList<Commitment>();
+			selectedCommitments.addAll(quickListTabPanel.getCommitmentsList().getSelectedValuesList());
+		
+		return selectedCommitments;
+	}
+	
+	public List<Event> getSelectedEventList(){
+		if(calendarView instanceof MonthCalendarView) return ((MonthCalendarView)calendarView).getSelectedEvents();
+		else return new ArrayList<Event>();
 	}
 	
 	public void setCalendarViewTitle(String title) {

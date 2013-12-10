@@ -12,12 +12,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
 
-public class FilterPanel extends JPanel implements MouseListener{
+public class FilterPanel extends JPanel implements MouseListener {
 	FilterListPanel filterListPanel;
 
 	private JButton addFilterButton, deleteFilterButton;
