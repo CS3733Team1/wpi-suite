@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
@@ -252,10 +253,18 @@ public class EventView extends JPanel {
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
 				infobuilder.append(test.getName());
-				infobuilder.append("<br><b>Start: </b>");
-				infobuilder.append(DateFormat.getInstance().format(test.getStartDate()));
-				infobuilder.append("<br><b>End: </b>");
-				infobuilder.append(DateFormat.getInstance().format(test.getEndDate()));
+				if(test instanceof Event)
+				{
+					infobuilder.append("<br><b>Start: </b>");
+					infobuilder.append(DateFormat.getInstance().format(test.getStartDate()));
+					infobuilder.append("<br><b>End: </b>");
+					infobuilder.append(DateFormat.getInstance().format(test.getEndDate()));
+				}
+				else if(test instanceof Commitment)
+				{
+					infobuilder.append("<br><b>Due: </b>");
+					infobuilder.append(DateFormat.getInstance().format(test.getStartDate()));
+				}
 				if(test.getCategory()!=null){
 					infobuilder.append("<br><b>Category: </b>");
 					infobuilder.append(test.getCategory().getName());
