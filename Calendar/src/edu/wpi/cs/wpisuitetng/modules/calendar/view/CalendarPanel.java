@@ -47,7 +47,7 @@ public class CalendarPanel extends JTabbedPane {
 		this.addTab("Calendar", new ImageIcon(), calendarPanel, "Calendar");
 	}
 
-	public CalendarTabPanel getCalendarTabPanel() {
+	public synchronized CalendarTabPanel getCalendarTabPanel() {
 		return calendarPanel;
 	}
 	

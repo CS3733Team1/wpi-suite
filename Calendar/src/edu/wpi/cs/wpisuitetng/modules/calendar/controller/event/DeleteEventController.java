@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
@@ -34,21 +36,30 @@ public class DeleteEventController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//calendarPanel.getCalendarTabPanel().getSelectedEventList()
-		Event event=null;
-		ArrayList<Event> selected = EventMouseListener.getSelected();
-		System.err.println("Del: "+ selected.get(0).getUniqueID());
+		final DeleteEventController tothread = this;
+		Thread t = new Thread("OUT OF EDT!") {
+            public void run() {
+                //my work
+            	Event event=null;
+        		ArrayList<Event> selected = new ArrayList<Event>(EventMouseListener.getSelected());
+        		System.err.println("Del: "+ selected.get(0).getUniqueID());
+        		
+        		for (int i =0; i< selected.size();i++) {
+//        			Event event=EventMouseListener.getSelected();
+        			event = new Event(selected.get(i));
+        			if(event!=null){
+        				final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.GET); 
+        				request.addHeader("X-HTTP-Method-Override", "DELETE");
+        				request.addObserver(new DeleteEventObserver(tothread)); // add an observer to process the response
+        				request.send(); // send the request
+        			}
+        			
+        		}
+            }
+
+        };
+        t.start();
 		
-		for (int i =0; i< selected.size();i++) {
-//			Event event=EventMouseListener.getSelected();
-			event = new Event(selected.get(i));
-			if(event!=null){
-				final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.GET); 
-				request.addHeader("X-HTTP-Method-Override", "DELETE");
-				request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
-				request.send(); // send the request
-			}
-			
-		}
 		
 		calendarPanel.refreshSelectedPanel();
 	}

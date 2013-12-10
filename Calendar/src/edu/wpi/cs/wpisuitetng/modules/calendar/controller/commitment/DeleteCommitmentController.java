@@ -16,7 +16,10 @@ import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -41,7 +44,7 @@ public class DeleteCommitmentController implements ActionListener {
 		System.out.println("Called Delete Commitments...");
 		
 		for (Commitment commit:list) {
-			commit.markForDeletion();
+			System.out.println("Removing commitment: uid = "+commit.getUniqueID() + "\n\t " + commit);
 			model.removeCommitment(commit);
 			// Send a request to the core to save this message 
 			final Request request = Network.getInstance().makeRequest("calendar/commitment/" + commit.getUniqueID(), HttpMethod.GET); // PUT == create
@@ -49,7 +52,13 @@ public class DeleteCommitmentController implements ActionListener {
 			request.addObserver(new DeleteCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
-		calendarPanel.getCalendarTabPanel().resetSelection();
+		CommitmentListModel.getCommitmentListModel().Update();
+		MainView.getCurrentCalendarToolbar().clickRefreshButton();
+		/*MainView.getCurrentCalendarPanel().getCalendarTabPanel().refreshCalendarView();
+		FilterListModel.getFilterListModel().Update();
+		CommitmentListModel.getCommitmentListModel().Update();
+		EventListModel.getEventListModel().Update();
+		calendarPanel.getCalendarTabPanel().resetSelection();*/
 	}
 	
 	public void removeCommitmentFromModel(Commitment commit){

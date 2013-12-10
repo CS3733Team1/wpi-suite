@@ -15,7 +15,11 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import java.util.Collections;
+
 import java.util.Calendar;
+
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -26,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.TeamPesonalCheckBoxChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewNextController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewPreviousController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.CalendarViewTodayController;
@@ -86,6 +91,10 @@ public class CalendarTabPanel extends JPanel {
 		
 		personalCalCheckBox = new JCheckBox("Personal");
 		teamCalCheckBox = new JCheckBox("Team");
+		personalCalCheckBox.addItemListener(new TeamPesonalCheckBoxChangeListener());
+		teamCalCheckBox.addItemListener(new TeamPesonalCheckBoxChangeListener());
+		teamCalCheckBox.doClick();
+		personalCalCheckBox.setSelected(true);
 		
 		personalCalCheckBox.setBackground(Color.WHITE);
 		teamCalCheckBox.setBackground(Color.WHITE);
@@ -273,5 +282,34 @@ public class CalendarTabPanel extends JPanel {
 			this.setCalendarViewTitle(yearView.getTitle());
 			this.refreshCalendarView();
 		}
+	}
+	/*
+	 * Returns 0 for both unchecked
+	 * returns 1 for Team checked
+	 * returns 2 for Personal Checked
+	 * returns 3 for Both Checked
+	 */
+	synchronized public int getTeamPersonalState(){
+		int state = 0;// Default to both unchecked, the harmless filter
+		if(teamCalCheckBox != null && teamCalCheckBox.isSelected())
+		{
+			System.out.println("Team Checkbox is selected");
+			if (personalCalCheckBox != null && personalCalCheckBox.isSelected())
+			{
+				System.out.println("Personal checkbox also selected");
+				return 3;
+			}
+			else 
+			{
+				return 1;
+			}
+		}
+		else if (personalCalCheckBox != null && personalCalCheckBox.isSelected())
+		{
+			System.out.println("Only personal checkbox selected");
+			return 2;
+		}
+		else
+			return 0;
 	}
 }
