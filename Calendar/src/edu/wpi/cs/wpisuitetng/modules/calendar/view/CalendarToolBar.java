@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.weather.WeatherPanel;
 
 public class CalendarToolBar extends JPanel implements ActionListener {
 	// Always visible
@@ -33,12 +34,14 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	private TransparentButton deleteCommitmentButton;
 	private TransparentButton deleteEventButton;
 
-	//private TransparentButton easterEgg;
+	private TransparentButton easterEgg;
 	
-	//private ImageIcon[] easterEggIcons;
+	private ImageIcon[] easterEggIcons;
 
-	//int eggState;
-	//boolean eggHatched;
+	int eggState;
+	boolean eggHatched;
+	
+	private WeatherPanel weatherPanel;
 
 	public CalendarToolBar() {
 		try {
@@ -54,18 +57,19 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 			deleteEventButton = new TransparentButton("<html>Delete<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_event.png"))));
 
-			//easterEggIcons = new ImageIcon[4];
-			//easterEggIcons[0] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
-			//easterEggIcons[1] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
-			//easterEggIcons[2] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
-			//easterEggIcons[3] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons = new ImageIcon[4];
+			easterEggIcons[0] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[1] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[2] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
+			easterEggIcons[3] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
 			
-			//easterEgg =  new TransparentButton(easterEggIcons[0]);
+			easterEgg =  new TransparentButton(easterEggIcons[0]);
 		} catch (IOException e) {}
 
-		//eggHatched = false;
-		//eggState = 0;
-		//easterEgg.addActionListener(this);
+		weatherPanel = new WeatherPanel();
+		eggHatched = false;
+		eggState = 0;
+		easterEgg.addActionListener(this);
 
 		this.setToolBarCalendarTab();
 	}
@@ -84,9 +88,11 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.add(addEventButton);
 		this.add(deleteEventButton);
 
-		//if(eggHatched) {
-		//	this.add(new JLabel("Weather", JLabel.RIGHT));
-		//} else this.add(easterEgg);
+		if(eggHatched) {
+			this.add(weatherPanel);
+		} else this.add(easterEgg);
+		
+		this.updateUI();
 	}
 
 	// Notifies CalendarToolBar that the buttons should switch to the Event/CommitmentTab button arrangement.
@@ -131,13 +137,13 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		/*eggState++;
+		eggState++;
 		if(eggState > 3) {
 			eggHatched = true;
 			setToolBarCalendarTab();
 		} else {
 			easterEgg.setIcon(easterEggIcons[eggState]);
 			easterEgg.setText("" + eggState);
-		}*/
+		}
 	}
 }
