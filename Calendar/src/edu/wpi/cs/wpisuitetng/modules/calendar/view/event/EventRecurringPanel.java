@@ -9,6 +9,7 @@
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.event;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -29,7 +30,7 @@ import javax.swing.JCheckBox;
 
 public class EventRecurringPanel extends JPanel implements KeyListener, ActionListener {
 	// Errors strings
-	//private final String START_AFTER_END_ERROR = 	"Start time cannot be after end time.";
+	private final String INVALID_OCCURRENCES_ERROR = 	"Events must occur at least once.";
 	// Error Labels
 
 	// Error wrappers
@@ -42,6 +43,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private JCheckBox chckbxSaturday;
 	private JTextField occurrencesTextField;
 	private Date startDate;
+	private JLabel occurrencesErrorLabel;
 
 	public EventRecurringPanel(Date startDate) {
 		this.buildLayout(startDate);
@@ -85,6 +87,12 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 		occurrencesTextField.setText("1");
 		add(occurrencesTextField, "cell 1 1,growx");
 		occurrencesTextField.setColumns(10);
+		
+		occurrencesErrorLabel = new JLabel(INVALID_OCCURRENCES_ERROR);
+		occurrencesErrorLabel.setForeground(Color.RED);
+		occurrencesErrorLabel.setVisible(false);
+		add(occurrencesErrorLabel, "cell 2 1");
+		
 		validateRecurring(startDate);
 	}
 
@@ -109,8 +117,10 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 		{
 			if(Integer.parseInt(occurrencesTextField.getText()) > 0)
 				isValid = isValid && true;
-			else
+			else{
 				isValid = false;
+				occurrencesErrorLabel.setVisible(true);
+			}
 		}
 		catch(NumberFormatException e)
 		{
