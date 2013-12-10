@@ -258,8 +258,8 @@ public class EventWeekView extends JPanel{
 				evebuilder.append(new Integer(getLength(test)).toString());
 				evebuilder.append(",grow, push, wmin 0");
 				JLabel name = new JLabel(test.getName());
-				panel.setLayout(new MigLayout("fill"));
-				panel.add(name, "hmin 0, wmin 0");
+				panel.add(name, "wmin0");
+				name.setSize(new Dimension(0,0));
 				
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
@@ -313,7 +313,7 @@ public class EventWeekView extends JPanel{
 		StringBuilder layouts = new StringBuilder();
 		String toomanyones = "";
 		
-		layouts.append("[9%]2");
+		layouts.append("[9%]");
 		StringBuilder calclayout = new StringBuilder();
 		for(int j=0; j<7;j++){
 			for(int i=0; i<12; i++){
