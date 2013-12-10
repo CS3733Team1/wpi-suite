@@ -221,7 +221,10 @@ public class CalendarTabPanel extends JPanel {
 	}
 	
 	public void setCalendarViewDate(Calendar date) {
-		calendarView.viewDate(date);
+		dayView.viewDate(date);
+		weekView.viewDate(date);
+		monthView.viewDate(date);
+		yearView.viewDate(date);
 		this.setCalendarViewTitle(calendarView.getTitle());
 		this.refreshCalendarView();
 	}

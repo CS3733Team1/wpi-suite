@@ -212,6 +212,12 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		repaint();
 	}
 	
+	public void viewDate(Date day){
+		weekview.viewDate(day);
+		ChangeTheWorld();
+		repaint();
+	}
+	
 	public void contentsChanged(ListDataEvent arg0) {
 		ChangeTheWorld();
 		repaint();

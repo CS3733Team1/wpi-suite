@@ -275,8 +275,9 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 
 	@Override
 	public void viewDate(Calendar date) {
-		// TODO Auto-generated method stub
-		
+		weeklayer.viewDate(date.getTime());
+		updateWeekHeader();
+		repaint();
 	}
 	
 	@Override
