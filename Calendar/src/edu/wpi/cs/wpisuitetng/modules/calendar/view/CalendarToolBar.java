@@ -10,17 +10,19 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 
-public class CalendarToolBar extends JPanel {
+public class CalendarToolBar extends JPanel implements ActionListener {
 	// Always visible
 	private TransparentButton refreshButton;
 
@@ -31,6 +33,11 @@ public class CalendarToolBar extends JPanel {
 	// Visible only when commitments/events are selected on either calendar tab
 	private TransparentButton deleteCommitmentButton;
 	private TransparentButton deleteEventButton;
+	
+	private TransparentButton easterEgg;
+	
+	int eggState;
+	boolean eggHatched;
 
 	public CalendarToolBar() {
 		try {
@@ -45,10 +52,14 @@ public class CalendarToolBar extends JPanel {
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
 			deleteEventButton = new TransparentButton("<html>Delete<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_event.png"))));
+			
+			easterEgg = new TransparentButton("0");//new ImageIcon(ImageIO.read(getClass().getResource("/images/egg0.png"))));
 		} catch (IOException e) {}
 
+		eggHatched = false;
+		eggState = 0;
+		easterEgg.addActionListener(this);
 		
-		this.setLayout(new MigLayout());
 		this.setToolBarCalendarTab();
 	}
 
@@ -56,6 +67,7 @@ public class CalendarToolBar extends JPanel {
 	// Delete Event and Commitment disabled until Events or Commitments are selected.
 	public void setToolBarCalendarTab() {
 		this.removeAll();
+		this.setLayout(new MigLayout("fill", "[][][][][]push[]"));
 
 		this.add(refreshButton);
 
@@ -64,18 +76,26 @@ public class CalendarToolBar extends JPanel {
 
 		this.add(addEventButton);
 		this.add(deleteEventButton);
+		
+		if(eggHatched) {
+			this.add(new JLabel("Weather", JLabel.RIGHT));
+		} else this.add(easterEgg);
+		
+		this.repaint();
 	}
 
 	// Notifies CalendarToolBar that the buttons should switch to the Event/CommitmentTab button arrangement.
 	// Delete Event and Commitment removed.
 	public void setToolBarEventCommitment() {
 		this.removeAll();
-
+		this.setLayout(new MigLayout());
 		this.add(refreshButton);
 
 		this.add(addCommitmentButton);
 
 		this.add(addEventButton);
+		
+		this.repaint();
 	}
 
 	// Functions to set listeners for the buttons
@@ -98,5 +118,15 @@ public class CalendarToolBar extends JPanel {
 
 	public void deleteCommitmentButtonListener(ActionListener l) {
 		deleteCommitmentButton.addActionListener(l);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		eggState++;
+		easterEgg.setText("" + eggState);
+		if(eggState > 5) {
+			eggHatched = true;
+			setToolBarCalendarTab();
+		}
 	}
 }
