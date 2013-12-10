@@ -40,6 +40,10 @@ public class MultidayEventWeekView extends JPanel{
 		
 		showEvents();
 		
+		if (isEventShowing){
+			DisplayEventDropDown();
+		}
+		
 		this.setOpaque(false);
 		this.setVisible(true);
 	}
@@ -114,11 +118,12 @@ public class MultidayEventWeekView extends JPanel{
 	 * Displays Panels Of MultiDay Events
 	 */
 	public void DisplayEventDropDown(){
+		displayEvents.clear();
 		
 		int y = 1;
+		int x = 1;
 		Date current = cdate;
 		for (List<Event> elist: multidaye){
-			int x = 1;
 			for (Event eve: elist){
 				JPanel multipane = new JPanel(new MigLayout("fill", "[][][]", "[]"));
 
@@ -147,8 +152,7 @@ public class MultidayEventWeekView extends JPanel{
 				JLabel eventinfo = new JLabel(bob.toString());
 
 				Date evestart = eve.getStartDate();
-				if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).compareTo(current) != 0){
-					System.err.println("Previous!");
+				if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).before(cdate)){
 					StringBuilder previousbuilder = new StringBuilder();
 					previousbuilder.append("<html><p><b><font size=\"4\"> &lt;- </font></b></p></html>");
 					JLabel previous = new JLabel(previousbuilder.toString());
@@ -158,8 +162,7 @@ public class MultidayEventWeekView extends JPanel{
 				multipane.add(eventinfo, "cell 1 0, grow, push, wmin 0");
 
 				Date eveend = eve.getEndDate();
-				if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).compareTo(current) != 0){
-					System.err.println("Next!");
+				if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).after(new Date(cdate.getYear(), cdate.getMonth(), cdate.getDate()+6))){
 					StringBuilder nextbuilder = new StringBuilder();
 					nextbuilder.append("<html><p><b><font size=\"4\"> -&gt; </font></b></p></html>");
 					JLabel next = new JLabel(nextbuilder.toString());
