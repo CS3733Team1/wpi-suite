@@ -66,7 +66,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){
-				if(eve.getStartDate().getDay() == eve.getEndDate().getDay()
+				if(eve.getStartDate().getDate() == eve.getEndDate().getDate()
 				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
 				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
 					test.add(eve);
@@ -83,9 +83,10 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		eventviewlist = new EventView(test, this.getSize());
 		multiviewlist = new MultidayEventView(multi, this.getSize(), getDayViewDate());
 		
-		this.add(multiviewlist, layer, -1);
-		layer++;
+		
 		this.add(eventviewlist, layer,-1);
+		layer++;
+		this.add(multiviewlist, layer, -1);
 		layer++;
 	}
 	
@@ -142,6 +143,12 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 	
 	public void today() {
 		dayview.today();
+		ChangeTheWorld();
+		repaint();
+	}
+	
+	public void viewDate(Date day){
+		dayview.viewDate(day);
 		ChangeTheWorld();
 		repaint();
 	}

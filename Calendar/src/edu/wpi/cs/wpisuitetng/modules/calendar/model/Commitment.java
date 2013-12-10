@@ -27,7 +27,7 @@ import com.google.gson.Gson;
  * <br>
  * Privately, a Commitment has a uniqueID to help distinguish it in the database.
  */
-public class Commitment extends DeletableAbstractModel implements Comparable<Commitment>{
+public class Commitment extends DeletableAbstractModel implements Comparable<Commitment> {
 	
 	public static enum State 
 	{
@@ -37,7 +37,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<Com
 		
 		private String display;
 		
-		State(String display)
+		private State(String display)
 		{
 			this.display = display;
 		}

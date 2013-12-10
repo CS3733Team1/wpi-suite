@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year;
 
 import java.awt.Color;
+import java.util.Calendar;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +22,7 @@ public class DayPanel extends JPanel {
 	private boolean isCurrentMonth;
 	
 	private JLabel day;
+	private Calendar date;
 	
 	public DayPanel() {
 		this.setLayout(new MigLayout("fill"));
@@ -45,8 +47,13 @@ public class DayPanel extends JPanel {
 		this.isToday = isToday;
 	}
 
-	public void setDate(int i) {
-		day.setText(i + "");
+	public void setDate(Calendar date) {
+		this.date = date;
+		day.setText(date.get(Calendar.DATE) + "");
+	}
+	
+	public Calendar getDate() {
+		return this.date;
 	}
 	
 	public void updateColors() {
