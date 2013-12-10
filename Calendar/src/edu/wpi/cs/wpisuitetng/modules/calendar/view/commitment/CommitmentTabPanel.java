@@ -34,9 +34,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEven
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimePicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.DateTimeChangedEvent;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.DateTimeChangedEventListener;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.DateTimeChooser;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChooser;
 
 public class CommitmentTabPanel extends JPanel implements ActionListener, KeyListener {	
 	//Errors strings

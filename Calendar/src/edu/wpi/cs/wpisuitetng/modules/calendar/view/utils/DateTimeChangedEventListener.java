@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.utils;
 
 import java.util.EventListener;
 

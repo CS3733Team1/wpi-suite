@@ -33,7 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class MonthCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener {
 	// A List holding all of the Day Panels as to be able to modify the contents [No need to recreate a new day on view changes]

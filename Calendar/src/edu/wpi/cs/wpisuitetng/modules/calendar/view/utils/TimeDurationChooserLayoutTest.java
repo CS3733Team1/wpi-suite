@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.utils;
 
 import javax.swing.JPanel;
 import java.awt.FlowLayout;

@@ -2,7 +2,7 @@
  * A combined General Date/Time Picker
  * self-validating
  */
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.utils;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -131,8 +131,8 @@ public class DateTimeChooser extends JPanel {
 		int index=0;
 		for(int hour = 0; hour < 24; hour++) {
 			index=2*hour;
-			strTimes[index] = DateUtilities.timeToString(hour,0);
-			strTimes[index+1] = DateUtilities.timeToString(hour,30);
+			strTimes[index] = DateUtils.timeToString(hour,0);
+			strTimes[index+1] = DateUtils.timeToString(hour,30);
 		}
 		timeCombo_ = new JComboBox<String>(strTimes);//new DefaultComboBoxModel(strTimes)
 		timeCombo_.setSelectedIndex(dateTohalfHourIndex(date_));
@@ -198,7 +198,7 @@ public class DateTimeChooser extends JPanel {
 		//normally we'de use getSelectedItem() but this does not change as characters are changed in the ComboBox's internal editor (text box), so we get it directly
 		String strTime=(String)timeCombo_.getEditor().getItem();//(String)timeCombo_.getSelectedItem();
 		System.out.println("\tConverting "+strTime+" to time...");
-		Date time = DateUtilities.stringToDate(strTime);
+		Date time = DateUtils.stringToDate(strTime);
 		if (time!=null){
 			date_.setHours(time.getHours());
 			date_.setMinutes(time.getMinutes());
@@ -249,8 +249,8 @@ public class DateTimeChooser extends JPanel {
 		fillDay();
 	}
 	public void setTime(Date date){
-		String strTime=DateUtilities.timeToString(date_);
-		System.out.println("\t\t\tDTC: Setting time to " +DateUtilities.timeToString(date_));
+		String strTime=DateUtils.timeToString(date_);
+		System.out.println("\t\t\tDTC: Setting time to " +DateUtils.timeToString(date_));
 		timeCombo_.setSelectedItem(strTime);
 		fillTime();
 	}

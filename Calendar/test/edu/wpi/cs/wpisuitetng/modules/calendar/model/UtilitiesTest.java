@@ -4,8 +4,9 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
+
 import static org.junit.Assert.*;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utilities.DateUtilities;
 
 public class UtilitiesTest {
 	
@@ -16,7 +17,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(12);
 		noon.setMinutes(0);
-		String strNoonToString=DateUtilities.timeToString(noon).trim();
+		String strNoonToString=DateUtils.timeToString(noon).trim();
 		assertEquals("Noon", strNoonToString);
 	}
 	
@@ -25,7 +26,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(0);
 		noon.setMinutes(0);
-		String strNoonToString=DateUtilities.timeToString(noon).trim();
+		String strNoonToString=DateUtils.timeToString(noon).trim();
 		assertEquals("Midnight", strNoonToString);
 	}
 	
@@ -34,7 +35,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(3);
 		noon.setMinutes(0);
-		String strNoonToString=DateUtilities.timeToString(noon).trim();
+		String strNoonToString=DateUtils.timeToString(noon).trim();
 		assertEquals("3:00 AM", strNoonToString);
 	}
 	
@@ -43,7 +44,7 @@ public class UtilitiesTest {
 		Date time = new Date();
 		time.setHours(3+12);
 		time.setMinutes(0);
-		String strNoonToString=DateUtilities.timeToString(time).trim();
+		String strNoonToString=DateUtils.timeToString(time).trim();
 //		System.out.println(strNoonToString);
 		assertEquals("3:00 PM", strNoonToString);
 	}
@@ -53,7 +54,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(3);
 		noon.setMinutes(5);
-		String strNoonToString=DateUtilities.timeToString(noon).trim();
+		String strNoonToString=DateUtils.timeToString(noon).trim();
 		assertEquals("3:05 AM", strNoonToString);
 	}
 	
@@ -62,7 +63,7 @@ public class UtilitiesTest {
 		Date noon = new Date();
 		noon.setHours(12+3);
 		noon.setMinutes(05);
-		String strNoonToString=DateUtilities.timeToString(noon).trim();
+		String strNoonToString=DateUtils.timeToString(noon).trim();
 		assertEquals("3:05 PM", strNoonToString);
 	}
 	
@@ -79,7 +80,7 @@ public class UtilitiesTest {
 		System.out.println(threeFifeteenAm);
 		String strThreeFifeteenAm = "3:15 AM";//DateUtilities.timeToString(threeFifeteenAm);//"3:15 PM";
 		System.out.println(strThreeFifeteenAm);
-		Date parsedDate=DateUtilities.stringToDate(strThreeFifeteenAm);
+		Date parsedDate=DateUtils.stringToDate(strThreeFifeteenAm);
 		System.out.println(parsedDate);
 		assertEquals(threeFifeteenAm.getHours(), parsedDate.getHours());
 		assertEquals(threeFifeteenAm.getMinutes(), parsedDate.getMinutes());
@@ -93,7 +94,7 @@ public class UtilitiesTest {
 		System.out.println(threeFifeteenAm);
 		String strThreeFifeteenAm = "3:15 PM";//DateUtilities.timeToString(threeFifeteenAm);//"3:15 PM";
 		System.out.println(strThreeFifeteenAm);
-		Date parsedDate=DateUtilities.stringToDate(strThreeFifeteenAm);
+		Date parsedDate=DateUtils.stringToDate(strThreeFifeteenAm);
 		System.out.println(parsedDate);
 		assertEquals(threeFifeteenAm.getHours(), parsedDate.getHours());
 		assertEquals(threeFifeteenAm.getMinutes(), parsedDate.getMinutes());
@@ -107,7 +108,7 @@ public class UtilitiesTest {
 		System.out.println(threeFifeteenAm);
 		String strThreeFifeteenAm = "3:05 PM";//DateUtilities.timeToString(threeFifeteenAm);//"3:15 PM";
 		System.out.println(strThreeFifeteenAm);
-		Date parsedDate=DateUtilities.stringToDate(strThreeFifeteenAm);
+		Date parsedDate=DateUtils.stringToDate(strThreeFifeteenAm);
 		System.out.println(parsedDate);
 		assertEquals(threeFifeteenAm.getHours(), parsedDate.getHours());
 		assertEquals(threeFifeteenAm.getMinutes(), parsedDate.getMinutes());
@@ -122,7 +123,7 @@ public class UtilitiesTest {
 		System.out.println(threeFifeteenAm);
 		String strThreeFifeteenAm = "3:5 PM";//DateUtilities.timeToString(threeFifeteenAm);//"3:15 PM";
 		System.out.println(strThreeFifeteenAm);
-		Date parsedDate=DateUtilities.stringToDate(strThreeFifeteenAm);
+		Date parsedDate=DateUtils.stringToDate(strThreeFifeteenAm);
 		System.out.println(parsedDate);
 		assertEquals(threeFifeteenAm.getHours(), parsedDate.getHours());
 		assertEquals(threeFifeteenAm.getMinutes(), parsedDate.getMinutes());
@@ -136,7 +137,7 @@ public class UtilitiesTest {
 		System.out.println(threeFifeteenAm);
 		String strThreeFifeteenAm = "12:15 PM";//DateUtilities.timeToString(threeFifeteenAm);//"3:15 PM";
 		System.out.println(strThreeFifeteenAm);
-		Date parsedDate=DateUtilities.stringToDate(strThreeFifeteenAm);
+		Date parsedDate=DateUtils.stringToDate(strThreeFifeteenAm);
 		System.out.println(parsedDate);
 		assertEquals(threeFifeteenAm.getHours(), parsedDate.getHours());
 		assertEquals(threeFifeteenAm.getMinutes(), parsedDate.getMinutes());
@@ -150,7 +151,7 @@ public class UtilitiesTest {
 		System.out.println(threeFifeteenAm);
 		String strThreeFifeteenAm = "12:15 AM";//DateUtilities.timeToString(threeFifeteenAm);//"3:15 PM";
 		System.out.println(strThreeFifeteenAm);
-		Date parsedDate=DateUtilities.stringToDate(strThreeFifeteenAm);
+		Date parsedDate=DateUtils.stringToDate(strThreeFifeteenAm);
 		System.out.println(parsedDate);
 		assertEquals(threeFifeteenAm.getHours(), parsedDate.getHours());
 		assertEquals(threeFifeteenAm.getMinutes(), parsedDate.getMinutes());
@@ -164,7 +165,7 @@ public class UtilitiesTest {
 		System.out.println(threeFifeteenAm);
 		String strThreeFifeteenAm = "14:15";//DateUtilities.timeToString(threeFifeteenAm);//"3:15 PM";
 		System.out.println(strThreeFifeteenAm);
-		Date parsedDate=DateUtilities.stringToDate(strThreeFifeteenAm);
+		Date parsedDate=DateUtils.stringToDate(strThreeFifeteenAm);
 		System.out.println(parsedDate);
 		assertEquals(threeFifeteenAm.getHours(), parsedDate.getHours());
 		assertEquals(threeFifeteenAm.getMinutes(), parsedDate.getMinutes());
