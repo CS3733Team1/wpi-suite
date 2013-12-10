@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team TART
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
@@ -22,10 +32,6 @@ import javax.swing.event.EventListenerList;
 
 import net.miginfocom.swing.MigLayout;
 
-/**
- * @author DanF
- * 
- */
 public class TimePicker extends JPanel {
 
 	//time changed events
@@ -74,14 +80,14 @@ public class TimePicker extends JPanel {
 	}
 
 	private void TimeChanged() {
-		fireTimeChangedEvent(new TimeChangedEvent(getTimeAsSting()));
+		fireTimeChangedEvent(new TimeChangedEvent(getTimeAsString()));
 	}
 
 	/**
 	 * gives the internally represented time as a string
 	 * @return the time in "HH:MM:AM" format
 	 */
-	public String getTimeAsSting() {
+	public String getTimeAsString() {
 		int hours=displayHours_;
 		String txtAmPm="AM";
 		if (displayHours_>=12){
@@ -281,7 +287,7 @@ public class TimePicker extends JPanel {
 
 	/*
 	 * gets the hours from the text field, validates, and sets as displayHours_ if it's valid 
-	 * called whenver a key is typed in the hours text field
+	 * called whenever a key is typed in the hours text field
 	 */
 	private void hoursChanged() {
 		int hours = getNumberFromTextField(hoursTextField);	//hour will be the hour if the text us a number>0, -1 otherwise
