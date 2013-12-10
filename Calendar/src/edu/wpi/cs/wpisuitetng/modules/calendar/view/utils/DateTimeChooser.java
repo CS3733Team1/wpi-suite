@@ -26,8 +26,6 @@ import net.miginfocom.swing.MigLayout;
 
 import com.toedter.calendar.JDateChooser;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
-
 //TODO
 /*DayTimeChangedEvent -- break into day changed and time changed events?
  * -increment end time appropriately when start time changes
@@ -83,6 +81,17 @@ public class DateTimeChooser extends JPanel {
 //		}
 	}
 	
+	public void disable(){
+		jDateChooser_.disable();
+		timeCombo_.disable();
+		dtValid_=true;
+	}
+	public void enable(){
+		jDateChooser_.disable();
+		timeCombo_.disable();
+		validateDateTime();
+	}
+	
 	public DateTimeChooser(String name, Date date){
 		System.out.println("DTC: Making new DateTimeChooser with name "+name + " and date "+ date.toString());
 		date_=date;
@@ -110,7 +119,13 @@ public class DateTimeChooser extends JPanel {
 	private void buildLayout(String name){
 		setLayout(new MigLayout("", "[][grow][grow][]", "[]"));
 		
-		date_.setSeconds(59);//don't care about seconds - put them as far in the future as we can
+		//make it on the minute - kill all seconds and milliseconds that might screw up comparisons with dates we think are on the same minute
+		System.out.println("Normalizing time " + date_.toString());
+		long millis = date_.getTime();
+		long minutes=millis/60000;//count the minutes (integer)
+		millis=minutes*60000+59999;//make it right at the end of the millis
+		date_.setTime(millis);//don't care about seconds - put them as far in the future as we can (so current minute is considered the future)
+		System.out.println("Done Normalizing time " + date_.toString());
 		
 		//name label
 		add(new JLabel(name), "cell 0 0");

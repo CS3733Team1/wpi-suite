@@ -13,8 +13,6 @@ import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
-
 public class TimeDurationChooser extends JPanel {
 	List<DateTimeChangedEventListener> listeners = new ArrayList<DateTimeChangedEventListener>();
 	
@@ -37,7 +35,7 @@ public class TimeDurationChooser extends JPanel {
 	
 	private String startDateErrorText_ = "Invalid start time";
 	private String endDateErrorText_="Invalid end time";
-	private String durationErrorText_="Start time after end time!";
+	private String durationErrorText_="Start time not before time!";
 	
 	public void addDateTimeChangedEventListener(DateTimeChangedEventListener toAdd) {
 		listeners.add(toAdd);
@@ -51,12 +49,18 @@ public class TimeDurationChooser extends JPanel {
 		DateTimeChangedEvent evt = new DateTimeChangedEvent(startDate_.toString()+"-"+endDate_.toString());
         for (DateTimeChangedEventListener hl : listeners)
             hl.DateTimeChangedEventOccurred(evt);
-//        Object[] listeners = listenerList.getListenerList();
-//		for (int i = 0; i < listeners.length; i = i + 2) {
-//			if (listeners[i] == TimeChangedEventListener.class) {
-//				((DateTimeChangedEventListener) listeners[i + 1]).DateTimeChangedEventOccurred(evt);
-//			}
-//		}
+
+	}
+	
+	public void disable(){
+		startDateChooser_.disable();
+		endDateChooser_.disable();
+		allValid_=true;
+	}
+	public void enable(){
+		startDateChooser_.enable();
+		endDateChooser_.enable();
+		validateDuration();
 	}
 	
 	public TimeDurationChooser(){
@@ -85,7 +89,7 @@ public class TimeDurationChooser extends JPanel {
 		//End Date Chooser
 		endDate_=new Date();
 		endDate_.setMinutes(startDate_.getMinutes()+defaultDuration_);
-		endDateChooser_=new DateTimeChooser("End Time", endDate_);
+		endDateChooser_=new DateTimeChooser("End Time:", endDate_);
 		endDateChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
 			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {

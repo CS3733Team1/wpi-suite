@@ -29,10 +29,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEvent;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimePicker;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
