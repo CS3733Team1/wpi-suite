@@ -234,12 +234,12 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			}
 		}
 	}
+
 	private void updateEvComs() {
 		for(int i = 0; i < daysWithEvComs.size(); i++) daysWithEvComs.get(i).updateEveComs();
 
 		this.invalidate();
 		this.updateUI();
-
 	}
 
 	private int getIndexofDay(Calendar cal) {

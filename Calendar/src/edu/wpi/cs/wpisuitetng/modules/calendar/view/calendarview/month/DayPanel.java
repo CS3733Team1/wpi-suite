@@ -47,16 +47,11 @@ public class DayPanel extends JPanel {
 		commitmentsList = new ArrayList<CommitmentPanel>();
 		multiDayEventPanelsWithFiller = new ArrayList<JPanel>();
 
-
-		day = new JLabel("", JLabel.LEFT);
-
 		day = new JLabel("", JLabel.RIGHT);
-
 		containerPanel = new JPanel(new MigLayout("flowy, insets 0, gap 0 0 0 0"));
 
 		datePanel = new JPanel(new MigLayout("fill, insets 0"));
 		datePanel.add(day, "grow");
-
 
 		this.isWeekend = (indexInMonth + 1) % 7 <= 1;
 
