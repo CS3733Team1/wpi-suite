@@ -30,7 +30,7 @@ public class MainView {
 
 	private List<JanewayTabModel> tabs;
 	public static CalendarPanel calendarPanel;
-	private CalendarToolBar calendarToolBar;
+	static CalendarToolBar calendarToolBar;
 
 	public MainView() {
 		calendarPanel = new CalendarPanel();
@@ -87,5 +87,9 @@ public class MainView {
 	}
 	public static synchronized CalendarPanel getCurrentCalendarPanel(){
 		return MainView.calendarPanel;
+	}
+	public static synchronized CalendarToolBar getCurrentCalendarToolbar()
+	{
+		return MainView.calendarToolBar;
 	}
 }

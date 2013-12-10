@@ -99,4 +99,9 @@ public class CalendarToolBar extends JPanel {
 	public void deleteCommitmentButtonListener(ActionListener l) {
 		deleteCommitmentButton.addActionListener(l);
 	}
+	
+	public synchronized void clickRefreshButton()
+	{
+		this.refreshButton.doClick();
+	}
 }
