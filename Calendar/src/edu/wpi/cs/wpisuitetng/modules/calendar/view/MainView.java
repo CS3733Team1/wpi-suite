@@ -29,8 +29,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterC
 public class MainView {
 
 	private List<JanewayTabModel> tabs;
-	private CalendarPanel calendarPanel;
-	private CalendarToolBar calendarToolBar;
+	public static CalendarPanel calendarPanel;
+	static CalendarToolBar calendarToolBar;
 
 	public MainView() {
 		calendarPanel = new CalendarPanel();
@@ -82,7 +82,14 @@ public class MainView {
 		return this.calendarToolBar;
 	}
 	
-	public CalendarPanel getCalendarPanel(){
-		return this.calendarPanel;
+	public synchronized CalendarPanel getCalendarPanel(){
+		return MainView.calendarPanel;
+	}
+	public static synchronized CalendarPanel getCurrentCalendarPanel(){
+		return MainView.calendarPanel;
+	}
+	public static synchronized CalendarToolBar getCurrentCalendarToolbar()
+	{
+		return MainView.calendarToolBar;
 	}
 }

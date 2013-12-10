@@ -44,9 +44,9 @@ public class EventTest {
 		cat1 = new Category("school", Color.blue);
 		cat2 = new Category("Work", Color.red);
 		Event1 = new Event("Meeting1",Date2,Date1);
-		Event2 = new Event("Birthday",Date1,Date1,"Kyles Birthday");
-		Event3 = new Event("Class",Date2,Date2,cat1);
-		Event4 = new Event("Meeting2",Date3,Date4,"CS Meeting",cat1);
+		Event2 = new Event("Birthday",Date1,Date1, true, "Kyles Birthday");
+		Event3 = new Event("Class",Date2,Date2, true, cat1);
+		Event4 = new Event("Meeting2",Date3,Date4,true, "CS Meeting",cat1);
 	}
 	
 	@Test

@@ -29,6 +29,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
@@ -52,6 +53,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	
 	private CategoryPickerPanel categoryPickerPanel;
 	private CommitmentProgressPanel commitmentProgressPanel;
+	private CalendarPicker calendarPicker;
 	private JTextArea descriptionTextArea;
 
 	// Buttons
@@ -128,6 +130,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		commitmentProgressPanel = new CommitmentProgressPanel();
 		this.add(commitmentProgressPanel, "alignx left, wrap");
 
+		// Calendar
+		this.add(new JLabel("Calendar:"), "split 2");
+		calendarPicker = new CalendarPicker();
+		this.add(calendarPicker, "alignx left, wrap");
+
 		// Description
 		this.add(new JLabel("Description:"), "wrap");
 
@@ -196,7 +203,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	 * @return Commitment: A filled in Commitment
 	 */
 	public Commitment getFilledCommitment() {
-		return new Commitment(nameTextField.getText(), dateTimeChooser_.getDate(),
+		return new Commitment(nameTextField.getText(), dateTimeChooser_.getDate(), calendarPicker.isTeam(),
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory(), commitmentProgressPanel.getSelectedState());
 	}
 

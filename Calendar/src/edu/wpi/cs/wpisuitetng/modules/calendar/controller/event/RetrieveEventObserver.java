@@ -12,6 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import java.util.Date;
 
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -35,8 +37,13 @@ public class RetrieveEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		Event[] event = Event.fromJSONArray(iReq.getResponse().getBody());
-		controller.receivedMessages(event);
+		final Event[] event = Event.fromJSONArray(iReq.getResponse().getBody());
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				controller.receivedMessages(event);
+			}
+		});
 	}
 
 	/*
@@ -54,8 +61,13 @@ public class RetrieveEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Event[] errorMessage = {new Event("Error retrieving messages.", new Date(), new Date())};
-		controller.receivedMessages(errorMessage);
+		final Event[] errorMessage = {new Event("Error retrieving messages.", new Date(), new Date())};
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				controller.receivedMessages(errorMessage);
+			}
+		});
 	}
 
 }
