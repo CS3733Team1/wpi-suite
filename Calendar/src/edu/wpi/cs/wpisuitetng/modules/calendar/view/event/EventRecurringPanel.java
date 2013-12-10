@@ -17,6 +17,7 @@ import java.awt.event.KeyListener;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -27,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 
 import javax.swing.JCheckBox;
+import javax.swing.border.Border;
 
 public class EventRecurringPanel extends JPanel implements KeyListener, ActionListener {
 	// Errors strings
@@ -44,7 +46,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private JTextField occurrencesTextField;
 	private Date startDate;
 	private JLabel occurrencesErrorLabel;
-
+	private Border defaultBorder;
 	public EventRecurringPanel(Date startDate) {
 		this.buildLayout(startDate);
 	}
@@ -54,8 +56,8 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	 */
 	private void buildLayout(Date startDate) {
 		
-setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
-		
+		setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
+		defaultBorder = this.getBorder();
 		JLabel lblRecurring = new JLabel("Recurring: ");
 		add(lblRecurring, "cell 0 0");
 		
@@ -167,6 +169,11 @@ setLayout(new MigLayout("", "[][grow][grow][][][][][]", "[][]"));
 					isValid = false;
 				break;
 		}
+		Border errorBorder_;
+		if(!isValid)
+			this.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+		else
+			this.setBorder(defaultBorder);
 		return isValid;
 	}
 
