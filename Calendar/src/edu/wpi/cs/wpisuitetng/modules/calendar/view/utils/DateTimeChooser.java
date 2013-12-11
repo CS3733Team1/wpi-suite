@@ -20,6 +20,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
@@ -119,7 +120,7 @@ public class DateTimeChooser extends JPanel {
 		buildLayout(name);
 	}
 	private void buildLayout(String name){
-		setLayout(new MigLayout("", "[][grow][grow][]", "[]"));
+		setLayout(new MigLayout("", "[55px,right][grow][grow][]", "[]"));
 		
 		//make it on the minute - kill all seconds and milliseconds that might screw up comparisons with dates we think are on the same minute
 //		System.out.println("\tNormalizing time " + date_.toString());
@@ -129,7 +130,9 @@ public class DateTimeChooser extends JPanel {
 //		System.out.println("\tDone Normalizing time " + date_.toString());
 		
 		//name label
-		add(new JLabel(name), "cell 0 0");
+		JLabel lblName = new JLabel(name);
+		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
+		add(lblName, "cell 0 0, alignx right");
 				
 		//DateChooser for choosing days
 		jDateChooser_=new JDateChooser(date_);
