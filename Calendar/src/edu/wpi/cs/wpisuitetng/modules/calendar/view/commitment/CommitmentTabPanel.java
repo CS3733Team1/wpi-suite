@@ -147,7 +147,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 
 		//Date and Time
 		this.add(new JLabel("Due date:"), "split 2");
-		dateTimeChooser_=new DateTimeChooser("Due Date:");
+		dateTimeChooser_=new DateTimeChooser("");//empty label in the component itself
 //		dateTimeChooser_.addKeyListener(this);
 //		dateTimeChooser_.addActionListener(this);
 		dateTimeChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
