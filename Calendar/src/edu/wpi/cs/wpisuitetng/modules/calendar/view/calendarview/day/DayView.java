@@ -301,7 +301,7 @@ public class DayView extends JPanel implements ListDataListener {
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
-		DisplayCommitments();
+		//DisplayCommitments();
 	}
 
 	/**
@@ -319,7 +319,7 @@ public class DayView extends JPanel implements ListDataListener {
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
 		fillDayView();
-		DisplayCommitments();
+		//DisplayCommitments();
 	}
 
 	/**
@@ -337,7 +337,7 @@ public class DayView extends JPanel implements ListDataListener {
 			paneltracker = new HashMap<Date, DatePanel>();
 			hourlist = new ArrayList<JPanel>();
 			fillDayView();
-			DisplayCommitments();
+			//DisplayCommitments();
 		}
 	}
 
@@ -356,7 +356,7 @@ public class DayView extends JPanel implements ListDataListener {
 			paneltracker = new HashMap<Date, DatePanel>();
 			hourlist = new ArrayList<JPanel>();
 			fillDayView();
-			DisplayCommitments();
+			//DisplayCommitments();
 		}
 	}
 
@@ -381,21 +381,21 @@ public class DayView extends JPanel implements ListDataListener {
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 		rebuildHours();
-		DisplayCommitments();
+		//DisplayCommitments();
 		this.updateUI();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
 		rebuildHours();
-		DisplayCommitments();
+		//DisplayCommitments();
 		this.updateUI();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
 		rebuildHours();
-		DisplayCommitments();
+		//DisplayCommitments();
 		this.updateUI();
 	}
 }

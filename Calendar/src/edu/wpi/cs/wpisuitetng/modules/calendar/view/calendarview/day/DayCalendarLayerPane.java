@@ -37,7 +37,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		layer = 0;
 		dayview = new DayView();
 		
-		int height = dayview.getPreferredSize().getSize().height;
+		int height = dayview.getPreferredSize().getSize().height * 3;
 		int width = 950;
 		
 		this.setSize(width, height);

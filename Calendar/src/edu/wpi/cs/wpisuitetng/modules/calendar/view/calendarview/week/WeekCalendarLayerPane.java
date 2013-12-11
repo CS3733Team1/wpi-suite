@@ -53,7 +53,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			multilistlist.add(new LinkedList<Event>());
 		}
 		
-		int height = weekview.getPreferredSize().getSize().height;
+		int height = weekview.getPreferredSize().getSize().height * 2;
 		int width = 950;
 		
 		this.setSize(width, height);
