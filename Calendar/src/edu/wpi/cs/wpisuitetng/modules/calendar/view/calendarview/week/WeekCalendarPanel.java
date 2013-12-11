@@ -158,7 +158,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		for (int x = 0; x < 7; x++){
 			if (foundyou.get(x).size() > 0){
 				JPanel day = weekpanel.get(x);
-				day.setBackground(Color.RED);
+//				day.setBackground(Color.RED);
 				StringBuilder bob = new StringBuilder();
 				bob.append("<html>");
 				int i=1;

@@ -169,7 +169,8 @@ public class DayView extends JPanel implements ListDataListener {
 		for (int x = 0; x < 24; x++){
 			if (foundyou.get(x).size() > 0){
 				JPanel hour = hourlist.get(x);
-				hour.setBackground(Color.RED);
+				hour.setBackground(CalendarUtils.todayYearColor);
+				hour.getComponent(1).setForeground(CalendarUtils.thatBlue);
 				StringBuilder bob = new StringBuilder();
 				bob.append("<html>");
 				int i=1;
