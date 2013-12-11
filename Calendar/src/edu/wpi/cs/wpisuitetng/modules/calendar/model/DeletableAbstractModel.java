@@ -10,72 +10,55 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import java.util.UUID;
-
-import com.google.gson.Gson;
-
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
-public abstract class DeletableAbstractModel extends AbstractModel{
-	
+public abstract class DeletableAbstractModel extends AbstractModel {
 	//In the beginning it was described in Model.java
 	//that models shall have a Unique Identifier int
-	//and so it shall be 
-	public long UniqueID = 0;//(int) UUID.randomUUID().getMostSignificantBits();
+	//and so it shall be
+	public long uniqueID = 0;
 	
-	protected int OwnerID=0;
-	protected String OwnerName;
-	protected boolean isTeam=true;
+	protected int ownerID = 0;
+	protected String ownerName;
+	protected boolean isTeam = true;
 	
-	public long getUniqueID()
-	{
-		return UniqueID;
+	public long getUniqueID() {
+		return uniqueID;
 	}
-	public void setUniqueID(long id)
-	{
-		this.UniqueID=id;
+	
+	public void setUniqueID(long id) {
+		this.uniqueID = id;
 	}
-	public boolean getisTeam()
-	{
+	
+	public boolean getisTeam() {
 		return isTeam;
 	}
-	public void setisTeam(boolean teamhuh)
-	{
-		this.isTeam=teamhuh;
-	}
-	public void setOwnerName(String own)
-	{
-		this.OwnerName=own;
-	}
-	public String getOwnerName()
-	{
-		return this.OwnerName;
-	}
-	public void setOwnerID(int id)
-	{
-		this.OwnerID=id;
-	}
-	public int getOwnerID()
-	{
-		return this.OwnerID;
-	}
-	protected boolean MarkedForDeletion = false;
 	
-	@Deprecated
-	public boolean isMarkedForDeletion()
-	{
-		return this.MarkedForDeletion;
+	public void setisTeam(boolean teamhuh) {
+		this.isTeam = teamhuh;
 	}
 	
-	@Deprecated
-	public void unmarkForDeletion()
-	{
-		this.MarkedForDeletion = false;
+	public void setOwnerName(String own) {
+		this.ownerName = own;
 	}
 	
-	@Deprecated 
-	public void markForDeletion()
-	{
-		this.MarkedForDeletion = true;
+	public String getOwnerName() {
+		return this.ownerName;
 	}
+	
+	public void setOwnerID(int id) {
+		this.ownerID = id;
+	}
+	
+	public int getOwnerID() {
+		return this.ownerID;
+	}
+	
+	// Unused
+	@Override
+	public Boolean identify(Object o) {return null;}
+	@Override
+	public void save() {}
+	@Override
+	public void delete() {}
 }

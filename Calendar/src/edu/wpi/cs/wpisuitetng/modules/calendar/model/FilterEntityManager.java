@@ -57,19 +57,11 @@ public class FilterEntityManager implements EntityManager<Filter> {
 		// Parse the message from JSON
 		final Filter newMessage = Filter.fromJSON(content);
 		
-		if (newMessage.isMarkedForDeletion())
-		{
-			newMessage.unmarkForDeletion();
-			deleteFilter(newMessage);
-			return newMessage;
-		}
-		
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
 			throw new WPISuiteException();
 		}
-
 		
 		// Return the newly created message (this gets passed back to the client)
 		return newMessage;
@@ -121,12 +113,6 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	@Override
 	public void save(Session s, Filter model)
 			throws WPISuiteException {
-		
-		if (model.isMarkedForDeletion())
-		{
-			deleteFilter(model);
-			return;
-		}
 		// Save the given defect in the database
 		db.save(model);
 	}
