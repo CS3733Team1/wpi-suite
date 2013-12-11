@@ -146,6 +146,10 @@ public class EventMouseListener implements MouseListener{
 	
 	private void deselectPanel(JPanel panel){
 		
+		if (originalColor == null || panel.getBackground() == null){
+			selectPanel(panel);
+			return;
+		}
 		LineBorder panelBorder = (LineBorder)panel.getBorder();
 		panel.setBackground(originalColor);
 		JLabel j = (JLabel)panel.getComponent(0);
