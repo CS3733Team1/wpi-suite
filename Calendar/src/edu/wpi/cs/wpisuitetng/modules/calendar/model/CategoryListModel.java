@@ -36,11 +36,11 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	private List<Category> categories;
 
 	private final Category[] defaultCategories = {
-			new Category("Uncategorized", new Color(255,234,170)), 
-			new Category("Important", new Color(251,110,90)),
-			new Category("Work", new Color(159, 226, 254)),
-			new Category("Home", new Color(250, 179,86)),
-			new Category("Holiday", new Color(251,120,191))};
+			new Category("Uncategorized", new Color(255,234,170), 0), 
+			new Category("Important", new Color(251,110,90), 1),
+			new Category("Work", new Color(159, 226, 254), 2),
+			new Category("Home", new Color(250, 179,86), 3),
+			new Category("Holiday", new Color(251,120,191), 4)};
 
 	/**
 	 * Constructs a new calendar with no commitments.

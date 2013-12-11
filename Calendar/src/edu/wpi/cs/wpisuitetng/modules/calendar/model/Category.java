@@ -48,6 +48,13 @@ public class Category extends DeletableAbstractModel {
 		this.isReal = true;
 	}
 	
+	public Category(String name, Color color, long uid) {
+		this.name = name;
+		this.color = color;
+		this.isReal = true;
+		this.setUniqueID(uid);
+	}
+	
 	/**
 	 * @return the name of the Category
 	 */

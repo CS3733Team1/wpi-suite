@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.weather.WeatherPanel;
 
 public class CalendarToolBar extends JPanel implements ActionListener {
 	// Always visible
@@ -41,7 +40,7 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	//int eggState;
 	//boolean eggHatched;
 	
-	private WeatherPanel weatherPanel;
+	//private WeatherPanel weatherPanel;
 
 	public CalendarToolBar() {
 		try {
