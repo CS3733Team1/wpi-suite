@@ -22,12 +22,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.AncestorEvent;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -138,7 +135,6 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 			if(days == 1 || days == 7)
 				label.setForeground(CalendarUtils.timeColor);
 			
-			System.out.println(week.isToday());
 			if(week.isToday())
 			{
 				todayIndex = week.getIndex();

@@ -147,7 +147,6 @@ public class Event extends DeletableAbstractModel implements Comparable<ISchedul
 	public String toJSON() {
 		//name, dueDate, description, category
 		String str = new Gson().toJson(this, Event.class);
-		System.err.println(str);
 		return str;
 	}
 
@@ -159,7 +158,6 @@ public class Event extends DeletableAbstractModel implements Comparable<ISchedul
 
 	public static Event[] fromJSONArray(String input) {
 		final Gson parser = new Gson();
-		System.err.println(input);
 		return parser.fromJson(input, Event[].class);
 	}
 

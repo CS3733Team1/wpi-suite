@@ -1,7 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -30,7 +29,6 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 		return filteredCommitmentsListModel;
 	}
 	private void filterCommitments() {
-		System.out.println("Filtering comitmentlist");
 		List<Commitment> commitmentList = new ArrayList<Commitment> (CommitmentListModel.getCommitmentListModel().getList());
 
 		int removed = filteredCommitments.size();

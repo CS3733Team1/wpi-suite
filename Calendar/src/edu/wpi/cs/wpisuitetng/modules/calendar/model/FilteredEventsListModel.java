@@ -1,7 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -31,7 +30,6 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 	}
 
 	private void filterEvents() {
-		System.out.println("Filtering events");
 		filteredEvents.clear();
 		List<Event> eventList = new ArrayList<Event>(EventListModel.getEventListModel().getList());
 		List<Event> toadd = new ArrayList<Event>();

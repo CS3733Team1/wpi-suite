@@ -23,13 +23,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
-import com.toedter.calendar.DateUtil;
-
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
@@ -84,7 +81,6 @@ public class WeekView extends JPanel{
 
 	public void fillDayView(){
 		todayWithinWeek = false;
-		System.out.println("FILLER UP");
 		JPanel time = new JPanel();
 
 		for (int currenthour=0; currenthour < 24; currenthour++){

@@ -96,6 +96,8 @@ public class Janeway {
 					gui.setVisible(false);
 					loginGui.getConnectButton().addActionListener(new LoginController(gui, loginGui));
 				}
+				
+				System.out.println("----------------------------------------Janeway Loaded----------------------------------------");
 			}
 		});
 	}

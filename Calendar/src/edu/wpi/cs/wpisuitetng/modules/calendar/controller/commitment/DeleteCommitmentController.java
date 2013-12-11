@@ -50,7 +50,7 @@ public class DeleteCommitmentController implements ActionListener {
 			request.addObserver(new DeleteCommitmentObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 		}
-		CommitmentListModel.getCommitmentListModel().Update();
+		CommitmentListModel.getCommitmentListModel().update();
 		MainView.getCurrentCalendarToolbar().clickRefreshButton();
 		/*MainView.getCurrentCalendarPanel().getCalendarTabPanel().refreshCalendarView();
 		FilterListModel.getFilterListModel().Update();
