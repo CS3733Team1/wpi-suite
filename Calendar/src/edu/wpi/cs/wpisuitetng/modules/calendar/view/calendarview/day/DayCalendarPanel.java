@@ -40,7 +40,7 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 
 		
 		
-		this.setLayout(new MigLayout("fill"));
+		this.setLayout(new MigLayout("fill, insets 0"));
 
 		daylayer = new DayCalendarLayerPane();
 
@@ -71,10 +71,10 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 		time.add(new JLabel(" "), "grow, aligny center");
 		time.setBackground(Color.white);
 
-		daytitle.add(time, "aligny center, w 5000, grow");
-		daytitle.add(dayname,  "aligny center, w 5000, grow");
+		daytitle.add(time, "aligny center, w 5000, hmin 50, hmax 50,grow");
+		daytitle.add(dayname,  "aligny center, w 5000,hmin 50, hmax 50, grow");
 
-		this.add(daytitle, "grow, wrap");
+		this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
 
 		dayscroll = new DayCalendarScrollPane(daylayer);
 

@@ -116,7 +116,7 @@ public class DayView extends JPanel implements ListDataListener {
 			hourbuilder.append("0");
 			hourbuilder.append(" ");
 			hourbuilder.append((new Integer(currenthour+1)).toString());
-			hourbuilder.append(",grow, push");
+			hourbuilder.append(",grow, push"); //hmin 38
 
 			JLabel timeLabel = new JLabel(DateUtils.hourString(currenthour), JLabel.RIGHT);
 			timeLabel.setForeground(CalendarUtils.timeColor);
