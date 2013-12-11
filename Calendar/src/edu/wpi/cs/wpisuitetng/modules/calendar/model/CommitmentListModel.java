@@ -135,7 +135,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	}
 
 	public synchronized List<Commitment> getList(){
-		return commitments;
+		return new ArrayList<Commitment>(commitments);
 	}
 	
 	public synchronized void update() {

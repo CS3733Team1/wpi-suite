@@ -126,7 +126,7 @@ public class Category extends DeletableAbstractModel {
 	 * @return A copy of this Category with isReal set to false
 	 */
 	public Category cloneFake() {
-		Category cat = new Category(this.name, this.color);
+		Category cat = new Category(this.name, this.color, this.uniqueID);
 		cat.isReal = false;
 		return cat;
 	}

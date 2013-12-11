@@ -83,7 +83,7 @@ public class MainView {
 	}
 	
 	public synchronized CalendarPanel getCalendarPanel(){
-		return MainView.calendarPanel;
+		return this.calendarPanel;
 	}
 	public static synchronized CalendarPanel getCurrentCalendarPanel(){
 		return MainView.calendarPanel;

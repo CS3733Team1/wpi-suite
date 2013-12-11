@@ -31,12 +31,10 @@ public class FilteredEventsListModel extends AbstractListModel<Event> implements
 
 	private void filterEvents() {
 		filteredEvents.clear();
-		List<Event> eventList = new ArrayList<Event>(EventListModel.getEventListModel().getList());
-		List<Event> toadd = new ArrayList<Event>();
+		List<Event> eventList = EventListModel.getEventListModel().getList();
 		
-		for(Event e: FilterListModel.getFilterListModel().applyEventFilter(eventList)) 
-			toadd.add(new Event(e));
-		filteredEvents.addAll(toadd);
+		filteredEvents.addAll(FilterListModel.getFilterListModel().applyEventFilter(eventList));
+		
 		this.fireIntervalAdded(this, 0, Math.max(filteredEvents.size() - 1, 0));
 	}
 

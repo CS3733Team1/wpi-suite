@@ -47,7 +47,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist.QuickListTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 
@@ -72,7 +71,7 @@ public class CalendarTabPanel extends JPanel {
 	private JTabbedPane filterCategoryTabbedPane;
 	
 	private CommitmentSubTabPanel commitmentSubTabPanel;
-	private QuickListTabPanel quickListTabPanel;
+	//private QuickListTabPanel quickListTabPanel;
 	
 	
 	public CalendarTabPanel(CalendarPanel calendarPanel) {
@@ -83,7 +82,7 @@ public class CalendarTabPanel extends JPanel {
 		filterCategoryTabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 		
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
-		quickListTabPanel = new QuickListTabPanel(calendarPanel);
+		//quickListTabPanel = new QuickListTabPanel(calendarPanel);
 		
 		personalCalCheckBox = new JCheckBox("Personal");
 		teamCalCheckBox = new JCheckBox("Team");
@@ -115,8 +114,8 @@ public class CalendarTabPanel extends JPanel {
 			yearViewButton = new TransparentToggleButton("Year",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png"))));
 			
-			filterCategoryTabbedPane.addTab("Quick List", new ImageIcon(ImageIO.read(getClass().getResource("/images/quicklist.png"))), 
-					quickListTabPanel);
+			//filterCategoryTabbedPane.addTab("Quick List", new ImageIcon(ImageIO.read(getClass().getResource("/images/quicklist.png"))), 
+			//		quickListTabPanel);
 			
 			filterCategoryTabbedPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
 					commitmentSubTabPanel);
@@ -194,7 +193,7 @@ public class CalendarTabPanel extends JPanel {
 
 	public void resetSelection() {
 		commitmentSubTabPanel.getCommitmentsList().clearSelection();
-		quickListTabPanel.getCommitmentsList().clearSelection();
+		//quickListTabPanel.getCommitmentsList().clearSelection();
 	}
 
 	public List<Commitment> getSelectedCommitmentList() {
@@ -204,8 +203,8 @@ public class CalendarTabPanel extends JPanel {
 		
 		if(filterCategoryTabbedPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
 			selectedCommitments.addAll(commitmentSubTabPanel.getCommitmentsList().getSelectedValuesList());
-		else if(filterCategoryTabbedPane.getSelectedComponent() instanceof QuickListTabPanel)
-			selectedCommitments.addAll(quickListTabPanel.getCommitmentsList().getSelectedValuesList());
+		//else if(filterCategoryTabbedPane.getSelectedComponent() instanceof QuickListTabPanel)
+			//selectedCommitments.addAll(quickListTabPanel.getCommitmentsList().getSelectedValuesList());
 		
 		return selectedCommitments;
 	}

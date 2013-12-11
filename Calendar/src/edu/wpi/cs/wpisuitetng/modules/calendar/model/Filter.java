@@ -88,7 +88,7 @@ public class Filter extends DeletableAbstractModel {
 	 * @return An ArrayList of Events with Categories that belong to this Filter's whitelist
 	 */
 	public List<Event> applyEventFilter(List<Event> inlist) {
-		List<Event> outlist = (new ArrayList<Event>());
+		List<Event> outlist = new ArrayList<Event>();
 		for(Event event: inlist) {
 			for(Category cat: this.categories) {
 				if(event.getCategory().equals(cat)) {
@@ -107,7 +107,7 @@ public class Filter extends DeletableAbstractModel {
 	 * @return An ArrayList of Commitments with Categories that belong to this Filter's whitelist
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> inlist) {
-		List<Commitment> outlist = (new ArrayList<Commitment>());
+		List<Commitment> outlist = new ArrayList<Commitment>();
 
 		for(Commitment commitment: inlist) {
 			for(Category cat: this.categories) {
@@ -136,7 +136,7 @@ public class Filter extends DeletableAbstractModel {
 		catch (Exception e) {
 			state = -1;
 		}
-
+		
 		//3 = Both Checked
 		//2 = Personal
 		//1 = Team
@@ -164,7 +164,6 @@ public class Filter extends DeletableAbstractModel {
 		}
 		list.removeAll(removeList);
 		return list;
-
 	}
 
 	@Override

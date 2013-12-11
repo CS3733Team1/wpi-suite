@@ -48,7 +48,6 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		return filterListModel;
 	}
 
-
 	/**
 	 * Constructs a new Filter and adds it to the model's List of Filters.
 	 * @param name A name for the new Filter
@@ -109,6 +108,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	}
 
 	public void setActiveFilter(Filter filter) {
+		System.out.println("Called set Active Filter! " + filter.getName());
 		if(!filter.equals(activeFilter)) {
 			for(Filter f: this.filters) {
 				f.setSelected(false);
@@ -116,6 +116,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 			filter.setSelected(true);
 			this.activeFilter = filter;
 			this.fireFilterChanged();
+			System.out.println("Fire filter changed");
 			this.fireContentsChanged(this, 0, Math.max(0, filters.size()-1));
 		}
 	}
@@ -187,7 +188,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Commitments
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter == null) return commitmentList;
+if(activeFilter == null) return commitmentList;
 		else if(activeFilter.getName().equalsIgnoreCase(UNFILTERED)) return Filter.filterTeamPersonal(commitmentList);
 		else return activeFilter.applyCommitmentFilter(commitmentList);
 	}

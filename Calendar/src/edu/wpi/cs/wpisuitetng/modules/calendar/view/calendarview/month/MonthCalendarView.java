@@ -314,6 +314,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 			int index = getIndexofDay(startCal);
 			EventPanel eventPanel = new EventPanel(event, days.get(index).getBackground());
+			eventPanels.add(eventPanel);
 			eventPanel.addMouseListener(eml);
 			days.get(index).addEvComPanel(eventPanel);
 		}
@@ -326,6 +327,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 			int index = getIndexofDay(dueCal);
 			CommitmentPanel commitmentPanel = new CommitmentPanel(commitment, days.get(index).getBackground());
+			commitmentPanels.add(commitmentPanel);
 			commitmentPanel.addMouseListener(cml);
 			days.get(index).addEvComPanel(commitmentPanel);
 		}
