@@ -11,9 +11,9 @@ public class FillerPanel extends EvComPanel {
 	public FillerPanel(Color background) {
 		super(false);
 		this.setLayout(new MigLayout("insets 0"));
-		this.setBackground(this.getBackground());
+		this.setBackground(background);
 		JLabel fillerLabel = new JLabel("filler");
-		fillerLabel.setForeground(this.getBackground());
+		fillerLabel.setForeground(background);
 		this.add(fillerLabel);
 	}
 }
