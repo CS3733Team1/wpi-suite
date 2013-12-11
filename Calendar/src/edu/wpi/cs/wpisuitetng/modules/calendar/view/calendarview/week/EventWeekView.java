@@ -329,7 +329,7 @@ public class EventWeekView extends JPanel{
 		StringBuilder layouts = new StringBuilder();
 		String toomanyones = "";
 		
-		layouts.append("[9%]");
+		layouts.append("0[9%]");
 		StringBuilder calclayout = new StringBuilder();
 		for(int j=0; j<7;j++){
 			for(int i=0; i<12; i++){
@@ -342,7 +342,7 @@ public class EventWeekView extends JPanel{
 		for(int i = 0; i < 100; i++)
 			toomanyones += "[1%]1";
 
-		this.setLayout(new MigLayout("fill, debug",
+		this.setLayout(new MigLayout("fill, debug, wmin 0",
 				layouts.toString(),
 				toomanyones));
 
