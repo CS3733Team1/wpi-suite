@@ -358,6 +358,7 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this.dueDate = toCopyFrom.getDueDate();
 		this.id = toCopyFrom.getID();
 		this.name = toCopyFrom.getName();
+		this.isTeam = toCopyFrom.getisTeam();
 		this.progress = toCopyFrom.getProgressState();
 	}
 
