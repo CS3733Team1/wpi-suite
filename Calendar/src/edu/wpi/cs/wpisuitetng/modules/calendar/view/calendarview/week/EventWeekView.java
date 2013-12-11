@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.text.DateFormat;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 /**
  * This class shows single-day events in week view. It is a component of the WeekCalendarLayerPane, along
@@ -124,6 +126,8 @@ public class EventWeekView extends JPanel{
 	public int getLength(Event e){
 		return ((e.getEndDate().getHours()*4 + (int) Math.round(e.getEndDate().getMinutes()/15.0)) - (e.getStartDate().getHours()*4 + (int) Math.round(e.getStartDate().getMinutes()/15.0)));
 	}
+	
+	
 	
 	/**
 	 * Calculates the List of Overlapping Events From Starting Index
@@ -233,8 +237,16 @@ public class EventWeekView extends JPanel{
 					infobuilder.append("</p></html>");
 					panel.setToolTipText(infobuilder.toString());
 					
+					int hour = e.getStartDate().getHours();
+					int min = e.getStartDate().getMinutes();
+					String time = DateUtils.timeToString(hour,min);
+					
+					JLabel timeLabel = new JLabel(time);
 					JLabel name = new JLabel(e.getName());
-					panel.add(name, "wmin 0, aligny center, alignx center");
+					name.setFont(new Font(name.getFont().getName(), Font.BOLD, name.getFont().getSize()));
+					
+					panel.add(timeLabel, "wmin 0, aligny center, alignx left, wrap");
+					panel.add(name, "wmin 0, aligny center, alignx left");
 					if (e.getCategory() != null){
 						panel.setBackground(e.getCategory().getColor());
 						name.setForeground(CalendarUtils.textColor(panel.getBackground()));

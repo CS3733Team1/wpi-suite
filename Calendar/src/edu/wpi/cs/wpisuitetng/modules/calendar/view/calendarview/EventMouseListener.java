@@ -145,9 +145,7 @@ public class EventMouseListener implements MouseListener{
 	}
 	
 	private void deselectPanel(JPanel panel){
-		
-		LineBorder panelBorder = (LineBorder)panel.getBorder();
-		panel.setBackground(originalColor);
+		panel.setBackground(panel.getBackground().brighter());
 		JLabel j = (JLabel)panel.getComponent(0);
 		j.setForeground(CalendarUtils.textColor(panel.getBackground()));
 	}
