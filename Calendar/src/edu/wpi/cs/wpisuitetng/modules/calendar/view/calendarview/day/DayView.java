@@ -31,6 +31,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class DayView extends JPanel implements ListDataListener {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -116,8 +118,9 @@ public class DayView extends JPanel implements ListDataListener {
 			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 
-			hour.add(new JLabel(currenthour+":00"));
-			hour.setBackground(new Color(236,252,144));
+			JLabel timeLabel = new JLabel(DateUtils.hourString(currenthour));
+			timeLabel.setForeground(CalendarUtils.timeColor);
+			hour.add(timeLabel);
 			this.add(hour, hourbuilder.toString());
 			hourlist.add(hour);
 
@@ -202,8 +205,9 @@ public class DayView extends JPanel implements ListDataListener {
 			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 
-			hour.add(new JLabel(currenthour+":00"));
-			hour.setBackground(new Color(236,252,144));
+			JLabel timeLabel = new JLabel(DateUtils.hourString(currenthour));
+			timeLabel.setForeground(CalendarUtils.timeColor);
+			hour.add(timeLabel);
 			this.add(hour, hourbuilder.toString());
 			hourlist.add(hour);
 		}

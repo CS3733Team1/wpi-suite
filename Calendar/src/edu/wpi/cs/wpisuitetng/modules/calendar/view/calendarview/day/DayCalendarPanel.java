@@ -34,9 +34,6 @@ public class DayCalendarPanel extends JPanel implements ICalendarView{
 
 
 	public DayCalendarPanel(){
-		this.setBorder(BorderFactory.createTitledBorder(null,
-				"Day View", TitledBorder.LEFT, TitledBorder.TOP,
-				new Font("null", Font.BOLD, 12), Color.BLUE));
 
 
 		this.setLayout(new MigLayout("fill"));

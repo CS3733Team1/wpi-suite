@@ -123,164 +123,281 @@ public class EventView extends JPanel {
 		return overlapchain;
 	}
 	
-	private boolean isBetween(Date test, Date start, Date end){
-		if(test.getHours() > start.getHours() &&
-				test.getHours() < end.getHours()){
-			return true;
-		}
-		else if(test.getHours() > start.getHours() &&
-				test.getHours() == end.getHours()){
-			if(test.getMinutes() < end.getMinutes()){
-				return true;
-			}
-		}
-		else if(test.getHours() == start.getHours() &&
-				test.getHours() < end.getHours()){
-			if(test.getMinutes() > start.getMinutes()){
-				return true;
-			}
-		}
-		else if(test.getHours() == start.getHours() &&
-				test.getHours() == end.getHours()){
-			if(test.getMinutes() > start.getMinutes() &&
-					test.getMinutes() < end.getMinutes()){
-				return true;
-			}
-		}
-		return false;
-	}
+//	private boolean isBetween(Date test, Date start, Date end){
+//		if(test.getHours() > start.getHours() &&
+//				test.getHours() < end.getHours()){
+//			return true;
+//		}
+//		else if(test.getHours() > start.getHours() &&
+//				test.getHours() == end.getHours()){
+//			if(test.getMinutes() < end.getMinutes()){
+//				return true;
+//			}
+//		}
+//		else if(test.getHours() == start.getHours() &&
+//				test.getHours() < end.getHours()){
+//			if(test.getMinutes() > start.getMinutes()){
+//				return true;
+//			}
+//		}
+//		else if(test.getHours() == start.getHours() &&
+//				test.getHours() == end.getHours()){
+//			if(test.getMinutes() > start.getMinutes() &&
+//					test.getMinutes() < end.getMinutes()){
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+//	
+//	private boolean overlapEvent(ISchedulable e1,ISchedulable e2){
+//		if(isBetween(e1.getStartDate(),e2.getStartDate(),e2.getEndDate()) ||
+//				isBetween(e1.getEndDate(),e2.getStartDate(),e2.getEndDate())||
+//				isBetween(e2.getStartDate(),e1.getStartDate(),e1.getEndDate()) ||
+//				isBetween(e2.getEndDate(),e1.getStartDate(),e1.getEndDate()) ||
+//				(e1.getStartDate() == e2.getStartDate() && e1.getEndDate() == e2.getEndDate())){
+//			return true;
+//		}
+//		return false;
+//	}
+//	
+//	private ArrayList<ISchedulable> overlapList(ISchedulable e1, ArrayList<ISchedulable> eventList){
+//		ArrayList<ISchedulable> overlaps = new ArrayList<ISchedulable>();
+//		for(ISchedulable e2:eventList){
+//			if(overlapEvent(e1,e2)){
+//				overlaps.add(e2);
+//			}
+//		}
+//		return overlaps;
+//	}
+//	
+//	private ArrayList<ArrayList<ISchedulable>> generateMap(){
+//		sortEvents();
+//		ArrayList<ArrayList<ISchedulable>> map = new ArrayList<ArrayList<ISchedulable>>();
+//		
+//		for(int i=0;i<events.size();i++){
+//			boolean added=false;
+//			for(int j=0;j<map.size();j++){
+//				ArrayList<ISchedulable> testList = map.get(j);
+//				if(!overlapEvent(events.get(i),testList.get(testList.size()-1))){
+//					map.get(j).add(events.get(i));
+//					added=true;
+//				}
+//			}
+//			if(!added){
+//				ArrayList<ISchedulable> newList = new ArrayList<ISchedulable>();
+//				newList.add(events.get(i));
+//				map.add(newList);
+//			}
+//		}
+//		
+//		return map;
+//	}
+//	
+//	private void displayMap(ArrayList<ArrayList<ISchedulable>> map){
+//		String toomanyones = "";
+//		
+//		StringBuilder calclayout = new StringBuilder();
+//		calclayout.append("[22%]");
+//		for (int x = 0; x < 76; x++){
+//			String size = "[1%]1";
+//			calclayout.append(size);
+//		}
+//		calclayout.append("[2%]");
+//		
+//		for(int k = 0; k < 100; k++)
+//			toomanyones += "[1%]1";
+//		
+//		this.setLayout(new MigLayout("fill",
+//				calclayout.toString(),
+//				toomanyones));
+//		
+//		for(int i=0;i<map.size();i++){
+//			for(ISchedulable test:map.get(i)){
+//				ArrayList<ISchedulable> overlapEvents = new ArrayList<ISchedulable>();
+//				int divisions=1;
+//				for(int j=0;j<map.size();j++){
+//					if(j!=i){
+//						ArrayList<ISchedulable> overlaps = overlapList(test,map.get(j));
+//						if(overlaps.size()>0){
+//							divisions++;
+//							overlapEvents.addAll(overlaps);
+//						}
+//					}
+//				}
+//				for(ISchedulable test2:overlapEvents){
+//					int eventDivs=0;
+//					for(int j=0;j<map.size();j++){
+//						if(overlapList(test2,map.get(j)).size()>0){
+//							eventDivs++;
+//						}
+//					}
+//					if(eventDivs>divisions){
+//						divisions=eventDivs;
+//					}
+//				}
+//				JPanel panel = new JPanel();
+//				StringBuilder evebuilder = new StringBuilder();
+//				evebuilder.append("cell ");
+//				evebuilder.append(new Integer(1 + i*(76/divisions)).toString());
+//				evebuilder.append(" ");
+//				evebuilder.append((new Integer((int)(4*(test.getStartDate().getHours()) + Math.round((test.getStartDate().getMinutes()/15.0) + 4))).toString()));
+//				evebuilder.append(" ");
+//				evebuilder.append(new Integer(76/divisions));
+//				evebuilder.append(" ");
+//				evebuilder.append(new Integer(getLength(test)).toString());
+//				evebuilder.append(",grow, push, wmin 0");
+//				JLabel name = new JLabel(test.getName());
+//				panel.add(name, "wmin 0, aligny center, alignx center");
+//				
+//				StringBuilder infobuilder = new StringBuilder();
+//				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
+//				infobuilder.append(test.getName());
+//				if(test instanceof Event)
+//				{
+//					infobuilder.append("<br><b>Start: </b>");
+//					infobuilder.append(DateFormat.getInstance().format(test.getStartDate()));
+//					infobuilder.append("<br><b>End: </b>");
+//					infobuilder.append(DateFormat.getInstance().format(test.getEndDate()));
+//				}
+//				else if(test instanceof Commitment)
+//				{
+//					infobuilder.append("<br><b>Due: </b>");
+//					infobuilder.append(DateFormat.getInstance().format(test.getStartDate()));
+//				}
+//				if(test.getCategory()!=null){
+//					infobuilder.append("<br><b>Category: </b>");
+//					infobuilder.append(test.getCategory().getName());
+//				}
+//				if(test.getDescription().length()>0){
+//					infobuilder.append("<br><b>Description: </b>");
+//					infobuilder.append(test.getDescription());
+//				}
+//				infobuilder.append("</p></html>");
+//				panel.setToolTipText(infobuilder.toString());
+//				if(test instanceof Event)
+//					panel.addMouseListener(new EventMouseListener((Event) test, panel));
+//				
+//				if (test.getCategory() != null){
+//					panel.setBackground(test.getCategory().getColor());
+//					Color catColor=test.getCategory().getColor();
+//					float[] hsb=new float[3];
+//					hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
+//					if(hsb[2]<0.5){
+//						name.setForeground(Color.WHITE);
+//					}
+//					else{
+//						name.setForeground(Color.BLACK);
+//					}
+//				}
+//				else{
+//					panel.setBackground(Color.CYAN);
+//				}
+//				panel.setFocusable(true);
+//				this.add(panel, evebuilder.toString());
+//			}
+//		}
+//	}
+//	
+//	/**
+//	 * Creates a Mig-Layout panel to be displayed on the day view
+//	 * @param e Event to be displayed
+//	 * @return JPanel generated
+//	 */
+//	public void showEvent()
+//	{
+//		sortEvents();
+//		
+//		ArrayList<ArrayList<ISchedulable>> eventMap = new ArrayList<ArrayList<ISchedulable>>();
+//		eventMap=generateMap();
+//		displayMap(eventMap);
+//	}
 	
-	private boolean overlapEvent(ISchedulable e1,ISchedulable e2){
-		if(isBetween(e1.getStartDate(),e2.getStartDate(),e2.getEndDate()) ||
-				isBetween(e1.getEndDate(),e2.getStartDate(),e2.getEndDate())||
-				isBetween(e2.getStartDate(),e1.getStartDate(),e1.getEndDate()) ||
-				isBetween(e2.getEndDate(),e1.getStartDate(),e1.getEndDate()) ||
-				(e1.getStartDate() == e2.getStartDate() && e1.getEndDate() == e2.getEndDate())){
-			return true;
-		}
-		return false;
-	}
-	
-	private ArrayList<ISchedulable> overlapList(ISchedulable e1, ArrayList<ISchedulable> eventList){
-		ArrayList<ISchedulable> overlaps = new ArrayList<ISchedulable>();
-		for(ISchedulable e2:eventList){
-			if(overlapEvent(e1,e2)){
-				overlaps.add(e2);
-			}
-		}
-		return overlaps;
-	}
-	
-	private ArrayList<ArrayList<ISchedulable>> generateMap(){
+	/**
+	 * Creates a Mig-Layout panel to be displayed on the day view
+	 * @param e Event to be displayed
+	 * @return JPanel generated
+	 */
+	public void showEvent()
+	{
 		sortEvents();
-		ArrayList<ArrayList<ISchedulable>> map = new ArrayList<ArrayList<ISchedulable>>();
 		
-		for(int i=0;i<events.size();i++){
-			boolean added=false;
-			for(int j=0;j<map.size();j++){
-				ArrayList<ISchedulable> testList = map.get(j);
-				if(!overlapEvent(events.get(i),testList.get(testList.size()-1))){
-					map.get(j).add(events.get(i));
-					added=true;
-				}
-			}
-			if(!added){
-				ArrayList<ISchedulable> newList = new ArrayList<ISchedulable>();
-				newList.add(events.get(i));
-				map.add(newList);
-			}
-		}
-		
-		return map;
-	}
-	
-	private void displayMap(ArrayList<ArrayList<ISchedulable>> map){
+		int maxwidth = findMaxWidth();
+		int sectionsize = 76 / maxwidth;
 		String toomanyones = "";
 		
 		StringBuilder calclayout = new StringBuilder();
 		calclayout.append("[22%]");
-		for (int x = 0; x < 76; x++){
-			String size = "[1%]1";
+		for (int x = 0; x < maxwidth; x++){
+			String size = "[" + sectionsize + "%]";
 			calclayout.append(size);
 		}
 		calclayout.append("[2%]");
 		
-		for(int k = 0; k < 100; k++)
-			toomanyones += "[1%]1";
+		for(int i = 0; i < 100; i++)
+			toomanyones += "[1%]";
 		
 		this.setLayout(new MigLayout("fill",
 				calclayout.toString(),
 				toomanyones));
 		
-		for(int i=0;i<map.size();i++){
-			for(ISchedulable test:map.get(i)){
-				ArrayList<ISchedulable> overlapEvents = new ArrayList<ISchedulable>();
-				int divisions=1;
-				for(int j=0;j<map.size();j++){
-					if(j!=i){
-						ArrayList<ISchedulable> overlaps = overlapList(test,map.get(j));
-						if(overlaps.size()>0){
-							divisions++;
-							overlapEvents.addAll(overlaps);
-						}
-					}
-				}
-				for(ISchedulable test2:overlapEvents){
-					int eventDivs=0;
-					for(int j=0;j<map.size();j++){
-						if(overlapList(test2,map.get(j)).size()>0){
-							eventDivs++;
-						}
-					}
-					if(eventDivs>divisions){
-						divisions=eventDivs;
-					}
-				}
+		int y = 0;
+		while (y < events.size()){
+			List<ISchedulable> chain = grabOverlapChain(y);
+			if (chain.size() == 0){
+				y = events.size();
+			}
+			
+			for (int z = 0; z < chain.size(); z++){
+				ISchedulable e = chain.get(z);
 				JPanel panel = new JPanel();
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
-				evebuilder.append(new Integer(1 + i*(76/divisions)).toString());
+				evebuilder.append(new Integer(1 + z).toString());
 				evebuilder.append(" ");
-				evebuilder.append((new Integer((int)(4*(test.getStartDate().getHours()) + Math.round((test.getStartDate().getMinutes()/15.0) + 4))).toString()));
+				evebuilder.append((new Integer((int)(4*(e.getStartDate().getHours()) + Math.round((e.getStartDate().getMinutes()/15.0) + 4))).toString()));
 				evebuilder.append(" ");
-				evebuilder.append(new Integer(76/divisions));
+				evebuilder.append("0");
 				evebuilder.append(" ");
-				evebuilder.append(new Integer(getLength(test)).toString());
+				evebuilder.append(new Integer(getLength(e)).toString());
 				evebuilder.append(",grow, push, wmin 0");
-				JLabel name = new JLabel(test.getName());
-				panel.add(name, "wmin 0, aligny center, alignx center");
+
+				JLabel name = new JLabel(e.getName());
+				panel.add(name, "wmin0");
 				
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
-				infobuilder.append(test.getName());
-				if(test instanceof Event)
+				infobuilder.append(e.getName());
+				if(e instanceof Event)
 				{
 					infobuilder.append("<br><b>Start: </b>");
-					infobuilder.append(DateFormat.getInstance().format(test.getStartDate()));
+					infobuilder.append(DateFormat.getInstance().format(e.getStartDate()));
 					infobuilder.append("<br><b>End: </b>");
-					infobuilder.append(DateFormat.getInstance().format(test.getEndDate()));
+					infobuilder.append(DateFormat.getInstance().format(e.getEndDate()));
 				}
-				else if(test instanceof Commitment)
+				else if(e instanceof Commitment)
 				{
 					infobuilder.append("<br><b>Due: </b>");
-					infobuilder.append(DateFormat.getInstance().format(test.getStartDate()));
+					infobuilder.append(DateFormat.getInstance().format(e.getStartDate()));
 				}
-				if(test.getCategory()!=null){
+				if(e.getCategory()!=null){
 					infobuilder.append("<br><b>Category: </b>");
-					infobuilder.append(test.getCategory().getName());
+					infobuilder.append(e.getCategory().getName());
 				}
-				if(test.getDescription().length()>0){
+				if(e.getDescription().length()>0){
 					infobuilder.append("<br><b>Description: </b>");
-					infobuilder.append(test.getDescription());
+					infobuilder.append(e.getDescription());
 				}
 				infobuilder.append("</p></html>");
 				panel.setToolTipText(infobuilder.toString());
-				if(test instanceof Event)
-					panel.addMouseListener(new EventMouseListener((Event) test, panel));
-				
-				if (test.getCategory() != null){
-					panel.setBackground(test.getCategory().getColor());
-					Color catColor=test.getCategory().getColor();
+				if(e instanceof Event)
+					panel.addMouseListener(new EventMouseListener((Event) e, panel));
+				/*else if(test instanceof Commitment)
+					panel.addMouseListener(new CommitmentMouseListener((Commitment) test, panel));
+				*/
+				if (e.getCategory() != null){
+					panel.setBackground(e.getCategory().getColor());
+					Color catColor=e.getCategory().getColor();
 					float[] hsb=new float[3];
 					hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
 					if(hsb[2]<0.5){
@@ -296,21 +413,8 @@ public class EventView extends JPanel {
 				panel.setFocusable(true);
 				this.add(panel, evebuilder.toString());
 			}
+			y = y + chain.size();
 		}
-	}
-	
-	/**
-	 * Creates a Mig-Layout panel to be displayed on the day view
-	 * @param e Event to be displayed
-	 * @return JPanel generated
-	 */
-	public void showEvent()
-	{
-		sortEvents();
-		
-		ArrayList<ArrayList<ISchedulable>> eventMap = new ArrayList<ArrayList<ISchedulable>>();
-		eventMap=generateMap();
-		displayMap(eventMap);
 	}
 	
 }

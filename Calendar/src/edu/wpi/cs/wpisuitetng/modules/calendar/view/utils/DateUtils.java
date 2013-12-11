@@ -58,7 +58,11 @@ public class DateUtils {
 			output = "" + hour + " AM";
 		} else if (hour == 12){
 			output = "Noon";
+		}else if(hour > 12)
+		{
+			output = "" + (hour-12) + "PM";
 		}
+		
 		return output;
 	}
 
