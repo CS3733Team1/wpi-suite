@@ -68,7 +68,7 @@ public class EventEntityManager implements EntityManager<Event> {
 		} while(!unique);
 
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+		System.out.printf("Server: Creating new event with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
 
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -103,6 +103,8 @@ public class EventEntityManager implements EntityManager<Event> {
 		// Ask the database to retrieve all objects of the type Event.
 		// Passing a dummy Event lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
+		System.out.println("Server: Retrieving all events");
+		
 		List<Model> messages = db.retrieveAll(new Event(), s.getProject());
 
 		// Return the list of messages as an array
@@ -144,7 +146,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.println("Deleting event with id = " + id);
+		System.out.printf("Server: Deleting event with id = %s\n", id);
 		try {
 			Event todelete = (Event) db.retrieve(Event.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
 			this.deleteEvent(todelete);

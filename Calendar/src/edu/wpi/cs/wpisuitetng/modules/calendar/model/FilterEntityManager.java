@@ -68,7 +68,7 @@ public class FilterEntityManager implements EntityManager<Filter> {
 		} while(!unique);
 
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new filter entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+		System.out.printf("Server: Creating new filter with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
 
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -88,6 +88,7 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	@Override
 	public Filter[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
+		System.out.printf("Server: Retrieving category with id = %s\n", id);
 		return (Filter []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
 	}
 
@@ -101,6 +102,8 @@ public class FilterEntityManager implements EntityManager<Filter> {
 		// Ask the database to retrieve all objects of the type Commitment.
 		// Passing a dummy Filter lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
+		System.out.println("Server: Retrieving all filters");
+		
 		List<Model> messages = db.retrieveAll(new Filter(), s.getProject());
 
 		// Return the list of messages as an array
@@ -141,7 +144,7 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.println("Deleting filter with id = " + id);
+		System.out.printf("Server: Deleting filter with id = %s\n", id);
 		try {
 			Filter todelete = (Filter) db.retrieve(Filter.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
 			deleteFilter(todelete);

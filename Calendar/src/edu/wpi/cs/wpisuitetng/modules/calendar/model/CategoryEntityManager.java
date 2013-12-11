@@ -72,7 +72,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		} while(!unique);
 
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new category entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+		System.out.printf("Server: Creating new category with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
 
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -92,9 +92,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	@Override
 	public Category[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		// Throw an exception if an ID was specified, as this module does not support
-		// retrieving specific Categories.
-		System.out.println("Category retrieve");
+		System.out.printf("Server: Retrieving category with id = %s\n", id);
 		return (Category []) (db.retrieve(this.getClass(), "UniqueID", id, s.getProject()).toArray());
 	}
 
@@ -108,8 +106,8 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		// Ask the database to retrieve all objects of the type Category.
 		// Passing a dummy Category lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-
-		System.out.println("Trying to retrive all categories");
+		System.out.println("Server: Retrieving all categories");
+		
 		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
 
 		// Return the list of messages as an array
@@ -149,7 +147,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.println("Deleting category with id = " + id);
+		System.out.printf("Server: Deleting category with id = %s\n", id);
 		try {
 			Category todelete= (Category) db.retrieve(Category.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
 			deleteCategory(todelete);

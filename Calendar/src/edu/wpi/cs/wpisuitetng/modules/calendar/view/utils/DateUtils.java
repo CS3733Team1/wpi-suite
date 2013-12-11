@@ -38,16 +38,16 @@ public class DateUtils {
 			}
 		}
 
-		// Uncomment if you prefer the 3 PM instead of 3:00 PM
-		if (minutes == 0) {
-			return strHours + " " + strAmPm;
-		} else {
-			String strMinutes = Integer.toString(minutes);
-			if (minutes<10) {
-				strMinutes = "0" + strMinutes;
+		//uncomment if you prefer the 3 PM instead of 3:00 PM
+//		if (minutes==0){
+//			return strHours+" "+strAmPm;
+//		}else{
+			String strMinutes=Integer.toString(minutes);
+			if (minutes<10){
+				strMinutes="0"+strMinutes;
 			}
 			return strHours + ":" + strMinutes+strAmPm;
-		}
+		//}
 	}
 
 	public static String hourString(int hour) {
