@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
@@ -64,6 +66,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	private JLabel nameErrorLabel;
 //	private JLabel dateErrorLabel;
 
+	
+	// Old Commitment
+	private Commitment editCommitment;
+	private boolean isEditMode;
+
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
 	JEditorPane display;
@@ -74,6 +81,8 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 
 	public CommitmentTabPanel(JEditorPane display, Commitment c)
 	{
+		isEditMode = true;
+		editCommitment = c;
 		this.display = display;
 
 		this.buildLayout();
@@ -92,6 +101,36 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		validateFields();
 	}
 
+	public boolean validateEdit() {
+		boolean noChangesMade = true;
+		if(!editCommitment.getName().equals(nameTextField.getText())) {
+			System.out.println("originalname: " + editCommitment.getName() + "   new name: " + nameTextField.getText());
+			noChangesMade = false;
+		}
+		
+//		else if(editCommitment.getDueDate().equals(dateTimeChooser_.getDate())){
+//			noChangesMade = false;
+//			System.out.println("date");
+//		}
+		else if(!editCommitment.getCategory().equals(categoryPickerPanel.getSelectedCategory())){
+			noChangesMade = false;
+			System.out.println("cat");
+		}
+		else if(!editCommitment.getDescription().equals(descriptionTextArea.getText())){
+			System.out.println("originalname: " + editCommitment.getDescription() + "   new name: " + descriptionTextArea.getText());
+			noChangesMade = false;
+		}
+		else if(editCommitment.getisTeam() != calendarPicker.isTeam()){
+			noChangesMade = false;
+			System.out.println("team");
+		}
+		else if(editCommitment.getProgress() != commitmentProgressPanel.getSelectedState()){
+			noChangesMade = false;
+			System.out.println("state");
+		}
+		return noChangesMade;
+	}
+	
 	/**
 	 * Builds the GUI layout for the Commitment panel
 	 * @return void
@@ -125,22 +164,26 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		// Category
 		this.add(new JLabel("Category:"), "split 2");
 		categoryPickerPanel = new CategoryPickerPanel();
+		categoryPickerPanel.addActionListener(this);
 		this.add(categoryPickerPanel, "alignx left, wrap");
 
 		//Progress
 		this.add(new JLabel("Progress:"), "split 2");
 		commitmentProgressPanel = new CommitmentProgressPanel();
+		commitmentProgressPanel.addActionListener(this);
 		this.add(commitmentProgressPanel, "alignx left, wrap");
 
 		// Calendar
 		this.add(new JLabel("Calendar:"), "split 2");
 		calendarPicker = new CalendarPicker();
+		calendarPicker.addActionListener(this);
 		this.add(calendarPicker, "alignx left, wrap");
 
 		// Description
 		this.add(new JLabel("Description:"), "wrap");
 
 		descriptionTextArea = new JTextArea();
+		descriptionTextArea.addKeyListener(this);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 
@@ -177,6 +220,12 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	 */
 	private void validateFields() {
 		boolean enableAddCommitment = true;
+		
+		if(isEditMode) {
+			System.out.println("Edit Mode");
+			enableAddCommitment = !validateEdit();
+			System.out.println("enable button?: " + enableAddCommitment);
+		}
 
 		//check name
 		if(nameTextField.getText().trim().length() == 0) {
@@ -213,17 +262,18 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("cancel")) {
 			this.killCommitmentPanel();
+		} else {
+			validateFields();
+			System.out.println("Action Performed");
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		validateFields();
-	}
+	public void keyReleased(KeyEvent e) {}
 
 	// Unused
 	@Override
-	public void keyPressed(KeyEvent e) {}
+	public void keyPressed(KeyEvent e) {validateFields();}
 	@Override
 	public void keyTyped(KeyEvent e) {}
 }
