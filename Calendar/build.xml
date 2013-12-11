@@ -10,7 +10,7 @@
 		<fileset dir="${core-lib}">
 			<include name="gson-*.jar"/>
 		</fileset>
-		<fileset dir="${calendar-lib}">
+		<fileset dir="${janeway-lib}">
 			<include name="jcalendar-1.4.jar"/>
 		</fileset>
 		<fileset dir="${janeway-lib}">
@@ -48,7 +48,7 @@
 	<target name="core-jar" depends="compile-base">
 		<jar destfile="${core-jar-dest}">
 			<fileset dir="build"/>
-			<zipfileset excludes="META-INF/**/*" src="./lib/jcalendar-1.4.jar"></zipfileset>
+			
 		</jar>
 	</target>
 
