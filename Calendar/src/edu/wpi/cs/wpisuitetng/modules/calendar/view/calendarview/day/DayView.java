@@ -31,6 +31,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class DayView extends JPanel implements ListDataListener {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -65,14 +67,14 @@ public class DayView extends JPanel implements ListDataListener {
 		this.setBackground(Color.white);
 
 		this.setLayout(new MigLayout("fill", 
-				"[20%][80%]", 
+				"[10%]0[90%]", 
 				"[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1[4%]1"));
 
 		this.setVisible(true);
 
 		fillDayView();
 		//DisplayCommitments();
-		
+
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
 
@@ -116,8 +118,9 @@ public class DayView extends JPanel implements ListDataListener {
 			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 
-			hour.add(new JLabel(currenthour+":00"));
-			hour.setBackground(new Color(236,252,144));
+			JLabel timeLabel = new JLabel(DateUtils.hourString(currenthour), JLabel.RIGHT);
+			timeLabel.setForeground(CalendarUtils.timeColor);
+			hour.add(timeLabel);
 			this.add(hour, hourbuilder.toString());
 			hourlist.add(hour);
 
@@ -132,20 +135,37 @@ public class DayView extends JPanel implements ListDataListener {
 
 			Date hue = new Date(currentYear-1900, currentMonth, currentDate, currenthour, 0);
 			thesecond.setDate(hue);
-			thesecond.setBackground(Color.WHITE);
-			thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
+
+			Calendar cal = Calendar.getInstance();
+			Calendar today = Calendar.getInstance();
+			today.setTime(hue);
+
+			if(cal.get(Calendar.MONTH) == currentMonth &&
+					cal.get(Calendar.YEAR) == currentYear && 
+					cal.get(Calendar.DATE) == currentDate){
+				thesecond.setBackground(CalendarUtils.selectionColor);
+				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, CalendarUtils.thatBlue));
+			}else if(today.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 
+					today.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+				thesecond.setBackground(CalendarUtils.weekendColor);
+				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
+			}else{
+				thesecond.setBackground(Color.WHITE);
+				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
+			}
+			
 			this.add(thesecond, datebuilder.toString());
 			paneltracker.put(hue, thesecond);
 			nameList.add(thesecond);
 		}
 	}
-	
+
 	/**
 	 * Displays Commitments on DayView 
 	 */
 	public void DisplayCommitments(){
 		List<List<Commitment>> foundyou = bananaSplit(CommitmentsOnCalendar());
-		
+
 		for (int x = 0; x < 24; x++){
 			if (foundyou.get(x).size() > 0){
 				JPanel hour = hourlist.get(x);
@@ -157,7 +177,7 @@ public class DayView extends JPanel implements ListDataListener {
 					bob.append("<p style='width:175px'>");
 					if(i != 1)
 					{
-					bob.append("<br>");
+						bob.append("<br>");
 					}
 					bob.append("Commitment ");
 					bob.append(new Integer(i).toString()+":");
@@ -182,7 +202,7 @@ public class DayView extends JPanel implements ListDataListener {
 			}
 		}
 	}
-	
+
 	/**
 	 * Rebuilds the hour panels, so that they are normalized
 	 */
@@ -190,7 +210,7 @@ public class DayView extends JPanel implements ListDataListener {
 		for (int x = 0; x < hourlist.size(); x++){
 			this.remove(hourlist.get(x));
 		}
-		
+
 		hourlist = new ArrayList<JPanel>();
 		for (int currenthour=0; currenthour < 24; currenthour++){
 			JPanel hour = new JPanel();
@@ -202,13 +222,14 @@ public class DayView extends JPanel implements ListDataListener {
 			hourbuilder.append((new Integer(currenthour+1)).toString());
 			hourbuilder.append(",grow, push");
 
-			hour.add(new JLabel(currenthour+":00"));
-			hour.setBackground(new Color(236,252,144));
+			JLabel timeLabel = new JLabel(DateUtils.hourString(currenthour), JLabel.RIGHT);
+			timeLabel.setForeground(CalendarUtils.timeColor);
+			hour.add(timeLabel);
 			this.add(hour, hourbuilder.toString());
 			hourlist.add(hour);
 		}
 	}
-	
+
 	/**
 	 * Splits The List Into Hourly Blocks
 	 * @param thoseitems the list being split
@@ -216,7 +237,7 @@ public class DayView extends JPanel implements ListDataListener {
 	 */
 	public List<List<Commitment>> bananaSplit(List<Commitment> thoseitems){
 		List<List<Commitment>> dalist = new LinkedList<List<Commitment>>();
-		
+
 		for (int x = 0; x < 24; x++){
 			List<Commitment> hourlist = new LinkedList<Commitment>();
 			for (Commitment commit: thoseitems){
@@ -228,7 +249,7 @@ public class DayView extends JPanel implements ListDataListener {
 		}
 		return dalist;
 	}
-	
+
 	/**
 	 * Finds All Commitments Belonging to Calendar
 	 * @return List of Found Commitments
@@ -243,10 +264,10 @@ public class DayView extends JPanel implements ListDataListener {
 				notevenclose.add(commit);
 			}
 		}
-		
+
 		return notevenclose;
 	}
-	
+
 	/**
 	 * Gets the Title for the current Day
 	 * @return String title of the day in Month Date, Year
@@ -318,7 +339,7 @@ public class DayView extends JPanel implements ListDataListener {
 			DisplayCommitments();
 		}
 	}
-	
+
 	/**
 	 * ViewDate changes the date of Calendar to current date
 	 * @param day The Date to change Calendar to
@@ -346,7 +367,7 @@ public class DayView extends JPanel implements ListDataListener {
 	{
 		return new Date(currentYear-1900,currentMonth,currentDate);
 	}
-	
+
 	/**
 	 * Getter Method for Hashmap of Dates to Panels
 	 * @return The Hashmap containing the current dates supported in view
