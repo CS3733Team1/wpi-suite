@@ -137,15 +137,19 @@ public class DayView extends JPanel implements ListDataListener {
 			thesecond.setDate(hue);
 
 			Calendar cal = Calendar.getInstance();
-
+			Calendar today = Calendar.getInstance();
+			today.setTime(hue);
 
 			if(cal.get(Calendar.MONTH) == currentMonth &&
 					cal.get(Calendar.YEAR) == currentYear && 
 					cal.get(Calendar.DATE) == currentDate){
 				thesecond.setBackground(CalendarUtils.selectionColor);
 				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, CalendarUtils.thatBlue));
+			}else if(today.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 
+					today.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+				thesecond.setBackground(CalendarUtils.weekendColor);
+				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
 			}else{
-
 				thesecond.setBackground(Color.WHITE);
 				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
 			}
