@@ -31,7 +31,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	final Data db;
 	public static CategoryEntityManager CManager;
 
-	
+
 	/**
 	 * Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. To make sure
@@ -44,9 +44,9 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	{
 		CManager = (CManager == null) ? new CategoryEntityManager(db) : CManager;
 		return CManager;
-			
+
 	}
-	
+
 	private CategoryEntityManager(Data db) {
 		this.db = db;
 	}
@@ -59,37 +59,34 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	@Override
 	public Category makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-
 		// Parse the message from JSON
 		final Category newMessage = Category.fromJSON(content);
-		
+
 		newMessage.setOwnerName(s.getUsername());
 		newMessage.setOwnerID(s.getUser().getIdNum());
-		//until we find a id that is unique assume another event might alreayd have it
-		boolean found=true;
-		long id=0;
-		while (found)
-		{
+
+		//until we find a id that is unique assume another event might already have it
+		boolean found = true;
+		long id = 0;
+		while (found) {
 			id = UUID.randomUUID().getMostSignificantBits();
-			for (Category e : this.getAll(s) )
-			{
-				if (e.getUniqueID()==id)
-				{
-					found=true;
+			for (Category e : this.getAll(s)) {
+				if (e.getUniqueID() == id) {
+					found = true;
+					break;
 				}
 			}
-			found=false;
+			found = false;
 		}
 		newMessage.setUniqueID(id);
 		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwnerName());
-		
+
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
 			throw new WPISuiteException();
 		}
 
-		
 		// Return the newly created message (this gets passed back to the client)
 		return newMessage;
 	}
@@ -119,7 +116,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		// Ask the database to retrieve all objects of the type Category.
 		// Passing a dummy Category lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		
+
 		//System.out.println(s.getProject().toString());
 		System.out.println("Trying to retrive all categories");
 		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
@@ -147,12 +144,6 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	@Override
 	public void save(Session s, Category model)
 			throws WPISuiteException {
-		
-		if (model.isMarkedForDeletion())
-		{
-			deleteCategory(model);
-			return;
-		}
 		// Save the given defect in the database
 		db.save(model);
 	}
@@ -160,7 +151,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	public void deleteCategory(Category model){
 		db.delete(model);
 	}
-	
+
 	/*
 	 * Messages cannot be deleted
 	 * 
@@ -189,7 +180,6 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-
 		// This module does not allow Categories to be deleted, so throw an exception
 		db.deleteAll(new Category());
 	}
