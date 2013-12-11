@@ -14,7 +14,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
-
 public class DayPanel extends JPanel {
 	private boolean isToday;
 	private boolean isWeekend;

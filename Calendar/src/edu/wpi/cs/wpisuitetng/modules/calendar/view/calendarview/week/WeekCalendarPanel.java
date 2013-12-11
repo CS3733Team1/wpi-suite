@@ -109,7 +109,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		this.add(weekscroll, "grow");
 		
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
-		DisplayCommitments();
+		//DisplayCommitments();
 		
 		int end = weekscroll.getVerticalScrollBar().getMaximum();
 		weekscroll.getVerticalScrollBar().setValue(end * 3 / 4);
