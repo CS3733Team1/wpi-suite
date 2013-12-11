@@ -41,7 +41,7 @@ import com.toedter.calendar.JDateChooser;
  * @author Dan
  *
  */
-public class DateTimeChooser extends JPanel {
+public class DateTimeChooser extends JPanel implements ActionListener{
 	List<DateTimeChangedEventListener> listeners = new ArrayList<DateTimeChangedEventListener>();
 	
 	private Date date_;
@@ -193,6 +193,12 @@ public class DateTimeChooser extends JPanel {
 		return minutes*60000+59999;//make it right at the end of the millis
 	}
 	
+//	I added these listeners	
+//	
+//	public void addKeyListener(KeyListener l) {jDateChooser_.addKeyListener(l);}
+//	
+//	public void addActionListener(ActionListener m) {timeCombo_.addActionListener(m);}
+//	
 	private int timeToHalfHourIndex(int hour, int minutes){
 		return 2*hour+minutes/30;
 	}
@@ -348,4 +354,10 @@ public class DateTimeChooser extends JPanel {
 //		verifyDateTime();
 		return dtValid_;
 	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
