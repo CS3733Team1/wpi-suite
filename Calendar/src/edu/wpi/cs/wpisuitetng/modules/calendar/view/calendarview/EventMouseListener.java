@@ -8,7 +8,6 @@ x * Copyright (c) 2013 WPI-Suite
  * Contributors: Team TART
  ******************************************************************************/
 
-
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
@@ -21,7 +20,6 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 

@@ -61,22 +61,19 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 
 		newMessage.setOwnerName(s.getUsername());
 		newMessage.setOwnerID(s.getUser().getIdNum());
-		//until we find a id that is unique assume another event might alreayd have it
-		boolean found=true;
-		long id=0;
-		while (found) {
-			id = UUID.randomUUID().getMostSignificantBits();
-			for (Commitment e : this.getAll(s) ) {
-				if (e.getUniqueID() == id) {
-					found = true;
-					break;
-				}
-			}
-			found = false;
-		}
-		newMessage.setUniqueID(id);
 
-		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+		// Until we find a id that is unique assume another commitment might already have it
+		boolean unique;
+		long id = 0;
+		do {
+			unique = true;
+			id = UUID.randomUUID().getMostSignificantBits();
+			for(Commitment c : this.getAll(s)) if (c.getUniqueID() == id) unique = false;
+		} while(!unique);
+
+		newMessage.setUniqueID(id);
+		System.out.printf("Server: Creating new commitment entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
@@ -95,7 +92,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	@Override
 	public Commitment[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		return (Commitment []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
+		return (Commitment []) (db.retrieve(this.getClass(), "UniqueID", id, s.getProject()).toArray());
 	}
 
 	/* 
@@ -168,7 +165,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.println("Commitment entiy manager delete entity id = " + id);
+		System.out.println("Deleting commitment with id = " + id);
 		try
 		{
 			Commitment todelete= (Commitment) db.retrieve(Commitment.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);

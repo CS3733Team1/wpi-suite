@@ -13,8 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
@@ -27,25 +25,25 @@ public class MultidayEventView extends JPanel{
 	private List<JPanel> displayEvents;
 	private Date cdate;
 	private static boolean isEventShowing = false;
-	
+
 	public MultidayEventView(List<Event> multiday, Dimension size, Date current){
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-		
+
 		this.setSize(size);
 		this.setPreferredSize(size);
-		
+
 		showEvents();
-		
+
 		if (isEventShowing){
 			DisplayEventDropDown();
 		}
-		
+
 		this.setOpaque(false);
 		this.setVisible(true);
 	}
-	
+
 	/**
 	 * Sorts the List of Events by StartDate
 	 */
@@ -54,21 +52,21 @@ public class MultidayEventView extends JPanel{
 			public int compare(Event o1, Event o2) {
 				return o1.getStartDate().compareTo(o2.getStartDate());
 			}
-			
+
 		});
 	}
-	
+
 	public void showEvents(){
 		if (multidaye.size() == 0){
 			return;
 		}
-		
+
 		sortEvents();
-		
+
 		this.setLayout(new MigLayout("fill", 
 				"[20%][80%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
-		
+
 		JPanel eventinfo = new JPanel();
 		eventinfo.add(new JLabel("Multiday Event"), "wmin 0, aligny top, alignx center");
 		StringBuilder evebuilder = new StringBuilder();
@@ -81,12 +79,12 @@ public class MultidayEventView extends JPanel{
 		evebuilder.append(" ");
 		evebuilder.append("0");
 		evebuilder.append(",grow, push");
-		
-		
+
+
 		eventinfo.setBackground(Color.PINK);
 		this.add(eventinfo, evebuilder.toString());
 		eventinfo.addMouseListener(new MultiDayListener(this));
-		
+
 		StringBuilder bob = new StringBuilder();
 		bob.append("<html>");
 		for (Event eve: multidaye){
@@ -99,9 +97,9 @@ public class MultidayEventView extends JPanel{
 		}
 		bob.append("</html>");
 		eventinfo.setToolTipText(bob.toString());
-		
+
 	}
-	
+
 	/**
 	 * Getter Method for isEventShowing
 	 * @return Returns boolean value whether DisplayEventDropDown is active
@@ -109,35 +107,35 @@ public class MultidayEventView extends JPanel{
 	public static boolean areEventsDisplaying(){
 		return isEventShowing;
 	}
-	
+
 	/**
 	 * Setter Method For Events Displaying
 	 */
 	public static void reverseEventsDisplaying(){
 		isEventShowing = !isEventShowing;
 	}
-	
+
 	/**
 	 * Clears The JPanel Drop Down of Multiday Events
 	 */
 	public void ClearEventDropDown(){
-		
+
 		for (int x = 0;x < displayEvents.size();x++){
 			this.remove(displayEvents.get(x));
 		}
 		repaint();
 	}
-	
+
 	/**
 	 * Displays Panels Of MultiDay Events
 	 */
 	public void DisplayEventDropDown(){
 		displayEvents.clear();
-		
+
 		int x = 1;
 		for (Event eve: multidaye){
 			JPanel multipane = new JPanel(new MigLayout("fill", "[][][]", "[]"));
-			
+
 			//Bob The Builder builds the string, which contains the event info
 			StringBuilder bob = new StringBuilder();
 			bob.append("<html>");
@@ -156,12 +154,12 @@ public class MultidayEventView extends JPanel{
 				bob.append(eve.getDescription());
 			}
 			bob.append("</p></html>");
-			
+
 			//Adds a mouselistener to the event
 			multipane.addMouseListener(new EventMouseListener(eve, multipane));
-			
+
 			JLabel eventinfo = new JLabel(bob.toString());
-			
+
 			Date evestart = eve.getStartDate();
 			if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).compareTo(cdate) != 0){
 				System.err.println("Previous!");
@@ -170,9 +168,9 @@ public class MultidayEventView extends JPanel{
 				JLabel previous = new JLabel(previousbuilder.toString());
 				multipane.add(previous, "cell 0 0, grow, push, wmin 0");
 			}
-			
+
 			multipane.add(eventinfo, "cell 1 0, grow, push, wmin 0");
-			
+
 			Date eveend = eve.getEndDate();
 			if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).compareTo(cdate) != 0){
 				System.err.println("Next!");
@@ -181,8 +179,8 @@ public class MultidayEventView extends JPanel{
 				JLabel next = new JLabel(nextbuilder.toString());
 				multipane.add(next, "cell 2 0, grow, push, wmin 0");
 			}
-			
-			
+
+
 			//Responsible for Getting Category Color and Setting Background Color
 			if (eve.getCategory() != null){
 				multipane.setBackground(eve.getCategory().getColor());
@@ -201,7 +199,7 @@ public class MultidayEventView extends JPanel{
 				multipane.setBackground(Color.CYAN);
 			}
 			multipane.setFocusable(true);
-			
+
 			//Builds a string to place it in miglayout
 			StringBuilder evebuilder = new StringBuilder();
 			evebuilder.append("cell ");
@@ -213,12 +211,12 @@ public class MultidayEventView extends JPanel{
 			evebuilder.append(" ");
 			evebuilder.append("0");
 			evebuilder.append(",grow, push, wmin 0");
-			
+
 			this.add(multipane, evebuilder.toString());
 			displayEvents.add(multipane);
 			x++;
 		}
-		
+
 		repaint();
 		this.updateUI();
 	}

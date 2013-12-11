@@ -19,32 +19,33 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class DeleteFilterController{
-	FilterListModel model;
+	private FilterListModel model;
 
 	public DeleteFilterController(){
 		model = FilterListModel.getFilterListModel();
 	}
 
 	/**
-	 * Handles the pressing of the Remove Commitment button
+	 * Handles the pressing of the Remove Filter button
 	 */
+	public void deleteFilters(List<Filter> filterList) {
+		for (Filter filter: filterList) {
+			if(!model.isDefault(filter)) {
+				System.out.println("Deleting filter: name = " + filter.getName() + "; uid = " + filter.getUniqueID());
 
-	public void deleteFilters(List<Filter> list) {
-		for (Filter filt: list) {
-			if(!model.isDefault(filt)) {
-				model.removeFilter(filt);
-				// Send a request to the core to save this message 
-				final Request request = Network.getInstance().makeRequest("calendar/filter/"+filt.getUniqueID(), HttpMethod.GET); // PUT == create
-				request.addHeader("X-HTTP-Method-Override", "DELETE");
-				//request.setBody(cat.toJSON()); // put the new message in the body of the request
-				request.addObserver(new DeleteFilterObserver(this)); // add an observer to process the response
-				request.send(); // send the request
+				// Create a Delete Request
+				final Request request = Network.getInstance().makeRequest("calendar/filter/" + filter.getUniqueID(), HttpMethod.DELETE);
+
+				// Add an observer to process the response
+				request.addObserver(new DeleteFilterObserver());
+				
+				// Send the request
+				request.send();
+
+				// We must remove the filter without knowing the result of the server's response because
+				// of a bug in Java in which you cannot set the body of a HTTP.DELETE request.
+				model.removeFilter(filter);
 			}
 		}
-	}
-
-	public void removeFilterToModel(Filter filt){
-		System.out.println("Deleting Filter");
-		model.removeFilter(filt);
 	}
 }

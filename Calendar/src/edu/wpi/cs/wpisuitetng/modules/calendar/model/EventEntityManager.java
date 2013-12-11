@@ -26,7 +26,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	/** The database */
 	final Data db;
 	public static EventEntityManager EManager;
-	
+
 	/**
 	 * Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. To make sure
@@ -35,12 +35,11 @@ public class EventEntityManager implements EntityManager<Event> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public static EventEntityManager getEventEntityManager(Data db)
-	{
+	public static EventEntityManager getEventEntityManager(Data db) {
 		EManager = (EManager == null) ? new EventEntityManager(db) : EManager;
 		return EManager;
 	}
-	
+
 	private EventEntityManager(Data db) {
 		this.db = db;
 	}
@@ -53,31 +52,24 @@ public class EventEntityManager implements EntityManager<Event> {
 	@Override
 	public Event makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-		System.out.println("Trying to make an event");
-			
 		// Parse the message from JSON
 		final Event newMessage = Event.fromJSON(content);
-		
+
 		newMessage.setOwnerName(s.getUsername());
 		newMessage.setOwnerID(s.getUser().getIdNum());
-		//until we find a id that is unique assume another event might alreayd have it
-		boolean found=true;
-		long id=0;
-		while (found)
-		{
+
+		// Until we find a id that is unique assume another event might already have it
+		boolean unique;
+		long id = 0;
+		do {
+			unique = true;
 			id = UUID.randomUUID().getMostSignificantBits();
-			for (Event e : this.getAll(s) )
-			{
-				if (e.getUniqueID()==id)
-				{
-					found=true;
-				}
-			}
-			found=false;
-		}
+			for(Event e : this.getAll(s)) if (e.getUniqueID() == id) unique = false;
+		} while(!unique);
+
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwnerName());
-		
+		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
@@ -112,10 +104,7 @@ public class EventEntityManager implements EntityManager<Event> {
 		// Passing a dummy Event lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 		List<Model> messages = db.retrieveAll(new Event(), s.getProject());
-		
-		for (Event e: messages.toArray(new Event[0]) ){
-			System.err.println("DB: " + e.getUniqueID());
-		}
+
 		// Return the list of messages as an array
 		return messages.toArray(new Event[0]);
 	}
@@ -147,7 +136,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	public void deleteEvent(Event model){
 		db.delete(model);
 	}
-	
+
 	/*
 	 * Events totally can be deleted
 	 * 
@@ -155,18 +144,16 @@ public class EventEntityManager implements EntityManager<Event> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-				System.out.println("Trying to delete an event with id = " + id);
-				try {
-				Event todelete = (Event) db.retrieve(Event.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
-				this.deleteEvent(todelete);
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-					return false;
-				}
-				
-				return true;
-
+		System.out.println("Deleting event with id = " + id);
+		try {
+			Event todelete = (Event) db.retrieve(Event.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
+			this.deleteEvent(todelete);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/*

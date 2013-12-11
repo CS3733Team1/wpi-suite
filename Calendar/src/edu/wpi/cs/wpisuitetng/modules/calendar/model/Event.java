@@ -206,4 +206,12 @@ public class Event extends DeletableAbstractModel implements Comparable<ISchedul
 		else if (this.startDate.before(other.getStartDate()) == true) return -1;
 		else return 0;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Event) {
+			Event eventOther = (Event)o;
+			return this.getUniqueID() == eventOther.getUniqueID();
+		} else return false;
+	}
 }

@@ -1,19 +1,16 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.utils;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.Date;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.toedter.calendar.JDateChooser;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import java.awt.Color;
-import java.awt.Font;
 
 public class DateTimeChooserTest extends JPanel {
 
@@ -40,7 +37,5 @@ public class DateTimeChooserTest extends JPanel {
 		
 		JLabel lblError = new JLabel("Error");
 		add(lblError, "cell 3 0");
-
 	}
-	
 }

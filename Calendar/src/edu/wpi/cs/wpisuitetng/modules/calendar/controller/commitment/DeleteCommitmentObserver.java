@@ -10,24 +10,14 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This observer is called when a response is received from a request
  * to the server to add a message.
  */
 public class DeleteCommitmentObserver implements RequestObserver {
-
-	private final DeleteCommitmentController controller;
-
-	public DeleteCommitmentObserver(DeleteCommitmentController controller) {
-		this.controller = controller;
-	}
-
 	/*
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
@@ -36,21 +26,20 @@ public class DeleteCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		// Get the response to the given request
-		System.out.println("The request to remove a commitment succeded");
-		
-
+		// The response will not include a body as this is HTTP.DELETE
+		// Do nothing
+		System.out.println("	The request to delete a commitment was succesful.");
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		System.out.println(iReq.getResponse().getStatusMessage());
-		System.err.println("The request to remove a commitment failed.");
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	The request to remove a commitment failed.");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.out.println(exception);
-		System.err.println("The request failed to connect to server.");
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
 }

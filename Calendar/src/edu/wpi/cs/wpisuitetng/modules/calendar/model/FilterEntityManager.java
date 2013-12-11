@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -26,7 +27,6 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	final Data db;
 	public static FilterEntityManager FManager;
 
-	
 	/**
 	 * Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. To make sure
@@ -38,9 +38,8 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	public static FilterEntityManager getFilterEntityManager(Data db) {
 		FManager = (FManager == null) ? new FilterEntityManager(db) : FManager;
 		return FManager;
-			
 	}
-	
+
 	private FilterEntityManager(Data db) {
 		this.db = db;
 	}
@@ -53,16 +52,30 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	@Override
 	public Filter makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
-		
 		// Parse the message from JSON
 		final Filter newMessage = Filter.fromJSON(content);
-		
+
+		newMessage.setOwnerName(s.getUsername());
+		newMessage.setOwnerID(s.getUser().getIdNum());
+
+		// Until we find a id that is unique assume another filter might already have it
+		boolean unique;
+		long id = 0;
+		do {
+			unique = true;
+			id = UUID.randomUUID().getMostSignificantBits();
+			for(Filter f : this.getAll(s)) if (f.getUniqueID() == id) unique = false;
+		} while(!unique);
+
+		newMessage.setUniqueID(id);
+		System.out.printf("Server: Creating new filter entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		
+
 		// Return the newly created message (this gets passed back to the client)
 		return newMessage;
 	}
@@ -86,7 +99,7 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	@Override
 	public Filter[] getAll(Session s) throws WPISuiteException {
 		// Ask the database to retrieve all objects of the type Commitment.
-		// Passing a dummy Commitment lets the db know what type of object to retrieve
+		// Passing a dummy Filter lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 		List<Model> messages = db.retrieveAll(new Filter(), s.getProject());
 
@@ -120,7 +133,7 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	public void deleteFilter(Filter model){
 		db.delete(model);
 	}
-	
+
 	/*
 	 * Messages cannot be deleted
 	 * 
@@ -128,14 +141,12 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.println("Filter entiy manager delete entity id = " + id);
-		try
-		{
-			Filter todelete = (Filter) db.retrieve(Filter.class, "UniqueID", Integer.parseInt(id), s.getProject()).get(0);
+		System.out.println("Deleting filter with id = " + id);
+		try {
+			Filter todelete = (Filter) db.retrieve(Filter.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
 			deleteFilter(todelete);
 			return true;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}

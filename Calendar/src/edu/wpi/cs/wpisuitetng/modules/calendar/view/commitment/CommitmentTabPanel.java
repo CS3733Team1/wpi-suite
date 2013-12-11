@@ -24,8 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
@@ -208,7 +206,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	}
 
 	// Kills this add commitment tab
-	public void killCommitmentPanel() {
+	public void closeCommitmentPanel() {
 		this.getParent().remove(this);
 	}
 
@@ -259,10 +257,9 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("cancel")) {
-			this.killCommitmentPanel();
+			this.closeCommitmentPanel();
 		} else {
 			validateFields();
-			System.out.println("Action Performed");
 		}
 	}
 

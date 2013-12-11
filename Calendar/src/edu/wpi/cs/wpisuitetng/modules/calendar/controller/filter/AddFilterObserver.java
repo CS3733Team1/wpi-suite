@@ -13,7 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 public class AddFilterObserver implements RequestObserver{
 	private final AddFilterController controller;
@@ -21,7 +20,7 @@ public class AddFilterObserver implements RequestObserver{
 	public AddFilterObserver(AddFilterController controller) {
 		this.controller = controller;
 	}
-	
+
 	/*
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
@@ -30,25 +29,32 @@ public class AddFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		// Get the response to the given request
-		final ResponseModel response = iReq.getResponse();
-		
-		
+		System.out.println("	The request to add the filter was succesful.");
+
 		// Parse the message out of the response body
-		final Filter filt = Filter.fromJSON(response.getBody());
-		
+		final Filter filter = Filter.fromJSON(iReq.getResponse().getBody());
+
 		// Pass the messages back to the controller
-		controller.addFilterToModel(filt);
+		controller.addFilterToModel(filter);
 	}
 
+	/*
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 */
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to add a filter failed.");
-		System.err.println("Response: " + iReq.getResponse().getStatusMessage());
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	Failed to add the filter to the server.");
 	}
 
+	/*
+	 * Put an error message in the PostBoardPanel if the request fails.
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(edu.wpi.cs.wpisuitetng.network.models.IRequest, java.lang.Exception)
+	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to add a filter failed.");
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
 }

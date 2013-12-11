@@ -31,7 +31,6 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	final Data db;
 	public static CategoryEntityManager CManager;
 
-
 	/**
 	 * Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. To make sure
@@ -40,11 +39,9 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public static CategoryEntityManager getCategoryEntityManager(Data db)
-	{
+	public static CategoryEntityManager getCategoryEntityManager(Data db) {
 		CManager = (CManager == null) ? new CategoryEntityManager(db) : CManager;
 		return CManager;
-
 	}
 
 	private CategoryEntityManager(Data db) {
@@ -65,21 +62,17 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		newMessage.setOwnerName(s.getUsername());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 
-		//until we find a id that is unique assume another event might already have it
-		boolean found = true;
+		// Until we find a id that is unique assume another category might already have it
+		boolean unique;
 		long id = 0;
-		while (found) {
+		do {
+			unique = true;
 			id = UUID.randomUUID().getMostSignificantBits();
-			for (Category e : this.getAll(s)) {
-				if (e.getUniqueID() == id) {
-					found = true;
-					break;
-				}
-			}
-			found = false;
-		}
+			for(Category c : this.getAll(s)) if (c.getUniqueID() == id) unique = false;
+		} while(!unique);
+
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwnerName());
+		System.out.printf("Server: Creating new category entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
 
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -102,8 +95,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific Categories.
 		System.out.println("Category retrieve");
-		return (Category []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
-
+		return (Category []) (db.retrieve(this.getClass(), "UniqueID", id, s.getProject()).toArray());
 	}
 
 	/**
@@ -117,10 +109,9 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		// Passing a dummy Category lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
 
-		//System.out.println(s.getProject().toString());
 		System.out.println("Trying to retrive all categories");
 		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
-		//List<Model> messages = db.retrieve(Category.class, "isReal", true, s.getProject());
+
 		// Return the list of messages as an array
 		return messages.toArray(new Category[0]);
 	}
@@ -133,7 +124,6 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	@Override
 	public Category update(Session s, String content)
 			throws WPISuiteException {
-
 		// This module does not allow Categories to be modified, so throw an exception
 		throw new WPISuiteException();
 	}
@@ -159,15 +149,12 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-
-		System.out.println("Category entity manager delete id = " + id);
-		try
-		{
-			Category todelete= (Category) db.retrieve(Category.class, "UniqueID",Long.parseLong(id), s.getProject()).get(0);
+		System.out.println("Deleting category with id = " + id);
+		try {
+			Category todelete= (Category) db.retrieve(Category.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
 			deleteCategory(todelete);
 			return true;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}

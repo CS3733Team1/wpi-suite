@@ -123,7 +123,6 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		this.fireIntervalRemoved(this, 0, 0);
 	}
 
-
 	/**
 	 * Returns the number of commitments in the model. Also used internally by the
 	 * JList in CalendarPanel.
@@ -146,5 +145,6 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	public synchronized void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
 		removeCommitment(oldCommitment);
 		addCommitment(newCommitment);
+		this.fireIntervalAdded(this, 0, 0);
 	}
 }
