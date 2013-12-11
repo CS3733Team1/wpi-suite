@@ -16,10 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
@@ -41,7 +41,7 @@ import com.toedter.calendar.JDateChooser;
  * @author Dan
  *
  */
-public class DateTimeChooser extends JPanel {
+public class DateTimeChooser extends JPanel implements ActionListener{
 	List<DateTimeChangedEventListener> listeners = new ArrayList<DateTimeChangedEventListener>();
 	
 	private Date date_;
@@ -85,13 +85,13 @@ public class DateTimeChooser extends JPanel {
 	}
 	
 	public void disable(){
-		jDateChooser_.disable();
-		timeCombo_.disable();
-		dtValid_=true;
+		jDateChooser_.setEnabled(false);
+		timeCombo_.setEnabled(false);
+		dtValid_ = true;
 	}
 	public void enable(){
-		jDateChooser_.disable();
-		timeCombo_.disable();
+		jDateChooser_.setEnabled(false);
+		timeCombo_.setEnabled(false);
 		validateDateTime();
 	}
 	
@@ -119,7 +119,7 @@ public class DateTimeChooser extends JPanel {
 		buildLayout(name);
 	}
 	private void buildLayout(String name){
-		setLayout(new MigLayout("", "[][grow][grow][]", "[]"));
+		setLayout(new MigLayout("", "[55px,right][grow][grow][]", "[]"));
 		
 		//make it on the minute - kill all seconds and milliseconds that might screw up comparisons with dates we think are on the same minute
 //		System.out.println("\tNormalizing time " + date_.toString());
@@ -129,7 +129,9 @@ public class DateTimeChooser extends JPanel {
 //		System.out.println("\tDone Normalizing time " + date_.toString());
 		
 		//name label
-		add(new JLabel(name), "cell 0 0");
+		JLabel lblName = new JLabel(name);
+		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
+		add(lblName, "cell 0 0, alignx right");
 				
 		//DateChooser for choosing days
 		jDateChooser_=new JDateChooser(date_);
@@ -193,6 +195,12 @@ public class DateTimeChooser extends JPanel {
 		return minutes*60000+59999;//make it right at the end of the millis
 	}
 	
+//	I added these listeners	
+//	
+//	public void addKeyListener(KeyListener l) {jDateChooser_.addKeyListener(l);}
+//	
+//	public void addActionListener(ActionListener m) {timeCombo_.addActionListener(m);}
+//	
 	private int timeToHalfHourIndex(int hour, int minutes){
 		return 2*hour+minutes/30;
 	}
@@ -348,4 +356,10 @@ public class DateTimeChooser extends JPanel {
 //		verifyDateTime();
 		return dtValid_;
 	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

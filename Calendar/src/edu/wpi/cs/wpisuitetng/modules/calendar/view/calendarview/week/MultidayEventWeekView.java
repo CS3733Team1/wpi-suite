@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,17 +12,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.MultiDayListener;
 
 /**
  * This class shows multi-day events in week view. It is a component of the WeekCalendarLayerPane, along
  * with EventWeekView.
  */
 
-public class MultidayEventWeekView extends JPanel{
+public class MultidayEventWeekView extends JPanel {
 	private List<List<Event>> multidaye;
 	private List<JPanel> displayEvents;
 	private Date cdate;

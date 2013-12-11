@@ -76,7 +76,6 @@ public class LoginController implements ActionListener {
 
 				// Send the request
 				sendLoginRequest();
-
 			} catch (MalformedURLException e1) { // failed, bad URL
 				JOptionPane.showMessageDialog(view,
 						"The server address \"" + URLText + "\" is not a valid URL!",
@@ -103,7 +102,7 @@ public class LoginController implements ActionListener {
 
 		// Create and send the login request
 		Request request = Network.getInstance().makeRequest("login", HttpMethod.POST);
-		System.out.println(basicAuth);
+		//System.out.println(basicAuth);
 		request.addHeader("Authorization", basicAuth);
 		request.addObserver(new LoginRequestObserver(this));
 		request.send();
@@ -118,7 +117,7 @@ public class LoginController implements ActionListener {
 		// Save the cookies
 		List<String> cookieList = response.getHeaders().get("Set-Cookie");
 		String cookieParts[];
-		String cookieNameVal[];
+		String cookieNameVal[] = {""};
 		if (cookieList != null) { // if the server returned cookies
 			for (String cookie : cookieList) { // for each returned cookie
 				cookieParts = cookie.split(";"); // split the cookie
@@ -137,8 +136,9 @@ public class LoginController implements ActionListener {
 					System.err.println("Received unparsable cookie: " + cookie);
 				}
 			}
-			
-			System.out.println(Network.getInstance().getDefaultNetworkConfiguration().getRequestHeaders().get("cookie").get(0));
+
+			//System.out.println(Network.getInstance().getDefaultNetworkConfiguration().getRequestHeaders().get("cookie").get(0));
+			System.out.println("Login Succesful with ID: " + cookieNameVal[0]);
 
 			// Select the project
 			Request projectSelectRequest = Network.getInstance().makeRequest("login", HttpMethod.PUT);
@@ -172,7 +172,7 @@ public class LoginController implements ActionListener {
 		// Save the cookies
 		List<String> cookieList = response.getHeaders().get("Set-Cookie");
 		String cookieParts[];
-		String cookieNameVal[];
+		String cookieNameVal[] = {""};
 		if (cookieList != null) { // if the server returned cookies
 			for (String cookie : cookieList) { // for each returned cookie
 				cookieParts = cookie.split(";");
@@ -192,7 +192,11 @@ public class LoginController implements ActionListener {
 				}
 			}
 
-			System.out.println(Network.getInstance().getDefaultNetworkConfiguration().getRequestHeaders().get("cookie").get(0));
+			//System.out.println(Network.getInstance().getDefaultNetworkConfiguration().getRequestHeaders().get("cookie").get(0));
+			System.out.println("Project Selection Succesful with ID: " + cookieNameVal[0]);
+
+			System.out.println("----------------------------------------Login Finished----------------------------------------");
+			System.out.println();
 			
 			// Show the main GUI
 			mainGUI.setVisible(true);

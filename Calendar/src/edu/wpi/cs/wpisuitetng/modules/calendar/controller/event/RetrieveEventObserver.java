@@ -10,10 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
-import java.util.Date;
-
-import javax.swing.SwingUtilities;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -37,13 +33,9 @@ public class RetrieveEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		final Event[] event = Event.fromJSONArray(iReq.getResponse().getBody());
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run()
-			{
-				controller.receivedMessages(event);
-			}
-		});
+		System.out.println("	The request to retrieve events was succesful.");
+		Event[] events = Event.fromJSONArray(iReq.getResponse().getBody());
+		controller.receivedMessages(events);
 	}
 
 	/*
@@ -51,7 +43,8 @@ public class RetrieveEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
-		fail(iReq, null);
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	Failed to retrieve events from the server.");
 	}
 
 	/*
@@ -61,13 +54,7 @@ public class RetrieveEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		final Event[] errorMessage = {new Event("Error retrieving messages.", new Date(), new Date())};
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run()
-			{
-				controller.receivedMessages(errorMessage);
-			}
-		});
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
-
 }

@@ -24,13 +24,12 @@ import com.google.gson.Gson;
 public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
-	public boolean isReal=true;
+	public boolean isReal = true;
 	
 	/**
 	 * @return <b>true</b> if this Category is not a duplicate, <b>false</b> if it is
 	 */
-	public boolean getisReal()
-	{
+	public boolean getisReal() {
 		return isReal;
 	}
 	/**
@@ -99,8 +98,7 @@ public class Category extends DeletableAbstractModel {
 	 * @param input JSON String containing multiple serialized Categories
 	 * @return array of Categories
 	 */
-	public static Category[] fromJSONArray(String input)
-	{
+	public static Category[] fromJSONArray(String input) {
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Category[].class);
 	}
@@ -110,24 +108,9 @@ public class Category extends DeletableAbstractModel {
 	 * @param input JSON String representing one Category
 	 * @return the resulting Category
 	 */
-	public static Category fromJSON(String input)
-	{
+	public static Category fromJSON(String input) {
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Category.class);
-	}
-	
-	@Override
-	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if(o instanceof Category) {
-			Category c = (Category) o;
-			return (c.getColor().equals(this.getColor()) && c.getName().equals(this.getName()));
-		} else return false;
 	}
 	
 	/**
@@ -135,10 +118,17 @@ public class Category extends DeletableAbstractModel {
 	 * to prevent duplicate returns from the database.
 	 * @return A copy of this Category with isReal set to false
 	 */
-	public Category cloneFake()
-	{
+	public Category cloneFake() {
 		Category cat = new Category(this.name, this.color);
 		cat.isReal = false;
 		return cat;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Category) {
+			Category categoryOther = (Category)o;
+			return this.getUniqueID() == categoryOther.getUniqueID();
+		} else return false;
 	}
 }

@@ -28,24 +28,24 @@ public class DeleteCategoryController {
 	/**
 	 * Handles the pressing of the Remove Category button
 	 */
-	public void deleteCategories(List<Category> list) {
-		for (Category cat: list) {
-			if(!model.isDefault(cat)) {
-				// Send a request to the core to save this message 
-				final Request request = Network.getInstance().makeRequest("calendar/category/" + cat.getUniqueID(), HttpMethod.GET); // PUT == create
-				request.addHeader("X-HTTP-Method-Override", "DELETE");
-				//request.setBody(cat.toJSON()); // put the new message in the body of the request
-				request.addObserver(new DeleteCategoryObserver(this)); // add an observer to process the response
-				request.send(); // send the request
-				model.removeCategory(cat);
+	public void deleteCategories(List<Category> categoryList) {
+		for (Category category: categoryList) {
+			if(!model.isDefault(category)) {
+				System.out.println("Deleting category: name = " + category.getName() + "; uid = " + category.getUniqueID());
+
+				// Create a Delete Request
+				final Request request = Network.getInstance().makeRequest("calendar/category/" + category.getUniqueID(), HttpMethod.DELETE);
+
+				// Add an observer to process the response
+				request.addObserver(new DeleteCategoryObserver());
+				
+				// Send the request
+				request.send();
+
+				// We must remove the category without knowing the result of the server's response because
+				// of a bug in Java in which you cannot set the body of a HTTP.DELETE request.
+				model.removeCategory(category);
 			}
 		}
-	}
-
-
-	// WHAT is the point of this method if it is removed above???
-	public void removeCategoryToModel(Category cat){
-		System.out.println("Deleting Category");
-		model.removeCategory(cat);
 	}
 }

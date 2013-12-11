@@ -298,27 +298,11 @@ public class CalendarTabPanel extends JPanel {
 	 * returns 2 for Personal Checked
 	 * returns 3 for Both Checked
 	 */
-	synchronized public int getTeamPersonalState(){
-		int state = 0;// Default to both unchecked, the harmless filter
-		if(teamCalCheckBox != null && teamCalCheckBox.isSelected())
-		{
-			System.out.println("Team Checkbox is selected");
-			if (personalCalCheckBox != null && personalCalCheckBox.isSelected())
-			{
-				System.out.println("Personal checkbox also selected");
-				return 3;
-			}
-			else 
-			{
-				return 1;
-			}
-		}
-		else if (personalCalCheckBox != null && personalCalCheckBox.isSelected())
-		{
-			System.out.println("Only personal checkbox selected");
-			return 2;
-		}
-		else
-			return 0;
+	synchronized public int getTeamPersonalState() {
+		if(teamCalCheckBox != null && teamCalCheckBox.isSelected()) {
+			if (personalCalCheckBox != null && personalCalCheckBox.isSelected()) return 3;
+			else return 1;
+		} else if(personalCalCheckBox != null && personalCalCheckBox.isSelected()) return 2;
+		else return 0;
 	}
 }

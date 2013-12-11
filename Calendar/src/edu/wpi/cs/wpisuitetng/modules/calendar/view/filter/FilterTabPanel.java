@@ -12,17 +12,12 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.filter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.AddFilterController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.DeleteFilterController;
-import net.miginfocom.swing.MigLayout;
 
 public class FilterTabPanel extends JPanel implements ActionListener {
 

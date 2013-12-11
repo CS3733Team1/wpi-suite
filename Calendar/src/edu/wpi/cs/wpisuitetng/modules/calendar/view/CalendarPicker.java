@@ -10,6 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
@@ -23,6 +25,8 @@ public class CalendarPicker extends JPanel {
 		calendarComboBox.setSelectedIndex(0);
 		this.add(calendarComboBox);
 	}
+
+	public void addActionListener(ActionListener l) {calendarComboBox.addActionListener(l);}
 	
 	public void setSelected(String select){
 		calendarComboBox.setSelectedItem(select);
