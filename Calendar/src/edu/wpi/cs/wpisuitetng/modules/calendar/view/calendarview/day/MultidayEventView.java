@@ -132,6 +132,7 @@ public class MultidayEventView extends JPanel{
 	 * Displays Panels Of MultiDay Events
 	 */
 	public void DisplayEventDropDown(){
+		displayEvents.clear();
 		
 		int x = 1;
 		for (Event eve: multidaye){

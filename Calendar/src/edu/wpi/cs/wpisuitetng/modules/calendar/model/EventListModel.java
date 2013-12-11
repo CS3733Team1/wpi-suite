@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -144,9 +143,8 @@ public class EventListModel extends AbstractListModel<Event> {
 	public synchronized List<Event> getList(){
 		return events;
 	}
-	public synchronized void Update()
-	{
-		System.out.println("Event list model update");
+	
+	public synchronized void update() {
 		this.fireIntervalAdded(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
 	}
 	

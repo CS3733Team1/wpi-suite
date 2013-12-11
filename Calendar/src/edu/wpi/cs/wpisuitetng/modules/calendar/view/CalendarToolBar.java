@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.weather.WeatherPanel;
 
 public class CalendarToolBar extends JPanel implements ActionListener {
 	// Always visible
@@ -39,6 +40,8 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 	//int eggState;
 	//boolean eggHatched;
+	
+	private WeatherPanel weatherPanel;
 
 	public CalendarToolBar() {
 		try {
@@ -63,6 +66,7 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 			//easterEgg =  new TransparentButton(easterEggIcons[0]);
 		} catch (IOException e) {}
 
+		//weatherPanel = new WeatherPanel();
 		//eggHatched = false;
 		//eggState = 0;
 		//easterEgg.addActionListener(this);
@@ -74,8 +78,8 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	// Delete Event and Commitment disabled until Events or Commitments are selected.
 	public void setToolBarCalendarTab() {
 		this.removeAll();
+		//this.setLayout(new MigLayout("fill", "[][][][][]push[]"));
 		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
-
 		this.add(refreshButton);
 
 		this.add(addCommitmentButton, "align center, split 4");
@@ -85,8 +89,10 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.add(deleteEventButton);
 
 		//if(eggHatched) {
-		//	this.add(new JLabel("Weather", JLabel.RIGHT));
+		//	this.add(weatherPanel);
 		//} else this.add(easterEgg);
+		
+		this.updateUI();
 	}
 
 	// Notifies CalendarToolBar that the buttons should switch to the Event/CommitmentTab button arrangement.
@@ -130,13 +136,13 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		/*eggState++;
-		if(eggState > 3) {
-			eggHatched = true;
-			setToolBarCalendarTab();
-		} else {
-			easterEgg.setIcon(easterEggIcons[eggState]);
-			easterEgg.setText("" + eggState);
-		}*/
+		//eggState++;
+		//if(eggState > 3) {
+		//	eggHatched = true;
+		//	setToolBarCalendarTab();
+		//} else {
+		//	easterEgg.setIcon(easterEggIcons[eggState]);
+		//	easterEgg.setText("" + eggState);
+		//}
 	}
 }

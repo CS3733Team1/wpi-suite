@@ -17,6 +17,8 @@ import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -43,8 +45,25 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	// changed on a resize
 	private List<DayPanel> daysWithEvComs;
 
+	// A List holding the MultiDayEvents currently displayed in the view
+	private List<Event> multiDayEvents;
+
+	// A List holding the Events currently displayed in the view
+	private List<Event> events;
+
+	// A List holding the Commitments currently displayed in the view
+	private List<Commitment> commitments;
+
 	// A Calendar to keep track of the month the user is currently viewing
 	private Calendar currentMonth;
+
+	// A Calendar to keep track of the first visible day in the view
+	private Calendar firstDayInView;
+
+	// A Calendar to keep track of the last visible day in the view
+	private Calendar lastDayInView;
+
+	private HashMap<String, Integer> indexInDaysOfCal;
 
 	// Handles on the events and commitments models
 	private FilteredEventsListModel filteredEventsModel;
@@ -57,9 +76,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		this.filteredEventsModel = FilteredEventsListModel.getFilteredEventsListModel();
 		this.filteredCommitmentsModel = FilteredCommitmentsListModel.getFilteredCommitmentsListModel();
 
-		// Add ListDataListeners so the YearCalendarView can be notified of data changes.
-		this.filteredEventsModel.addListDataListener(this);
-		this.filteredCommitmentsModel.addListDataListener(this);
+		multiDayEvents = new ArrayList<Event>();
+		events = new ArrayList<Event>();
+		commitments = new ArrayList<Commitment>();
+		indexInDaysOfCal = new HashMap<String, Integer>();
 
 		this.setLayout(new MigLayout("fill, gap 0 0, wrap 7",
 				"[14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%]",
@@ -67,7 +87,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		this.setBackground(Color.WHITE);
 		this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 
-		this.currentMonth = Calendar.getInstance();
+		this.currentMonth = createCalendar();
 
 		this.daysWithEvComs = new ArrayList<DayPanel>();
 		this.days = new ArrayList<DayPanel>();
@@ -91,13 +111,17 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 		weekDays.get(0).setForeground(CalendarUtils.timeColor);
 		weekDays.get(CalendarUtils.weekNamesAbbr.length - 1).setForeground(CalendarUtils.timeColor);
-		
+
 		// Add all the day labels to the month
 		for(DayPanel dayPanel: days) this.add(dayPanel, "grow, hmin 27");
 
-		// Fill the newly created month with its respective dates as well as events or commitments
+		// Fill the newly created month with its respective dates
 		this.updateDates();
 
+		// Add ListDataListeners so the YearCalendarView can be notified of data changes.
+		this.filteredEventsModel.addListDataListener(this);
+		this.filteredCommitmentsModel.addListDataListener(this);
+		
 		this.addAncestorListener(this);
 		this.addComponentListener(this);
 	}
@@ -105,7 +129,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	/*
 	 * Changes the week day names to abbreviations if the panel is too small
 	 */
-	private void updateLayout() {
+	private void updateWeekDayNames() {
 		if(this.getWidth() <= 900 && !isDisplayAbrrWeekDayNames) {
 			isDisplayAbrrWeekDayNames = true;
 			for(int i = 0; i < weekDays.size(); i++)
@@ -118,18 +142,26 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	}
 
 	/*
-	 * Fills the Month with its respective dates as well as events or commitments
+	 * Fills the Month with its respective dates
 	 */
 	private void updateDates() {
-		Calendar month = cloneCalendar(currentMonth);
-		month.set(Calendar.DATE, 1);
+		multiDayEvents.clear();
+		events.clear();
+		commitments.clear();
+		indexInDaysOfCal.clear();
 
+		this.currentMonth.set(Calendar.DATE, 1);
+		Calendar month = cloneCalendar(this.currentMonth);
 		int savedMonth = month.get(Calendar.MONTH);
 
 		if(month.get(Calendar.DAY_OF_WEEK) == 1) month.add(Calendar.DATE, -7);
 		else month.add(Calendar.DATE, -currentMonth.get(Calendar.DAY_OF_WEEK)+1);
 
-		for(DayPanel dayPanel: days) {
+		firstDayInView = cloneCalendar(month);
+
+		for(int i = 0; i < days.size(); i++) {
+			DayPanel dayPanel = days.get(i);
+			indexInDaysOfCal.put(month.getTime().toString(), i);
 			dayPanel.setDate(cloneCalendar(month),  month.get(Calendar.MONTH) == savedMonth);
 			dayPanel.setIsToday(false);
 			dayPanel.updateColors();
@@ -137,51 +169,51 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			month.add(Calendar.DATE, 1);
 		}
 
-		// Set the current day to be highlighted yellow
-		Calendar today = Calendar.getInstance();
+		month.add(Calendar.DATE, -1);
+		lastDayInView = cloneCalendar(month);
 
-		if(today.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
-				today.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
+		// Set the current day/month to be highlighted
+		Calendar today = createCalendar();
 
-			for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.selectionColor));
-			weekDays.get(today.get(Calendar.DAY_OF_WEEK)-1).setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
-
+		if(isDateInView(today)) {
+			if(today.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
+					today.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
+				for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.selectionColor));
+				weekDays.get(today.get(Calendar.DAY_OF_WEEK)-1).setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+			}
+			
 			int index = getIndexofDay(today);
 			days.get(index).setIsToday(true);
 			days.get(index).updateColors();
-		} else {
-			for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, Color.LIGHT_GRAY));
-		}
+		} else for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, Color.LIGHT_GRAY));
 
 		loadEvComs();
 		updateEvComs();
 	}
 
+	// Loads events and commitments
 	private void loadEvComs() {
 		for(int i = 0; i < daysWithEvComs.size(); i++) daysWithEvComs.get(i).clearEvComs();
 
 		daysWithEvComs.clear();
+		multiDayEvents.clear();
+		events.clear();
+		commitments.clear();
 
 		for(Event event: filteredEventsModel.getList()) {
 			Date start = event.getStartDate();
-			Calendar startCal = Calendar.getInstance();
-			startCal.set(start.getYear()+1900, start.getMonth(), start.getDate());
+			Calendar startCal = createCalendarFromDate(start);
 
 			Date end = event.getEndDate();
-			Calendar endCal = Calendar.getInstance();
-			endCal.set(end.getYear()+1900, end.getMonth(), end.getDate());
+			Calendar endCal = createCalendarFromDate(end);
 
 			EventPanelMouseListener eventPanelMouseListener = new EventPanelMouseListener();
-			
-			// If this event is not multiday
-			if(startCal.get(Calendar.YEAR) == endCal.get(Calendar.YEAR) &&
-					startCal.get(Calendar.MONTH) == endCal.get(Calendar.MONTH) &&
-					startCal.get(Calendar.DATE) == endCal.get(Calendar.DATE)) {
 
-				// If this event appears in this month
-				if(startCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
-						startCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
-					int index = getIndexofDay(cloneCalendar(startCal));
+			// If this event is not multiday
+			if(!event.isMultiDay()) {
+				// If this event appears in this view
+				if(isDateInView(startCal)) {
+					int index = getIndexofDay(startCal);
 					EventPanel eventPanel = days.get(index).addEvent(event);
 					eventPanel.addMouseListener(eventPanelMouseListener);
 					if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
@@ -220,11 +252,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		}
 
 		CommitmentPanelMouseListener commitmentPanelMouseListener = new CommitmentPanelMouseListener();
-		
+
 		for(Commitment commitment: filteredCommitmentsModel.getList()) {
 			Date due = commitment.getDueDate();
-			Calendar dueCal = Calendar.getInstance();
-			dueCal.set(due.getYear()+1900, due.getMonth(), due.getDate());
+			Calendar dueCal = createCalendarFromDate(due);
 			if(dueCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
 					dueCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
 				int index = getIndexofDay(dueCal);
@@ -235,6 +266,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		}
 	}
 
+	// Called on a resize and on init
+	// Calculates which evComms to display
 	private void updateEvComs() {
 		for(int i = 0; i < daysWithEvComs.size(); i++) daysWithEvComs.get(i).updateEveComs();
 
@@ -242,54 +275,66 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		this.updateUI();
 	}
 
-	private int getIndexofDay(Calendar cal) {
-		int index = cal.get(Calendar.DATE) - 1;
-		cal.set(Calendar.DATE, 1);
-		if(cal.get(Calendar.DAY_OF_WEEK) == 1) index += 7;
-		else index += cal.get(Calendar.DAY_OF_WEEK) - 1;
-		return index;
+	private int getIndexofDay(Calendar indexCal) {
+		return indexInDaysOfCal.get(indexCal.getTime().toString());
 	}
-	
-	public int getMonth() {
-		return currentMonth.MONTH;
+
+	private boolean isDateInView(Calendar startDate) {
+		return startDate.compareTo(firstDayInView) >= 0 && startDate.compareTo(lastDayInView) <= 0;
 	}
-	
+
 	private Calendar cloneCalendar(Calendar toBeCloned) {
-		Calendar clonedCal = Calendar.getInstance();
-		clonedCal.set(Calendar.YEAR, toBeCloned.get(Calendar.YEAR));
-		clonedCal.set(Calendar.MONTH, toBeCloned.get(Calendar.MONTH));
-		clonedCal.set(Calendar.DATE, toBeCloned.get(Calendar.DATE));
-		return clonedCal;
+		return (Calendar)toBeCloned.clone();
+	}
+
+	private Calendar createCalendarFromDate(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(date.getYear()+1900, date.getMonth(), date.getDate(), 0, 0, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar;
 	}
 	
+	private Calendar createCalendar() {
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar;
+	}
+
+	public int getMonth() {
+		return currentMonth.get(Calendar.MONTH);
+	}
+
 	public List<Event> getSelectedEvents() {
 		List<Event> selectedEvents = new ArrayList<Event>();
-		
+
 		for(DayPanel dayPanel: days) {
 			for(EventPanel eventPanel: dayPanel.getEventsList()) {
 				if(eventPanel.getSelected())
 					if(!selectedEvents.contains(eventPanel.getEvent())) selectedEvents.add(eventPanel.getEvent());
 			}
-			
+
 			for(MultiDayEventPanel multiDayEventPanel: dayPanel.getMultiDayEventList()) {
 				if(multiDayEventPanel.getSelected())
 					if(!selectedEvents.contains(multiDayEventPanel.getEvent())) selectedEvents.add(multiDayEventPanel.getEvent());
 			}
 		}
-		
+
 		return selectedEvents;
 	}
-	
+
 	public List<Commitment> getSelectedCommitments() {
 		List<Commitment> selectedCommitments = new ArrayList<Commitment>();
-		
+
 		for(DayPanel dayPanel: days) {
 			for(CommitmentPanel commitmentPanel: dayPanel.getCommitmentsList()) {
 				if(commitmentPanel.getSelected())
 					if(!selectedCommitments.contains(commitmentPanel.getCommitment())) selectedCommitments.add(commitmentPanel.getCommitment());
 			}
 		}
-		
+
 		return selectedCommitments;
 	}
 
@@ -312,8 +357,8 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 	@Override
 	public void today() {
-		if(this.currentMonth.get(Calendar.MONTH) != Calendar.getInstance().get(Calendar.MONTH)) {
-			this.currentMonth = Calendar.getInstance();
+		if(this.currentMonth.get(Calendar.MONTH) != createCalendar().get(Calendar.MONTH)) {
+			this.currentMonth = createCalendar();
 			this.updateDates();
 		}
 	}
@@ -337,18 +382,32 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	}
 
 	public void ancestorAdded(AncestorEvent e) {
-		this.updateLayout();
+		this.updateWeekDayNames();
 	}
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		this.updateLayout();
+		this.updateWeekDayNames();
 		this.updateEvComs();
+
+		//TEST CODE
+		int total = 0;
+		total += days.get(0).getContainerPanelHeight();
+		total += days.get(7).getContainerPanelHeight();
+		total += days.get(14).getContainerPanelHeight();
+		total += days.get(21).getContainerPanelHeight();
+		total += days.get(28).getContainerPanelHeight();
+		total += days.get(35).getContainerPanelHeight();
+
+		int totalEvComsDisplayable = (int)(total / (new JLabel("I have Height!")).getPreferredSize().getHeight());
+		int evComsPerDay = totalEvComsDisplayable / 6;
+
+		//WORKS! 
 	}
-	
+
 	@Override
 	public void viewDate(Calendar date) {
-		if(this.currentMonth.get(Calendar.MONTH) != date.MONTH) {
+		if(this.currentMonth.get(Calendar.MONTH) != date.get(Calendar.MONTH)) {
 			this.currentMonth = date;
 			this.updateDates();
 		}

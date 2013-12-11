@@ -40,7 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CustomListSelectionModel;
  * @author
  */
 
-public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener{
+public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener {
 
 	private FilteredCommitmentsListModel model;
 	private CalendarPanel calendarPanel;
@@ -159,9 +159,8 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 			else commitmentList.getSelectionModel().addSelectionInterval(commitmentList.getLastVisibleIndex(), commitmentList.getLastVisibleIndex());
 		}
 	}
-
+	
 	// Unused
-
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 	@Override

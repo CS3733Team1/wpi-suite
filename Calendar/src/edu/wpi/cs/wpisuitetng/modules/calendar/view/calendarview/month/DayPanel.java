@@ -14,7 +14,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
-
 public class DayPanel extends JPanel {
 	private boolean isToday;
 	private boolean isWeekend;
@@ -256,9 +255,10 @@ public class DayPanel extends JPanel {
 					if(numRows-- > 1) containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
 					else break;
 				}
-
 				containerPanel.add(new JLabel((numEvComs-savedRows+1) + " more..."), "gap left 5");
 			}
 		}
 	}
+	
+	public int getContainerPanelHeight() {return containerPanel.getHeight();}
 }

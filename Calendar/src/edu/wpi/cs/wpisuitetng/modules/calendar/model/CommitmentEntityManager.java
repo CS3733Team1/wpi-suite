@@ -27,7 +27,6 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	final Data db;
 	public static CommitmentEntityManager CManager;
 
-	
 	/**
 	 * Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. To make sure
@@ -36,13 +35,12 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public static CommitmentEntityManager getCommitmentEntityManager(Data db)
-	{
+	public static CommitmentEntityManager getCommitmentEntityManager(Data db) {
 		CManager = (CManager == null) ? new CommitmentEntityManager(db) : CManager;
 		return CManager;
-			
+
 	}
-	
+
 	private CommitmentEntityManager(Data db) {
 		this.db = db;
 	}
@@ -58,35 +56,33 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 
 		// Parse the message from JSON
 		final Commitment newMessage = Commitment.fromJSON(content);
-		
+
 		//System.out.println("EM: marked for delete:" + newMessage.isMarkedForDeletion());
-		
+
 		newMessage.setOwnerName(s.getUsername());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 		//until we find a id that is unique assume another event might alreayd have it
 		boolean found=true;
 		long id=0;
-		while (found)
-		{
+		while (found) {
 			id = UUID.randomUUID().getMostSignificantBits();
-			for (Commitment e : this.getAll(s) )
-			{
-				if (e.getUniqueID()==id)
-				{
-					found=true;
+			for (Commitment e : this.getAll(s) ) {
+				if (e.getUniqueID() == id) {
+					found = true;
+					break;
 				}
 			}
-			found=false;
+			found = false;
 		}
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n",newMessage.getUniqueID(),newMessage.getOwnerName());
+
+		System.out.printf("Server: Creating new event entity with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
 		if (!db.save(newMessage, s.getProject())) {
 			throw new WPISuiteException();
 		}
 
-		
 		// Return the newly created message (this gets passed back to the client)
 		return newMessage;
 	}
@@ -138,16 +134,16 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		if(oldCommitments.size() < 1 || oldCommitments.get(0) == null) {
 			throw new BadRequestException("Commitment with ID does not exist.");
 		}
-				
+
 		Commitment existingCommitment = (Commitment)oldCommitments.get(0);		
 
 		// copy values to old commitment and fill in our changeset appropriately
 		existingCommitment.copyFrom(updatedCommitment);
-		
+
 		if(!db.save(existingCommitment, s.getProject())) {
 			throw new WPISuiteException();
 		}
-		
+
 		return existingCommitment;
 	}
 
@@ -164,7 +160,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		//System.out.println("made it to entitymanager delete");
 		db.delete(model);
 	}
-	
+
 	/*
 	 * Messages cannot be deleted
 	 * 
