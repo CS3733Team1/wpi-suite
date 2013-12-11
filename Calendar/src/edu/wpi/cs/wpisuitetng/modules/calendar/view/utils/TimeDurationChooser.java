@@ -73,7 +73,7 @@ public class TimeDurationChooser extends JPanel {
 		endDateChooser_.setDate(endDate);
 	}
 	private void buildLayout(){
-		this.setLayout(new MigLayout("", "[]", "[][][]"));
+		this.setLayout(new MigLayout("insets 1"));
 		
 		//Start Date Chooser
 		startDateChooser_=new DateTimeChooser("Start Time:");
@@ -85,7 +85,7 @@ public class TimeDurationChooser extends JPanel {
 		});
 		startDate_=startDateChooser_.getDate();
 		prevStartDateTimeMs_=startDate_.getTime();
-		this.add(startDateChooser_,"cell 0 0");
+		this.add(startDateChooser_, "wrap");
 		
 		//End Date Chooser
 		long endTime=startDate_.getTime()+defaultDuration_*60000;
@@ -99,12 +99,12 @@ public class TimeDurationChooser extends JPanel {
 				endDateChanged();
 			}
 		});
-		this.add(endDateChooser_,"cell 0 1");
+		this.add(endDateChooser_, "wrap");
 		
 		//error label
 		errorLabel_=new JLabel();
 		errorLabel_.setVisible(false);
-		this.add(errorLabel_,"cell 0 2");
+		this.add(errorLabel_);
 		
 		//validation
 		normalBorder_=this.getBorder();

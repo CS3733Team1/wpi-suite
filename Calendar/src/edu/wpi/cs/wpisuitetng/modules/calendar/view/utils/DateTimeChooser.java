@@ -119,7 +119,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 		buildLayout(name);
 	}
 	private void buildLayout(String name){
-		setLayout(new MigLayout("", "[55px,right][grow][grow][]", "[]"));
+		setLayout(new MigLayout(""));
 		
 		//make it on the minute - kill all seconds and milliseconds that might screw up comparisons with dates we think are on the same minute
 //		System.out.println("\tNormalizing time " + date_.toString());
@@ -131,7 +131,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 		//name label
 		JLabel lblName = new JLabel(name);
 		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblName, "cell 0 0, alignx right");
+		add(lblName);
 				
 		//DateChooser for choosing days
 		jDateChooser_=new JDateChooser(date_);
@@ -141,7 +141,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 				dayChanged();
 			}
 		});
-		add(jDateChooser_, "cell 1 0");
+		add(jDateChooser_, "wmin 100");
 		
 		//combo for choosing times
 		String[] strTimes;
@@ -175,12 +175,12 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 				timeChanged();
 			}
 		});
-		add(timeCombo_, "cell 2 0,growx");
+		add(timeCombo_);
 		
 		//Error Label
 		errorLabel=new JLabel("Invalid time!");
 		errorLabel.setVisible(false);
-		add(errorLabel, "cell 3 0");
+		add(errorLabel);
 		
 		//validation
 		normalBorder_=this.getBorder();

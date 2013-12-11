@@ -98,29 +98,23 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	public boolean validateEdit() {
 		boolean noChangesMade = true;
 		if(!editCommitment.getName().equals(nameTextField.getText())) {
-			System.out.println("originalname: " + editCommitment.getName() + "   new name: " + nameTextField.getText());
 			noChangesMade = false;
 		}
 		
-//		else if(!editCommitment.getDueDate().equals(dateTimeChooser_.getDate())){
-//			noChangesMade = false;
-//			System.out.println("start date" + editCommitment.getDueDate() + "new start date" + dateTimeChooser_.getDate());
-//		}
+		else if(!editCommitment.getDueDate().toString().equals(dateTimeChooser_.getDate().toString())){
+			noChangesMade = false;
+		}
 		else if(!editCommitment.getCategory().equals(categoryPickerPanel.getSelectedCategory())){
 			noChangesMade = false;
-			System.out.println("cat");
 		}
 		else if(!editCommitment.getDescription().equals(descriptionTextArea.getText())){
-			System.out.println("originalname: " + editCommitment.getDescription() + "   new name: " + descriptionTextArea.getText());
 			noChangesMade = false;
 		}
 		else if(editCommitment.getisTeam() != calendarPicker.isTeam()){
 			noChangesMade = false;
-			System.out.println("team");
 		}
 		else if(editCommitment.getProgress() != commitmentProgressPanel.getSelectedState()){
 			noChangesMade = false;
-			System.out.println("state");
 		}
 		return noChangesMade;
 	}
@@ -220,7 +214,6 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		if(isEditMode) {
 			System.out.println("Edit Mode");
 			enableAddCommitment = !validateEdit();
-			System.out.println("enable button?: " + enableAddCommitment);
 		}
 
 		//check name

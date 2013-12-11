@@ -100,7 +100,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				validateFields();
 			}
 		});
-		add(durationChooser_, "alignx left");
+		this.add(durationChooser_, "alignx left, wrap");
 
 		// Category
 		this.add(new JLabel("Category:"), "split 2");
