@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 
 public class EventPanel extends JPanel{

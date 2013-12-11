@@ -14,11 +14,8 @@ import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -145,7 +142,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	}
 
 	// Kills the add event tab
-	public void killEventPanel() {
+	public void closeEventPanel() {
 		this.getParent().remove(this);
 	}
 
@@ -199,7 +196,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	public void actionPerformed(ActionEvent e) {
 //		System.out.println("All Day Checkbox Changed!");
 		if(e.getActionCommand().equals("cancel")) {
-			this.killEventPanel();
+			this.closeEventPanel();
 		} else {
 			validateFields();
 		}

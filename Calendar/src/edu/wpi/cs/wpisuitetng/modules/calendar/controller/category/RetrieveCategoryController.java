@@ -31,23 +31,28 @@ public class RetrieveCategoryController implements AncestorListener, ActionListe
 
 	public void retrieveMessages() {
 		System.out.println("Retrieving categories from server...");
-		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("calendar/category", HttpMethod.GET); // GET == read
-		request.addObserver(new RetrieveCategoryObserver(this)); // add an observer to process the response
-		request.send(); // send the request
+
+		// Create a Get Request
+		final Request request = Network.getInstance().makeRequest("calendar/category", HttpMethod.GET);
+
+		// Add an observer to process the response
+		request.addObserver(new RetrieveCategoryObserver(this));
+
+		// Send the request
+		request.send();
 	}
-	
+
 	/**
 	 * Add the given messages to the local model (they were received from the core).
 	 * This method is called by the GetMessagesRequestObserver
 	 * 
 	 * @param messages an array of messages received from the server
 	 */
-	public void receivedMessages(Category[] cat) {		
+	public void receivedMessages(Category[] categories) {		
 		// Make sure the response was not null
-		if (cat != null) {
-			// set the messages to the local model
-			model.setCategories(cat);
+		if (categories != null) {
+			model.setCategories(categories);
+			System.out.println("	Retrieved " + categories.length + " categories from the server.");
 		}
 	}
 
@@ -61,13 +66,13 @@ public class RetrieveCategoryController implements AncestorListener, ActionListe
 	}
 
 	@Override
-	public void ancestorMoved(AncestorEvent e) {}
-
-	@Override
-	public void ancestorRemoved(AncestorEvent e) {}
-
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.retrieveMessages();
 	}
+
+	// Unused
+	@Override
+	public void ancestorMoved(AncestorEvent e) {}
+	@Override
+	public void ancestorRemoved(AncestorEvent e) {}
 }

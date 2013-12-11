@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -86,13 +85,13 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	}
 	
 	public void disable(){
-		jDateChooser_.disable();
-		timeCombo_.disable();
-		dtValid_=true;
+		jDateChooser_.setEnabled(false);
+		timeCombo_.setEnabled(false);
+		dtValid_ = true;
 	}
 	public void enable(){
-		jDateChooser_.disable();
-		timeCombo_.disable();
+		jDateChooser_.setEnabled(false);
+		timeCombo_.setEnabled(false);
 		validateDateTime();
 	}
 	

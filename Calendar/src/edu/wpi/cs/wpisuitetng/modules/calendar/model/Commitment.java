@@ -372,4 +372,12 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		temp.setMinutes(temp.getMinutes() + 30);
 		return temp;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Commitment) {
+			Commitment commitmentOther = (Commitment)o;
+			return this.getUniqueID() == commitmentOther.getUniqueID();
+		} else return false;
+	}
 }

@@ -31,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 public class DayView extends JPanel implements ListDataListener {
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -46,7 +45,7 @@ public class DayView extends JPanel implements ListDataListener {
 	private int currentYear;
 	private int currentDate;
 
-	private ArrayList<Event> eventlist = new ArrayList();
+	private ArrayList<Event> eventlist = new ArrayList<Event>();
 
 	/**
 	 * DayView Constructor, which setups the initial dayview view

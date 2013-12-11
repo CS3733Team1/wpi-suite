@@ -21,32 +21,37 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class AddCommitmentController implements ActionListener{
-	CommitmentListModel model;
-	CommitmentTabPanel view;
-	
+	private CommitmentListModel model;
+	private CommitmentTabPanel view;
+
 	public AddCommitmentController(CommitmentTabPanel view){
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.view = view;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		Commitment commit = view.getFilledCommitment();
-	
-		System.out.println("Adding commitment...");
-		
-		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT); // PUT == create
-		request.setBody(commit.toJSON()); // put the new message in the body of the request
-		request.addObserver(new AddCommitmentObserver(this)); // add an observer to process the response
-		request.send(); // send the request
-		view.killCommitmentPanel();
-	}
-	
-	public void addCommitmentToModel(Commitment commit){
-		System.out.println("Commitment added.");
-		model.addCommitment(commit);
+		// Retrieve the commitment
+		Commitment commitment = view.getFilledCommitment();
+
+		System.out.println("Adding commitment: name = " + commitment.getName() + "; uid = " + commitment.getUniqueID());
+
+		// Create a Put Request
+		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.PUT);
+
+		// Put the new message in the body of the request
+		request.setBody(commitment.toJSON()); 
+
+		// Add an observer to process the response
+		request.addObserver(new AddCommitmentObserver(this));
+
+		// Send the request
+		request.send();
 	}
 
+	public void addCommitmentToModel(Commitment commitment){
+		System.out.println("	Added commitment: name = " + commitment.getName() + "; uid = " + commitment.getUniqueID());
+		model.addCommitment(commitment);
+		view.closeCommitmentPanel();
+	}
 }

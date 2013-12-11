@@ -184,4 +184,12 @@ public class Filter extends DeletableAbstractModel {
 	public boolean getSelected() {
 		return this.isSelected;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Filter) {
+			Filter filterOther = (Filter)o;
+			return this.getUniqueID() == filterOther.getUniqueID();
+		} else return false;
+	}
 }

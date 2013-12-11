@@ -20,33 +20,38 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class AddEventController implements ActionListener{
-	EventTabPanel view;
-	EventListModel model;
-	
-	public AddEventController(EventTabPanel view){
+public class AddEventController implements ActionListener {
+	private EventListModel model;
+	private EventTabPanel view;
+
+	public AddEventController(EventTabPanel view) {
 		this.model = EventListModel.getEventListModel();
 		this.view = view;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// Retrieve the event
+		Event event = view.getFilledEvent();
 
-		Event eve = view.getFilledEvent();
+		System.out.println("Adding event: name = " + event.getName() + "; uid = " + event.getUniqueID());
+
+		// Create a Put Request
+		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT);
 		
-		System.out.println("Adding event...");
+		// Put the new message in the body of the request
+		request.setBody(event.toJSON()); 
 		
-		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT); // PUT == create
-		request.setBody(eve.toJSON()); // put the new message in the body of the request
-		request.addObserver(new AddEventObserver(this)); // add an observer to process the response
-		request.send(); // send the request
-		view.killEventPanel();
+		// Add an observer to process the response
+		request.addObserver(new AddEventObserver(this));
+		
+		// Send the request
+		request.send();
 	}
 	
-	public void addEventToModel(Event eve){
-		System.out.println("Event added.");
-		model.addEvent(eve);
+	public void addEventToModel(Event event) {
+		System.out.println("	Added event: name = " + event.getName() + "; uid = " + event.getUniqueID());
+		model.addEvent(event);
+		view.closeEventPanel();
 	}
-
 }
