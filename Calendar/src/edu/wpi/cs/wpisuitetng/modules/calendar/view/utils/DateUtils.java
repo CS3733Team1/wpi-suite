@@ -60,7 +60,7 @@ public class DateUtils {
 			output = "Noon";
 		}else if(hour > 12)
 		{
-			output = "" + (hour-12) + "PM";
+			output = "" + (hour-12) + " PM";
 		}
 		
 		return output;
