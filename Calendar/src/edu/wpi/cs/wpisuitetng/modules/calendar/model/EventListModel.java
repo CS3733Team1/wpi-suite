@@ -40,8 +40,7 @@ public class EventListModel extends AbstractListModel<Event> {
 		events = Collections.synchronizedList(new ArrayList<Event>());
 	}
 
-	public static EventListModel getEventListModel()
-	{
+	public static EventListModel getEventListModel() {
 		if( eventModel == null)
 			eventModel = new EventListModel();
 		return eventModel;
@@ -120,12 +119,9 @@ public class EventListModel extends AbstractListModel<Event> {
 	}
 
 	public void removeEvent(Event event) {
-		System.err.println(events.size());
 		events.remove(event);
-		System.err.println("size:" + events.size());
 		this.fireIntervalRemoved(this, 0, 0);
 	}
-
 
 	/**
 	 * Returns the number of events in the model. Also used internally by the

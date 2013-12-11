@@ -36,6 +36,13 @@ public class Filter extends DeletableAbstractModel {
 		this.categories = new ArrayList<Category>();
 		this.isSelected = false;
 	}
+	
+	public Filter(String name, long uid) {
+		this.name = name;
+		this.categories = new ArrayList<Category>();
+		this.isSelected = false;
+		this.setUniqueID(uid);
+	}
 
 	public Filter(String name, List<Category> list) {
 		this(name);
