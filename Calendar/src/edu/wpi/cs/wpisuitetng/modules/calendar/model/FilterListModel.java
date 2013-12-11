@@ -200,9 +200,4 @@ if(activeFilter == null) return commitmentList;
 	public void addFilterChangedListener(FilterChangedListener l) {
 		filterChangedListeners.add(l);
 	}
-	
-	public synchronized void update() {
-		//fireFilterChanged();
-		this.fireIntervalAdded(this, 0, this.filters.size() == 0 ? 0 : filters.size() -1);
-	}
 }

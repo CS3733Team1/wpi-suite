@@ -225,7 +225,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 				Calendar iterCal = cloneCalendar(startCal);
 
 				if(!isDateInView(iterCal))
-					if (iterCal.compareTo(currentMonth) < 0) iterCal = cloneCalendar(currentMonth);
+					if (iterCal.compareTo(firstDayInView) < 0) iterCal = cloneCalendar(firstDayInView);
 
 				boolean hasMultiDay = false;
 				while(iterCal.compareTo(endCal) <= 0 && iterCal.compareTo(lastDayInView) <= 0) {
@@ -266,7 +266,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			Calendar iterCal = cloneCalendar(startCal);
 
 			if(!isDateInView(iterCal))
-				if (iterCal.compareTo(currentMonth) < 0) iterCal = cloneCalendar(currentMonth);
+				if (iterCal.compareTo(firstDayInView) < 0) iterCal = cloneCalendar(firstDayInView);
 
 			boolean isFirstPanel = true;
 			int indexOfMultiday = 0;
@@ -373,7 +373,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			Calendar iterCal = cloneCalendar(startCal);
 
 			if(!isDateInView(iterCal))
-				if (iterCal.compareTo(currentMonth) < 0) iterCal = cloneCalendar(currentMonth);
+				if (iterCal.compareTo(firstDayInView) < 0) iterCal = cloneCalendar(firstDayInView);
 
 			while(iterCal.compareTo(endCal) <= 0 && iterCal.compareTo(lastDayInView) <= 0) {
 				int index = getIndexofDay(iterCal);
