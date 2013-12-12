@@ -32,7 +32,7 @@ public class UpdateCommitmentObserver implements RequestObserver
 
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to update the commitment was succesful.");
+		System.out.println("	The request to update the commitment was successful.");
 
 		// Parse the message out of the response body
 		final Commitment commitment = Commitment.fromJSON(iReq.getResponse().getBody());

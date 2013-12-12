@@ -28,7 +28,7 @@ public class DeleteCommitmentObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// The response will not include a body as this is HTTP.DELETE
 		// Do nothing
-		System.out.println("	The request to delete a commitment was succesful.");
+		System.out.println("	The request to delete a commitment was successful.");
 	}
 
 	@Override
