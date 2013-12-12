@@ -69,7 +69,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 * Builds the GUI layout for the Event panel
 	 */
 	private void buildLayout() {
-		this.setLayout(new MigLayout("fill", "[]", "[][][][][][][][][][][]"));
+		this.setLayout(new MigLayout("fill", "[]", "[][][][][][][][][][]"));
 
 		// Name
 		this.add(new JLabel("Event Name:"), "cell 0 0");
@@ -80,55 +80,48 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		this.add(nameErrorPanelWrapper, "cell 0 0,push ,growx,width 5000,alignx left");
 		nameErrorLabel = new JLabel(EMPTY_NAME_ERROR);
 		nameErrorLabel.setForeground(Color.RED);
-<<<<<<< HEAD
 		this.add(nameErrorLabel, "cell 0 0");
-=======
 		this.add(nameErrorLabel, "wrap");
-
-		//all day event checkbox (uncomment for checkbox, but note it doesn't do anything yet)
-//		allDayEvent_=false;
-//		allDayEventCheckbox=new Checkbox("All Day Event");
-//		allDayEventCheckbox.addItemListener(new ItemListener(){
-//			@Override
-//			public void itemStateChanged(ItemEvent e) {
-//				allDayEventCheckboxChanged();
-//			}
-//		});
-//		this.add(allDayEventCheckbox, "wrap");
->>>>>>> 1220bbc954826120d0be66e379f0e67b9e0da849
 		
-		//duration
-		durationChooser_=new TimeDurationChooser();
-		durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
-			@Override
-			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+				//all day event checkbox (uncomment for checkbox, but note it doesn't do anything yet)
+		//		allDayEvent_=false;
+		//		allDayEventCheckbox=new Checkbox("All Day Event");
+		//		allDayEventCheckbox.addItemListener(new ItemListener(){
+		//			@Override
+		//			public void itemStateChanged(ItemEvent e) {
+		//				allDayEventCheckboxChanged();
+		//			}
+		//		});
+		//		this.add(allDayEventCheckbox, "wrap");
+				
+				//duration
+				durationChooser_=new TimeDurationChooser();
+				durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
+					@Override
+					public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 //				System.out.println("Time Duration Changed");
-				validateFields();
-			}
-		});
-<<<<<<< HEAD
-		add(durationChooser_, "cell 0 2, alignx left");
+						validateFields();
+					}
+				});
+				add(durationChooser_, "cell 0 1, alignx left");
+				
+				
+						this.add(durationChooser_, "alignx left, wrap");
+		
+				// Calendar
+				JLabel label = new JLabel("Calendar:");
+				this.add(label, "flowx,cell 0 3");
 		
 		// Recurring Events
 		eventRecurringPanel = new EventRecurringPanel(new Date());
-		add(eventRecurringPanel, "cell 0 3,alignx left");
-
-=======
-		this.add(durationChooser_, "alignx left, wrap");
->>>>>>> 1220bbc954826120d0be66e379f0e67b9e0da849
-
+		add(eventRecurringPanel, "cell 0 4,alignx left");
 		// Category
-		this.add(new JLabel("Category:"), "cell 0 4");
+		this.add(new JLabel("Category:"), "cell 0 5");
 		categoryPickerPanel = new CategoryPickerPanel();
-		this.add(categoryPickerPanel, "cell 0 4,alignx left");
-
-		// Calendar
-		this.add(new JLabel("Calendar:"), "split 2");
-		calendarPicker = new CalendarPicker();
-		this.add(calendarPicker, "alignx left, wrap");
+		this.add(categoryPickerPanel, "cell 0 5,alignx left");
 
 		// Description
-		this.add(new JLabel("Description:"), "cell 0 5");
+		this.add(new JLabel("Description:"), "cell 0 6");
 
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setLineWrap(true);
@@ -136,22 +129,24 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		JScrollPane scrollp = new JScrollPane(descriptionTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(scrollp, "cell 0 9,push ,height 5000,grow");
+		this.add(scrollp, "cell 0 6,push ,height 5000,grow");
 
 		// Add / Cancel buttons
 		addEventButton = new JButton("Add Event");
 		addEventButton.setActionCommand("addevent");
 		addEventButton.addActionListener(new AddEventController(this));
 
-		this.add(addEventButton, "cell 0 10,alignx left");
+		this.add(addEventButton, "cell 0 8,alignx left");
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.setActionCommand("cancel");
 
-		this.add(cancelButton, "cell 0 10,alignx left");
+		this.add(cancelButton, "cell 0 8,alignx left");
 
 		//Action Listener for Cancel Button
 		cancelButton.addActionListener(this);
+		calendarPicker = new CalendarPicker();
+		this.add(calendarPicker, "cell 0 3,alignx left");
 
 		validateFields();
 	}
