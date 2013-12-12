@@ -16,6 +16,9 @@
 		<fileset dir="${janeway-lib}">
 			<include name="miglayout-4.0-swing.jar"/>
 		</fileset>
+		<fileset dir="${janeway-lib}">
+					<include name="DateChooser.jar"/>
+				</fileset>
 		<pathelement path="build"/>
 	</path>
 
