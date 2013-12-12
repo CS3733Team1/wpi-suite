@@ -28,7 +28,8 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	// Always Visible
 	private TransparentButton addCommitmentButton;
 	private TransparentButton addEventButton;
-
+	private TransparentButton helpButton;
+	
 	// Visible only when commitments/events are selected on either calendar tab
 	private TransparentButton deleteCommitmentButton;
 	private TransparentButton deleteEventButton;
@@ -50,7 +51,8 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png"))));
 			deleteCommitmentButton = new TransparentButton("<html>Delete<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_commitment.png"))));
-
+			helpButton = new TransparentButton("<html>Help</html>");
+			
 			addEventButton = new TransparentButton("<html>New<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
 			deleteEventButton = new TransparentButton("<html>Delete<br/>Event</html>",
@@ -84,8 +86,11 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.add(addCommitmentButton, "align center, split 4");
 		this.add(deleteCommitmentButton);
 
+		
 		this.add(addEventButton);
 		this.add(deleteEventButton);
+		
+		this.add(helpButton, "align right");
 
 		//if(eggHatched) {
 		//	this.add(weatherPanel);
@@ -103,6 +108,8 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 		this.add(addCommitmentButton, "align center, split 2");
 		this.add(addEventButton);
+		
+		this.add(helpButton, "align right");
 
 		this.repaint();
 	}
