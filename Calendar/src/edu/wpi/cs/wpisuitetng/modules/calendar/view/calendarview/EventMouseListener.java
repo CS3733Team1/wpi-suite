@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+x * Copyright (c) 2013 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,32 +8,35 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class EventMouseListener implements MouseListener{
 
 	Event e;
 	JPanel epanel;
 	
-	static ArrayList<Event> selectedEvents= new ArrayList<Event>();
-	static ArrayList<JPanel> selectedPanels= new ArrayList<JPanel>();
+	static List<Event> selectedEvents= Collections.synchronizedList(new ArrayList<Event>());
+	static List<JPanel> selectedPanels= Collections.synchronizedList(new ArrayList<JPanel>());
+	
+	private Color originalColor;
 	
 	public EventMouseListener(Event e, JPanel epanel){
-		System.err.println("ML: " + e.getUniqueID());
 		this.e=e;
 		this.epanel=epanel;
 	}
@@ -117,7 +120,7 @@ public class EventMouseListener implements MouseListener{
 	public void mouseReleased(MouseEvent e) {
 	}
 	
-	public static ArrayList<Event> getSelected(){
+	public static List<Event> getSelected(){
 		return selectedEvents;
 	}
 	
@@ -132,15 +135,22 @@ public class EventMouseListener implements MouseListener{
 	}
 	
 	private void selectPanel(JPanel panel){
-		Color panelColor = panel.getBackground();
-		panel.setBorder(new LineBorder(panelColor,3));
-		panel.setBackground(Color.getHSBColor(0,0,(float).6));
+		originalColor = panel.getBackground();
+		panel.setBackground(CalendarUtils.darken(originalColor));
+		JLabel j = (JLabel)panel.getComponent(0);
+		j.setForeground(CalendarUtils.textColor(panel.getBackground()));
+		
 	}
 	
 	private void deselectPanel(JPanel panel){
+		
+		if (originalColor == null || panel.getBackground() == null){
+			selectPanel(panel);
+			return;
+		}
 		LineBorder panelBorder = (LineBorder)panel.getBorder();
-		Color borderColor = panelBorder.getLineColor();
-		panel.setBackground(borderColor);
-		panel.setBorder(new EmptyBorder(0,0,0,0));
+		panel.setBackground(originalColor);
+		JLabel j = (JLabel)panel.getComponent(0);
+		j.setForeground(CalendarUtils.textColor(panel.getBackground()));
 	}
 }

@@ -12,7 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
@@ -23,38 +23,34 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class DeleteEventController implements ActionListener {
-	EventListModel model;
-	CalendarPanel calendarPanel;
-	
+	private EventListModel model;
+	private CalendarPanel calendarPanel;
+
 	public DeleteEventController(CalendarPanel calendarPanel){
 		this.model = EventListModel.getEventListModel();
 		this.calendarPanel = calendarPanel;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//calendarPanel.getCalendarTabPanel().getSelectedEventList()
-		Event event=null;
-		ArrayList<Event> selected = EventMouseListener.getSelected();
-		System.err.println("Del: "+ selected.get(0).getUniqueID());
-		
-		for (int i =0; i< selected.size();i++) {
-//			Event event=EventMouseListener.getSelected();
-			event = new Event(selected.get(i));
-			if(event!=null){
-				final Request request = Network.getInstance().makeRequest("calendar/event/"+event.getUniqueID(), HttpMethod.GET); 
-				request.addHeader("X-HTTP-Method-Override", "DELETE");
-				request.addObserver(new DeleteEventObserver(this)); // add an observer to process the response
-				request.send(); // send the request
-			}
-			
+		List<Event> eventList = calendarPanel.getCalendarTabPanel().getSelectedEventList();
+		eventList.addAll(EventMouseListener.getSelected());
+
+		for(Event event: eventList) {
+			System.out.println("Deleting event: name = " + event.getName() + "; uid = " + event.getUniqueID());
+
+			// Create a Delete Request
+			final Request request = Network.getInstance().makeRequest("calendar/event/" + event.getUniqueID(), HttpMethod.DELETE);
+
+			// Add an observer to process the response
+			request.addObserver(new DeleteEventObserver());
+
+			// Send the request
+			request.send();
+
+			// We must remove the event without knowing the result of the server's response because
+			// of a bug in Java in which you cannot set the body of a HTTP.DELETE request.
+			model.removeEvent(event);
 		}
-		
-		calendarPanel.refreshSelectedPanel();
-	}
-	
-	public void removeEventToModel(Event eve){
-		System.out.println("Deleting Event");
-		model.removeEvent(eve);
 	}
 }

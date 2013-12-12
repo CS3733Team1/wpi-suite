@@ -28,7 +28,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 
 	List<FilterChangedListener> filterChangedListeners = new ArrayList<FilterChangedListener>();
 
-	private final Filter[] defaultFilters = {new Filter("Unfiltered")};
+	private final Filter[] defaultFilters = {new Filter(UNFILTERED, 0)};
 
 	/** The list of Filter */
 	private List<Filter> filters;
@@ -36,17 +36,18 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	/** The active Filter */
 	private Filter activeFilter;
 
+	private static final String UNFILTERED = "Unfiltered";
+
 	private FilterListModel() {
 		this.filters = Collections.synchronizedList(new ArrayList<Filter>());
 	}
 
-	static public FilterListModel getFilterListModel() {
+	static public synchronized FilterListModel getFilterListModel() {
 		if (filterListModel == null)
 			filterListModel = new FilterListModel();
 		return filterListModel;
 	}
 
-	
 	/**
 	 * Constructs a new Filter and adds it to the model's List of Filters.
 	 * @param name A name for the new Filter
@@ -61,7 +62,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * Adds an existing Filter to the model's List.
 	 * @param toAdd Filter to be added.
 	 */
-	
+
 	public void addFilter(Filter toAdd) {
 		this.filters.add(toAdd);
 		this.fireIntervalAdded(this, 0, 0);
@@ -86,7 +87,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * Clears the model's list of Filters and replaces it with the given array of Filters.
 	 * @param filters an array of Filters to put in 
 	 */
-	
+
 	public void setFilters(Filter[] filters) {
 		this.emptyModel();
 
@@ -107,6 +108,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	}
 
 	public void setActiveFilter(Filter filter) {
+		System.out.println("Called set Active Filter! " + filter.getName());
 		if(!filter.equals(activeFilter)) {
 			for(Filter f: this.filters) {
 				f.setSelected(false);
@@ -114,6 +116,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 			filter.setSelected(true);
 			this.activeFilter = filter;
 			this.fireFilterChanged();
+			System.out.println("Fire filter changed");
 			this.fireContentsChanged(this, 0, Math.max(0, filters.size()-1));
 		}
 	}
@@ -127,8 +130,7 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 */
 	public void emptyModel() {
 		int oldSize = getSize();
-		while(filters.size() != 0) filters.remove(0);
-
+		filters.clear();
 		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 	}
 
@@ -163,18 +165,20 @@ public class FilterListModel extends AbstractListModel<Filter> {
 		return filters.size();
 	}
 
-	static public List<Filter> getList(){
+
+	static public synchronized List<Filter> getList(){
 		return getFilterListModel().filters;
 	}
 
-	
+
 	/**
 	 * Applies the current activeFilter to the given List of Events
 	 * @param eventList A List of Events to filter
 	 * @return The filtered List of Events
 	 */
 	public List<Event> applyEventFilter(List<Event> eventList) {
-		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return eventList;
+		if(activeFilter == null)return eventList;
+		else if(activeFilter.getName().equalsIgnoreCase(UNFILTERED)) return Filter.filterTeamPersonal(eventList);
 		else return activeFilter.applyEventFilter(eventList);
 	}
 
@@ -184,13 +188,13 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	 * @return The filtered List of Commitments
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> commitmentList) {
-		if(activeFilter == null || activeFilter.getName().equals("Unfiltered")) return commitmentList;
+if(activeFilter == null) return commitmentList;
+		else if(activeFilter.getName().equalsIgnoreCase(UNFILTERED)) return Filter.filterTeamPersonal(commitmentList);
 		else return activeFilter.applyCommitmentFilter(commitmentList);
 	}
 
 	public void fireFilterChanged() {
-		for(FilterChangedListener l: filterChangedListeners)
-			l.filterChanged();
+		for(FilterChangedListener l: filterChangedListeners) l.filterChanged();
 	}
 
 	public void addFilterChangedListener(FilterChangedListener l) {

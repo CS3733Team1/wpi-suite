@@ -21,8 +21,11 @@ import javax.swing.JLayeredPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 
 /**
  * This class is used to display events in week view. It is the third level of the week view hierarchy:
@@ -34,7 +37,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 	private EventWeekView eventview;
 	private MultidayEventWeekView multiview;
 	
-	private List<Event> eventlist;
+	private List<ISchedulable> eventlist;
 	private List<List<Event>> multilistlist;
 	private Integer layer;
 	
@@ -42,7 +45,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 	{
 		layer = 0;
 		weekview = new WeekView();
-		eventlist = new LinkedList<Event>();
+		eventlist = new LinkedList<ISchedulable>();
 		
 		multilistlist = new LinkedList<List<Event>>();
 		for(int i = 0; i < 7; i++)
@@ -50,7 +53,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			multilistlist.add(new LinkedList<Event>());
 		}
 		
-		int height = weekview.getPreferredSize().getSize().height;
+		int height = weekview.getPreferredSize().getSize().height * 2;
 		int width = 950;
 		
 		this.setSize(width, height);
@@ -64,6 +67,7 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		this.setVisible(true);
 		
 		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
+		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
 	
 	/**
@@ -74,12 +78,16 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 		Date key;
 		Date current = (Date) weekview.getStart().clone();
 		Date iter = new Date();
+		Date weekenddate = (Date) weekview.getStart().clone();
+		weekenddate.setDate(weekenddate.getDate() + 7);
+		Date eveenddate = new Date();
 		int startind, endind;
 		ArrayList<Integer> weekdays = new ArrayList<Integer>();
 		List<Event> multilist = new LinkedList<Event>();
 		
 		ClearEvents();
 		ListIterator<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList().listIterator();
+		ListIterator<Commitment> comm = FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList().listIterator();
 		
 		while(event.hasNext()){
 			Event eve = new Event(event.next());
@@ -89,26 +97,47 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 				if(eve.getStartDate().getDate() == eve.getEndDate().getDate()
 				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
 				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
+				{
 					eventlist.add(eve);
+				}
 				else
 				{
+					//System.out.println("Mutliday event " + eve.getName() + " found, if");
 					multilist.add(eve);
 				}
 			}
 			else if(current.after(eve.getStartDate()) && current.before(eve.getEndDate()))
 			{
+				//System.out.println("Mutliday event " + eve.getName() + " found, else");
 				multilist.add(eve);
+			}
+		}
+		
+		while(comm.hasNext()){
+			Commitment c = new Commitment(comm.next());
+			Date cdate = c.getStartDate();
+			key = new Date(cdate.getYear(),cdate.getMonth(),cdate.getDate(),cdate.getHours(),0);
+			if (weekview.getMap().containsKey(key)){
+				if(c.getStartDate().getDate() == c.getEndDate().getDate()
+				&& c.getStartDate().getMonth() == c.getEndDate().getMonth()
+				&& c.getStartDate().getYear() == c.getEndDate().getYear())
+				{
+					eventlist.add(c);
+				}
 			}
 		}
 		
 		eventview = new EventWeekView(eventlist, this.getSize(), weekview.getStart());
 		
+		iter = (Date) current.clone();
 		for(int i = 0; i < 7; i++)
 		{
-			iter = (Date) current.clone();
 			weekdays.add(i, iter.getDate());
 			iter.setDate(iter.getDate() + 1);
 		}
+		
+		//System.out.println(String.format("weekdays: %d %d %d %d %d %d %d",
+		//		weekdays.get(0), weekdays.get(1), weekdays.get(2), weekdays.get(3), weekdays.get(4), weekdays.get(5), weekdays.get(6)));
 		
 		for(Event e: multilist)
 		{
@@ -116,18 +145,21 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 				iter = (Date) e.getStartDate().clone();
 			else
 				iter = (Date) current.clone();
-			
-			while(!(iter.equals(e.getEndDate()) || iter.getDate() == weekdays.get(6)))
+			eveenddate.setDate(e.getEndDate().getDate() + 1);
+			while(!(iter.getDate() == eveenddate.getDate() || iter.getDate() == weekenddate.getDate()))
 			{
+				//System.out.println("Iter " + iter.getDate());
 				if(weekdays.contains(iter.getDate()))
 				{
 					multilistlist.get(weekdays.indexOf(iter.getDate())).add(e);
+					break;
+					//System.out.println("Event " + e.getName() + " added to index " + weekdays.indexOf(iter.getDate()));
 				}
 				iter.setDate(iter.getDate() + 1); //setDate knows where month boundaries are
 			}
 		}
 
-		multiview = new MultidayEventWeekView(multilistlist, this.getSize());
+		multiview = new MultidayEventWeekView(multilistlist, this.getSize(), weekview.getStart());
 		
 		this.add(multiview, layer, -1);
 		layer++;
@@ -169,7 +201,12 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 			layer--;
 		}
 		
-		eventlist = new LinkedList<Event>();
+		eventlist = new LinkedList<ISchedulable>();
+		multilistlist.clear();
+		for(int i = 0; i < 7; i++)
+		{
+			multilistlist.add(new LinkedList<Event>());
+		}
 	}
 	
 	public String getTitle() {
@@ -190,6 +227,12 @@ public class WeekCalendarLayerPane extends JLayeredPane implements ListDataListe
 	
 	public void today() {
 		weekview.today();
+		ChangeTheWorld();
+		repaint();
+	}
+	
+	public void viewDate(Date day){
+		weekview.viewDate(day);
 		ChangeTheWorld();
 		repaint();
 	}

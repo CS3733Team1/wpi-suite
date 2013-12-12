@@ -15,8 +15,8 @@ package edu.wpi.cs.wpisuitetng.modules.defecttracker.toolbar;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
@@ -40,9 +40,7 @@ public class ToolbarView extends DefaultToolbarView {
 	public ToolbarView(MainTabController tabController) {
 
 		// Construct the content panel
-		JPanel content = new JPanel();
-		SpringLayout layout  = new SpringLayout();
-		content.setLayout(layout);
+		JPanel content = new JPanel(new MigLayout("", "[][]", "[][]"));
 		content.setOpaque(false);
 				
 		// Construct the create defect button
@@ -54,28 +52,18 @@ public class ToolbarView extends DefaultToolbarView {
 		searchDefects.setAction(new SearchDefectsAction(tabController));
 		
 		// Construct the search field
-		searchField = new JPlaceholderTextField("Lookup by ID", 15);
+		searchField = new JPlaceholderTextField("Lookup by ID", 25);
 		searchField.addActionListener(new LookupDefectController(tabController, searchField, this));
 		
-		// Configure the layout of the buttons on the content panel
-		layout.putConstraint(SpringLayout.NORTH, createDefect, 5, SpringLayout.NORTH, content);
-		layout.putConstraint(SpringLayout.WEST, createDefect, 8, SpringLayout.WEST, content);
-		layout.putConstraint(SpringLayout.WEST, searchDefects, 10, SpringLayout.EAST, createDefect);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, searchDefects, 0, SpringLayout.VERTICAL_CENTER, createDefect);
-		layout.putConstraint(SpringLayout.NORTH, searchField, 15, SpringLayout.SOUTH, createDefect);
-		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, searchField, 5, SpringLayout.EAST, createDefect);
-		
 		// Add buttons to the content panel
-		content.add(createDefect);
-		content.add(searchDefects);
-		content.add(searchField);
+		content.add(createDefect, "cell 0 0, center");
+		content.add(searchDefects, "cell 1 0, center");
+		content.add(searchField, "cell 0 1, span 2, center");
 		
 		// Construct a new toolbar group to be added to the end of the toolbar
 		ToolbarGroupView toolbarGroup = new ToolbarGroupView("Home", content);
-		
+		toolbarGroup.setPreferredWidth(content.getPreferredSize().width + 8);
 		// Calculate the width of the toolbar
-		Double toolbarGroupWidth = createDefect.getPreferredSize().getWidth() + searchDefects.getPreferredSize().getWidth() + 40; // 40 accounts for margins between the buttons
-		toolbarGroup.setPreferredWidth(toolbarGroupWidth.intValue());
 		addGroup(toolbarGroup);
 	}
 

@@ -17,6 +17,8 @@ import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -43,8 +45,29 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	// changed on a resize
 	private List<DayPanel> daysWithEvComs;
 
+	// A List holding the MultiDayEvents currently displayed in the view
+	private List<Event> multiDayEvents;
+
+	// A List holding the Events currently displayed in the view
+	private List<Event> events;
+
+	// A List holding the Commitments currently displayed in the view
+	private List<Commitment> commitments;
+
+	private List<MultiDayEventPanel> multiDayEventPanels;
+	private List<EventPanel> eventPanels;
+	private List<CommitmentPanel> commitmentPanels;
+
 	// A Calendar to keep track of the month the user is currently viewing
 	private Calendar currentMonth;
+
+	// A Calendar to keep track of the first visible day in the view
+	private Calendar firstDayInView;
+
+	// A Calendar to keep track of the last visible day in the view
+	private Calendar lastDayInView;
+
+	private HashMap<String, Integer> indexInDaysOfCal;
 
 	// Handles on the events and commitments models
 	private FilteredEventsListModel filteredEventsModel;
@@ -57,9 +80,14 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		this.filteredEventsModel = FilteredEventsListModel.getFilteredEventsListModel();
 		this.filteredCommitmentsModel = FilteredCommitmentsListModel.getFilteredCommitmentsListModel();
 
-		// Add ListDataListeners so the YearCalendarView can be notified of data changes.
-		this.filteredEventsModel.addListDataListener(this);
-		this.filteredCommitmentsModel.addListDataListener(this);
+		multiDayEvents = new ArrayList<Event>();
+		events = new ArrayList<Event>();
+		commitments = new ArrayList<Commitment>();
+		indexInDaysOfCal = new HashMap<String, Integer>();
+
+		multiDayEventPanels = new ArrayList<MultiDayEventPanel>();
+		eventPanels = new ArrayList<EventPanel>();
+		commitmentPanels = new ArrayList<CommitmentPanel>();
 
 		this.setLayout(new MigLayout("fill, gap 0 0, wrap 7",
 				"[14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%]",
@@ -67,7 +95,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		this.setBackground(Color.WHITE);
 		this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 
-		this.currentMonth = Calendar.getInstance();
+		this.currentMonth = createCalendar();
 
 		this.daysWithEvComs = new ArrayList<DayPanel>();
 		this.days = new ArrayList<DayPanel>();
@@ -76,11 +104,11 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 		this.isDisplayAbrrWeekDayNames = false;
 		weekDays = new ArrayList<JLabel>();
-		
+
 		for(String weekDay: CalendarUtils.weekNamesAbbr) {
 			JPanel titlePanel = new JPanel(new MigLayout("fill, insets 0", "[center]"));
 			titlePanel.setBackground(Color.WHITE);
-			JLabel weekDayLabel = new JLabel(weekDay);
+			JLabel weekDayLabel = new JLabel(weekDay, JLabel.RIGHT);
 			weekDayLabel.setForeground(CalendarUtils.titleNameColor);
 			weekDayLabel.setFont(new Font(weekDayLabel.getFont().getName(), Font.BOLD, 14));
 			weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, Color.GRAY));
@@ -89,11 +117,18 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			this.add(titlePanel, "grow");
 		}
 
+		weekDays.get(0).setForeground(CalendarUtils.timeColor);
+		weekDays.get(CalendarUtils.weekNamesAbbr.length - 1).setForeground(CalendarUtils.timeColor);
+
 		// Add all the day labels to the month
 		for(DayPanel dayPanel: days) this.add(dayPanel, "grow, hmin 27");
 
-		// Fill the newly created month with its respective dates as well as events or commitments
+		// Fill the newly created month with its respective dates
 		this.updateDates();
+
+		// Add ListDataListeners so the YearCalendarView can be notified of data changes.
+		this.filteredEventsModel.addListDataListener(this);
+		this.filteredCommitmentsModel.addListDataListener(this);
 
 		this.addAncestorListener(this);
 		this.addComponentListener(this);
@@ -102,7 +137,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	/*
 	 * Changes the week day names to abbreviations if the panel is too small
 	 */
-	private void updateLayout() {
+	private void updateWeekDayNames() {
 		if(this.getWidth() <= 900 && !isDisplayAbrrWeekDayNames) {
 			isDisplayAbrrWeekDayNames = true;
 			for(int i = 0; i < weekDays.size(); i++)
@@ -115,87 +150,301 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	}
 
 	/*
-	 * Fills the Month with its respective dates as well as events or commitments
+	 * Fills the Month with its respective dates
 	 */
 	private void updateDates() {
-		Calendar month = (Calendar) currentMonth.clone();
-		month.set(Calendar.DATE, 1);
-
+		indexInDaysOfCal.clear();
+		
+		this.currentMonth.set(Calendar.DATE, 1);
+		Calendar month = cloneCalendar(this.currentMonth);
 		int savedMonth = month.get(Calendar.MONTH);
 
 		if(month.get(Calendar.DAY_OF_WEEK) == 1) month.add(Calendar.DATE, -7);
 		else month.add(Calendar.DATE, -currentMonth.get(Calendar.DAY_OF_WEEK)+1);
 
-		for(DayPanel dayPanel: days) {
-			dayPanel.setDate(month,  month.get(Calendar.MONTH) == savedMonth);
+		firstDayInView = cloneCalendar(month);
+
+		for(int i = 0; i < days.size(); i++) {
+			DayPanel dayPanel = days.get(i);
+			indexInDaysOfCal.put(month.getTime().toString(), i);
+			dayPanel.setDate(cloneCalendar(month),  month.get(Calendar.MONTH) == savedMonth);
 			dayPanel.setIsToday(false);
 			dayPanel.updateColors();
-			
+
 			month.add(Calendar.DATE, 1);
 		}
 
-		// Set the current day to be highlighted yellow
-		Calendar today = Calendar.getInstance();
-		
-		if(today.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
-				today.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
-			
-			for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.selectionColor));
-			weekDays.get(today.get(Calendar.DAY_OF_WEEK)-1).setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
-			
+		month.add(Calendar.DATE, -1);
+		lastDayInView = cloneCalendar(month);
+
+		// Set the current day/month to be highlighted
+		Calendar today = createCalendar();
+
+		if(isDateInView(today)) {
+			if(today.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
+					today.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
+				for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.selectionColor));
+				weekDays.get(today.get(Calendar.DAY_OF_WEEK)-1).setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+			}
+
 			int index = getIndexofDay(today);
 			days.get(index).setIsToday(true);
 			days.get(index).updateColors();
-		} else {
-			for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, Color.LIGHT_GRAY));
-		}
-
-		updateEvComs();
+		} else for(JLabel weekDayLabel: weekDays) weekDayLabel.setBorder(new MatteBorder(0, 0, 5, 0, Color.LIGHT_GRAY));
 	}
 
-	private void updateEvComs() {
-		for(DayPanel dayPanel: daysWithEvComs) dayPanel.clearEvComs();
-		
-		daysWithEvComs = new ArrayList<DayPanel>();
+	// Loads events and commitments
+	private void loadEvComs() {
+		for(int i = 0; i < daysWithEvComs.size(); i++) {
+			daysWithEvComs.get(i).clearEvComs();
+		}
+
+		multiDayEvents.clear();
+		events.clear();
+		commitments.clear();
+		multiDayEventPanels.clear();
+		eventPanels.clear();
+		commitmentPanels.clear();
 
 		for(Event event: filteredEventsModel.getList()) {
 			Date start = event.getStartDate();
-			Calendar startCal = Calendar.getInstance();
-			startCal.set(start.getYear()+1900, start.getMonth(), start.getDate());
-			if(startCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
-					startCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
-				int index = getIndexofDay(startCal);
-				days.get(index).addEvent(event);
-				daysWithEvComs.add(days.get(index));
+			Calendar startCal = createCalendarFromDate(start);
+
+			Date end = event.getEndDate();
+			Calendar endCal = createCalendarFromDate(end);
+
+			// If this event is not a multiday event
+			if(!event.isMultiDay()) {
+				if(isDateInView(startCal)) {
+					events.add(event);
+					int index = getIndexofDay(startCal);
+					days.get(index).incrementNumEvComs();
+					if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
+				}
+			} else { // Multiday event
+				Calendar iterCal = cloneCalendar(startCal);
+
+				if(!isDateInView(iterCal))
+					if (iterCal.compareTo(firstDayInView) < 0) iterCal = cloneCalendar(firstDayInView);
+
+				boolean hasMultiDay = false;
+				while(iterCal.compareTo(endCal) <= 0 && iterCal.compareTo(lastDayInView) <= 0) {
+					hasMultiDay = true;
+					int index = getIndexofDay(iterCal);
+					days.get(index).setHasMultiDay(true);
+					days.get(index).incrementNumEvComs();
+					if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
+					iterCal.add(Calendar.DATE, 1);
+				}
+
+				if(hasMultiDay) multiDayEvents.add(event);
 			}
 		}
 
 		for(Commitment commitment: filteredCommitmentsModel.getList()) {
 			Date due = commitment.getDueDate();
-			Calendar dueCal = Calendar.getInstance();
-			dueCal.set(due.getYear()+1900, due.getMonth(), due.getDate());
-			if(dueCal.get(Calendar.YEAR) == currentMonth.get(Calendar.YEAR) &&
-					dueCal.get(Calendar.MONTH) == currentMonth.get(Calendar.MONTH)) {
+			Calendar dueCal = createCalendarFromDate(due);
+			if(isDateInView(dueCal)) {
+				commitments.add(commitment);
 				int index = getIndexofDay(dueCal);
-				days.get(index).addCommitment(commitment);
-				daysWithEvComs.add(days.get(index));
+				days.get(index).incrementNumEvComs();
+				if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
 			}
 		}
 
-		for(DayPanel dayPanel: daysWithEvComs) {
-			dayPanel.updateEveComs();
+		for(DayPanel dayPanel: daysWithEvComs) dayPanel.initEvComPanels();
+
+		for(Event multiDayEvent: multiDayEvents) {
+			List<MultiDayEventPanel> multiDay = new ArrayList<MultiDayEventPanel>();
+
+			Date start = multiDayEvent.getStartDate();
+			Calendar startCal = createCalendarFromDate(start);
+
+			Date end = multiDayEvent.getEndDate();
+			Calendar endCal = createCalendarFromDate(end);
+
+			Calendar iterCal = cloneCalendar(startCal);
+
+			if(!isDateInView(iterCal))
+				if (iterCal.compareTo(firstDayInView) < 0) iterCal = cloneCalendar(firstDayInView);
+
+			boolean isFirstPanel = true;
+			int indexOfMultiday = 0;
+			while(iterCal.compareTo(endCal) <= 0 && iterCal.compareTo(lastDayInView) <= 0) {
+				int textType = 0;
+				int index = getIndexofDay(iterCal);
+
+				//if(isAllDay) { // if is all day - not implemented
+				//	if(isFirstPanel) textType = 2;
+				//	else if((index+1)%7 == 1) textType = 2;
+				//} else {
+
+				// If this MultiDayEventPanel is on the first day show the start time
+				if(startCal.compareTo(iterCal) == 0) textType = 1;
+
+				// Else if its not the start day but it's the first panel visible, only show the name
+				else if(isFirstPanel) textType = 2;
+
+				// Else If this EventPanel is on the last day show the end time
+				else if(endCal.compareTo(iterCal) == 0) textType = 3;
+				else if((index+1)%7 == 1) textType = 2;
+
+				//}
+
+				MultiDayEventPanel multiDayEventPanel = new MultiDayEventPanel(multiDayEvent, textType);
+				multiDay.add(multiDayEventPanel);
+
+				if(isFirstPanel) {
+					multiDayEventPanels.add(multiDayEventPanel);
+					indexOfMultiday = days.get(index).addEvComPanel(multiDayEventPanel);
+					isFirstPanel = false;
+				} else days.get(index).addEvComPanelAt(multiDayEventPanel, indexOfMultiday);
+
+				iterCal.add(Calendar.DATE, 1);
+			}
+
+			MultiDayEventPanelMouseListener ml = new MultiDayEventPanelMouseListener(multiDay);
+		}
+
+		EventPanelMouseListener eml = new EventPanelMouseListener();
+
+		for(Event event: events) {
+			Date start = event.getStartDate();
+			Calendar startCal = createCalendarFromDate(start);
+
+			int index = getIndexofDay(startCal);
+			EventPanel eventPanel = new EventPanel(event, days.get(index).getBackground());
+			eventPanels.add(eventPanel);
+			eventPanel.addMouseListener(eml);
+			days.get(index).addEvComPanel(eventPanel);
+		}
+
+		CommitmentPanelMouseListener cml = new CommitmentPanelMouseListener();
+
+		for(Commitment commitment: commitments) {
+			Date due = commitment.getDueDate();
+			Calendar dueCal = createCalendarFromDate(due);
+
+			int index = getIndexofDay(dueCal);
+			CommitmentPanel commitmentPanel = new CommitmentPanel(commitment, days.get(index).getBackground());
+			commitmentPanels.add(commitmentPanel);
+			commitmentPanel.addMouseListener(cml);
+			days.get(index).addEvComPanel(commitmentPanel);
 		}
 		
-		this.repaint();
+		for(DayPanel dayPanel: daysWithEvComs) dayPanel.addFillerPanels();
+	}
+
+	// Called on a resize and on init
+	// Calculates which evComms to display
+	private void updateEvComs() {
+		int total = 0;
+		total += days.get(0).getContainerPanelHeight();
+		total += days.get(7).getContainerPanelHeight();
+		total += days.get(14).getContainerPanelHeight();
+		total += days.get(21).getContainerPanelHeight();
+		total += days.get(28).getContainerPanelHeight();
+		total += days.get(35).getContainerPanelHeight();
+
+		int totalEvComsDisplayable = (int)(total / (new JLabel("I have Height!")).getPreferredSize().getHeight());
+		int numDisplayableEvComs = totalEvComsDisplayable / 6;
+		int width = this.getWidth()/7;
+
+		for(int i = 0; i < daysWithEvComs.size(); i++) daysWithEvComs.get(i).setNumDisplayableEvComs(numDisplayableEvComs);
+
+		List<Event> hiddenMultiDayEvents = new ArrayList<Event>();
+		List<DayPanel> daysWithHiddenMultiDayEvents = new ArrayList<DayPanel>();
+
+		for(int i = 0; i < daysWithEvComs.size(); i++) {
+			if(daysWithEvComs.get(i).hasMultiDay() && daysWithEvComs.get(i).hasHiddinMultiDayEvent()) {
+				if(!daysWithHiddenMultiDayEvents.contains(daysWithEvComs.get(i))) daysWithHiddenMultiDayEvents.add(daysWithEvComs.get(i));
+				Event multidayEvent = daysWithEvComs.get(i).getHiddenMultiDayEvent().getEvent();
+				if(!hiddenMultiDayEvents.contains(multidayEvent)) hiddenMultiDayEvents.add(multidayEvent);
+			}
+		}
+
+		for(Event multidayEvent: hiddenMultiDayEvents) {
+			Date start = multidayEvent.getStartDate();
+			Calendar startCal = createCalendarFromDate(start);
+
+			Date end = multidayEvent.getEndDate();
+			Calendar endCal = createCalendarFromDate(end);
+
+			Calendar iterCal = cloneCalendar(startCal);
+
+			if(!isDateInView(iterCal))
+				if (iterCal.compareTo(firstDayInView) < 0) iterCal = cloneCalendar(firstDayInView);
+
+			while(iterCal.compareTo(endCal) <= 0 && iterCal.compareTo(lastDayInView) <= 0) {
+				int index = getIndexofDay(iterCal);
+				if(!daysWithHiddenMultiDayEvents.contains(days.get(index))) days.get(index).decrementNumDisplayableEvComs();
+				iterCal.add(Calendar.DATE, 1);
+			}
+		}
+
+		for(int i = 0; i < daysWithEvComs.size(); i++) daysWithEvComs.get(i).updateEveComs(width);
+
+		this.invalidate();
 		this.updateUI();
 	}
 
-	private int getIndexofDay(Calendar cal) {
-		int index = cal.get(Calendar.DATE) - 1;
-		cal.set(Calendar.DATE, 1);
-		if(cal.get(Calendar.DAY_OF_WEEK) == 1) index += 7;
-		else index += cal.get(Calendar.DAY_OF_WEEK) - 1;
-		return index;
+	private int getIndexofDay(Calendar indexCal) {
+		return indexInDaysOfCal.get(indexCal.getTime().toString());
+	}
+
+	private boolean isDateInView(Calendar startDate) {
+		return startDate.compareTo(firstDayInView) >= 0 && startDate.compareTo(lastDayInView) <= 0;
+	}
+
+	private Calendar cloneCalendar(Calendar toBeCloned) {
+		return (Calendar)toBeCloned.clone();
+	}
+
+	private Calendar createCalendarFromDate(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(date.getYear()+1900, date.getMonth(), date.getDate(), 0, 0, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar;
+	}
+
+	private Calendar createCalendar() {
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar;
+	}
+
+	public int getMonth() {
+		return currentMonth.get(Calendar.MONTH);
+	}
+
+	public List<Event> getSelectedEvents() {
+		List<Event> selectedEvents = new ArrayList<Event>();
+
+		for(EventPanel eventPanel: eventPanels) {
+			if(eventPanel.getSelected())
+				if(!selectedEvents.contains(eventPanel.getEvent())) selectedEvents.add(eventPanel.getEvent());
+		}
+
+		for(MultiDayEventPanel multiDayEventPanel: multiDayEventPanels) {
+			if(multiDayEventPanel.getSelected())
+				if(!selectedEvents.contains(multiDayEventPanel.getEvent())) selectedEvents.add(multiDayEventPanel.getEvent());
+		}
+
+		return selectedEvents;
+	}
+
+	public List<Commitment> getSelectedCommitments() {
+		List<Commitment> selectedCommitments = new ArrayList<Commitment>();
+
+		for(CommitmentPanel commitmentPanel: commitmentPanels) {
+			if(commitmentPanel.getSelected())
+				if(!selectedCommitments.contains(commitmentPanel.getCommitment())) selectedCommitments.add(commitmentPanel.getCommitment());
+		}
+
+		return selectedCommitments;
 	}
 
 	@Override
@@ -207,45 +456,64 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public void next() {
 		currentMonth.add(Calendar.MONTH, 1);
 		this.updateDates();
+		this.loadEvComs();
+		this.updateEvComs();
 	}
 
 	@Override
 	public void previous() {
 		currentMonth.add(Calendar.MONTH, -1);
 		this.updateDates();
+		this.loadEvComs();
+		this.updateEvComs();
 	}
 
 	@Override
 	public void today() {
-		if(this.currentMonth.get(Calendar.MONTH) != Calendar.getInstance().get(Calendar.MONTH)) {
-			this.currentMonth = Calendar.getInstance();
+		if(this.currentMonth.get(Calendar.MONTH) != createCalendar().get(Calendar.MONTH)) {
+			this.currentMonth = createCalendar();
 			this.updateDates();
+			this.loadEvComs();
+			this.updateEvComs();
 		}
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
+		this.loadEvComs();
 		this.updateEvComs();
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
+		this.loadEvComs();
 		this.updateEvComs();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
+		this.loadEvComs();
 		this.updateEvComs();
 	}
 
 	public void ancestorAdded(AncestorEvent e) {
-		this.updateLayout();
+		this.updateWeekDayNames();
 	}
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		this.updateLayout();
+		this.updateWeekDayNames();
 		this.updateEvComs();
+	}
+
+	@Override
+	public void viewDate(Calendar date) {
+		if(this.currentMonth.get(Calendar.MONTH) != date.get(Calendar.MONTH)) {
+			this.currentMonth = date;
+			this.updateDates();
+			this.loadEvComs();
+			this.updateEvComs();
+		}
 	}
 
 	// Unused

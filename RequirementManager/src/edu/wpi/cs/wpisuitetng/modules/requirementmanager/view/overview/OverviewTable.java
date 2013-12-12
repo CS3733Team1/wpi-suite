@@ -95,7 +95,6 @@ public class OverviewTable extends JTable
 				}
 			}
 		});
-		 System.out.println("finished constructing the table");
 	}
 	
 	/**

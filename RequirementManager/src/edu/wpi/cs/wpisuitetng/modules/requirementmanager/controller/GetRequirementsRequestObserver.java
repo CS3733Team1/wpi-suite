@@ -9,6 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller;
 
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -39,10 +41,16 @@ public class GetRequirementsRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of requirements to a Requirement object array
-		Requirement[] requirements = Requirement.fromJsonArray(iReq.getResponse().getBody());
+		final Requirement[] requirements = Requirement.fromJsonArray(iReq.getResponse().getBody());
 		
 		// Pass these Requirements to the controller
-		controller.receivedRequirements(requirements);
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				controller.receivedRequirements(requirements);
+			}
+		});
+		
 	}
 
 	/**
@@ -60,8 +68,14 @@ public class GetRequirementsRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Requirement[] errorRequirement = { new Requirement(6, "Error", "error desc") };
-		controller.receivedRequirements(errorRequirement);
+		final Requirement[] errorRequirement = { new Requirement(6, "Error", "error desc") };
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				controller.receivedRequirements(errorRequirement);
+
+			}
+		});
 	}
 
 }

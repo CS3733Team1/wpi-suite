@@ -153,6 +153,10 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 			}
 		}
 	}
+	
+	public int getYear() {
+		return currentYear.get(Calendar.YEAR);
+	}
 
 	@Override
 	public String getTitle() {
@@ -175,6 +179,14 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 	public void today() {
 		if(this.currentYear.get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) {
 			this.currentYear = Calendar.getInstance();
+			this.updateDates();
+		}
+	}
+	
+	@Override
+	public void viewDate(Calendar date) {
+		if(this.currentYear.get(Calendar.YEAR) != date.get(Calendar.YEAR)) {
+			this.currentYear = date;
 			this.updateDates();
 		}
 	}
@@ -214,4 +226,5 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
+
 }

@@ -11,6 +11,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,8 +23,9 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 
-public class CategoryPanel extends JPanel{
+public class CategoryPanel extends JPanel implements MouseListener{
 	private CategoryListPanel categoryListPanel;
 
 	private JButton addCategoryButton, deleteCategoryButton;
@@ -39,6 +42,8 @@ public class CategoryPanel extends JPanel{
 		} catch (IOException e) {e.printStackTrace();}
 
 		this.categoryListPanel = new CategoryListPanel();
+
+		this.categoryListPanel.getCategoryList().addMouseListener(this);
 		
 		addCategoryButton.setActionCommand("add");
 		deleteCategoryButton.setActionCommand("delete");
@@ -49,6 +54,7 @@ public class CategoryPanel extends JPanel{
 		
 		this.add(p, "wrap");
 		this.add(categoryListPanel, "grow, push");
+
 	}
 	
 	public void setAddCategoryListener(ActionListener al) {
@@ -66,4 +72,29 @@ public class CategoryPanel extends JPanel{
 	public void clearSelection() {
 		categoryListPanel.clearSelection();
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		boolean deleteEnabled = true;
+		for( Category c: getSelectedCategories()){
+			if(CategoryListModel.getCategoryListModel().isDefault(c))
+			{
+				deleteEnabled = false;
+			}
+		}
+		deleteCategoryButton.setEnabled(deleteEnabled);
+		repaint();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
 }

@@ -37,12 +37,17 @@ public class RetrieveCommitmentController implements AncestorListener, ActionLis
 
 	public void retrieveMessages(){
 		System.out.println("Retrieving commitments from server...");
-		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.GET); // GET == read
-		request.addObserver(new RetrieveCommitmentObserver(this)); // add an observer to process the response
-		request.send(); // send the request
+
+		// Create a Get Request
+		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.GET);
+
+		// Add an observer to process the response
+		request.addObserver(new RetrieveCommitmentObserver(this));
+
+		// Send the request
+		request.send();
 	}
-	
+
 	/**
 	 * Add the given messages to the local model (they were received from the core).
 	 * This method is called by the GetMessagesRequestObserver
@@ -53,6 +58,7 @@ public class RetrieveCommitmentController implements AncestorListener, ActionLis
 		// Make sure the response was not null
 		if (commitments != null) {
 			model.setCommitments(commitments);
+			System.out.println("	Retrieved " + commitments.length + " commitments from the server.");
 		}
 	}
 
@@ -66,13 +72,13 @@ public class RetrieveCommitmentController implements AncestorListener, ActionLis
 	}
 
 	@Override
-	public void ancestorMoved(AncestorEvent e) {}
-
-	@Override
-	public void ancestorRemoved(AncestorEvent e) {}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		this.retrieveMessages();
 	}
+
+	// Unused
+	@Override
+	public void ancestorMoved(AncestorEvent e) {}
+	@Override
+	public void ancestorRemoved(AncestorEvent e) {}
 }

@@ -21,7 +21,10 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 
 public class DayCalendarLayerPane extends JLayeredPane implements ListDataListener{
 	private DayView dayview;
@@ -34,7 +37,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		layer = 0;
 		dayview = new DayView();
 		
-		int height = dayview.getPreferredSize().getSize().height;
+		int height = dayview.getPreferredSize().getSize().height * 3;
 		int width = 950;
 		
 		this.setSize(width, height);
@@ -48,6 +51,7 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		this.setVisible(true);
 		
 		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
+		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
 	
 	
@@ -56,17 +60,17 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 		
 		ClearEvents();
 		
-		List<Event> test = new LinkedList<Event>();
+		List<ISchedulable> test = new LinkedList<ISchedulable>();
 		List<Event> multi = new LinkedList<Event>();
 		ListIterator<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList().listIterator();
-		
+		ListIterator<Commitment> comm = FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList().listIterator();
 		
 		while(event.hasNext()){
 			Event eve = event.next();
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
 			if (dayview.getMap().containsKey(key)){
-				if(eve.getStartDate().getDay() == eve.getEndDate().getDay()
+				if(eve.getStartDate().getDate() == eve.getEndDate().getDate()
 				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
 				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
 					test.add(eve);
@@ -78,14 +82,27 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 				multi.add(eve);
 			}
 		}
+		
+		while(comm.hasNext()){
+			Commitment c = comm.next();
+			Date cdate = c.getStartDate();
+			key = new Date(cdate.getYear(),cdate.getMonth(),cdate.getDate(),cdate.getHours(),0);
+			if (dayview.getMap().containsKey(key)){
+				if(c.getStartDate().getDate() == c.getEndDate().getDate()
+				&& c.getStartDate().getMonth() == c.getEndDate().getMonth()
+				&& c.getStartDate().getYear() == c.getEndDate().getYear())
+					test.add(c);	
+			}
+		}
 		//multi.add(new Event("RAISE YOUR DONGERS", new Date(113, 12, 2), new Date(113, 12, 5)));
 		
 		eventviewlist = new EventView(test, this.getSize());
 		multiviewlist = new MultidayEventView(multi, this.getSize(), getDayViewDate());
 		
-		this.add(multiviewlist, layer, -1);
-		layer++;
+		
 		this.add(eventviewlist, layer,-1);
+		layer++;
+		this.add(multiviewlist, layer, -1);
 		layer++;
 	}
 	
@@ -142,6 +159,12 @@ public class DayCalendarLayerPane extends JLayeredPane implements ListDataListen
 	
 	public void today() {
 		dayview.today();
+		ChangeTheWorld();
+		repaint();
+	}
+	
+	public void viewDate(Date day){
+		dayview.viewDate(day);
 		ChangeTheWorld();
 		repaint();
 	}
