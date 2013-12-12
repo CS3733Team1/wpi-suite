@@ -28,7 +28,7 @@ public class RetrieveFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to retrieve filters was succesful.");
+		System.out.println("	The request to retrieve filters was successful.");
 		Filter[] filters = Filter.fromJSONArray(iReq.getResponse().getBody());
 		controller.receivedMessages(filters);
 	}

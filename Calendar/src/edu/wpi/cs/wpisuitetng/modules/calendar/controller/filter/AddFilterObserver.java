@@ -29,7 +29,7 @@ public class AddFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to add the filter was succesful.");
+		System.out.println("	The request to add the filter was successful.");
 
 		// Parse the message out of the response body
 		final Filter filter = Filter.fromJSON(iReq.getResponse().getBody());

@@ -28,7 +28,7 @@ public class RetrieveCategoryObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to retrieve categories was succesful.");
+		System.out.println("	The request to retrieve categories was successful.");
 		Category[] categories = Category.fromJSONArray(iReq.getResponse().getBody());
 		controller.receivedMessages(categories);
 	}
