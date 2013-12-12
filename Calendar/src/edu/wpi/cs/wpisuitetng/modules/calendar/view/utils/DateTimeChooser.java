@@ -90,8 +90,8 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 		dtValid_ = true;
 	}
 	public void enable(){
-		jDateChooser_.setEnabled(false);
-		timeCombo_.setEnabled(false);
+		jDateChooser_.setEnabled(true);
+		timeCombo_.setEnabled(true);
 		validateDateTime();
 	}
 	

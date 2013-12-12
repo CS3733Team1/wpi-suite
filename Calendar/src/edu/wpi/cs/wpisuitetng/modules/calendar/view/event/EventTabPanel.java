@@ -198,9 +198,12 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	public void allDayEventCheckboxChanged(){
 		allDayEvent_=allDayEventCheckbox.getState();
-		if (allDayEvent_){
+		System.out.println("All Day Event Checkbox: "+allDayEvent_);
+		if (allDayEventCheckbox.getState()){
+			System.out.println("\tDISABLING DATE CHOOSER");
 			durationChooser_.disable();
 		}else{
+			System.out.println("\tENABLING DATE CHOOSER");
 			durationChooser_.enable();
 		}
 	}
