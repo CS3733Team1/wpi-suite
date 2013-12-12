@@ -22,43 +22,44 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-public class UpdateCommitmentController implements ActionListener
-{
+public class UpdateCommitmentController implements ActionListener {
 	CommitmentListModel model;
 	CommitmentTabPanel view;
 	Commitment oldCommitment;
 	JEditorPane commitmentDisplay;
 	
-	public UpdateCommitmentController(CommitmentTabPanel view, Commitment oldCommitment)
-	{
+	public UpdateCommitmentController(CommitmentTabPanel view, Commitment oldCommitment) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.view = view;
 		this.oldCommitment = oldCommitment;
 		this.commitmentDisplay = view.getCommitmentView();
-		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
 		Commitment updatedCommitment = view.getFilledCommitment();
 		updatedCommitment.setID(oldCommitment.getID());
 	
-		System.out.println("Updating commitment...");
+		System.out.println("Updating commitment: name = " + oldCommitment.getName() + "; uid = " + oldCommitment.getUniqueID());
+
+		// Create a Post Request
+		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.POST);
 		
-		// Send a request to the core to save this message
-		System.out.println("Sending Request");
-		Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.POST); // POST == update
-		request.setBody(updatedCommitment.toJSON()); // put the new requirement in the body of the request
-		request.addObserver(new UpdateCommitmentObserver(this)); // add an observer to process the response
-		request.send(); 
-		view.killCommitmentPanel();
+		// Put the new message in the body of the request
+		request.setBody(updatedCommitment.toJSON()); 
+		
+		// Add an observer to process the response
+		request.addObserver(new UpdateCommitmentObserver(this));
+		
+		// Send the request
+		request.send();
 	}
 
-	public void updateCommitmentInModel(Commitment newCommitment) 
-	{
+	public void updateCommitmentInModel(Commitment newCommitment) {
+		System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
 		model.updateCommitment(oldCommitment, newCommitment);
 		commitmentDisplay.setText(newCommitment.toString());
+		view.closeCommitmentPanel();
 	}
 
 }

@@ -10,6 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
@@ -33,5 +35,12 @@ public class CategoryPickerPanel extends JPanel {
 	
 	public Category getSelectedCategory() {
 		return (Category)categoryComboBox.getSelectedItem();
+	}
+	
+	public void addActionListener(ActionListener l) {categoryComboBox.addActionListener(l);}
+	
+	public void setSelectedCategory(Category toSelect)
+	{
+		categoryComboBox.setSelectedItem(toSelect);
 	}
 }

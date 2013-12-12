@@ -31,23 +31,28 @@ public class RetrieveFilterController implements AncestorListener, ActionListene
 
 	public void retrieveMessages(){
 		System.out.println("Retrieving filters from server...");
-		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("calendar/filter", HttpMethod.GET); // GET == read
-		request.addObserver(new RetrieveFilterObserver(this)); // add an observer to process the response
-		request.send(); // send the request
+
+		// Create a Get Request
+		final Request request = Network.getInstance().makeRequest("calendar/filter", HttpMethod.GET);
+
+		// Add an observer to process the response
+		request.addObserver(new RetrieveFilterObserver(this));
+
+		// Send the request
+		request.send();
 	}
-	
+
 	/**
 	 * Add the given messages to the local model (they were received from the core).
 	 * This method is called by the GetMessagesRequestObserver
 	 * 
 	 * @param messages an array of messages received from the server
 	 */
-	public void receivedMessages(Filter[] fil) {
+	public void receivedMessages(Filter[] filters) {		
 		// Make sure the response was not null
-		if (fil != null) {
-			// set the messages to the local model
-			model.setFilters(fil);
+		if (filters != null) {
+			model.setFilters(filters);
+			System.out.println("	Retrieved " + filters.length + " filters from the server.");
 		}
 	}
 
@@ -61,13 +66,13 @@ public class RetrieveFilterController implements AncestorListener, ActionListene
 	}
 
 	@Override
-	public void ancestorMoved(AncestorEvent e) {}
-
-	@Override
-	public void ancestorRemoved(AncestorEvent e) {}
-
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.retrieveMessages();
 	}
+
+	// Unused
+	@Override
+	public void ancestorMoved(AncestorEvent e) {}
+	@Override
+	public void ancestorRemoved(AncestorEvent e) {}
 }

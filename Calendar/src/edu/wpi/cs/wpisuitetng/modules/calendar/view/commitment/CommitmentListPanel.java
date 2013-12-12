@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -30,6 +31,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CustomListSelectionModel;
 
 /**
  * This is the view where the list of commitments are displayed.
@@ -38,7 +40,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
  * @author
  */
 
-public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener{
+public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener {
 
 	private FilteredCommitmentsListModel model;
 	private CalendarPanel calendarPanel;
@@ -64,17 +66,6 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	 */
 	public JList<Commitment> getCommitmentList() {
 		return commitmentList;
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() == 2) {
-			Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
-			if (r != null && r.contains(e.getPoint())) {
-				selectedCommitment = commitmentList.getSelectedValue();
-				editCommitment();
-			}
-		}
 	}
 
 	public void editCommitment() {
@@ -112,7 +103,8 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		this.setLayout(new MigLayout("fill, insets 0 0","[]","[][]"));
 
 		commitmentList = new JList<Commitment>(model);
-		
+		commitmentList.setSelectionModel(new CustomListSelectionModel());
+
 		commitmentList.setCellRenderer(new CommitmentListCellRenderer());
 		commitmentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -135,8 +127,6 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
 		calendarPanel.setSelectedComponent(commitmentPanel);	
 	}
-	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -148,16 +138,33 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 			openUpdateCommitmentTabPanel();
 		}
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount() == 2) {
+			Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
+			if (r != null && r.contains(e.getPoint())) {
+				selectedCommitment = commitmentList.getModel().getElementAt(commitmentList.locationToIndex(e.getPoint()));
+				editCommitment();
+			}
+		}
+	}
 	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
+		if(r == null || !r.contains(e.getPoint())) {
+			if(Arrays.binarySearch(commitmentList.getSelectedIndices(), commitmentList.getLastVisibleIndex()) >= 0)
+				commitmentList.getSelectionModel().removeIndexInterval(commitmentList.getLastVisibleIndex(), commitmentList.getLastVisibleIndex());
+			else commitmentList.getSelectionModel().addSelectionInterval(commitmentList.getLastVisibleIndex(), commitmentList.getLastVisibleIndex());
+		}
+	}
 	
 	// Unused
-	
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
-	@Override
-	public void mousePressed(MouseEvent e) {}
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 }

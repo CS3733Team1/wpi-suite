@@ -1,6 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.utils;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,8 +12,6 @@ import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
-
 public class TimeDurationChooser extends JPanel {
 	List<DateTimeChangedEventListener> listeners = new ArrayList<DateTimeChangedEventListener>();
 	
@@ -23,6 +20,7 @@ public class TimeDurationChooser extends JPanel {
 	private JLabel errorLabel_;
 	
 	private Date startDate_;
+	long prevStartDateTimeMs_;
 	private Date endDate_;
 	
 	private int defaultDuration_=60;
@@ -37,7 +35,7 @@ public class TimeDurationChooser extends JPanel {
 	
 	private String startDateErrorText_ = "Invalid start time";
 	private String endDateErrorText_="Invalid end time";
-	private String durationErrorText_="Start time after end time!";
+	private String durationErrorText_="Start time not before end time!";
 	
 	public void addDateTimeChangedEventListener(DateTimeChangedEventListener toAdd) {
 		listeners.add(toAdd);
@@ -46,17 +44,23 @@ public class TimeDurationChooser extends JPanel {
 		listeners.remove(toRemove);
 	}
 	public void DateTimeChanged(){
-		System.out.println("\tTDC: Firing DurationChangedEvent!");
+//		System.out.println("\tTDC: Firing DurationChangedEvent!");
 		// Notify everybody that may be interested.
 		DateTimeChangedEvent evt = new DateTimeChangedEvent(startDate_.toString()+"-"+endDate_.toString());
         for (DateTimeChangedEventListener hl : listeners)
             hl.DateTimeChangedEventOccurred(evt);
-//        Object[] listeners = listenerList.getListenerList();
-//		for (int i = 0; i < listeners.length; i = i + 2) {
-//			if (listeners[i] == TimeChangedEventListener.class) {
-//				((DateTimeChangedEventListener) listeners[i + 1]).DateTimeChangedEventOccurred(evt);
-//			}
-//		}
+
+	}
+	
+	public void disable(){
+		startDateChooser_.disable();
+		endDateChooser_.disable();
+		allValid_=true;
+	}
+	public void enable(){
+		startDateChooser_.enable();
+		endDateChooser_.enable();
+		validateDuration();
 	}
 	
 	public TimeDurationChooser(){
@@ -69,7 +73,7 @@ public class TimeDurationChooser extends JPanel {
 		endDateChooser_.setDate(endDate);
 	}
 	private void buildLayout(){
-		this.setLayout(new MigLayout("", "[]", "[][][]"));
+		this.setLayout(new MigLayout("insets 1"));
 		
 		//Start Date Chooser
 		startDateChooser_=new DateTimeChooser("Start Time:");
@@ -80,24 +84,27 @@ public class TimeDurationChooser extends JPanel {
 			}
 		});
 		startDate_=startDateChooser_.getDate();
-		this.add(startDateChooser_,"cell 0 0");
+		prevStartDateTimeMs_=startDate_.getTime();
+		this.add(startDateChooser_, "wrap");
 		
 		//End Date Chooser
-		endDate_=new Date();
-		endDate_.setMinutes(startDate_.getMinutes()+defaultDuration_);
-		endDateChooser_=new DateTimeChooser("End Time", endDate_);
+		long endTime=startDate_.getTime()+defaultDuration_*60000;
+		endDate_=new Date(endTime);
+//		System.out.println("\tTDC: setting end time one hour after start time ("+startDate_.toString()+") as "+ endDate_.toString());
+		//endDate_.setMinutes(startDate_.getMinutes()+defaultDuration_);
+		endDateChooser_=new DateTimeChooser("End Time:", endDate_);
 		endDateChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
 			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 				endDateChanged();
 			}
 		});
-		this.add(endDateChooser_,"cell 0 1");
+		this.add(endDateChooser_, "wrap");
 		
 		//error label
 		errorLabel_=new JLabel();
 		errorLabel_.setVisible(false);
-		this.add(errorLabel_,"cell 0 2");
+		this.add(errorLabel_);
 		
 		//validation
 		normalBorder_=this.getBorder();
@@ -106,35 +113,42 @@ public class TimeDurationChooser extends JPanel {
 	}
 	
 	private void startDateChanged(){
-		System.out.println("TDC: Start Date Changed");
+//		System.out.println("\n\nTDC: Start Date Changed...");
 		boolean durationWasValidBefore = durationValid_;
-		long originalDurationMillis = endDate_.getTime()-startDate_.getTime();
-		if (durationWasValidBefore){
-			System.out.println("\t\tTDC: adding "+Long.toString(originalDurationMillis)+ "ms to end time...");
-		}
+		long originalDurationMillis = endDate_.getTime()-prevStartDateTimeMs_;
 		
+//		//printing
+//		if (durationWasValidBefore){
+//			System.out.println("\tTDC: STARTDATECHANGED current start time is "+startDate_.toString()+" and end time is  "+endDate_.toString());
+//			System.out.println("\tTDC: STARTDATECHANGED will be adding "+Long.toString(originalDurationMillis)+ "ms duration to new start time to get new end time...");
+//		}else{
+//			System.out.println("\t\tTDC: STARTDATECHANGED bad previous duration - not incrementing end date");
+//		}
+//		
 		fillStartDate();
 		if (startDateValid_ && durationWasValidBefore){//if the new start time is valid, and there was a valid duration between the old start time and end time, then maintain it by adjusting the end time by the same amount
 			originalDurationMillis+=startDate_.getTime();//add the original duration (difference in times) to the new start time to get the new end time
-			System.out.println("\t\tDTC: new end time from start time " +Long.toString(startDate_.getTime())+" is " +Long.toString(originalDurationMillis));
+//			System.out.println("\tDTC: STARTDATECHANGED new end time from start time " +Long.toString(startDate_.getTime())+" is " +Long.toString(originalDurationMillis));
 			endDate_.setTime(originalDurationMillis);	//keep the same duration when the start time changes
 			endDateChooser_.setDate(endDate_);
 //			DateTimeChanged();//should be called automatically when the end date is set above
 		}else{
 			DateTimeChanged();
 		}
+//		System.out.println("TDC: ... Done Start Date Changed");
 	}
 	private void endDateChanged(){
-		System.out.println("TDC: End Date Changed");
+//		System.out.println("TDC: End Date Changed");
 		fillEndDate();
 		DateTimeChanged();
 	}
 	
 	private void fillStartDate(){
-		System.out.println("\tTDC: Filling Start Date");
+//		System.out.println("\tTDC: Filling Start Date...");
 		if (startDateChooser_.hasValidDateTime()){
 			startDate_=startDateChooser_.getDate();
-			System.out.println("\t\tDTC: setting start date to "+startDate_.toString());
+			prevStartDateTimeMs_=startDate_.getTime();
+//			System.out.println("\t\tDTC: setting start date to "+startDate_.toString());
 			startDateValid_=true;
 			checkDuration();
 			updateError();
@@ -142,12 +156,13 @@ public class TimeDurationChooser extends JPanel {
 			startDateValid_=false;
 			setStartDateError();
 		}
+//		System.out.println("\tTDC:  ...Done filling Start Date");
 	}
 	private void fillEndDate(){
-		System.out.println("\tTDC: Filling End Date");
+//		System.out.println("\tTDC: Filling End Date");
 		if (endDateChooser_.hasValidDateTime()){
 			endDate_=endDateChooser_.getDate();
-			System.out.println("\t\tDDC: setting end date to "+endDate_.toString());
+//			System.out.println("\t\tDDC: setting end date to "+endDate_.toString());
 			endDateValid_=true;
 			checkDuration();
 			updateError();
@@ -187,15 +202,16 @@ public class TimeDurationChooser extends JPanel {
 			setEndDateError();
 		}else if (!durationValid_){
 			setDurationError();
-		}else{
+		}else if (!allValid_){
 			clearErrors();
 		}
 	}
 	private void clearErrors(){
-		System.out.println("\tTDC: Clearing Errors");
+//		System.out.println("\t\tTDC: Clearing Errors...");
 		allValid_=true;
 		errorLabel_.setVisible(false);
 		this.setBorder(normalBorder_);
+//		System.out.println("\t\tTDC:...done clearing Errors");
 	}
 	private void setError(String errorText){
 		allValid_=false;

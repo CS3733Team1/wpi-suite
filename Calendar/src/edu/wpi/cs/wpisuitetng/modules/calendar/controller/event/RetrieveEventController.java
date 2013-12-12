@@ -36,23 +36,28 @@ public class RetrieveEventController implements AncestorListener, ActionListener
 
 	public void retrieveMessages(){
 		System.out.println("Retrieving events from server...");
-		// Send a request to the core to save this message
-		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.GET); // GET == read
-		request.addObserver(new RetrieveEventObserver(this)); // add an observer to process the response
-		request.send(); // send the request
+
+		// Create a Get Request
+		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.GET);
+
+		// Add an observer to process the response
+		request.addObserver(new RetrieveEventObserver(this));
+
+		// Send the request
+		request.send();
 	}
-	
+
 	/**
 	 * Add the given messages to the local model (they were received from the core).
 	 * This method is called by the GetMessagesRequestObserver
 	 * 
 	 * @param messages an array of messages received from the server
 	 */
-	public void receivedMessages(Event[] events) {
+	public void receivedMessages(Event[] events) {		
 		// Make sure the response was not null
 		if (events != null) {
-			// set the messages to the local model
 			model.setEvents(events);
+			System.out.println("	Retrieved " + events.length + " events from the server.");
 		}
 	}
 
@@ -66,13 +71,13 @@ public class RetrieveEventController implements AncestorListener, ActionListener
 	}
 
 	@Override
-	public void ancestorMoved(AncestorEvent e) {}
-
-	@Override
-	public void ancestorRemoved(AncestorEvent e) {}
-
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.retrieveMessages();
 	}
+
+	// Unused
+	@Override
+	public void ancestorMoved(AncestorEvent e) {}
+	@Override
+	public void ancestorRemoved(AncestorEvent e) {}
 }

@@ -1,7 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -16,34 +15,32 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 	private List<Commitment> filteredCommitments;
 	
 	private FilteredCommitmentsListModel() {
-		filteredCommitments = Collections.synchronizedList(new ArrayList<Commitment>());
+		filteredCommitments = new ArrayList<Commitment>();
+		//filteredCommitments =  Collections.synchronizedList(new ArrayList<Commitment>());
 		CommitmentListModel.getCommitmentListModel().addListDataListener(this);
 		FilterListModel.getFilterListModel().addListDataListener(this);
 		filterCommitments();
 	}
 
-	static public FilteredCommitmentsListModel getFilteredCommitmentsListModel() {
+	static public synchronized FilteredCommitmentsListModel getFilteredCommitmentsListModel() {
 		if (filteredCommitmentsListModel == null)
 			filteredCommitmentsListModel = new FilteredCommitmentsListModel();
+		//filteredCommitmentsListModel.filterCommitments();
 		return filteredCommitmentsListModel;
 	}
-	private void filterCommitments() {
-		List<Commitment> commitmentList = CommitmentListModel.getCommitmentListModel().getList();
 
-		int removed = filteredCommitments.size();
+	private void filterCommitments() {
+		filteredCommitments.clear();
+		List<Commitment> commitmentList = CommitmentListModel.getCommitmentListModel().getList();
 		
-		while(filteredCommitments.size() != 0) filteredCommitments.remove(0);
-		
-		this.fireIntervalRemoved(this, 0, Math.max(removed - 1, 0));
-		
-		for(Commitment c: FilterListModel.getFilterListModel().applyCommitmentFilter(commitmentList)) filteredCommitments.add(c);
+		filteredCommitments.addAll(FilterListModel.getFilterListModel().applyCommitmentFilter(commitmentList));
 		
 		this.fireIntervalAdded(this, 0, Math.max(filteredCommitments.size() - 1, 0));
 	}
 
 	@Override
 	public Commitment getElementAt(int index) {
-		return filteredCommitments.get(filteredCommitments.size() - 1 - index);
+		return filteredCommitments.get(Math.max(0, filteredCommitments.size() - 1 - index));
 	}
 
 	@Override
@@ -73,7 +70,8 @@ public class FilteredCommitmentsListModel extends AbstractListModel<Commitment> 
 		filterCommitments();
 	}
 
-	public List<Commitment> getList() {
+	public synchronized List<Commitment> getList() {
+		//filterCommitments();
 		return filteredCommitments;
 	}
 }

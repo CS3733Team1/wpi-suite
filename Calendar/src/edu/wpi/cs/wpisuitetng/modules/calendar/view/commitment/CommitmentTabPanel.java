@@ -29,10 +29,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.AddCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEvent;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimePicker;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
@@ -52,6 +49,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	
 	private CategoryPickerPanel categoryPickerPanel;
 	private CommitmentProgressPanel commitmentProgressPanel;
+	private CalendarPicker calendarPicker;
 	private JTextArea descriptionTextArea;
 
 	// Buttons
@@ -61,6 +59,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	// Error Labels
 	private JLabel nameErrorLabel;
 //	private JLabel dateErrorLabel;
+
+	
+	// Old Commitment
+	private Commitment editCommitment;
+	private boolean isEditMode;
 
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
@@ -72,6 +75,8 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 
 	public CommitmentTabPanel(JEditorPane display, Commitment c)
 	{
+		isEditMode = true;
+		editCommitment = c;
 		this.display = display;
 
 		this.buildLayout();
@@ -80,7 +85,9 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		nameTextField.setText(c.getName());
 		dateTimeChooser_.setDate(c.getDueDate());
 		commitmentProgressPanel.setSelected(c.getProgress());
+		categoryPickerPanel.setSelectedCategory(c.getCategory());
 		descriptionTextArea.setText(c.getDescription());
+		calendarPicker.setSelected(c.getisTeam() ? "Team": "Personal");
 		addCommitmentButton.setText("Update Commitment");
 		addCommitmentButton.setActionCommand("updatecommitment");
 		addCommitmentButton.removeActionListener(addCommitmentButton.getActionListeners()[0]); //Remove the addCommitment action listener
@@ -88,6 +95,30 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		validateFields();
 	}
 
+	public boolean validateEdit() {
+		boolean noChangesMade = true;
+		if(!editCommitment.getName().equals(nameTextField.getText())) {
+			noChangesMade = false;
+		}
+		
+		else if(!editCommitment.getDueDate().toString().equals(dateTimeChooser_.getDate().toString())){
+			noChangesMade = false;
+		}
+		else if(!editCommitment.getCategory().equals(categoryPickerPanel.getSelectedCategory())){
+			noChangesMade = false;
+		}
+		else if(!editCommitment.getDescription().equals(descriptionTextArea.getText())){
+			noChangesMade = false;
+		}
+		else if(editCommitment.getisTeam() != calendarPicker.isTeam()){
+			noChangesMade = false;
+		}
+		else if(editCommitment.getProgress() != commitmentProgressPanel.getSelectedState()){
+			noChangesMade = false;
+		}
+		return noChangesMade;
+	}
+	
 	/**
 	 * Builds the GUI layout for the Commitment panel
 	 * @return void
@@ -108,7 +139,9 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 
 		//Date and Time
 		this.add(new JLabel("Due date:"), "split 2");
-		dateTimeChooser_=new DateTimeChooser("Due Date:");
+		dateTimeChooser_=new DateTimeChooser("");//empty label in the component itself
+//		dateTimeChooser_.addKeyListener(this);
+//		dateTimeChooser_.addActionListener(this);
 		dateTimeChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
 			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
@@ -121,17 +154,26 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		// Category
 		this.add(new JLabel("Category:"), "split 2");
 		categoryPickerPanel = new CategoryPickerPanel();
+		categoryPickerPanel.addActionListener(this);
 		this.add(categoryPickerPanel, "alignx left, wrap");
 
 		//Progress
 		this.add(new JLabel("Progress:"), "split 2");
 		commitmentProgressPanel = new CommitmentProgressPanel();
+		commitmentProgressPanel.addActionListener(this);
 		this.add(commitmentProgressPanel, "alignx left, wrap");
+
+		// Calendar
+		this.add(new JLabel("Calendar:"), "split 2");
+		calendarPicker = new CalendarPicker();
+		calendarPicker.addActionListener(this);
+		this.add(calendarPicker, "alignx left, wrap");
 
 		// Description
 		this.add(new JLabel("Description:"), "wrap");
 
 		descriptionTextArea = new JTextArea();
+		descriptionTextArea.addKeyListener(this);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 
@@ -158,7 +200,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	}
 
 	// Kills this add commitment tab
-	public void killCommitmentPanel() {
+	public void closeCommitmentPanel() {
 		this.getParent().remove(this);
 	}
 
@@ -168,6 +210,11 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	 */
 	private void validateFields() {
 		boolean enableAddCommitment = true;
+		
+		if(isEditMode) {
+			System.out.println("Edit Mode");
+			enableAddCommitment = !validateEdit();
+		}
 
 		//check name
 		if(nameTextField.getText().trim().length() == 0) {
@@ -196,25 +243,25 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 	 * @return Commitment: A filled in Commitment
 	 */
 	public Commitment getFilledCommitment() {
-		return new Commitment(nameTextField.getText(), dateTimeChooser_.getDate(),
+		return new Commitment(nameTextField.getText(), dateTimeChooser_.getDate(), calendarPicker.isTeam(),
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory(), commitmentProgressPanel.getSelectedState());
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("cancel")) {
-			this.killCommitmentPanel();
+			this.closeCommitmentPanel();
+		} else {
+			validateFields();
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		validateFields();
-	}
+	public void keyReleased(KeyEvent e) {}
 
 	// Unused
 	@Override
-	public void keyPressed(KeyEvent e) {}
+	public void keyPressed(KeyEvent e) {validateFields();}
 	@Override
 	public void keyTyped(KeyEvent e) {}
 }

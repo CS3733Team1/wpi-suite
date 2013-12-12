@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
-public class CommitmentPanel extends JPanel {
+public class CommitmentPanel extends EvComPanel {
 	
 	private Commitment commitment;
 	
@@ -22,13 +22,15 @@ public class CommitmentPanel extends JPanel {
 	private JLabel commitmentNameLabel;
 	private JLabel commitmentTimeLabel;
 	
-	public CommitmentPanel(Commitment commitment, Color backgroundColor, Color selectedBackgroundColor, Color textColor, Color selectedTextColor) {
-		
+	public CommitmentPanel(Commitment commitment, Color backgroundColor) {
+		super(false);
 		this.commitment = commitment;
+		
 		this.backgroundColor = backgroundColor;
-		this.selectedBackgroundColor = selectedBackgroundColor;
-		this.textColor = textColor;
-		this.selectedTextColor = selectedTextColor;
+		this.selectedBackgroundColor = commitment.getCategory().getColor();
+		this.textColor = CalendarUtils.titleNameColor;
+		this.selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
+		
 		this.isSelected = false;
 			
 		this.setLayout(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));

@@ -28,8 +28,9 @@ public class RetrieveFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		Filter[] fil = Filter.fromJSONArray(iReq.getResponse().getBody());
-		controller.receivedMessages(fil);
+		System.out.println("	The request to retrieve filters was succesful.");
+		Filter[] filters = Filter.fromJSONArray(iReq.getResponse().getBody());
+		controller.receivedMessages(filters);
 	}
 
 	/*
@@ -37,7 +38,8 @@ public class RetrieveFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
-		fail(iReq, null);
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	Failed to retrieve filters from the server.");
 	}
 
 	/*
@@ -47,6 +49,7 @@ public class RetrieveFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("Failed To Retrieve Filters");
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
 }

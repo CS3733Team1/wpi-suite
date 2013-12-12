@@ -10,6 +10,7 @@ public class MultiDayEventPanelMouseListener implements MouseListener {
 	
 	public MultiDayEventPanelMouseListener(List<MultiDayEventPanel> multidayEvents) {
 		this.multidayEvents = multidayEvents;
+		for(MultiDayEventPanel multiDayEventPanel: multidayEvents) multiDayEventPanel.addMouseListener(this);
 	}
 
 	@Override

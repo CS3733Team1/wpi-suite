@@ -23,13 +23,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
-import com.toedter.calendar.DateUtil;
-
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
@@ -37,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
  * This is the bottom layer of the week view hierarchy. 
  */
 
-public class WeekView extends JPanel implements ICalendarView {
+public class WeekView extends JPanel{
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
@@ -45,12 +42,20 @@ public class WeekView extends JPanel implements ICalendarView {
 	private ArrayList<JPanel> hourlist;
 	private HashMap<Date, DatePanel> paneltracker;
 
+	private int numDays;
+	
 	private Calendar mycal;
 	private int currentMonth;
 	private int currentYear;
 	private int currentDate;
+	private boolean todayWithinWeek;
+	private int todayIndex;
+	private int todayDate;
 
 	public WeekView(){
+		todayDate = 0;
+		todayIndex = 0;
+		todayWithinWeek = false;
 		nameList = new ArrayList<DatePanel>();
 		paneltracker = new HashMap<Date, DatePanel>();
 		hourlist = new ArrayList<JPanel>();
@@ -75,7 +80,7 @@ public class WeekView extends JPanel implements ICalendarView {
 	}
 
 	public void fillDayView(){
-
+		todayWithinWeek = false;
 		JPanel time = new JPanel();
 
 		for (int currenthour=0; currenthour < 24; currenthour++){
@@ -114,7 +119,6 @@ public class WeekView extends JPanel implements ICalendarView {
 				
 				Calendar cal = Calendar.getInstance();
 				
-				
 				if(currentday == 1 || currentday ==7)
 					thesecond.setBackground(CalendarUtils.weekendColor);
 				else 
@@ -123,12 +127,10 @@ public class WeekView extends JPanel implements ICalendarView {
 				if(cal.get(Calendar.MONTH) == currentMonth &&
 						cal.get(Calendar.YEAR) == currentYear && 
 						cal.get(Calendar.DATE) == currentDate + (currentday - 1)){
-							
+							todayWithinWeek = true;
+							todayIndex = currentday;
 							thesecond.setBackground(CalendarUtils.selectionColor);
 							thesecond.setBorder(new MatteBorder(0, 0, 1, 0, CalendarUtils.thatBlue));
-				}else{
-					thesecond.setBackground(Color.white);
-					
 				}
 				
 				thesecond.setBorder(new MatteBorder(0, 0, 1, 0, Color.gray));
@@ -137,6 +139,26 @@ public class WeekView extends JPanel implements ICalendarView {
 				nameList.add(thesecond);
 			}
 		}
+	}
+	public boolean isToday()
+	{
+		return todayWithinWeek;
+	}
+	
+	public int getDate(int index)
+	{
+		Calendar cal = new GregorianCalendar(currentYear, currentMonth, 1);
+		
+		if(cal.getActualMaximum(Calendar.DAY_OF_MONTH) >= currentDate + (index -1))
+			return currentDate + (index - 1);
+		else
+			return (currentDate + (index -1))- cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		
+	}
+	
+	public int getIndex()
+	{
+		return todayIndex;
 	}
 
 	/**
@@ -157,17 +179,15 @@ public class WeekView extends JPanel implements ICalendarView {
 		return notevenclose;
 	}
 	
-	@Override
 	public String getTitle() {
 		Date datdate = new Date(currentYear-1900, currentMonth, currentDate+6);
 		int nextyear = datdate.getYear() + 1900;
 		int nextmonth = datdate.getMonth();
 		int nextdate = datdate.getDate();
 
-		return monthNames[currentMonth] + " "+ currentDate + ", " + currentYear + " - " + monthNames[nextmonth] + " "+ nextdate + ", " + nextyear;
+		return monthNames[nextmonth] + " " + nextyear;
 	}
 
-	@Override
 	public void next() {
 		currentDate = currentDate + 7;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -182,7 +202,6 @@ public class WeekView extends JPanel implements ICalendarView {
 		fillDayView();
 	}
 
-	@Override
 	public void previous() {
 		currentDate = currentDate - 7;
 		Date today = new Date(currentYear-1900, currentMonth, currentDate);
@@ -197,7 +216,6 @@ public class WeekView extends JPanel implements ICalendarView {
 		fillDayView();
 	}
 
-	@Override
 	public void today() {
 		Date today = new Date();
 		int correctday = today.getDay();
@@ -223,10 +241,20 @@ public class WeekView extends JPanel implements ICalendarView {
 		return new Date(currentYear-1900, currentMonth, currentDate);
 	}
 
-	@Override
-	public void viewDate(Calendar date) {
-		// TODO Auto-generated method stub
-		
+	public void viewDate(Date date) {
+		int correctday = date.getDay();
+		if(!(currentDate == date.getDate() - correctday && currentMonth == date.getMonth() && currentYear == date.getYear() + 1900)) {
+
+			currentDate = date.getDate() - correctday;
+			currentMonth = date.getMonth();
+			currentYear = date.getYear() + 1900;
+
+			this.removeAll();
+			nameList = new ArrayList<DatePanel>();
+			paneltracker = new HashMap<Date, DatePanel>();
+			hourlist = new ArrayList<JPanel>();
+			fillDayView();
+		}
 	}
 
 }

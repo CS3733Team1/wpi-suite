@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
-public class MultiDayEventPanel extends JPanel {
+public class MultiDayEventPanel extends EvComPanel {
 
 	private Event event;
 
@@ -22,16 +22,16 @@ public class MultiDayEventPanel extends JPanel {
 	private JLabel eventNameLabel;
 	private JLabel eventTimeLabel;
 
-	private int index;
 	private int textType;
 
-	public MultiDayEventPanel(int index, Event event, int textType, Color backgroundColor, Color selectedBackgroundColor, Color textColor, Color selectedTextColor) {
-		this.index = index;
+	public MultiDayEventPanel(Event event, int textType) {
+		super(true);
 		this.event = event;
-		this.backgroundColor = backgroundColor;
-		this.selectedBackgroundColor = selectedBackgroundColor;
-		this.textColor = textColor;
-		this.selectedTextColor = selectedTextColor;
+		this.selectedBackgroundColor = event.getCategory().getColor();
+		this.backgroundColor = CalendarUtils.blend(selectedBackgroundColor, Color.white, (float) 0.4);
+		this.textColor = CalendarUtils.titleNameColor;
+		this.selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
+		
 		this.isSelected = false;
 		this.textType = textType;
 
@@ -100,8 +100,4 @@ public class MultiDayEventPanel extends JPanel {
 	public boolean getSelected()  {return this.isSelected;}
 
 	public Event getEvent() {return this.event;}
-
-	public int getIndex() {
-		return this.index;
-	}
 }

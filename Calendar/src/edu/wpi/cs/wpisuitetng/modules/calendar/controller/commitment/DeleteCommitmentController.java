@@ -24,36 +24,33 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class DeleteCommitmentController implements ActionListener {
 	private CommitmentListModel model;
 	private CalendarPanel calendarPanel;
-	
+
 	public DeleteCommitmentController(CalendarPanel calendarPanel) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.calendarPanel = calendarPanel;
 	}
-	
+
 	/**
 	 * Handles the pressing of the Remove Commitment button
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		List<Commitment> list = calendarPanel.getCalendarTabPanel().getSelectedCommitmentList();
-		
-		System.out.println("Called Delete Commitments...");
-		
-		for (Commitment commit:list) {
-			commit.markForDeletion();
-			model.removeCommitment(commit);
-			// Send a request to the core to save this message 
-			final Request request = Network.getInstance().makeRequest("calendar/commitment/" + commit.getUniqueID(), HttpMethod.GET); // PUT == create
-			request.addHeader("X-HTTP-Method-Override", "DELETE");
-			request.addObserver(new DeleteCommitmentObserver(this)); // add an observer to process the response
-			request.send(); // send the request
+		List<Commitment> commitmentList = calendarPanel.getCalendarTabPanel().getSelectedCommitmentList();
+		for (Commitment commitment: commitmentList) {
+			System.out.println("Deleting commitment: name = " + commitment.getName() + "; uid = " + commitment.getUniqueID());
+
+			// Create a Delete Request
+			final Request request = Network.getInstance().makeRequest("calendar/commitment/" + commitment.getUniqueID(), HttpMethod.DELETE);
+
+			// Add an observer to process the response
+			request.addObserver(new DeleteCommitmentObserver());
+
+			// Send the request
+			request.send();
+
+			// We must remove the commitment without knowing the result of the server's response because
+			// of a bug in Java in which you cannot set the body of a HTTP.DELETE request.
+			model.removeCommitment(commitment);
 		}
-		calendarPanel.getCalendarTabPanel().resetSelection();
-	}
-	
-	public void removeCommitmentFromModel(Commitment commit){
-		System.out.println("Deleting Commitment");
-		model.removeCommitment(commit);
 	}
 }

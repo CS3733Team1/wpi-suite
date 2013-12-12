@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -46,7 +45,7 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 		weekpanel = new LinkedList<JPanel>();
 		
 		
-		this.setBorder(new MatteBorder(0, 1, 1, 1, Color.LIGHT_GRAY));
+		this.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout());
 			

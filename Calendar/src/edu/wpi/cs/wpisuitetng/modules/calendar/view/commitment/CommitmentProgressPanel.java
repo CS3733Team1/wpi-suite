@@ -10,6 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
@@ -26,6 +28,8 @@ public class CommitmentProgressPanel extends JPanel{
 	public void setSelected(String select){
 		commitmentComboBox.setSelectedItem(select);
 	}
+	
+	public void addActionListener(ActionListener l) {commitmentComboBox.addActionListener(l);}
 	
 	public String getSelectedState(){
 		return (String)commitmentComboBox.getSelectedItem();

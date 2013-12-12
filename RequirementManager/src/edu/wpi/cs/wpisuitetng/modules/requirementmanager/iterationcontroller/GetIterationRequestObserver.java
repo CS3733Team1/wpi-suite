@@ -9,6 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.requirementmanager.iterationcontroller;
 
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -39,10 +41,17 @@ public class GetIterationRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Convert the JSON array of Iterations to a Iteration object array
-		Iteration[] Iterations = Iteration.fromJsonArray(iReq.getResponse().getBody());
+		final Iteration[] Iterations = Iteration.fromJsonArray(iReq.getResponse().getBody());
 		
 		// Pass these Iterations to the controller
-		controller.receivedIterations(Iterations);
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				controller.receivedIterations(Iterations);
+
+
+			}
+		});
 	}
 
 	/**
@@ -60,8 +69,15 @@ public class GetIterationRequestObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		Iteration[] errorIteration = { new Iteration(-1, "Error") };
-		controller.receivedIterations(errorIteration);
+		final Iteration[] errorIteration = { new Iteration(-1, "Error") };
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run()
+			{
+				controller.receivedIterations(errorIteration);
+
+
+			}
+		});
 	}
 
 }

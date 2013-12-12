@@ -10,12 +10,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.event;
 
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -29,10 +29,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePickerPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEvent;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeChangedEventListener;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.TimeDurationPickerPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
@@ -47,8 +44,12 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	private JTextField nameTextField;
 	private TimeDurationChooser durationChooser_;
 	private CategoryPickerPanel categoryPickerPanel;
+	private CalendarPicker calendarPicker;
 	private JTextArea descriptionTextArea;
 
+	private Checkbox allDayEventCheckbox;
+	boolean allDayEvent_;
+	
 	// Buttons
 	private JButton addEventButton;
 	private JButton cancelButton;
@@ -79,28 +80,52 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		this.add(nameErrorPanelWrapper, "cell 0 0,push ,growx,width 5000,alignx left");
 		nameErrorLabel = new JLabel(EMPTY_NAME_ERROR);
 		nameErrorLabel.setForeground(Color.RED);
+<<<<<<< HEAD
 		this.add(nameErrorLabel, "cell 0 0");
+=======
+		this.add(nameErrorLabel, "wrap");
+
+		//all day event checkbox (uncomment for checkbox, but note it doesn't do anything yet)
+//		allDayEvent_=false;
+//		allDayEventCheckbox=new Checkbox("All Day Event");
+//		allDayEventCheckbox.addItemListener(new ItemListener(){
+//			@Override
+//			public void itemStateChanged(ItemEvent e) {
+//				allDayEventCheckboxChanged();
+//			}
+//		});
+//		this.add(allDayEventCheckbox, "wrap");
+>>>>>>> 1220bbc954826120d0be66e379f0e67b9e0da849
 		
 		//duration
 		durationChooser_=new TimeDurationChooser();
 		durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
 			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
-				System.out.println("Time Duration Changed");
+//				System.out.println("Time Duration Changed");
 				validateFields();
 			}
 		});
+<<<<<<< HEAD
 		add(durationChooser_, "cell 0 2, alignx left");
 		
 		// Recurring Events
 		eventRecurringPanel = new EventRecurringPanel(new Date());
 		add(eventRecurringPanel, "cell 0 3,alignx left");
 
+=======
+		this.add(durationChooser_, "alignx left, wrap");
+>>>>>>> 1220bbc954826120d0be66e379f0e67b9e0da849
 
 		// Category
 		this.add(new JLabel("Category:"), "cell 0 4");
 		categoryPickerPanel = new CategoryPickerPanel();
 		this.add(categoryPickerPanel, "cell 0 4,alignx left");
+
+		// Calendar
+		this.add(new JLabel("Calendar:"), "split 2");
+		calendarPicker = new CalendarPicker();
+		this.add(calendarPicker, "alignx left, wrap");
 
 		// Description
 		this.add(new JLabel("Description:"), "cell 0 5");
@@ -132,7 +157,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	}
 
 	// Kills the add event tab
-	public void killEventPanel() {
+	public void closeEventPanel() {
 		this.getParent().remove(this);
 	}
 
@@ -154,9 +179,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			nameErrorLabel.setVisible(false);
 		}
 
-		//validate times and duration between them
-		if (!durationChooser_.hasValidDuration()){
-			enableAddEvent=false;
+		if (!allDayEvent_){
+			//validate times and duration between them
+			if (!durationChooser_.hasValidDuration()){
+				enableAddEvent=false;
+			}
 		}
 
 		addEventButton.setEnabled(enableAddEvent);
@@ -167,14 +194,24 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		Date endDate=durationChooser_.getEndDate();
 		
 		//make a new event with start and end times
-		return new Event(nameTextField.getText(), startDate, endDate,
+		return new Event(nameTextField.getText(), startDate, endDate, calendarPicker.isTeam(), 
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory());
 	}
 
+	public void allDayEventCheckboxChanged(){
+		allDayEvent_=allDayEventCheckbox.getState();
+		if (allDayEvent_){
+			durationChooser_.disable();
+		}else{
+			durationChooser_.enable();
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+//		System.out.println("All Day Checkbox Changed!");
 		if(e.getActionCommand().equals("cancel")) {
-			this.killEventPanel();
+			this.closeEventPanel();
 		} else {
 			validateFields();
 		}
