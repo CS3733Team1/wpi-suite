@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -48,7 +49,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	private Checkbox allDayEventCheckbox;
 	boolean allDayEvent_;
-	
+
 	// Buttons
 	private JButton addEventButton;
 	private JButton cancelButton;
@@ -81,22 +82,34 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		this.add(nameErrorLabel, "wrap");
 
 		//all day event checkbox (uncomment for checkbox, but note it doesn't do anything yet)
-//		allDayEvent_=false;
-//		allDayEventCheckbox=new Checkbox("All Day Event");
-//		allDayEventCheckbox.addItemListener(new ItemListener(){
-//			@Override
-//			public void itemStateChanged(ItemEvent e) {
-//				allDayEventCheckboxChanged();
-//			}
-//		});
-//		this.add(allDayEventCheckbox, "wrap");
-		
+		//		allDayEvent_=false;
+		//		allDayEventCheckbox=new Checkbox("All Day Event");
+		//		allDayEventCheckbox.addItemListener(new ItemListener(){
+		//			@Override
+		//			public void itemStateChanged(ItemEvent e) {
+		//				allDayEventCheckboxChanged();
+		//			}
+		//		});
+		//		this.add(allDayEventCheckbox, "wrap");
+
+		// All Day Event
+		allDayEvent_ = false;
+		allDayEventCheckbox = new Checkbox("Is this an all day event?");
+		ItemListener itemListener = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				allDayEventCheckboxChanged();
+			}
+		};
+		allDayEventCheckbox.addItemListener(itemListener);
+		this.add(allDayEventCheckbox, "wrap");
+
 		//duration
 		durationChooser_=new TimeDurationChooser();
 		durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
 			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
-//				System.out.println("Time Duration Changed");
+				//				System.out.println("Time Duration Changed");
 				validateFields();
 			}
 		});
@@ -177,7 +190,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	public Event getFilledEvent() {
 		Date startDate=durationChooser_.getStartDate();
 		Date endDate=durationChooser_.getEndDate();
-		
+
 		//make a new event with start and end times
 		return new Event(nameTextField.getText(), startDate, endDate, calendarPicker.isTeam(), 
 				descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory());
@@ -191,10 +204,10 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			durationChooser_.enable();
 		}
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		System.out.println("All Day Checkbox Changed!");
+		//		System.out.println("All Day Checkbox Changed!");
 		if(e.getActionCommand().equals("cancel")) {
 			this.closeEventPanel();
 		} else {
