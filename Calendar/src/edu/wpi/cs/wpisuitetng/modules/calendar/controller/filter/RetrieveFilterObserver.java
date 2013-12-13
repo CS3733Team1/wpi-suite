@@ -10,6 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter;
 
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -29,8 +31,11 @@ public class RetrieveFilterObserver implements RequestObserver{
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		System.out.println("	The request to retrieve filters was successful.");
-		Filter[] filters = Filter.fromJSONArray(iReq.getResponse().getBody());
-		controller.receivedMessages(filters);
+		final Filter[] filters = Filter.fromJSONArray(iReq.getResponse().getBody());
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+			controller.receivedMessages(filters);
+		}});
 	}
 
 	/*
