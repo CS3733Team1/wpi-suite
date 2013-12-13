@@ -31,22 +31,33 @@ public class AddEventController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//get occurrences 
+		int numOfEvents = view.numOfEvents();
+		
 		// Retrieve the event
-		Event event = view.getFilledEvent();
+		Event event;
+		
+		for(int i = 0; i < numOfEvents; ++i)
+		{
+			if(numOfEvents == 0)
+				event = view.getFilledEvent();
+			else
+				event = view.getFilledEvents()[i];
+			System.out.println("Adding event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 
-		System.out.println("Adding event: name = " + event.getName() + "; uid = " + event.getUniqueID());
-
-		// Create a Put Request
-		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT);
+			// Create a Put Request
+			final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT);
+			
+			// Put the new message in the body of the request
+			request.setBody(event.toJSON()); 
+			
+			// Add an observer to process the response
+			request.addObserver(new AddEventObserver(this));
+			
+			// Send the request
+			request.send();
+		}
 		
-		// Put the new message in the body of the request
-		request.setBody(event.toJSON()); 
-		
-		// Add an observer to process the response
-		request.addObserver(new AddEventObserver(this));
-		
-		// Send the request
-		request.send();
 	}
 	
 	public void addEventToModel(Event event) {
