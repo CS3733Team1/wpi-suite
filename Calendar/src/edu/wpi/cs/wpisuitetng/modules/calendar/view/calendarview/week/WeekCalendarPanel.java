@@ -333,6 +333,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	@Override
 	public void componentShown(ComponentEvent e) {}
 
+	//Mouse listener to like the labels in week view to the corresponding day view
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		WeekView week = weeklayer.getWeek();
@@ -344,16 +345,14 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		tab.displayDayView();
 		tab.setCalendarViewDate(clickedDay);		
 	}
-
+	
+	// Unused
 	@Override
 	public void mouseEntered(MouseEvent e) {}
-
 	@Override
 	public void mouseExited(MouseEvent e) {}
-
 	@Override
 	public void mousePressed(MouseEvent e) {}
-
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 }
