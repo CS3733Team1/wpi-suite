@@ -292,4 +292,27 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	public int getOccurrences() {
 		return Integer.parseInt(occurrencesTextField.getText());
 	}
+	
+	public boolean isDaySelected(int day)
+	{
+		switch(day)
+		{
+			case 0: 
+				return chckbxSunday.isSelected();
+			case 1: 
+				return chckbxMonday.isSelected();
+			case 2: 
+				return chckbxTuesday.isSelected();
+			case 3: 
+				return chckbxWednesday.isSelected();
+			case 4: 
+				return chckbxThursday.isSelected();
+			case 5: 
+				return chckbxFriday.isSelected();
+			case 6: 
+				return chckbxSaturday.isSelected();
+			default:
+				return false;
+		}
+	}
 }

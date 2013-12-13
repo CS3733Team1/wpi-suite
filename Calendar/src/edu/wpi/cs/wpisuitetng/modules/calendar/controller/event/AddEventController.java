@@ -12,6 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
@@ -33,16 +35,15 @@ public class AddEventController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		//get occurrences 
 		int numOfEvents = view.numOfEvents();
-		
+		ArrayList<Event> events = view.getFilledEvents();
+		Iterator<Event> eventIterator = events.iterator();
 		// Retrieve the event
 		Event event;
 		
-		for(int i = 0; i < numOfEvents; ++i)
+		while(eventIterator.hasNext())
 		{
-			if(numOfEvents == 0)
-				event = view.getFilledEvent();
-			else
-				event = view.getFilledEvents()[i];
+			event = eventIterator.next();
+				
 			System.out.println("Adding event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 
 			// Create a Put Request
