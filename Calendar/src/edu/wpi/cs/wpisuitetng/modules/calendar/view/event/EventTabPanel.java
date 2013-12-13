@@ -12,10 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.event;
 
 import java.awt.Checkbox;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.*;
 import java.util.Date;
 
@@ -34,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChooser;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.TimeDurationChooser;
 
 
@@ -49,6 +46,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	private JTextArea descriptionTextArea;
 
 	private Checkbox allDayEventCheckbox;
+	private DateTimeChooser allDayTimeChooser_;
 	boolean allDayEvent_;
 
 	// Buttons
@@ -106,6 +104,16 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		};
 		allDayEventCheckbox.addItemListener(itemListener);
 		this.add(allDayEventCheckbox, "wrap");
+		
+		// All Day Event Date Chooser
+		allDayTimeChooser_=new DateTimeChooser("Day: ", new Date());
+		allDayTimeChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
+			@Override
+			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+				validateFields();
+			}
+		});
+		this.add(allDayTimeChooser_, "wrap");
 
 
 		//duration
@@ -189,6 +197,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		}
 
 		if (!allDayEvent_){
+			allDayTimeChooser_.disable();
 			//validate times and duration between them
 			if (!durationChooser_.hasValidDuration()){
 				enableAddEvent=false;
@@ -211,8 +220,10 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		allDayEvent_=allDayEventCheckbox.getState();
 		if (allDayEvent_){
 			durationChooser_.disable();
+			allDayTimeChooser_.enable();
 		}else{
 			durationChooser_.enable();
+			allDayTimeChooser_.disable();
 		}
 	}
 
