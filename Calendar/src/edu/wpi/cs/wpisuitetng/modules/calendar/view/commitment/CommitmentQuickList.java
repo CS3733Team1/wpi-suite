@@ -105,6 +105,11 @@ public class CommitmentQuickList extends AbstractListModel<Commitment> implement
 		else return inView;
 	}
 	
+	public ArrayList<Commitment> getQuickList()
+	{
+		return quickList;
+	}
+	
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 		// TODO Auto-generated method stub
