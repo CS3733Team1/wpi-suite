@@ -38,22 +38,27 @@ import com.toedter.calendar.JDateChooser;
  * */
 
 /**
+ * Component that allows the user to pick a day and a time with a JDateChooser and editable JComboBox for times
+ * self-validating
  * @author Dan
- *
  */
 public class DateTimeChooser extends JPanel {
 	List<DateTimeChangedEventListener> listeners = new ArrayList<DateTimeChangedEventListener>();
 	
+	//Internal date to store day and time
 	private Date date_;
 	
+	//choosers
 	private JDateChooser jDateChooser_;
 	private JComboBox<String> timeCombo_;
 	private JLabel errorLabel;
 	
+	//validity flags
 	private boolean dayValid_;
 	private boolean timeValid_;
 	private boolean dtValid_;
 	
+	//errors
 	private String invalidDayErrorText_="Invalid Day";
 	private String invalidTimeErrorText_="Invalid Time";
 	private Border errorBorder_;
@@ -61,6 +66,7 @@ public class DateTimeChooser extends JPanel {
 	private Color normalForgroundColor_;
 	private Color errorForgroundColor_;
 	
+	//Custom DateTimeChangedEventListeners
 	public void addDateTimeChangedEventListener(DateTimeChangedEventListener toAdd) {
 		listeners.add(toAdd);
     }
@@ -84,26 +90,47 @@ public class DateTimeChooser extends JPanel {
 //		}
 	}
 	
+	/**
+	 * Disables this component and all sub components. Calls to isValid() will return true while it is disabled
+	 */
 	public void disable(){
 		jDateChooser_.disable();
 		timeCombo_.disable();
 		dtValid_=true;
 	}
+	
+	/**
+	 * Enabled this component and all sub components and re-validates the day and time
+	 */
 	public void enable(){
 		jDateChooser_.disable();
 		timeCombo_.disable();
 		validateDateTime();
 	}
 	
+	/**
+	 * Create a DateTimeChooser with the given name and set it to the given date
+	 * @param name the name to display in the name label
+	 * @param date the date to set as the time chosen
+	 */
 	public DateTimeChooser(String name, Date date){
 //		System.out.println("\n\n\nDTC: Making new DateTimeChooser with name "+name + " and date "+ date.toString());
 		date_=date;
 		buildLayout(name);
 	}
+	
+	/**
+	 * Create a new DateTimeChooser with the default time set at the next half hour time increment in the future
+	 */
 	public DateTimeChooser(){
 		this("Date:");
 //		System.out.println("DTC: Done making default DateTimeChooser");
 	}
+	
+	/**
+	 * Create a new DateTimeChooser with the default time set at the next half hour time increment in the future and the given name
+	 * @param name the name to display in the name label
+	 */
 	public DateTimeChooser(String name){
 //		System.out.println("DTC: Making new DateTimeChooser with name "+name);
 		
@@ -118,6 +145,11 @@ public class DateTimeChooser extends JPanel {
 		
 		buildLayout(name);
 	}
+	
+	/**
+	 * Builds the GUI for this DateTimeChooser with the given name
+	 * @param name the name to display for this time
+	 */
 	private void buildLayout(String name){
 		setLayout(new MigLayout("", "[][grow][grow][]", "[]"));
 		
@@ -188,17 +220,40 @@ public class DateTimeChooser extends JPanel {
 		validateDateTime();
 	}
 	
+	/**
+	 * Helper method "cieling" the given duration of time in milliseconds as close as possible to the nearest larger minute interval
+	 * @param timeMs the time, in Milliseconds to "normalize" to the minute
+	 * @return the same time in milliseconds to the minute, one millisecond before the next minute
+	 */
 	private long normalizeToTheMinute(long timeMs){
 		long minutes=timeMs/60000;//count the minutes (integer)
 		return minutes*60000+59999;//make it right at the end of the millis
 	}
 	
+	/**
+	 * Converts the given hour and minute to an index corresponding to a half-hour increment in the day [0 47]
+	 * @param hour		The hour of the time [0 12]
+	 * @param minutes	The minute of the time [0 60]
+	 * @return			The index (number) of the half hour increment of the time, starting at 0 for midnight, 1 for 12:30 AM, etc. to 47 for 11:30
+	 */
 	private int timeToHalfHourIndex(int hour, int minutes){
 		return 2*hour+minutes/30;
 	}
+	
+	/**
+	 * Converts the time of the given date to an index corresponding to a half-hour increment in the day [0 47]
+	 * @param date a Date containing the time to convert
+	 * @return The index (number) of the half hour increment of the time, starting at 0 for midnight, 1 for 12:30 AM, etc. to 47 for 11:30
+	 */
 	private int dateTohalfHourIndex(Date date){
 		return timeToHalfHourIndex(date.getHours(),date.getMinutes());
 	}
+	
+	/**
+	 * converts a half hour index to a time in the day
+	 * @param index the half-hour index to convert starting at 0 for midnight, 1 for 12:30 AM, etc. to 47 for 11:30
+	 * @return a Date containing the corresponding time
+	 */
 	private Date halfHourIndexToTime(int index){
 		Date date = new Date();
 		date.setHours(index/2);
@@ -206,17 +261,32 @@ public class DateTimeChooser extends JPanel {
 		return date;
 	}
 	
+	/**
+	 * Called any time the time is changed from the combo box or by program with the setTime() or setDate() methods
+	 * validates the time currently in the Combo Box
+	 */
 	private void timeChanged(){
 //		System.out.println("TIME Changed");
 		fillTime();
 		DateTimeChanged();
 	}
+	
+	/**
+	 * Called any time the day is changes from the JDatePicker or by the program with the setDay() or setDate() methods
+	 * validates the day currently in the JDatePicker
+	 */
 	private void dayChanged(){
 //		System.out.println("Day Changed");
 		fillDay();
 		DateTimeChanged();
 	}
 	
+	/**
+	 * Gets the time from the combo box, parses it, validates it, and sets this pickers time to it if it was valid.
+	 * Sets errors and invalidates this chooser's time if the time in the ComboBox is invalid
+	 * Invalid times are either unparsable or in the past
+	 * Time can be entered in standard 12-hour format (7:30 PM) or 24-hour/military time (16:30) with a wide range of robustness
+	 */
 	private void fillTime(){
 //		System.out.println("\tFilling Time...");
 		//normally we'de use getSelectedItem() but this does not change as characters are changed in the ComboBox's internal editor (text box), so we get it directly
@@ -240,6 +310,12 @@ public class DateTimeChooser extends JPanel {
 		}
 //		System.out.println("\tDone filling time...");
 	}
+	
+	/**
+	 * Gets the day from the JDateCHooser, validates it, and sets this chooser's date to it if it is valid
+	 * Sets an error and invalidates this chooser's DayTime if the day is invalid
+	 * Valid days are today or in the future
+	 */
 	private void fillDay(){
 //		System.out.println("\nFilling Day...");
 		Date day=jDateChooser_.getDate();
@@ -277,6 +353,10 @@ public class DateTimeChooser extends JPanel {
 //		System.out.println("\t...Done Filling day");
 	}
 
+	/**
+	 * Set the date of this chooser and validate it
+	 * @param date
+	 */
 	public void setDate(Date date){
 //		System.out.println("\t\t\tDTC: Setting date to " +date.toString());
 		date.setSeconds(59);
@@ -284,11 +364,21 @@ public class DateTimeChooser extends JPanel {
 		setTime(date);
 //		System.out.println("\t\tDTC: DONE setting date");
 	}
+	
+	/**
+	 * Set the day of this chooser and validate it
+	 * @param day
+	 */
 	public void setDay(Date day){
 //		System.out.println("\t\t\tDTC: Setting day to " +day.toString());
 		jDateChooser_.setDate(day);
 //		fillDay();//the setDay() above should automatically fire a property changed event which calls fillTime()
 	}
+	
+	/**
+	 * Set the time of this chooser and validate it
+	 * @param date
+	 */
 	public void setTime(Date date){
 		String strTime=DateUtils.timeToString(date_);
 //		System.out.println("\t\t\tDTC: Setting time to " +DateUtils.timeToString(date_));
@@ -296,17 +386,29 @@ public class DateTimeChooser extends JPanel {
 //		fillTime(); //the setSelecteditem() above should automatically fire a propertychanged event which calls fillTime()
 	}
 	
+	/**
+	 * Get a date set to the day and time represented by this chooser
+	 * @return
+	 */
 	public Date getDate(){
 //		System.out.println("\t\tDTC: returning date " + date_.toString());
 		return date_;
 	}
 
+	/**
+	 * Sets an error with the given description and invalidates the DayTime
+	 * @param errorText description of the error to set
+	 */
 	private void setError(String errorText){
 		dtValid_=false;
 		errorLabel.setText(errorText);
 		errorLabel.setVisible(true);
 		this.setBorder(errorBorder_);
 	}
+	
+	/**
+	 * Clears all errors and sets the validity to true
+	 */
 	private void clearErrors(){
 //		System.out.println("\tDTC: Clearing Error");
 		dtValid_=true;
@@ -316,18 +418,30 @@ public class DateTimeChooser extends JPanel {
 		this.setBorder(normalBorder_);
 //		System.out.println("\tDTC: ... done clearing Error");
 	}
+	
+	/**
+	 * Sets an error with the day and invalidates the day and the DateTime
+	 */
 	private void setDayError(){
 //		System.out.println("DTC: Setting Day Error");
 		dayValid_=false;
 //		jDateChooser_.setBorder(errorBorder_);
 		setError(invalidDayErrorText_);
 	}
+	
+	/**
+	 * Sets an error with the time and invalidates the time and the dateTime
+	 */
 	private void setTimeError(){
 //		System.out.println("\tDTC: Setting Time Error");
 		timeValid_=false;
 //		timeCombo_.setForeground(errorForgroundColor_);
 		setError(invalidTimeErrorText_);
 	}
+	
+	/**
+	 * Sets an appropriate error if anything is invalid or clears all errors in everything is valid
+	 */
 	private void updateError(){
 		if (!dayValid_){
 			setDayError();
@@ -337,11 +451,21 @@ public class DateTimeChooser extends JPanel {
 			clearErrors();		//clear all errors and set dt to True
 		}
 	}
+	
+	/**
+	 * Gets and validates the day and the time for this component
+	 */
 	private void validateDateTime(){
 //		System.out.println("Validating DateTime");
 		fillDay();
 		fillTime();
 	}
+	
+	/**
+	 * The validity of the Day and Time represented in this component
+	 * @return true if the day and time are valid, false otherwise
+	 * Valid Days/Times are properly formatted and in the future
+	 */
 	public boolean hasValidDateTime(){
 //		fillTime();
 //		fillDay();
