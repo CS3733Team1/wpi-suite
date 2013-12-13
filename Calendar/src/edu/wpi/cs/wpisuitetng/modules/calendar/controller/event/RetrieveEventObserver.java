@@ -33,7 +33,7 @@ public class RetrieveEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to retrieve events was succesful.");
+		System.out.println("	The request to retrieve events was successful.");
 		Event[] events = Event.fromJSONArray(iReq.getResponse().getBody());
 		controller.receivedMessages(events);
 	}

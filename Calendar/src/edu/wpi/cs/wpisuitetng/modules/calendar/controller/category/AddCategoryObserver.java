@@ -29,7 +29,7 @@ public class AddCategoryObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to add the category was succesful.");
+		System.out.println("	The request to add the category was successful.");
 
 		// Parse the message out of the response body
 		final Category category = Category.fromJSON(iReq.getResponse().getBody());

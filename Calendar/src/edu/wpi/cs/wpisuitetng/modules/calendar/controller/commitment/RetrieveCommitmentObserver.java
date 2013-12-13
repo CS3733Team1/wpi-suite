@@ -32,7 +32,7 @@ public class RetrieveCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to retrieve commitments was succesful.");
+		System.out.println("	The request to retrieve commitments was successful.");
 		Commitment[] commitments = Commitment.fromJSONArray(iReq.getResponse().getBody());
 		controller.receivedMessages(commitments);
 	}
