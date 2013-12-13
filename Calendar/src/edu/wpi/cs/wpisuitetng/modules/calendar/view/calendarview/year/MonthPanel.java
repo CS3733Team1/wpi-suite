@@ -23,6 +23,10 @@ public class MonthPanel extends JPanel implements MouseListener {
 
 	// The name of the month
 	private JLabel monthNameLabel;
+	
+	private JPanel titlePanel;
+	
+	private Calendar month;
 
 	public MonthPanel() {
 		this.setMinimumSize(new Dimension(YearCalendarView.MIN_MONTH_WIDTH, 140));
@@ -30,16 +34,19 @@ public class MonthPanel extends JPanel implements MouseListener {
 
 		this.setBackground(Color.WHITE);
 
-		JPanel titlePanel = new JPanel();
-		titlePanel.setBackground(Color.WHITE);
-
+		titlePanel = new JPanel();
+		
 		monthNameLabel = new JLabel();
 		monthNameLabel.setFont(new Font(monthNameLabel.getFont().getName(), Font.BOLD, 14));
+		
 		titlePanel.add(monthNameLabel);
+		
+		titlePanel.addMouseListener(this);
+		
 		this.add(titlePanel, "center, growx, span, wrap");
 
 		this.weekDayLabels = new ArrayList<JLabel>();
-		
+
 		for(String weekDay: CalendarUtils.weekNamesAbbr) {
 			JLabel weekDayLabel = new JLabel(weekDay, JLabel.CENTER);
 			weekDayLabel.setBorder(new MatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
@@ -70,11 +77,12 @@ public class MonthPanel extends JPanel implements MouseListener {
 	 * Updates the day label text to match the dates in the given Calendar month
 	 */
 	public void updateDates(Calendar month) {
+		this.month = (Calendar)month.clone();
 		monthNameLabel.setText(CalendarUtils.monthNames[month.get(Calendar.MONTH)]);
 		monthNameLabel.setForeground(CalendarUtils.titleNameColor);
-		
+
 		for(JLabel weekDayLabel: weekDayLabels) weekDayLabel.setForeground(Color.GRAY);
-		
+
 		int currentMonth = month.get(Calendar.MONTH);
 
 		if(month.get(Calendar.DAY_OF_WEEK) == 1) month.add(Calendar.DATE, -7);
@@ -98,7 +106,7 @@ public class MonthPanel extends JPanel implements MouseListener {
 	public void markDateToday(Calendar calendar) {
 		monthNameLabel.setForeground(CalendarUtils.thatBlue);
 		weekDayLabels.get(calendar.get(Calendar.DAY_OF_WEEK) - 1).setForeground(CalendarUtils.thatBlue);
-		
+
 		int index = calendar.get(Calendar.DATE) - 1;
 		calendar.set(Calendar.DATE, 1);
 		if(calendar.get(Calendar.DAY_OF_WEEK) == 1) index += 7;
@@ -120,35 +128,43 @@ public class MonthPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		DayPanel day = (DayPanel)e.getSource();
-		Calendar clickedDay = day.getDate();
-		CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent().getParent().getParent().getParent().getParent());
-		
-		tab.displayDayView();
-		tab.setCalendarViewDate(clickedDay);
+		if(e.getSource() instanceof DayPanel){
+			DayPanel day = (DayPanel)e.getSource();
+			Calendar clickedDay = day.getDate();
+			CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent().getParent().getParent().getParent().getParent());
+
+			tab.displayDayView();
+			tab.setCalendarViewDate(clickedDay);
+		}
+		else if(e.getSource().equals(titlePanel)){
+			CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent().getParent().getParent().getParent().getParent());
+
+			tab.displayMonthView();
+			tab.setCalendarViewDate((Calendar)month.clone());
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
