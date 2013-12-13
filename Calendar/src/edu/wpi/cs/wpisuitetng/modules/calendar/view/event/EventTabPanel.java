@@ -33,6 +33,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.TimeDurationChooser;
 
 
@@ -114,7 +116,16 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		
 		// Recurring Events
 		eventRecurringPanel = new EventRecurringPanel(new Date());
+		eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
+			
+			@Override
+			public void RecurringChangedEventOccurred(RecurringChangedEvent evt) {
+				validateFields();
+			}
+		});
 		add(eventRecurringPanel, "cell 0 4,alignx left");
+		
+		
 		// Category
 		this.add(new JLabel("Category:"), "cell 0 5");
 		categoryPickerPanel = new CategoryPickerPanel();
@@ -122,7 +133,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		// Description
 		this.add(new JLabel("Description:"), "cell 0 6");
-
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
@@ -179,6 +189,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			if (!durationChooser_.hasValidDuration()){
 				enableAddEvent=false;
 			}
+		}
+		
+		if(!eventRecurringPanel.validateRecurring(durationChooser_.getStartDate()))
+		{
+			enableAddEvent = false;
 		}
 
 		addEventButton.setEnabled(enableAddEvent);
