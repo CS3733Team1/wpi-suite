@@ -210,7 +210,8 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		parser = XMLParser.getParser();
 		
-		findDocs();
+		//findDocs();
+		docs.add(new Tag("Welcome", "placeholder"));
 		if(docs.size() > 0)
 		{
 			display.setText(findTopLevelTag("Welcome").sprintTag());

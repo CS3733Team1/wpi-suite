@@ -86,7 +86,6 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.add(addCommitmentButton, "align center, split 4");
 		this.add(deleteCommitmentButton);
 
-		
 		this.add(addEventButton);
 		this.add(deleteEventButton);
 		
