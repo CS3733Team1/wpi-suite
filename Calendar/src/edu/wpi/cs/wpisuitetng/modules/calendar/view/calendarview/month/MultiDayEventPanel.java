@@ -14,36 +14,36 @@ public class MultiDayEventPanel extends EvComPanel {
 
 	private Event event;
 
-	private Color backgroundColor, selectedBackgroundColor;
-	private Color textColor, selectedTextColor;
-
-	private boolean isSelected;
-
 	private JLabel eventNameLabel;
 	private JLabel eventTimeLabel;
-
+	
 	private int textType;
 
 	public MultiDayEventPanel(Event event, int textType) {
-		super(true);
+		super(true, false);
 		this.event = event;
 		this.selectedBackgroundColor = event.getCategory().getColor();
 		this.backgroundColor = CalendarUtils.blend(selectedBackgroundColor, Color.white, (float) 0.4);
 		this.textColor = CalendarUtils.titleNameColor;
 		this.selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
-		
-		this.isSelected = false;
-		this.textType = textType;
 
 		this.setLayout(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
-
-		this.setBackground(backgroundColor);
 
 		eventNameLabel = new JLabel("");
 
 		eventTimeLabel = new JLabel("");
 		eventTimeLabel.setFont(new Font(eventTimeLabel.getFont().getName(), Font.PLAIN, 8));
 
+		
+		this.setTextType(textType);
+		this.setSelected(false);
+		
+		this.add(eventNameLabel, "gap left 5, wmin 0");
+		this.add(eventTimeLabel, "gap right 5");
+	}
+	
+	public void setTextType(int textType) {
+		this.textType = textType;
 		switch(textType) {
 		case 0:
 			eventNameLabel.setText("empty");
@@ -60,16 +60,10 @@ public class MultiDayEventPanel extends EvComPanel {
 			eventTimeLabel.setText(DateUtils.timeToString(event.getEndDate()));
 			break;
 		}
-
-		this.setSelected(false);
-		
-		this.add(eventNameLabel, "gap left 5, wmin 0");
-		this.add(eventTimeLabel, "gap right 5");
+		update();
 	}
 
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-
+	public void update() {
 		if(this.isSelected) {
 			this.setBackground(selectedBackgroundColor);
 			if(textType == 0) {
@@ -96,8 +90,12 @@ public class MultiDayEventPanel extends EvComPanel {
 			}
 		}
 	}
-
-	public boolean getSelected()  {return this.isSelected;}
+	
+	@Override
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+		update();
+	}
 
 	public Event getEvent() {return this.event;}
 }

@@ -56,6 +56,8 @@ public class DayPanel extends JPanel {
 	public void setIsToday(boolean isToday) {
 		this.isToday = isToday;
 	}
+	
+	public int getIndex() {return this.indexInMonth;}
 
 	public void updateColors() {
 		if(isInCurrentMonth) day.setForeground(Color.BLACK);
