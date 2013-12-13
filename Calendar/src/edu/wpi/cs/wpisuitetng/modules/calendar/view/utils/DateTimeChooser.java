@@ -26,16 +26,8 @@ import net.miginfocom.swing.MigLayout;
 
 import com.toedter.calendar.JDateChooser;
 
-//TODO
-/*DayTimeChangedEvent -- break into day changed and time changed events?
- * -increment end time appropriately when start time changes
- * TEST
- * add all day commitment checkbox
- * add all day event checkbox
- * 
- * Possible glitch: when one component returns an internal Date directly and whatever uses that component sets its internal Date to that, both change simultaniously.
- * 
- * */
+//Possible glitch: when one component returns an internal Date directly and whatever uses that component sets its internal Date to that, both change simultaniously.
+
 
 /**
  * Component that allows the user to pick a day and a time with a JDateChooser and editable JComboBox for times
@@ -223,7 +215,11 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Helper method "cieling" the given duration of time in milliseconds as close as possible to the nearest larger minute interval
+=======
+	 * Helper method "ceiling" the given duration of time in milliseconds as close as possible to the nearest larger minute interval
+>>>>>>> 032e703545c99d14c41b0b32eaa744c81ac2f63e
 	 * @param timeMs the time, in Milliseconds to "normalize" to the minute
 	 * @return the same time in milliseconds to the minute, one millisecond before the next minute
 	 */
