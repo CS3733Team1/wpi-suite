@@ -155,7 +155,8 @@ public class DayPanel extends JPanel {
 				}
 				else break;
 			}
-			containerPanel.add(new JLabel((this.numEvComs-this.numDisplayableEvComs) + " more..."), "grow, south, gap left 5");
+			if(this.numEvComs == 1)containerPanel.add(new JLabel("1 more..."), "grow, south, gap left 5");
+			else containerPanel.add(new JLabel((this.numEvComs-this.numDisplayableEvComs) + " more..."), "grow, south, gap left 5");
 		} else {
 			if(numRows >= this.numEvComs) {
 				for(JPanel panel: evComPanels) {
