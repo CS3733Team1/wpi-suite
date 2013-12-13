@@ -27,7 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
 
 public class EventView extends JPanel {
 
@@ -276,7 +276,7 @@ public class EventView extends JPanel {
 				infobuilder.append("</p></html>");
 				panel.setToolTipText(infobuilder.toString());
 				if(test instanceof Event)
-					panel.addMouseListener(new EventMouseListener((Event) test, panel));
+					panel.addMouseListener(new SchedMouseListener((Event) test, panel));
 				
 				if (test.getCategory() != null){
 					panel.setBackground(test.getCategory().getColor());
