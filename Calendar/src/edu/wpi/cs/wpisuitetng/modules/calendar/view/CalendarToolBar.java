@@ -47,11 +47,13 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		try {
 			refreshButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
 
+			helpButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/question.png"))));
+			
 			addCommitmentButton = new TransparentButton("<html>New<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png"))));
 			deleteCommitmentButton = new TransparentButton("<html>Delete<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_commitment.png"))));
-			helpButton = new TransparentButton("<html>Help</html>");
+			
 			
 			addEventButton = new TransparentButton("<html>New<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
