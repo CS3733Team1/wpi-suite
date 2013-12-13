@@ -250,21 +250,19 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		Date startDate=durationChooser_.getStartDate();
 		Date endDate=durationChooser_.getEndDate();
 		
-		for(int i = 0, day = 0; i < numOfEvents; ++day)
+		for(int i = 0, day = startDate.getDay(); i < numOfEvents; ++day)
 		{
+			if(day == 7)
+				day = 0;
 			if(eventRecurringPanel.isDaySelected(day))
 			{
-				eventList.add(new Event(nameTextField.getText(), startDate, endDate, calendarPicker.isTeam(), 
+				eventList.add(new Event(nameTextField.getText(), (Date) startDate.clone(), (Date) endDate.clone(), calendarPicker.isTeam(), 
 						descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory()));
 				++i;
 			}
-			
 			startDate.setDate(startDate.getDate() + 1);
 			endDate.setDate(endDate.getDate() + 1);
 			//make a new event with start and end times
-			
-			if(day == 7)
-				day = 0;
 				
 		}
 		return eventList;

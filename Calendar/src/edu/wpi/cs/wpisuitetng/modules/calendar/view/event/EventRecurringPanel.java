@@ -283,12 +283,6 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 		validateRecurring();
 	}
 
-	// Unused
-	@Override
-	public void keyPressed(KeyEvent e) {}
-	@Override
-	public void keyTyped(KeyEvent e) {}
-
 	public int getOccurrences() {
 		return Integer.parseInt(occurrencesTextField.getText());
 	}
@@ -315,4 +309,10 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 				return false;
 		}
 	}
+	
+	// Unused
+	@Override
+	public void keyPressed(KeyEvent e) {}
+	@Override
+	public void keyTyped(KeyEvent e) {}
 }

@@ -58,12 +58,11 @@ public class AddEventController implements ActionListener {
 			// Send the request
 			request.send();
 		}
-		
+		view.closeEventPanel();
 	}
 	
 	public void addEventToModel(Event event) {
 		System.out.println("	Added event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 		model.addEvent(event);
-		view.closeEventPanel();
 	}
 }
