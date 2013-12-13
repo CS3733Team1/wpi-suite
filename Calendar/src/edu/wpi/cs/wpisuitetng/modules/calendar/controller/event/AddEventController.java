@@ -12,6 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
@@ -31,27 +33,36 @@ public class AddEventController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//get occurrences 
+		int numOfEvents = view.numOfEvents();
+		ArrayList<Event> events = view.getFilledEvents();
+		Iterator<Event> eventIterator = events.iterator();
 		// Retrieve the event
-		Event event = view.getFilledEvent();
+		Event event;
+		
+		while(eventIterator.hasNext())
+		{
+			event = eventIterator.next();
+				
+			System.out.println("Adding event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 
-		System.out.println("Adding event: name = " + event.getName() + "; uid = " + event.getUniqueID());
-
-		// Create a Put Request
-		final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT);
-		
-		// Put the new message in the body of the request
-		request.setBody(event.toJSON()); 
-		
-		// Add an observer to process the response
-		request.addObserver(new AddEventObserver(this));
-		
-		// Send the request
-		request.send();
+			// Create a Put Request
+			final Request request = Network.getInstance().makeRequest("calendar/event", HttpMethod.PUT);
+			
+			// Put the new message in the body of the request
+			request.setBody(event.toJSON()); 
+			
+			// Add an observer to process the response
+			request.addObserver(new AddEventObserver(this));
+			
+			// Send the request
+			request.send();
+		}
+		view.closeEventPanel();
 	}
 	
 	public void addEventToModel(Event event) {
 		System.out.println("	Added event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 		model.addEvent(event);
-		view.closeEventPanel();
 	}
 }

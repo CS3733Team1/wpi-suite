@@ -27,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.DatePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
@@ -34,7 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
  * This is the bottom layer of the week view hierarchy. 
  */
 
-public class WeekView extends JPanel{
+public class WeekView extends JPanel implements ICalendarView{
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
@@ -253,6 +254,14 @@ public class WeekView extends JPanel{
 			nameList = new ArrayList<DatePanel>();
 			paneltracker = new HashMap<Date, DatePanel>();
 			hourlist = new ArrayList<JPanel>();
+			fillDayView();
+		}
+	}
+
+	@Override
+	public void viewDate(Calendar date) {
+		if(this.currentYear != date.get(Calendar.YEAR)) {
+			this.currentYear = date.get(Calendar.YEAR);
 			fillDayView();
 		}
 	}
