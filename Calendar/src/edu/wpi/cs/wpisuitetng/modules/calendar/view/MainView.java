@@ -57,7 +57,7 @@ public class MainView {
 		calendarToolBar.addEventButtonListener(new DisplayEventTabController(calendarPanel));
 		calendarToolBar.deleteEventButtonListener(new DeleteEventController(calendarPanel));
 		
-		calendarToolBar.addEventButtonListener(new HelpButtonController(calendarPanel));
+		calendarToolBar.helpButtonListener(new HelpButtonController(calendarPanel));
 		
 		calendarToolBar.deleteCommitmentButtonListener(new DeleteCommitmentController(calendarPanel));
 		calendarToolBar.addCommitmentButtonListener(new DisplayCommitmentTabController(calendarPanel));

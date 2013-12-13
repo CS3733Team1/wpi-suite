@@ -25,7 +25,7 @@ public class HelpButtonController implements ActionListener {
 		try {
 			miniHelpIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
 		} catch (IOException exception) {}
-		calendarPanel.addTab("Add Commitment", miniHelpIcon, helpWindow);
+		calendarPanel.addTab("Help", miniHelpIcon, helpWindow);
 		calendarPanel.setSelectedComponent(helpWindow);
 	}
 }
