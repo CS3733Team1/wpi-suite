@@ -34,7 +34,7 @@ public class DeleteEventController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		List<Event> eventList = calendarPanel.getCalendarTabPanel().getSelectedEventList();
-		eventList.addAll(EventMouseListener.getSelected());
+		//eventList.addAll(EventMouseListener.getSelected());
 
 		for(Event event: eventList) {
 			System.out.println("Deleting event: name = " + event.getName() + "; uid = " + event.getUniqueID());

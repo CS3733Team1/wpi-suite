@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
+//import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 //Height of This Panel is 1440 Calculation Dependent
@@ -41,18 +42,36 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
 		
 		currentDay = new Date();
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
-		this.setSize(1000, 1440);
+		
+		int height = 1440;
+		int width = 950;
+		
+		this.setSize(width, height);
+		this.setPreferredSize(new Dimension(width, height));
+		
 		showEvent();
 		
 		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
 	
-	public void paint(Graphics g){
-		super.paint(g);
+	public void paintBorder(Graphics g){
+		
+		super.paintBorder(g);
 		
 		drawHours(g);
-		super.paintComponents(g);
+		
+		this.validate();
+	}
+	
+	public void repaint(){
+		if (this.getParent() != null){
+			if (this.getParent().getWidth() != this.getWidth()){
+				this.setSize(this.getParent().getWidth(), this.getHeight());
+			}
+		}
+		
+		super.repaint();
 	}
 	
 	/**
@@ -60,7 +79,7 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
 	 * @param g Graphics which will draw lines representing hours
 	 */
 	public void drawHours(Graphics g){
-		for (int x =1; x <= 24; x++){
+		for (int x =0; x <= 24; x++){
 			g.setColor(Color.BLACK);
 			g.drawLine(0, 60*x, this.getWidth(), 60*x);
 		}
@@ -94,11 +113,12 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
      }
     
      private boolean overlapEvent(ISchedulable e1,ISchedulable e2){
+    	
             if(isBetween(e1.getStartDate(),e2.getStartDate(),e2.getEndDate()) ||
                          isBetween(e1.getEndDate(),e2.getStartDate(),e2.getEndDate())||
                          isBetween(e2.getStartDate(),e1.getStartDate(),e1.getEndDate()) ||
                          isBetween(e2.getEndDate(),e1.getStartDate(),e1.getEndDate()) ||
-                         (e1.getStartDate() == e2.getStartDate() && e1.getEndDate() == e2.getEndDate())){
+                         (e1.getStartDate().compareTo(e2.getStartDate()) == 0 && e1.getEndDate().compareTo(e2.getEndDate()) == 0)){
                    return true;
             }
             return false;
@@ -114,7 +134,7 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
      private ArrayList<ISchedulable> overlapList(ISchedulable e1, ArrayList<ISchedulable> eventList){
             ArrayList<ISchedulable> overlaps = new ArrayList<ISchedulable>();
             for(ISchedulable e2:eventList){
-                   if(overlapEvent(e1,e2)){
+                   if(overlapEvent(e1,e2) && !e1.equals(e2)){
                          overlaps.add(e2);
                    }
             }
@@ -157,6 +177,7 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
      }
     
      private void displayMap(ArrayList<ArrayList<ISchedulable>> map){
+    	 System.out.println(map);
             for(int i=0;i<map.size();i++){
                    for(ISchedulable test:map.get(i)){
                          ArrayList<ISchedulable> overlapEvents = new ArrayList<ISchedulable>();
@@ -181,8 +202,6 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
                                        divisions=eventDivs;
                                 }
                          }
-                        
-                         //TODO replace with new event panel class, add to this
                          
                         
                          //horizontal start: space for times on left, plus number of events to left times width of each event
@@ -205,7 +224,7 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
                          
                          int endXPixel = startXPixel + pixelWidth;
 
-                         JPanel panel = new ScheduleItem(test, startXPixel, startYPixel, endYPixel, endXPixel);
+                         JPanel panel = new ScheduleItem(test, startXPixel, startYPixel, pixelWidth, getLengthMinutes(test));
                          
                          JLabel name = new JLabel(test.getName());
                          //TODO align name in center, set minimum width to 0, maximum width to panel width
@@ -248,7 +267,7 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
                         
                          //add mouse listener to event panels, change tooltip background, allow for selection
                          if(test instanceof Event)
-                                panel.addMouseListener(new EventMouseListener((Event) test, panel));
+                                //panel.addMouseListener(new EventMouseListener((Event) test, panel));
                         
                          //set panel background based on category
                          if (test.getCategory() != null){
@@ -279,14 +298,16 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
     
      public void findSchedulableItems(){
     	 Date key;
+    	 events = new LinkedList<ISchedulable>();
     	 
-    	ListIterator<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList().listIterator();
- 		ListIterator<Commitment> comm = FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList().listIterator();
+    	List<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList();
+ 		List<Commitment> comm = FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList();
  		
- 		while(event.hasNext()){
-			Event eve = event.next();
+ 		
+ 		for (Event eve: event){
+			System.err.println(eve);
 			Date evedate = eve.getStartDate();
-			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
+			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate());
 			if (currentDay.compareTo(key) == 0){
 				if(eve.getStartDate().getDate() == eve.getEndDate().getDate()
 				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
@@ -302,10 +323,9 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
 			}
 		}
 		
-		while(comm.hasNext()){
-			Commitment c = comm.next();
+		for (Commitment c: comm){
 			Date cdate = c.getStartDate();
-			key = new Date(cdate.getYear(),cdate.getMonth(),cdate.getDate(),cdate.getHours(),0);
+			key = new Date(cdate.getYear(),cdate.getMonth(),cdate.getDate());
 			if (currentDay.compareTo(key) == 0){
 				if(c.getStartDate().getDate() == c.getEndDate().getDate()
 				&& c.getStartDate().getMonth() == c.getEndDate().getMonth()
@@ -313,6 +333,8 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
 					events.add(c);	
 			}
 		}
+		
+		System.err.println("Schedule: " + events);
  		
      }
      
@@ -322,10 +344,13 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
      */
      public void showEvent()
      {
+    	 this.removeAll();
     	 	findSchedulableItems();
             ArrayList<ArrayList<ISchedulable>> eventMap = new ArrayList<ArrayList<ISchedulable>>();
             eventMap=generateMap();
             displayMap(eventMap);
+           //this.revalidate();
+           //this.repaint();
      }
 	
 	

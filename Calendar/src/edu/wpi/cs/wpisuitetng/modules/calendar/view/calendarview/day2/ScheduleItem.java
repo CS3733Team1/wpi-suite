@@ -6,19 +6,21 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 
 public class ScheduleItem extends JPanel{
 	private ISchedulable display;
-	private int StartX, StartY, EndX, EndY;
+	private int StartX, StartY, width, height;
 	
 	
-	public ScheduleItem(ISchedulable item, int sx, int sy, int ex, int ey){
+	public ScheduleItem(ISchedulable item, int sx, int sy, int w, int h){
 		display = item;
 		StartX = sx;
 		StartY = sy;
-		EndX = ex;
-		EndY = ey;
+		width = w;
+		height = h;
 	}
 	
 	public void repaint(){
-		this.setBounds(StartX, StartY, EndX - StartX, EndY - StartY);
+		System.err.println(StartX +" "+ StartY + " " + width + " " + height);
+		
+		this.setBounds(StartX, StartY, width, height);
 		super.repaint();
 	}
     

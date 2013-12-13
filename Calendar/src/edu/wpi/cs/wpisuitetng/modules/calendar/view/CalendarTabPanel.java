@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleBut
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayArea;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
@@ -62,7 +63,7 @@ public class CalendarTabPanel extends JPanel {
 	private JPanel calendarViewPanel;
 	
 	static private ICalendarView calendarView;
-	private DayArea dayView;
+	private DayCalendar dayView;
 	private WeekCalendarPanel weekView;
 	private MonthCalendarView monthView;
 	private YearCalendarView yearView;
@@ -175,7 +176,7 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewPanel.setBackground(Color.WHITE);
 		this.add(calendarViewPanel, "grow, push");
 		
-		dayView = new DayArea();
+		dayView = new DayCalendar();
 		weekView = new WeekCalendarPanel();
 		monthView = new MonthCalendarView();
 		yearView = new YearCalendarView();
