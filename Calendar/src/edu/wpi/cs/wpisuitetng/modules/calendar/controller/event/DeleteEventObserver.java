@@ -28,7 +28,7 @@ public class DeleteEventObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// The response will not include a body as this is HTTP.DELETE
 		// Do nothing
-		System.out.println("	The request to delete an event was succesful.");
+		System.out.println("	The request to delete an event was successful.");
 	}
 
 	@Override
