@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 public class MonthPanel extends JPanel implements MouseListener {
 
 	// Stores all the days in a month
@@ -23,9 +23,9 @@ public class MonthPanel extends JPanel implements MouseListener {
 
 	// The name of the month
 	private JLabel monthNameLabel;
-	
+
 	private JPanel titlePanel;
-	
+
 	private Calendar month;
 
 	public MonthPanel() {
@@ -35,14 +35,14 @@ public class MonthPanel extends JPanel implements MouseListener {
 		this.setBackground(Color.WHITE);
 
 		titlePanel = new JPanel();
-		
+
 		monthNameLabel = new JLabel();
 		monthNameLabel.setFont(new Font(monthNameLabel.getFont().getName(), Font.BOLD, 14));
-		
+
 		titlePanel.add(monthNameLabel);
-		
+
 		titlePanel.addMouseListener(this);
-		
+
 		this.add(titlePanel, "center, growx, span, wrap");
 
 		this.weekDayLabels = new ArrayList<JLabel>();
@@ -128,19 +128,21 @@ public class MonthPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() instanceof DayPanel){
-			DayPanel day = (DayPanel)e.getSource();
-			Calendar clickedDay = day.getDate();
-			CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent().getParent().getParent().getParent().getParent());
+		if(e.getClickCount() == 2) {
+			if(e.getSource() instanceof DayPanel){
+				DayPanel day = (DayPanel)e.getSource();
+				Calendar clickedDay = day.getDate();
+				CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent().getParent().getParent().getParent().getParent());
 
-			tab.displayDayView();
-			tab.setCalendarViewDate(clickedDay);
-		}
-		else if(e.getSource().equals(titlePanel)){
-			CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent().getParent().getParent().getParent().getParent());
+				tab.displayDayView();
+				tab.setCalendarViewDate(clickedDay);
+			}
+			else if(e.getSource().equals(titlePanel)){
+				CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent().getParent().getParent().getParent().getParent());
 
-			tab.displayMonthView();
-			tab.setCalendarViewDate((Calendar)month.clone());
+				tab.displayMonthView();
+				tab.setCalendarViewDate((Calendar)month.clone());
+			}
 		}
 	}
 

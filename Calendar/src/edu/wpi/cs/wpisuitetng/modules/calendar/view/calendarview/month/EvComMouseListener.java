@@ -58,6 +58,11 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		if(eventBeingDragged != null) monthView.setDragData(eventBeingDragged.getCategory().getColor(), eventBeingDragged.getName());
+		else monthView.setDragData(commitmentBeingDragged.getCategory().getColor(), commitmentBeingDragged.getName());
+		monthView.setDragging(true);
+		monthView.updateDragCoor(e.getPoint());
+		monthView.repaint();
 		int index = monthView.getDayPanels().indexOf(monthView.getComponentAt(e.getPoint()));
 		if(initialIndex == -1 && index != -1) {
 			initialIndex = index;
@@ -72,6 +77,8 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		monthView.setDragging(false);
+		monthView.repaint();
 		if(finalIndex != initialIndex) {
 			if(eventBeingDragged != null) {
 				eventBeingDragged.getStartDate().setDate(eventBeingDragged.getStartDate().getDate() + (finalIndex - initialIndex));

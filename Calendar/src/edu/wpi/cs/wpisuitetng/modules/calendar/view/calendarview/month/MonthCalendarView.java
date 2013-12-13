@@ -12,12 +12,15 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -36,9 +39,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 
 public class MonthCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener, MouseListener{
 	// A List holding all of the Day Panels as to be able to modify the contents [No need to recreate a new day on view changes]
@@ -81,6 +84,11 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 	private EvComMouseListener mouseListener;
 
+	private int x, y;
+	private boolean isDragging;
+	private String draggingText;
+	private Color draggingColor;
+	
 	public MonthCalendarView() {
 		this.filteredEventsModel = FilteredEventsListModel.getFilteredEventsListModel();
 		this.filteredCommitmentsModel = FilteredCommitmentsListModel.getFilteredCommitmentsListModel();
@@ -247,6 +255,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		multiDayEventPanels.clear();
 		eventPanels.clear();
 		commitmentPanels.clear();
+		Collections.sort(events);
+		Collections.sort(commitments);
+		Collections.sort(multiDayEvents);
 
 		for(int i = 0; i < events.size(); i++) {
 			Event event = events.get(i);
@@ -558,7 +569,44 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			this.updateEvComs();
 		}
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getClickCount() == 2) {
+			DayPanel day = (DayPanel)e.getSource();
+			Calendar clickedDay = day.getDate();
+			CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
+			
+			tab.displayDayView();
+			tab.setCalendarViewDate(clickedDay);
+		}
+	}
+	
+	public void setDragging(boolean dragging) {
+		isDragging = dragging;
+	}
+	
+	public void setDragData(Color c, String text) {
+		this.draggingColor = new Color(c.getRed(), c.getGreen(), c.getBlue(), 128);
+		this.draggingText = text;
+	}
+	
+	public void updateDragCoor(Point p) {
+		x = p.x;
+		y = p.y;
+	}
 
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		if(isDragging) {
+			g.setColor(draggingColor);
+			g.fillRect(x-days.get(0).getWidth()/2, y-7, days.get(0).getWidth(), 14);
+			g.setColor(CalendarUtils.titleNameColor);
+			g.drawString(draggingText, x + 4 - days.get(0).getWidth()/2, y + 4);
+		}
+	}
+	
 	// Unused
 	@Override
 	public void ancestorMoved(AncestorEvent e) {}
@@ -570,25 +618,12 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
-
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		DayPanel day = (DayPanel)arg0.getSource();
-		Calendar clickedDay = day.getDate();
-		CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
-		
-		tab.displayDayView();
-		tab.setCalendarViewDate(clickedDay);
-	}
-	
-	//Not Used
+	public void mouseEntered(MouseEvent e) {}
 	@Override
-	public void mouseEntered(MouseEvent arg0) {}
+	public void mouseExited(MouseEvent e) {}
 	@Override
-	public void mouseExited(MouseEvent arg0) {}
+	public void mousePressed(MouseEvent e) {}
 	@Override
-	public void mousePressed(MouseEvent arg0) {}
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
+	public void mouseReleased(MouseEvent e) {}
 }
