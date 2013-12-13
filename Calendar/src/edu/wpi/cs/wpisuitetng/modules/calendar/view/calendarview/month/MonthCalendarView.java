@@ -14,6 +14,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,8 +38,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListMode
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 
-public class MonthCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener {
+public class MonthCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener, MouseListener{
 	// A List holding all of the Day Panels as to be able to modify the contents [No need to recreate a new day on view changes]
 	private List<DayPanel> days;
 
@@ -166,6 +169,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 		for(int i = 0; i < days.size(); i++) {
 			DayPanel dayPanel = days.get(i);
+			dayPanel.addMouseListener(this);
 			indexInDaysOfCal.put(month.getTime().toString(), i);
 			dayPanel.setDate(cloneCalendar(month),  month.get(Calendar.MONTH) == savedMonth);
 			dayPanel.setIsToday(false);
@@ -527,4 +531,25 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		DayPanel day = (DayPanel)arg0.getSource();
+		Calendar clickedDay = day.getDate();
+		CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
+		
+		tab.displayDayView();
+		tab.setCalendarViewDate(clickedDay);
+	}
+	
+	//Not Used
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
 }
