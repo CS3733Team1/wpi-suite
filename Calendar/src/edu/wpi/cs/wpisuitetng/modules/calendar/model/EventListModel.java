@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -41,8 +40,7 @@ public class EventListModel extends AbstractListModel<Event> {
 		events = Collections.synchronizedList(new ArrayList<Event>());
 	}
 
-	public static EventListModel getEventListModel()
-	{
+	public static EventListModel getEventListModel() {
 		if( eventModel == null)
 			eventModel = new EventListModel();
 		return eventModel;
@@ -121,12 +119,9 @@ public class EventListModel extends AbstractListModel<Event> {
 	}
 
 	public void removeEvent(Event event) {
-		System.err.println(events.size());
 		events.remove(event);
-		System.err.println("size:" + events.size());
 		this.fireIntervalRemoved(this, 0, 0);
 	}
-
 
 	/**
 	 * Returns the number of events in the model. Also used internally by the
@@ -142,11 +137,10 @@ public class EventListModel extends AbstractListModel<Event> {
 	//** Note: avoid coping the events in the list here.
 	// use the copy constructor provided in Event() to avoid creating copies with dissimilar UniuqeID's
 	public synchronized List<Event> getList(){
-		return events;
+		return new ArrayList<Event>(events);
 	}
-	public synchronized void Update()
-	{
-		System.out.println("Event list model update");
+	
+	public synchronized void update() {
 		this.fireIntervalAdded(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
 	}
 	

@@ -13,21 +13,19 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This observer is called when a response is received from a request
  * to the server to add a message.
- *
  */
 public class AddCommitmentObserver implements RequestObserver {
-	
+
 	private final AddCommitmentController controller;
-	
+
 	public AddCommitmentObserver(AddCommitmentController controller) {
 		this.controller = controller;
 	}
-	
+
 	/*
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
@@ -36,25 +34,32 @@ public class AddCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		// Get the response to the given request
-		final ResponseModel response = iReq.getResponse();
-		
-		
+		System.out.println("	The request to add the commitment was successful.");
+
 		// Parse the message out of the response body
-		final Commitment commit = Commitment.fromJSON(response.getBody());
-		
+		final Commitment commitment = Commitment.fromJSON(iReq.getResponse().getBody());
+
 		// Pass the messages back to the controller
-		controller.addCommitmentToModel(commit);
+		controller.addCommitmentToModel(commitment);
 	}
 
+	/*
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseError(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 */
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to add a commitment failed.");
-		System.err.println("Response: " + iReq.getResponse().getStatusMessage());
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	Failed to add the commitment to the server.");
 	}
 
+	/*
+	 * Put an error message in the PostBoardPanel if the request fails.
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#fail(edu.wpi.cs.wpisuitetng.network.models.IRequest, java.lang.Exception)
+	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to add a commitment failed.");
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
 }

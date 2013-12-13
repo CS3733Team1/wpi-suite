@@ -16,33 +16,25 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.toedter.calendar.JDateChooser;
 
-//TODO
-/*DayTimeChangedEvent -- break into day changed and time changed events?
- * -increment end time appropriately when start time changes
- * TEST
- * add all day commitment checkbox
- * add all day event checkbox
- * 
- * Possible glitch: when one component returns an internal Date directly and whatever uses that component sets its internal Date to that, both change simultaniously.
- * 
- * */
+//Possible glitch: when one component returns an internal Date directly and whatever uses that component sets its internal Date to that, both change simultaniously.
+
 
 /**
  * Component that allows the user to pick a day and a time with a JDateChooser and editable JComboBox for times
  * self-validating
  * @author Dan
  */
-public class DateTimeChooser extends JPanel {
+public class DateTimeChooser extends JPanel implements ActionListener{
 	List<DateTimeChangedEventListener> listeners = new ArrayList<DateTimeChangedEventListener>();
 	
 	//Internal date to store day and time
@@ -94,17 +86,17 @@ public class DateTimeChooser extends JPanel {
 	 * Disables this component and all sub components. Calls to isValid() will return true while it is disabled
 	 */
 	public void disable(){
-		jDateChooser_.disable();
-		timeCombo_.disable();
-		dtValid_=true;
+		jDateChooser_.setEnabled(false);
+		timeCombo_.setEnabled(false);
+		dtValid_ = true;
 	}
 	
 	/**
 	 * Enabled this component and all sub components and re-validates the day and time
 	 */
 	public void enable(){
-		jDateChooser_.disable();
-		timeCombo_.disable();
+		jDateChooser_.setEnabled(false);
+		timeCombo_.setEnabled(false);
 		validateDateTime();
 	}
 	
@@ -151,7 +143,7 @@ public class DateTimeChooser extends JPanel {
 	 * @param name the name to display for this time
 	 */
 	private void buildLayout(String name){
-		setLayout(new MigLayout("", "[][grow][grow][]", "[]"));
+		setLayout(new MigLayout(""));
 		
 		//make it on the minute - kill all seconds and milliseconds that might screw up comparisons with dates we think are on the same minute
 //		System.out.println("\tNormalizing time " + date_.toString());
@@ -161,7 +153,9 @@ public class DateTimeChooser extends JPanel {
 //		System.out.println("\tDone Normalizing time " + date_.toString());
 		
 		//name label
-		add(new JLabel(name), "cell 0 0");
+		JLabel lblName = new JLabel(name);
+		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
+		add(lblName);
 				
 		//DateChooser for choosing days
 		jDateChooser_=new JDateChooser(date_);
@@ -171,7 +165,7 @@ public class DateTimeChooser extends JPanel {
 				dayChanged();
 			}
 		});
-		add(jDateChooser_, "cell 1 0");
+		add(jDateChooser_, "wmin 100");
 		
 		//combo for choosing times
 		String[] strTimes;
@@ -205,12 +199,12 @@ public class DateTimeChooser extends JPanel {
 				timeChanged();
 			}
 		});
-		add(timeCombo_, "cell 2 0,growx");
+		add(timeCombo_);
 		
 		//Error Label
 		errorLabel=new JLabel("Invalid time!");
 		errorLabel.setVisible(false);
-		add(errorLabel, "cell 3 0");
+		add(errorLabel);
 		
 		//validation
 		normalBorder_=this.getBorder();
@@ -221,7 +215,7 @@ public class DateTimeChooser extends JPanel {
 	}
 	
 	/**
-	 * Helper method "cieling" the given duration of time in milliseconds as close as possible to the nearest larger minute interval
+	 * Helper method "ceiling" the given duration of time in milliseconds as close as possible to the nearest larger minute interval
 	 * @param timeMs the time, in Milliseconds to "normalize" to the minute
 	 * @return the same time in milliseconds to the minute, one millisecond before the next minute
 	 */
@@ -230,6 +224,7 @@ public class DateTimeChooser extends JPanel {
 		return minutes*60000+59999;//make it right at the end of the millis
 	}
 	
+
 	/**
 	 * Converts the given hour and minute to an index corresponding to a half-hour increment in the day [0 47]
 	 * @param hour		The hour of the time [0 12]
@@ -472,4 +467,10 @@ public class DateTimeChooser extends JPanel {
 //		verifyDateTime();
 		return dtValid_;
 	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

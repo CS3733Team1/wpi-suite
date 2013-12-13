@@ -71,15 +71,11 @@ public class WPICoreServlet extends HttpServlet
 	 * Forwards put requests and restful parameters to the ManagerLayer singleton
 	 */
 	public void doPut (HttpServletRequest req,
-            HttpServletResponse res) throws ServletException, IOException
-    {
+            HttpServletResponse res) throws ServletException, IOException {
 		BufferedReader in = req.getReader();
 		PrintWriter out = res.getWriter();
 		String delims = "[/]+";
         String[] path = req.getPathInfo().split(delims);
-        System.out.println("Path \n");
-        for (String part : path)
-        	System.out.println(part);
         
         System.arraycopy(path, 1, path, 0, path.length-1);
         path[path.length-1] = null;

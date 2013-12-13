@@ -28,8 +28,9 @@ public class RetrieveCategoryObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		Category[] cat = Category.fromJSONArray(iReq.getResponse().getBody());
-		controller.receivedMessages(cat);
+		System.out.println("	The request to retrieve categories was successful.");
+		Category[] categories = Category.fromJSONArray(iReq.getResponse().getBody());
+		controller.receivedMessages(categories);
 	}
 
 	/*
@@ -37,7 +38,8 @@ public class RetrieveCategoryObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
-		fail(iReq, null);
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	Failed to retrieve categories from the server.");
 	}
 
 	/*
@@ -47,7 +49,7 @@ public class RetrieveCategoryObserver implements RequestObserver{
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println(iReq.getResponse().getStatusMessage());
-		System.err.println("Failed To Retrieve Categories");
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
 }

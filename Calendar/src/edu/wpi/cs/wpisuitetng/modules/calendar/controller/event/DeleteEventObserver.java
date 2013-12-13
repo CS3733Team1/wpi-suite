@@ -10,23 +10,14 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This observer is called when a response is received from a request
  * to the server to add a message.
  */
 public class DeleteEventObserver implements RequestObserver {
-	
-	private final DeleteEventController controller;
-	
-	public DeleteEventObserver(DeleteEventController controller) {
-		this.controller = controller;
-	}
-	
 	/*
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
@@ -35,22 +26,20 @@ public class DeleteEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("The request to remove an event succeeded");
-		
-		//THIS IS TEMP! THE EVENT BEING PASSED TO MODEL BY CONTROLLER GOT CHANGED SOMEHOW.
-		RetrieveEventController update = new RetrieveEventController();
-		update.retrieveMessages();
+		// The response will not include a body as this is HTTP.DELETE
+		// Do nothing
+		System.out.println("	The request to delete an event was successful.");
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		System.out.println(iReq.getResponse().getStatusMessage());
-		System.err.println("The request to remove an event failed.");
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	The request to remove an event failed.");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.out.println(exception);
-		System.err.println("The request failed to connect to server.");
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
 }

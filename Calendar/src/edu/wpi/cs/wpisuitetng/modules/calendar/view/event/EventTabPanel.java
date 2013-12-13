@@ -14,11 +14,8 @@ import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -36,11 +33,14 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.TimeDurationChooser;
+
 
 public class EventTabPanel extends JPanel implements KeyListener, ActionListener {
 	// Errors strings
-	private final String EMPTY_NAME_ERROR = 		"Name is required.";
+	private final String EMPTY_NAME_ERROR = "Name is required.";
 
 	// Data entry components
 	private JTextField nameTextField;
@@ -61,6 +61,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
+	private EventRecurringPanel eventRecurringPanel;
 
 	public EventTabPanel() {
 		this.buildLayout();
@@ -70,82 +71,98 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 * Builds the GUI layout for the Event panel
 	 */
 	private void buildLayout() {
-		this.setLayout(new MigLayout("fill"));
+		this.setLayout(new MigLayout("fill", "[]", "[][][][][][][][][][]"));
 
 		// Name
-		this.add(new JLabel("Event Name:"), "split 3");
+		this.add(new JLabel("Event Name:"), "cell 0 0");
 		nameErrorPanelWrapper = new JPanel(new MigLayout("fill, insets 0"));
 		nameTextField = new JTextField();
 		nameTextField.addKeyListener(this);
 		nameErrorPanelWrapper.add(nameTextField, "alignx left, growx, push, w 5000");
-		this.add(nameErrorPanelWrapper, "alignx left, growx, push, w 5000");
+		this.add(nameErrorPanelWrapper, "cell 0 0,push ,growx,width 5000,alignx left");
 		nameErrorLabel = new JLabel(EMPTY_NAME_ERROR);
 		nameErrorLabel.setForeground(Color.RED);
+		this.add(nameErrorLabel, "cell 0 0");
 		this.add(nameErrorLabel, "wrap");
-
-		//all day event checkbox (uncomment for checkbox, but note it doesn't do anything yet)
-//		allDayEvent_=false;
-//		allDayEventCheckbox=new Checkbox("All Day Event");
-//		allDayEventCheckbox.addItemListener(new ItemListener(){
-//			@Override
-//			public void itemStateChanged(ItemEvent e) {
-//				allDayEventCheckboxChanged();
-//			}
-//		});
-//		this.add(allDayEventCheckbox, "wrap");
 		
-		//duration
-		durationChooser_=new TimeDurationChooser();
-		durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
-			@Override
-			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+				//all day event checkbox (uncomment for checkbox, but note it doesn't do anything yet)
+		//		allDayEvent_=false;
+		//		allDayEventCheckbox=new Checkbox("All Day Event");
+		//		allDayEventCheckbox.addItemListener(new ItemListener(){
+		//			@Override
+		//			public void itemStateChanged(ItemEvent e) {
+		//				allDayEventCheckboxChanged();
+		//			}
+		//		});
+		//		this.add(allDayEventCheckbox, "wrap");
+				
+				//duration
+				durationChooser_=new TimeDurationChooser();
+				durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
+					@Override
+					public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 //				System.out.println("Time Duration Changed");
+						validateFields();
+					}
+				});
+				add(durationChooser_, "cell 0 1, alignx left");
+				
+				
+						this.add(durationChooser_, "alignx left, wrap");
+		
+				// Calendar
+				JLabel label = new JLabel("Calendar:");
+				this.add(label, "flowx,cell 0 3");
+		
+		// Recurring Events
+		eventRecurringPanel = new EventRecurringPanel(new Date());
+		eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
+			
+			@Override
+			public void RecurringChangedEventOccurred(RecurringChangedEvent evt) {
 				validateFields();
 			}
 		});
-		add(durationChooser_, "alignx left");
-
+		add(eventRecurringPanel, "cell 0 4,alignx left");
+		
+		
 		// Category
-		this.add(new JLabel("Category:"), "split 2");
+		this.add(new JLabel("Category:"), "cell 0 5");
 		categoryPickerPanel = new CategoryPickerPanel();
-		this.add(categoryPickerPanel, "alignx left, wrap");
-
-		// Calendar
-		this.add(new JLabel("Calendar:"), "split 2");
-		calendarPicker = new CalendarPicker();
-		this.add(calendarPicker, "alignx left, wrap");
+		this.add(categoryPickerPanel, "cell 0 5,alignx left");
 
 		// Description
-		this.add(new JLabel("Description:"), "wrap");
-
+		this.add(new JLabel("Description:"), "cell 0 6");
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 
 		JScrollPane scrollp = new JScrollPane(descriptionTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(scrollp, "grow, push, span, h 5000, wrap");
+		this.add(scrollp, "cell 0 6,push ,height 5000,grow");
 
 		// Add / Cancel buttons
 		addEventButton = new JButton("Add Event");
 		addEventButton.setActionCommand("addevent");
 		addEventButton.addActionListener(new AddEventController(this));
 
-		this.add(addEventButton, "alignx left, split 2");
+		this.add(addEventButton, "cell 0 8,alignx left");
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.setActionCommand("cancel");
 
-		this.add(cancelButton, "alignx left");
+		this.add(cancelButton, "cell 0 8,alignx left");
 
 		//Action Listener for Cancel Button
 		cancelButton.addActionListener(this);
+		calendarPicker = new CalendarPicker();
+		this.add(calendarPicker, "cell 0 3,alignx left");
 
 		validateFields();
 	}
 
 	// Kills the add event tab
-	public void killEventPanel() {
+	public void closeEventPanel() {
 		this.getParent().remove(this);
 	}
 
@@ -173,6 +190,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				enableAddEvent=false;
 			}
 		}
+		
+		if(!eventRecurringPanel.validateRecurring(durationChooser_.getStartDate()))
+		{
+			enableAddEvent = false;
+		}
 
 		addEventButton.setEnabled(enableAddEvent);
 	}
@@ -199,7 +221,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	public void actionPerformed(ActionEvent e) {
 //		System.out.println("All Day Checkbox Changed!");
 		if(e.getActionCommand().equals("cancel")) {
-			this.killEventPanel();
+			this.closeEventPanel();
 		} else {
 			validateFields();
 		}

@@ -15,6 +15,8 @@
 			<include name="iText-2.1.5.jar"/>
 			<include name="miglayout-4.0-swing.jar"/>
 			<include name="swingx-all-1.6.4.jar"/>
+			<include name="jcalendar-1.4.jar"/>
+			<include name="DateChooser.jar"/>
 		</fileset>
 	</path>
 	<path id="test-classpath">
@@ -64,6 +66,8 @@
             <zipfileset src="./lib/iText-2.1.5.jar"/>
             <zipfileset src="./lib/gnujaxp.jar"/>
             <zipfileset src="./lib/jcommon-1.0.17.jar"/>
+			<zipfileset src="./lib/jcalendar-1.4.jar"/>
+			<zipfileset src="./lib/DateChooser.jar"/>
             <zipfileset src="./lib/jfreechart-1.0.14.jar"/>
 			<zipfileset src="${core-lib}/gson-2.2.2.jar" />
 			<zipfileset src="${core-lib}/commons-codec-1.7.jar" />

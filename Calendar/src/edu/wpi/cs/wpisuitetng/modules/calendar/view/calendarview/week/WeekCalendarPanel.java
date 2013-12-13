@@ -22,12 +22,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.AncestorEvent;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -58,7 +55,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		
 		weeklayer = new WeekCalendarLayerPane();
 		weekpanel = new LinkedList<JPanel>();
-		weektitle = new JPanel(new MigLayout("fill, insets 0", "0[8.66%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]0[45]0"));
+		weektitle = new JPanel(new MigLayout("fill, insets 0","0[8.66%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]0[45]0" ));
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
 		time.add(new JLabel(""), "grow, aligny bottom");
@@ -109,7 +106,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		this.add(weekscroll, "grow");
 		
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
-		DisplayCommitments();
+		//DisplayCommitments();
 		
 		int end = weekscroll.getVerticalScrollBar().getMaximum();
 		weekscroll.getVerticalScrollBar().setValue(end * 3 / 4);
@@ -138,7 +135,6 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 			if(days == 1 || days == 7)
 				label.setForeground(CalendarUtils.timeColor);
 			
-			System.out.println(week.isToday());
 			if(week.isToday())
 			{
 				todayIndex = week.getIndex();
@@ -162,7 +158,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		for (int x = 0; x < 7; x++){
 			if (foundyou.get(x).size() > 0){
 				JPanel day = weekpanel.get(x);
-				day.setBackground(Color.RED);
+//				day.setBackground(Color.RED);
 				StringBuilder bob = new StringBuilder();
 				bob.append("<html>");
 				int i=1;

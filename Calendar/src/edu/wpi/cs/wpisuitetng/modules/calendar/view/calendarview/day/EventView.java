@@ -198,7 +198,7 @@ public class EventView extends JPanel {
 		String toomanyones = "";
 		
 		StringBuilder calclayout = new StringBuilder();
-		calclayout.append("[22%]");
+		calclayout.append("[12%]");
 		for (int x = 0; x < 76; x++){
 			String size = "[1%]1";
 			calclayout.append(size);
@@ -236,7 +236,7 @@ public class EventView extends JPanel {
 						divisions=eventDivs;
 					}
 				}
-				JPanel panel = new JPanel();
+				JPanel panel = new EventPanel(test);
 				StringBuilder evebuilder = new StringBuilder();
 				evebuilder.append("cell ");
 				evebuilder.append(new Integer(1 + i*(76/divisions)).toString());
@@ -247,8 +247,8 @@ public class EventView extends JPanel {
 				evebuilder.append(" ");
 				evebuilder.append(new Integer(getLength(test)).toString());
 				evebuilder.append(",grow, push, wmin 0");
-				JLabel name = new JLabel(test.getName());
-				panel.add(name, "wmin 0, aligny center, alignx center");
+//				JLabel name = new JLabel(test.getName());
+//				panel.add(name, "wmin 0, aligny center, alignx center");
 				
 				StringBuilder infobuilder = new StringBuilder();
 				infobuilder.append("<html><p style='width:175px'><b>Name: </b>");
@@ -284,10 +284,10 @@ public class EventView extends JPanel {
 					float[] hsb=new float[3];
 					hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
 					if(hsb[2]<0.5){
-						name.setForeground(Color.WHITE);
+						//name.setForeground(Color.WHITE);
 					}
 					else{
-						name.setForeground(Color.BLACK);
+						//name.setForeground(Color.BLACK);
 					}
 				}
 				else{

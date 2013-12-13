@@ -9,10 +9,6 @@
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
-import java.util.Date;
-
-import javax.swing.SwingUtilities;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -36,13 +32,9 @@ public class RetrieveCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		final Commitment[] commit = Commitment.fromJSONArray(iReq.getResponse().getBody());
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run()
-			{
-				controller.receivedMessages(commit);
-			}
-		});
+		System.out.println("	The request to retrieve commitments was successful.");
+		Commitment[] commitments = Commitment.fromJSONArray(iReq.getResponse().getBody());
+		controller.receivedMessages(commitments);
 	}
 
 	/*
@@ -50,7 +42,8 @@ public class RetrieveCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
-		fail(iReq, null);
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	Failed to retrieve commitments from the server.");
 	}
 
 	/*
@@ -60,14 +53,7 @@ public class RetrieveCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		final Commitment[] errorMessage = {new Commitment("Error retrieving messages.", new Date(), false)};
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run()
-			{
-				controller.receivedMessages(errorMessage);
-			}
-		});
-
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
-
 }

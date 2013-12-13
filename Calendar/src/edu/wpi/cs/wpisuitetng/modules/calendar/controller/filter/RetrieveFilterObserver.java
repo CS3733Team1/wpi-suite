@@ -10,8 +10,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter;
 
-import javax.swing.SwingUtilities;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -30,14 +28,9 @@ public class RetrieveFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		final Filter[] fil = Filter.fromJSONArray(iReq.getResponse().getBody());
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run()
-			{
-				controller.receivedMessages(fil);
-			}
-		});
-		
+		System.out.println("	The request to retrieve filters was successful.");
+		Filter[] filters = Filter.fromJSONArray(iReq.getResponse().getBody());
+		controller.receivedMessages(filters);
 	}
 
 	/*
@@ -45,7 +38,8 @@ public class RetrieveFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseError(IRequest iReq) {
-		fail(iReq, null);
+		System.err.println("	" + iReq.getResponse().getStatusMessage());
+		System.err.println("	Failed to retrieve filters from the server.");
 	}
 
 	/*
@@ -55,6 +49,7 @@ public class RetrieveFilterObserver implements RequestObserver{
 	 */
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("Failed To Retrieve Filters");
+		System.err.println("	" + exception);
+		System.err.println("	The request failed to connect to the server.");
 	}
 }

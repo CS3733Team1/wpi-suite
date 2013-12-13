@@ -13,13 +13,11 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 import java.awt.Color;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.MatteBorder;
 
-import net.miginfocom.swing.MigLayout;
-
-public class DayCalendarScrollPane extends JScrollPane{
+public class DayCalendarScrollPane extends JScrollPane {
 	private DayCalendarLayerPane daylayer;
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	private JLabel dayLabel;
@@ -30,7 +28,7 @@ public class DayCalendarScrollPane extends JScrollPane{
 		daylayer = day;
 	
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-	
+		this.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
 	}
 	
 }

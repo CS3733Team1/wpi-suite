@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -25,161 +24,146 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
  * -A boolean that keeps track of whether this Filter is active
  */
 public class Filter extends DeletableAbstractModel {
-	
+
 	public String name;
 	private ArrayList<Category> categories;
 	private boolean isSelected;
-	
+
 	public Filter(){}
-	
+
 	public Filter(String name) {
 		this.name = name;
 		this.categories = new ArrayList<Category>();
 		this.isSelected = false;
 	}
 	
+	public Filter(String name, long uid) {
+		this.name = name;
+		this.categories = new ArrayList<Category>();
+		this.isSelected = false;
+		this.setUniqueID(uid);
+	}
+
 	public Filter(String name, List<Category> list) {
 		this(name);
 		for(Category cat: list) {
 			addCategory(cat);
 		}
 	}
-	
+
 	/**
 	 * Adds a Category to the list of allowed Categories for this Filter.
 	 * @param cat The Category to be added. The Category is cloned inside of this method, so it
 	 * can be passed directly.
 	 */
-	
+
 	public void addCategory(Category cat) {
 		Category dupedCat = cat.cloneFake();
 		categories.add(dupedCat);
 	}
-	
+
 	public String getName() {return this.name;}
-	
+
 	/**
 	 * Removes a Category from the list of allowed Categories for this Filter.
 	 * @param cat The Category to be removed. The Category is cloned inside of this method, so it
 	 * can be passed directly.
 	 */
-	
+
 	public void removeCategory(Category cat) {
 		categories.remove(cat.cloneFake());
 	}
-	
-	
+
+
 	/**
 	 * @return An ArrayList of the allowed Categories for this Filter.
 	 */
 	public ArrayList<Category> getCategories() {
 		return categories;
 	}
-	
+
 	/**
 	 * Applies this Filter to a List of Events.
 	 * @param inlist The List of Events to be filtered
 	 * @return An ArrayList of Events with Categories that belong to this Filter's whitelist
 	 */
 	public List<Event> applyEventFilter(List<Event> inlist) {
-		List<Event> outlist = (new ArrayList<Event>());
+		List<Event> outlist = new ArrayList<Event>();
 		for(Event event: inlist) {
-					 for(Category cat: this.categories) {
-						 if(event.getCategory().equals(cat)) {
-							 outlist.add(event);
-							 	break;
-						 }
-					 }
+			for(Category cat: this.categories) {
+				if(event.getCategory().equals(cat)) {
+					outlist.add(event);
+					break;
+				}
+			}
 		}
-		
+
 		return filterTeamPersonal(outlist);
 	}
-	
+
 	/**
 	 * Applies this Filter to a List of Commitments.
 	 * @param inlist The List of Commitments to be filtered
 	 * @return An ArrayList of Commitments with Categories that belong to this Filter's whitelist
 	 */
 	public List<Commitment> applyCommitmentFilter(List<Commitment> inlist) {
-		List<Commitment> outlist = (new ArrayList<Commitment>());
-		
-		for(Commitment commitment: inlist)
-		{
-					 for(Category cat: this.categories) {
-						 if(commitment.getCategory().equals(cat)) {
-							 outlist.add(commitment);
-							 	break;
-						 }
-					 }
+		List<Commitment> outlist = new ArrayList<Commitment>();
+
+		for(Commitment commitment: inlist) {
+			for(Category cat: this.categories) {
+				if(commitment.getCategory().equals(cat)) {
+					outlist.add(commitment);
+					break;
+				}
+			}
 		}
-		
+
 		return filterTeamPersonal(outlist);
 	}
-	
+
 	//This method attempts to filter a list of things based on
 	// the status of the Team/Personal calendar checkbox's
-	public static  <T extends DeletableAbstractModel> List<T> filterTeamPersonal(List<T> list)
-	{
+	public static  <T extends DeletableAbstractModel> List<T> filterTeamPersonal(List<T> list) {
 		List<T> removeList = new ArrayList<T>();
-		if (MainView.getCurrentCalendarPanel() == null)
-		{
+		if (MainView.getCurrentCalendarPanel() == null) {
 			System.out.println("Current Calendar Panel null, not filtering based on Team/Personal");
 			return list;
 		}
 		int state = -1;
-		try 
-		{
+		try {
 			state = MainView.getCurrentCalendarPanel().getCalendarTabPanel().getTeamPersonalState();
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			state = -1;
 		}
+		
 		//3 = Both Checked
 		//2 = Personal
 		//1 = Team
 		//0 = none
-		switch (state)
-		{
+
+		switch (state) {
 		default:
 		case 3://both
-			System.out.println("Allow both team and personal events");
 			return list;
 		case 2: //personal events
-			System.out.println("Allow only personal events");
-			for (T i : list)
-			{
+			for (T i : list) {
 				if (i.isTeam)
 					removeList.add(i);
 			}
 			break;
 		case 1: //Team Events only
-			System.out.println("Allow only Team Events");
-			for (T i : list)
-			{
+			for (T i : list) {
 				if (!i.isTeam)
 					removeList.add(i);
 			}
 			break;
 		case 0: //none
-			System.out.println("Allow no events");
 			list.clear();
 			return list;
 		}
 		list.removeAll(removeList);
 		return list;
-		
-	}
-	
-	@Override
-	public void save() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete() {
-		this.markForDeletion();
 	}
 
 	@Override
@@ -188,23 +172,15 @@ public class Filter extends DeletableAbstractModel {
 		String str = new Gson().toJson(this, Filter.class);
 		return str;
 	}
-	
-	public static Filter[] fromJSONArray(String input)
-	{
+
+	public static Filter[] fromJSONArray(String input) {
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Filter[].class);
 	}
-	
-	public static Filter fromJSON(String input)
-	{
+
+	public static Filter fromJSON(String input) {
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Filter.class);
-	}
-
-	@Override
-	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void setSelected(boolean b) {
@@ -214,5 +190,12 @@ public class Filter extends DeletableAbstractModel {
 	public boolean getSelected() {
 		return this.isSelected;
 	}
-
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Filter) {
+			Filter filterOther = (Filter)o;
+			return this.getUniqueID() == filterOther.getUniqueID();
+		} else return false;
+	}
 }
