@@ -17,6 +17,10 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 	private Commitment commitmentBeingDragged;
 	private int initialIndex;
 	private int finalIndex;
+	
+	private boolean dragMultiDay;
+	private int daysToLeft;
+	private int totalDays;
 
 	public EvComMouseListener(MonthCalendarView monthView) {
 		this.monthView = monthView;
@@ -34,9 +38,14 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 			if(evComPanel.isMultiDay()) { // Select all multiday events
 				List<MultiDayEventPanel> selectedMultiDayEventList = new ArrayList<MultiDayEventPanel>();
 				for(List<MultiDayEventPanel> multiDayEventPanelList: multiDayEventPanelLists) {
-					if(multiDayEventPanelList.contains(evComPanel)) {
-						selectedMultiDayEventList = multiDayEventPanelList;
-						break;
+					for(int i = 0; i < multiDayEventPanelList.size(); i++) {
+						if(multiDayEventPanelList.get(i).equals(evComPanel)) {
+							selectedMultiDayEventList = multiDayEventPanelList;
+							dragMultiDay = true;
+							daysToLeft = i;
+							totalDays = multiDayEventPanelList.size();
+							break;
+						}
 					}
 				}
 				if(evComPanel.isSelected())
@@ -44,6 +53,8 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 				else for(EvComPanel multiDayEvent: selectedMultiDayEventList) multiDayEvent.setSelected(true);
 				eventBeingDragged = ((MultiDayEventPanel)evComPanel).getEvent();
 			} else {
+				dragMultiDay = false;
+				
 				if(evComPanel.isSelected())
 					evComPanel.setSelected(false);
 				else evComPanel.setSelected(true);
@@ -58,8 +69,8 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(eventBeingDragged != null) monthView.setDragData(eventBeingDragged.getCategory().getColor(), eventBeingDragged.getName());
-		else monthView.setDragData(commitmentBeingDragged.getCategory().getColor(), commitmentBeingDragged.getName());
+		if(eventBeingDragged != null) monthView.setDragData(eventBeingDragged.getCategory().getColor(), eventBeingDragged.getName(), dragMultiDay, daysToLeft, totalDays);
+		else monthView.setDragData(commitmentBeingDragged.getCategory().getColor(), commitmentBeingDragged.getName(), dragMultiDay, daysToLeft, totalDays);
 		monthView.setDragging(true);
 		monthView.updateDragCoor(e.getPoint());
 		monthView.repaint();

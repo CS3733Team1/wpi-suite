@@ -88,6 +88,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	private boolean isDragging;
 	private String draggingText;
 	private Color draggingColor;
+	private boolean dragMultiDay;
+	private int daysToLeft;
+	private int totalDays;
 	
 	public MonthCalendarView() {
 		this.filteredEventsModel = FilteredEventsListModel.getFilteredEventsListModel();
@@ -586,9 +589,12 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		isDragging = dragging;
 	}
 	
-	public void setDragData(Color c, String text) {
+	public void setDragData(Color c, String text, boolean dragMultiDay, int daysToLeft, int totalDays) {
 		this.draggingColor = new Color(c.getRed(), c.getGreen(), c.getBlue(), 128);
 		this.draggingText = text;
+		this.dragMultiDay = dragMultiDay;
+		this.daysToLeft = daysToLeft;
+		this.totalDays = totalDays;
 	}
 	
 	public void updateDragCoor(Point p) {
@@ -601,9 +607,15 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		super.paint(g);
 		if(isDragging) {
 			g.setColor(draggingColor);
-			g.fillRect(x-days.get(0).getWidth()/2, y-7, days.get(0).getWidth(), 14);
-			g.setColor(CalendarUtils.titleNameColor);
-			g.drawString(draggingText, x + 4 - days.get(0).getWidth()/2, y + 4);
+			if(dragMultiDay) {
+				g.fillRect(x-days.get(0).getWidth()/2 - daysToLeft*days.get(0).getWidth(), y-7, days.get(0).getWidth()*totalDays, 14);
+				g.setColor(CalendarUtils.titleNameColor);
+				g.drawString(draggingText, 4 + x - days.get(0).getWidth()/2 - daysToLeft*days.get(0).getWidth(), y + 4);
+			} else {
+				g.fillRect(x-days.get(0).getWidth()/2, y-7, days.get(0).getWidth(), 14);
+				g.setColor(CalendarUtils.titleNameColor);
+				g.drawString(draggingText, x + 4 - days.get(0).getWidth()/2, y + 4);
+			}
 		}
 	}
 	
