@@ -214,4 +214,16 @@ public class Event extends DeletableAbstractModel implements Comparable<ISchedul
 			return this.getUniqueID() == eventOther.getUniqueID();
 		} else return false;
 	}
+
+	public void copyFrom(Event e) {
+		this.name = e.name;
+		this.startDate = e.startDate;
+		this.endDate = e.endDate;
+		this.description = e.description;
+		this.category = e.category;
+		
+		this.uniqueID = e.uniqueID;
+		this.ownerID = e.ownerID;
+		this.ownerName = e.ownerName;
+	}
 }
