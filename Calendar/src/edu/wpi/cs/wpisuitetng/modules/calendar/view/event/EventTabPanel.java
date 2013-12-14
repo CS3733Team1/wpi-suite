@@ -244,7 +244,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		} else {
 			Date temp = allDayTimeChooser_.getDate();
 			startDate = temp;
-			temp.setHours(5);
+			temp.setHours(24);
 			endDate = temp;
 		}
 
@@ -301,7 +301,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		} else {
 			startDate = allDayTimeChooser_.getDate();
 			Date tempDate = allDayTimeChooser_.getDate();
-			tempDate.setHours(24);
+			tempDate.setHours(23);
 			allDayTimeChooser_.setDate(tempDate);
 			endDate = allDayTimeChooser_.getDate();
 		}
@@ -326,6 +326,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	private void dayChanged(){
 		//		System.out.println("Day Changed");
+		eventRecurringPanel.setChkBox(allDayTimeChooser_.getDate());
 		fillDay();
 		//DateTimeChanged();
 	}

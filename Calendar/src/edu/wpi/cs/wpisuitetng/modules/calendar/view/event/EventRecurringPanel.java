@@ -144,7 +144,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	}
 
 
-	private void setChkBox(Date startDate) {
+	void setChkBox(Date startDate) {
 		switch(startDate.getDay()){
 		case 0: 
 			chckbxSunday.setSelected(true);
