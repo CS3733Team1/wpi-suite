@@ -15,6 +15,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,14 +33,16 @@ import javax.swing.event.ListDataListener;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.DayPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
  * The second level of the week view hierarchy. Holds the WeekCalendarLayerPane and the WeekCalendarScrollPane.
  */
 
-public class WeekCalendarPanel extends JPanel implements ICalendarView, ListDataListener, ComponentListener {
+public class WeekCalendarPanel extends JPanel implements ICalendarView, ListDataListener, ComponentListener, MouseListener {
 
 	private WeekCalendarScrollPane weekscroll;
 	private WeekCalendarLayerPane weeklayer;
@@ -70,11 +74,11 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		
 		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		for(int days = 1; days < 8; days++){
-			JPanel weekName = new JPanel(new MigLayout("fill, insets 0"));
+			WeekNamePanel weekName = new WeekNamePanel();
 			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
 			label.setFont(new Font(label.getName(), Font.BOLD, 14));
 			weekdays.add(label);
-			weekName.add(label,"grow, aligny bottom");
+			weekName.setDayLabel(label);
 			if(days == 1 || days == 7)
 				label.setForeground(CalendarUtils.timeColor);
 			
@@ -87,9 +91,9 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 					label.setForeground(CalendarUtils.thatBlue);
 				}
 			}
-			
 	
 			weekName.setBackground(Color.white);
+			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny bottom, w 5000, grow");
 			weekpanel.add(weekName);
 		}
@@ -126,12 +130,12 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		weektitle.add(time, "aligny center, w 5000, grow");
 		todayIndex = 0;
 		for(int days = 1; days < 8; days++){
-			JPanel weekName = new JPanel(new MigLayout("fill"));
+			WeekNamePanel weekName = new WeekNamePanel();
 			WeekView week = weeklayer.getWeek();
 			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1] + " " + week.getDate(days));
 			label.setFont(new Font(label.getName(), Font.BOLD, 14));
 			weekdays.add(label);
-			weekName.add(label,"grow, aligny bottom");
+			weekName.setDayLabel(label);
 			if(days == 1 || days == 7)
 				label.setForeground(CalendarUtils.timeColor);
 			
@@ -148,6 +152,7 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 			else
 				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
 			weekName.setBackground(Color.white);
+			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny center, w 5000, grow");
 			weekpanel.add(weekName);
 		}
@@ -327,4 +332,27 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
+
+	//Mouse listener to like the labels in week view to the corresponding day view
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		WeekView week = weeklayer.getWeek();
+		WeekNamePanel weekName = (WeekNamePanel)e.getSource();
+		Calendar clickedDay = weekName.getDate();
+		System.out.println("it worked!!!");
+		CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
+		
+		tab.displayDayView();
+		tab.setCalendarViewDate(clickedDay);		
+	}
+	
+	// Unused
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	@Override
+	public void mouseReleased(MouseEvent e) {}
 }

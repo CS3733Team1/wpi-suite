@@ -14,8 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -26,11 +28,19 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEventListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.border.Border;
 
 public class EventRecurringPanel extends JPanel implements KeyListener, ActionListener {
+	//List of listeners
+	List<RecurringChangedEventListener> listeners = new ArrayList<RecurringChangedEventListener>();
+	
+	
 	// Errors strings
 	private final String INVALID_OCCURRENCES_ERROR = 	"Events must occur at least once.";
 	private final String INVALID_DAY_SELECTION_ERROR = 	"Today's date must be recurring.";
@@ -52,6 +62,25 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private JLabel wrongDaySelectionErrorLabel;
 	public EventRecurringPanel(Date startDate) {
 		this.buildLayout(startDate);
+	}
+	
+	/*******************************************************
+	 * Add Recurring Event Listeners
+	 */
+	
+	public void addRecurringChangedEventListener(RecurringChangedEventListener toAdd) {
+		listeners.add(toAdd);
+    }
+	public void removeTimeChangedEventListener(RecurringChangedEventListener toRemove) {
+		listeners.remove(toRemove);
+	}
+	
+	public void RecurringChanged(){
+		// Notify everybody that may be interested.
+		RecurringChangedEvent evt = new RecurringChangedEvent("");
+        for (RecurringChangedEventListener hl : listeners)
+            hl.RecurringChangedEventOccurred(evt);
+
 	}
 
 	/**
@@ -146,7 +175,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	 * @return void
 	 */
 	public boolean validateRecurring(Date startDate) {
-		this.startDate =  startDate;
+		this.startDate = startDate;
 		return validateRecurring();
 	}
 
@@ -244,14 +273,43 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		RecurringChanged();
 		validateRecurring();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		RecurringChanged();
 		validateRecurring();
 	}
 
+	public int getOccurrences() {
+		return Integer.parseInt(occurrencesTextField.getText());
+	}
+	
+	public boolean isDaySelected(int day)
+	{
+		switch(day)
+		{
+			case 0: 
+				return chckbxSunday.isSelected();
+			case 1: 
+				return chckbxMonday.isSelected();
+			case 2: 
+				return chckbxTuesday.isSelected();
+			case 3: 
+				return chckbxWednesday.isSelected();
+			case 4: 
+				return chckbxThursday.isSelected();
+			case 5: 
+				return chckbxFriday.isSelected();
+			case 6: 
+				return chckbxSaturday.isSelected();
+			default:
+				return false;
+		}
+	}
+	
 	// Unused
 	@Override
 	public void keyPressed(KeyEvent e) {}

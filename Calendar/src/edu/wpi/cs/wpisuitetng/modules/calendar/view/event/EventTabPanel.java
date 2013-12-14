@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -33,6 +34,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEvent;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.TimeDurationChooser;
 
 
@@ -114,7 +117,16 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		
 		// Recurring Events
 		eventRecurringPanel = new EventRecurringPanel(new Date());
+		eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
+			
+			@Override
+			public void RecurringChangedEventOccurred(RecurringChangedEvent evt) {
+				validateFields();
+			}
+		});
 		add(eventRecurringPanel, "cell 0 4,alignx left");
+		
+		
 		// Category
 		this.add(new JLabel("Category:"), "cell 0 5");
 		categoryPickerPanel = new CategoryPickerPanel();
@@ -122,7 +134,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		// Description
 		this.add(new JLabel("Description:"), "cell 0 6");
-
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
@@ -180,6 +191,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				enableAddEvent=false;
 			}
 		}
+		
+		if(!eventRecurringPanel.validateRecurring(durationChooser_.getStartDate()))
+		{
+			enableAddEvent = false;
+		}
 
 		addEventButton.setEnabled(enableAddEvent);
 	}
@@ -222,4 +238,33 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	public void keyPressed(KeyEvent e) {}
 	@Override
 	public void keyTyped(KeyEvent e) {}
+
+	public int numOfEvents() {
+		return eventRecurringPanel.getOccurrences();
+	}
+
+	public ArrayList<Event> getFilledEvents() {
+		int numOfEvents = numOfEvents();
+		
+		ArrayList<Event> eventList = new ArrayList<Event>();
+		Date startDate=durationChooser_.getStartDate();
+		Date endDate=durationChooser_.getEndDate();
+		
+		for(int i = 0, day = startDate.getDay(); i < numOfEvents; ++day)
+		{
+			if(day == 7)
+				day = 0;
+			if(eventRecurringPanel.isDaySelected(day))
+			{
+				eventList.add(new Event(nameTextField.getText(), (Date) startDate.clone(), (Date) endDate.clone(), calendarPicker.isTeam(), 
+						descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory()));
+				++i;
+			}
+			startDate.setDate(startDate.getDate() + 1);
+			endDate.setDate(endDate.getDate() + 1);
+			//make a new event with start and end times
+				
+		}
+		return eventList;
+	}
 }
