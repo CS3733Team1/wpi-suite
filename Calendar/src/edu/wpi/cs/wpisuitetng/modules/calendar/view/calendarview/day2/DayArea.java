@@ -333,7 +333,6 @@ public class DayArea extends JPanel implements ListDataListener{
  		
  		
  		for (Event eve: event){
-			System.err.println(eve);
 			Date evedate = eve.getStartDate();
 			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate());
 			if (currentDay.compareTo(key) == 0){
@@ -361,8 +360,6 @@ public class DayArea extends JPanel implements ListDataListener{
 					events.add(c);	
 			}
 		}
-		
-		System.err.println("Schedule: " + events);
  		
      }
      
