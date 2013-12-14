@@ -37,8 +37,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 public class MainView {
-
-	private static boolean isLoggedIn = false;
 	private List<JanewayTabModel> tabs;
 	private static CalendarPanel calendarPanel;
 	private static CalendarToolBar calendarToolBar;
@@ -107,21 +105,13 @@ public class MainView {
 	{
 		return MainView.calendarToolBar;
 	}
-	public static synchronized boolean getIsLoggedIn()
-	{
-		return isLoggedIn;
-	}
-	public static synchronized void setIsLoggedIn(boolean logged)
-	{
-		isLoggedIn = logged;
-	}
 	class UpdateTimerTask extends TimerTask
 	{
 		@Override
 		public void run() {
 				// TODO Auto-generated method stub
 				System.out.println("Auto refresh at");
-				if (isLoggedIn)
+				if (MainView.getCurrentCalendarPanel().isDisplayable() && MainView.getCurrentCalendarPanel().isShowing())
 				{
 					SwingUtilities.invokeLater(new Runnable() {
 					public void run(){
