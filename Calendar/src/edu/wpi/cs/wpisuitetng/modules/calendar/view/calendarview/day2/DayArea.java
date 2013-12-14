@@ -38,11 +38,13 @@ public class DayArea extends JPanel implements ListDataListener{
 
     
     private List<ISchedulable> events;
+    private List<Event> multi;
     
     private Date currentDay;
     
 	public DayArea(){
 		events = new LinkedList<ISchedulable>();
+		multi = new LinkedList<Event>();
 		
 		currentDay = new Date();
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
@@ -63,6 +65,7 @@ public class DayArea extends JPanel implements ListDataListener{
 	
 	public DayArea(Date d){
 		events = new LinkedList<ISchedulable>();
+		multi = new LinkedList<Event>();
 		
 		currentDay = d;
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
@@ -323,6 +326,7 @@ public class DayArea extends JPanel implements ListDataListener{
      public void findSchedulableItems(){
     	 Date key;
     	 events = new LinkedList<ISchedulable>();
+    	 multi = new LinkedList<Event>();
     	 
     	List<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList();
  		List<Commitment> comm = FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList();
@@ -338,12 +342,12 @@ public class DayArea extends JPanel implements ListDataListener{
 				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
 					events.add(eve);
 				else{
-					//multi.add(eve);	
+					multi.add(eve);	
 				}
 			}
 			else if(currentDay.after(eve.getStartDate()) && currentDay.before(eve.getEndDate()))
 			{
-				//multi.add(eve);
+				multi.add(eve);
 			}
 		}
 		
@@ -370,6 +374,7 @@ public class DayArea extends JPanel implements ListDataListener{
      {
     	 this.removeAll();
     	 events.clear();
+    	 multi.clear();
     	 	findSchedulableItems();
             ArrayList<ArrayList<ISchedulable>> eventMap = new ArrayList<ArrayList<ISchedulable>>();
             eventMap=generateMap();
@@ -378,6 +383,10 @@ public class DayArea extends JPanel implements ListDataListener{
            //this.repaint();
      }
 	
+    public List<Event> getMultiDayEvents(){
+    	return multi;
+    }
+    
 	public Date getDayViewDate(){
 		return currentDay;
 	}

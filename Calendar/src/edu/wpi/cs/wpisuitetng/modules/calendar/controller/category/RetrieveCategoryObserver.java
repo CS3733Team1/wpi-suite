@@ -10,6 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.category;
 
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -28,9 +30,14 @@ public class RetrieveCategoryObserver implements RequestObserver{
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to retrieve categories was succesful.");
-		Category[] categories = Category.fromJSONArray(iReq.getResponse().getBody());
-		controller.receivedMessages(categories);
+		System.out.println("	The request to retrieve categories was successful.");
+		
+		/** This needs to be done from the Event Dispatch thread**/
+		final Category[] categories = Category.fromJSONArray(iReq.getResponse().getBody());
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+			controller.receivedMessages(categories);
+		}});
 	}
 
 	/*

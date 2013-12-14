@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -212,4 +213,33 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	public void keyPressed(KeyEvent e) {}
 	@Override
 	public void keyTyped(KeyEvent e) {}
+
+	public int numOfEvents() {
+		return eventRecurringPanel.getOccurrences();
+	}
+
+	public ArrayList<Event> getFilledEvents() {
+		int numOfEvents = numOfEvents();
+		
+		ArrayList<Event> eventList = new ArrayList<Event>();
+		Date startDate=durationChooser_.getStartDate();
+		Date endDate=durationChooser_.getEndDate();
+		
+		for(int i = 0, day = startDate.getDay(); i < numOfEvents; ++day)
+		{
+			if(day == 7)
+				day = 0;
+			if(eventRecurringPanel.isDaySelected(day))
+			{
+				eventList.add(new Event(nameTextField.getText(), (Date) startDate.clone(), (Date) endDate.clone(), calendarPicker.isTeam(), 
+						descriptionTextArea.getText(), categoryPickerPanel.getSelectedCategory()));
+				++i;
+			}
+			startDate.setDate(startDate.getDate() + 1);
+			endDate.setDate(endDate.getDate() + 1);
+			//make a new event with start and end times
+				
+		}
+		return eventList;
+	}
 }

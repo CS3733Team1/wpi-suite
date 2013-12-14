@@ -3,8 +3,11 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 import java.awt.Dimension;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JPanel;
+
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -39,6 +42,10 @@ public class DayHolderPanel extends JPanel{
 		hour.reSize(new Integer((int) (width * .1)));
 		
 		this.repaint();
+	}
+	
+	public List<Event> getMultiDayEvents(){
+		return day.getMultiDayEvents();
 	}
 	
 	public Date getDayViewDate(){

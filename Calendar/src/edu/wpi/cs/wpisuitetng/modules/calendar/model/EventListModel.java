@@ -143,5 +143,12 @@ public class EventListModel extends AbstractListModel<Event> {
 	public synchronized void update() {
 		this.fireIntervalAdded(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
 	}
+
+	public void updateEvent(Event oldEvent, Event newEvent) 
+	{
+		removeEvent(oldEvent);
+		addEvent(newEvent);
+		this.fireIntervalAdded(this, 0, 0);
+	}
 	
 }

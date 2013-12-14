@@ -30,10 +30,13 @@ public class DayCalendar extends JPanel implements ICalendarView{
 
 	private DayCalendarScrollPane dayscroll;
 	private DayHolderPanel daylayer;
+	private MultidayEventView multiview;
+	private DayMultiScrollPane mscroll;
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	private JLabel dayLabel;
 	private JPanel daytitle;
 	private JPanel dayname;
+	
 
 
 	public DayCalendar(){
@@ -77,8 +80,16 @@ public class DayCalendar extends JPanel implements ICalendarView{
 		this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
 
 		dayscroll = new DayCalendarScrollPane(daylayer);
+		
+		
+		multiview = new MultidayEventView(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
+		
+		mscroll = new DayMultiScrollPane(multiview);
+		this.add(mscroll, "grow, wrap, hmin 120, hmax 120");
 
 		this.add(dayscroll, "grow, push");
+		
+		
 		
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
 		dayscroll.getVerticalScrollBar().setValue(3*end/8);
@@ -115,6 +126,12 @@ public class DayCalendar extends JPanel implements ICalendarView{
 
 		super.repaint();
 	}
+	
+	public void updateMultiDay(){
+		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
+		mscroll.getViewport().updateUI();
+		mscroll.updateUI();
+	}
 
 	@Override
 	public String getTitle() {
@@ -128,6 +145,7 @@ public class DayCalendar extends JPanel implements ICalendarView{
 	public void next() {
 		// TODO Auto-generated method stub
 		daylayer.next();
+		updateMultiDay();
 	}
 
 	@Override
@@ -135,18 +153,21 @@ public class DayCalendar extends JPanel implements ICalendarView{
 		// TODO Auto-generated method stub
 
 		daylayer.previous();
+		updateMultiDay();
 	}
 
 	@Override
 	public void today() {
 		// TODO Auto-generated method stub
 		daylayer.today();
+		updateMultiDay();
 	}
 
 
 	@Override
 	public void viewDate(Calendar date) {
 		daylayer.viewDate(date);
+		updateMultiDay();
 	}
 
 }

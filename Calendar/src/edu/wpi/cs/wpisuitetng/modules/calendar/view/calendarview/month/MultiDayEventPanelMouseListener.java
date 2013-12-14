@@ -14,9 +14,9 @@ public class MultiDayEventPanelMouseListener implements MouseListener {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		for(MultiDayEventPanel eventPanel: multidayEvents) {
-			if(eventPanel.getSelected()) eventPanel.setSelected(false);
+			if(eventPanel.isSelected()) eventPanel.setSelected(false);
 			else eventPanel.setSelected(true);
 		}
 	}
@@ -27,7 +27,7 @@ public class MultiDayEventPanelMouseListener implements MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {}
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 }

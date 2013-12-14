@@ -5,9 +5,9 @@ import java.awt.event.MouseListener;
 
 public class EventPanelMouseListener implements MouseListener{
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		EventPanel eventPanel = (EventPanel)e.getSource();
-		if(eventPanel.getSelected()) eventPanel.setSelected(false);
+		if(eventPanel.isSelected()) eventPanel.setSelected(false);
 		else eventPanel.setSelected(true);
 	}
 	
@@ -17,7 +17,7 @@ public class EventPanelMouseListener implements MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {}
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 }

@@ -9,6 +9,8 @@
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
+import javax.swing.SwingUtilities;
+
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
@@ -32,9 +34,12 @@ public class RetrieveCommitmentObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to retrieve commitments was succesful.");
-		Commitment[] commitments = Commitment.fromJSONArray(iReq.getResponse().getBody());
-		controller.receivedMessages(commitments);
+		System.out.println("	The request to retrieve commitments was successful.");
+		final Commitment[] commitments = Commitment.fromJSONArray(iReq.getResponse().getBody());
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+			controller.receivedMessages(commitments);
+		}});
 	}
 
 	/*
