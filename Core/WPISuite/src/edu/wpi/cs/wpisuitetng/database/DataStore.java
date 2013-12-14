@@ -175,7 +175,8 @@ public class DataStore implements Data {
 		final Method theGetter = methodToBeSaved;
 		if (theGetter == null) {
 			logger.log(Level.WARNING,
-					"Getter method was null during retrieve attempt");
+					"Getter method for " + aFieldName + " was null during retrieve attempt");
+			System.out.println(aFieldName);
 			throw new WPISuiteException("Null getter method.");
 		}
 

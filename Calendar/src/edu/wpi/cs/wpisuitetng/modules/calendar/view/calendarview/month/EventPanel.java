@@ -38,10 +38,6 @@ public class EventPanel extends EvComPanel {
 		this.add(eventNameLabel, "gap left 5, wmin 0");
 		this.add(eventTimeLabel, "gap right 5");
 	}
-	
-	public void setBackground(Color backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
 
 	private void update() {
 		if(this.isSelected) {
