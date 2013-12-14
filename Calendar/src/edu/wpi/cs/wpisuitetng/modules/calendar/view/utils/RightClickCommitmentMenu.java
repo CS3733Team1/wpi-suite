@@ -68,12 +68,16 @@ public class RightClickCommitmentMenu extends JPopupMenu implements MouseListene
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
 			}
+			
+			/**
+			 * When the mouse is released on the Edit Button, Edit all selected commitments
+			 */
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
+				//iterate through all commitments in this edit menu's list of commitments
 				for(Commitment commitment : commitments){
-					commitmentListPanel.setSelectedCommitment(commitment);
-					commitmentListPanel.openUpdateCommitmentTabPanel();
+					commitmentListPanel.setSelectedCommitment(commitment);	//set it as the selected commitment in the CommitmentListPanel
+					commitmentListPanel.openUpdateCommitmentTabPanel();		//call the panel's method to edit the selected commitment
 				}
 				System.out.println("Mouse Released on edit button");
 			}
