@@ -73,13 +73,13 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		this.buildLayout();
 	}
 
-	public CommitmentTabPanel(JEditorPane display, Commitment c)
+	public CommitmentTabPanel(Commitment c)
 	{
 		System.out.println("CommitmentTabPanel: Making tab to edit commitment: "+c.toString());
 		
 		isEditMode = true;
 		editCommitment = c;
-		this.display = display;
+		
 
 		this.buildLayout();
 		
@@ -234,10 +234,6 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		}
 
 		addCommitmentButton.setEnabled(enableAddCommitment);
-	}
-
-	public JEditorPane getCommitmentView() {
-		return display;
 	}
 
 	/**

@@ -123,13 +123,14 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	}
 
 	public void openUpdateCommitmentTabPanel() {
-		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(detailDisplay, selectedCommitment);
-		ImageIcon miniCommitmentIcon = new ImageIcon();
-		try {
-			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
-		} catch (IOException exception) {}
-		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
-		calendarPanel.setSelectedComponent(commitmentPanel);	
+//		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(selectedCommitment);
+//		ImageIcon miniCommitmentIcon = new ImageIcon();
+//		try {
+//			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
+//		} catch (IOException exception) {}
+//		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
+//		calendarPanel.setSelectedComponent(commitmentPanel);	
+		RightClickCommitmentMenu.openUpdateCommitmentTab(calendarPanel, selectedCommitment);
 	}
 
 	public void setSelectedCommitment(Commitment c){

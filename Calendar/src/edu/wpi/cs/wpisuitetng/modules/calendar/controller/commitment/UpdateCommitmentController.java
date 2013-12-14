@@ -26,13 +26,11 @@ public class UpdateCommitmentController implements ActionListener {
 	CommitmentListModel model;
 	CommitmentTabPanel view;
 	Commitment oldCommitment;
-	JEditorPane commitmentDisplay;
 	
 	public UpdateCommitmentController(CommitmentTabPanel view, Commitment oldCommitment) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.view = view;
 		this.oldCommitment = oldCommitment;
-		this.commitmentDisplay = view.getCommitmentView();
 	}
 	
 	@Override
@@ -58,7 +56,6 @@ public class UpdateCommitmentController implements ActionListener {
 	public void updateCommitmentInModel(Commitment newCommitment) {
 		System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
 		model.updateCommitment(oldCommitment, newCommitment);
-		commitmentDisplay.setText(newCommitment.toString());
 		view.closeCommitmentPanel();
 	}
 
