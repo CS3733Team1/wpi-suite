@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,26 +24,35 @@ public class MultidayEventView extends JPanel{
 	private List<Event> multidaye;
 	private List<JPanel> displayEvents;
 	private Date cdate;
-	private static boolean isEventShowing = false;
+	private static boolean isEventShowing = true;
 
-	public MultidayEventView(List<Event> multiday, Dimension size, Date current){
+	public MultidayEventView(List<Event> multiday, Date current){
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
 
-		this.setSize(size);
-		this.setPreferredSize(size);
-
 		showEvents();
+		DisplayEventDropDown();
 
-		if (isEventShowing){
-			DisplayEventDropDown();
-		}
-
+		this.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
+		
 		this.setOpaque(false);
 		this.setVisible(true);
 	}
 
+	public void updateMultiDay(List<Event> multiday, Date current){
+		multidaye = multiday;
+		displayEvents = new LinkedList<JPanel>();
+		cdate = current;
+
+		this.removeAll();
+
+		showEvents();
+		DisplayEventDropDown();
+		
+		System.err.println(this.getPreferredSize());
+	}
+	
 	/**
 	 * Sorts the List of Events by StartDate
 	 */
@@ -67,37 +76,7 @@ public class MultidayEventView extends JPanel{
 				"[20%][80%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 
-		JPanel eventinfo = new JPanel();
-		eventinfo.add(new JLabel("Multiday Event"), "wmin 0, aligny top, alignx center");
-		StringBuilder evebuilder = new StringBuilder();
-		evebuilder.append("cell ");
-		evebuilder.append("0");
-		evebuilder.append(" ");
-		evebuilder.append("0");
-		evebuilder.append(" ");
-		evebuilder.append("2");
-		evebuilder.append(" ");
-		evebuilder.append("0");
-		evebuilder.append(",grow, push");
-
-
-		eventinfo.setBackground(Color.PINK);
-		this.add(eventinfo, evebuilder.toString());
-		eventinfo.addMouseListener(new MultiDayListener(this));
-
-		StringBuilder bob = new StringBuilder();
-		bob.append("<html>");
-		for (Event eve: multidaye){
-			bob.append("<p>");
-			bob.append("<b>Name:</b> ");
-			bob.append(eve.getName());
-			bob.append("<br><b>Description:</b> ");
-			bob.append(eve.getDescription());
-			bob.append("</p>");
-		}
-		bob.append("</html>");
-		eventinfo.setToolTipText(bob.toString());
-
+		
 	}
 
 	/**
@@ -132,7 +111,7 @@ public class MultidayEventView extends JPanel{
 	public void DisplayEventDropDown(){
 		displayEvents.clear();
 
-		int x = 1;
+		int x = 0;
 		for (Event eve: multidaye){
 			JPanel multipane = new JPanel(new MigLayout("fill", "[][][]", "[]"));
 
@@ -220,4 +199,5 @@ public class MultidayEventView extends JPanel{
 		repaint();
 		this.updateUI();
 	}
+
 }
