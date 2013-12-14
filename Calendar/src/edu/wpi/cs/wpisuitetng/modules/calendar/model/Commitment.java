@@ -53,7 +53,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 	private String description;
 	private Category category;
 	private State progress;
-	private int id;
 
 	//------------ATTENTION---------
 	//Should Category have an empty constructor?
@@ -70,7 +69,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this.uniqueID=other.uniqueID;
 		this.ownerID=other.ownerID;
 		this.ownerName=other.ownerName;
-		this.id=other.id;
 	}
 	/**
 	 * Constructs a Commitment object
@@ -83,7 +81,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this.progress = State.NEW; //Default
 		this.isTeam = Teamhuh;
 
-		createID();
 	}
 
 	/**
@@ -96,7 +93,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.progress = State.NEW; //Default
-		createID();
 	}
 
 	/**
@@ -109,7 +105,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this(name, dueDate, Teamhuh);
 		this.category = category.cloneFake();
 		this.progress = State.NEW; //Default
-		createID();
 	}
 
 	/**
@@ -125,7 +120,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = State.NEW; //Default
-		createID();
 	}
 
 	/**
@@ -140,7 +134,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this(name, dueDate, Teamhuh);
 		this.description = description;
 		this.progress=getStateFromString(progress);
-		createID();
 	}
 
 	/**
@@ -155,7 +148,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this(name, dueDate, Teamhuh);
 		this.category = category.cloneFake();
 		this.progress = getStateFromString(progress);
-		createID();
 	}
 
 	/**
@@ -172,7 +164,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this.description = description;
 		this.category = category.cloneFake();
 		this.progress = getStateFromString(progress);
-		createID();
 	}
 
 	/**
@@ -262,27 +253,6 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 	}
 
 	/**
-	 * Creates a unique ID for a commitment.
-	 */
-	private void createID() {
-		id = UUID.randomUUID().hashCode();
-	}
-	/**
-	 * Set the uniquieID to a specific number
-	 */
-
-	public void setID(int newID) {
-		id = newID;
-	}
-
-	/**
-	 * @return The unique ID of the commitment
-	 */
-	public int getID() {
-		return id;
-	}
-
-	/**
 	 * @return a JSON String representation of this Commitment
 	 */
 	@Override
@@ -356,10 +326,13 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 		this.category = toCopyFrom.getCategory();
 		this.description = toCopyFrom.getDescription();
 		this.dueDate = toCopyFrom.getDueDate();
-		this.id = toCopyFrom.getID();
 		this.name = toCopyFrom.getName();
 		this.isTeam = toCopyFrom.getisTeam();
 		this.progress = toCopyFrom.getProgressState();
+		this.uniqueID = toCopyFrom.getUniqueID();
+		this.ownerID = toCopyFrom.getOwnerID();
+		this.ownerName = toCopyFrom.getOwnerName();
+		
 	}
 
 	@Override
