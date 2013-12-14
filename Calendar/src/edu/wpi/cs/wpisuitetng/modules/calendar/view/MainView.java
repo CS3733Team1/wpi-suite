@@ -16,7 +16,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.ChangeToolBarController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.RetrieveCategoryController;
@@ -78,19 +80,27 @@ public class MainView {
 
 		calendarPanel.createCalendar();
 		
-		new Timer().schedule(new TimerTask(){
+		
+		new Timer(true).schedule(new TimerTask(){
 
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				System.out.println("Auto refresh at");
-				rcomc.retrieveMessages();
-				revec.retrieveMessages();
-				rcatc.retrieveMessages();
-				rfilc.retrieveMessages();
+				SwingUtilities.invokeLater(new Runnable() {
+				public void run(){
+					if (ConfigManager.getConfig().getUserName() != null)
+					{
+						System.out.println("USER " + ConfigManager.getConfig().getUserName());
+						rcomc.retrieveMessages();
+						revec.retrieveMessages();
+						rcatc.retrieveMessages();
+						rfilc.retrieveMessages();
+					}
+				}});
 			}
 			
-		}, 0, 10000);
+		}, 30 * 1000, 10000);
 		
 	}
 
