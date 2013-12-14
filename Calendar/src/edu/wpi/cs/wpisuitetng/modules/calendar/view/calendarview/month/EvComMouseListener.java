@@ -6,6 +6,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.UpdateEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 
@@ -94,7 +95,8 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 				eventBeingDragged.getStartDate().setDate(eventBeingDragged.getStartDate().getDate() + (finalIndex - initialIndex));
 				eventBeingDragged.getEndDate().setDate(eventBeingDragged.getEndDate().getDate() + (finalIndex - initialIndex));
 				
-				//UPDATE EVENT
+				//Save updated event on the server
+				new UpdateEventController(eventBeingDragged);
 				
 				monthView.createEvComPanels();
 				monthView.updateEvComs();

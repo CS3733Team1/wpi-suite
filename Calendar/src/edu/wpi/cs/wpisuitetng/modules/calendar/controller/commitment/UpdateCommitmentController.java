@@ -36,9 +36,9 @@ public class UpdateCommitmentController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Commitment updatedCommitment = view.getFilledCommitment();
-		updatedCommitment.setID(oldCommitment.getID());	//TODO: this doesn't seem tow rok because commitments have id and uniqueID which are duplicated - they do the same thing. Here, id is updated but UniqueID is used for identifying commitments
+		updatedCommitment.setUniqueID(oldCommitment.getUniqueID());
 	
-		System.out.println("Updating commitment: name = " + oldCommitment.getName() + "; uid = " + oldCommitment.getUniqueID());
+		System.out.println("Updating commitment: name = " + updatedCommitment.toString());//oldCommitment.getName() + "; uid = " + oldCommitment.getUniqueID());
 
 		// Create a Post Request
 		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.POST);
