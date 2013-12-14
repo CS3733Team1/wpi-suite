@@ -50,6 +50,11 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 		this.fireIntervalAdded(this, 0, Math.max(filteredEvents.size() - 1, 0));
 	}
 	
+	/**
+	 * Calculates which commitments in a list are within the user's current view.
+	 * @param list A List of commitments.
+	 * @return inView An ArrayList of commitments in the user's current view.
+	 */
 	private ArrayList<Commitment> commitmentsInView(List<Commitment> list){
 		ArrayList<Commitment> inView = new ArrayList<Commitment>();
 
@@ -104,8 +109,13 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 		else return inView;
 	}
 	
-	private ArrayList<Commitment> eventsInView(List<Event> list){
-		ArrayList<Commitment> inView = new ArrayList<Commitment>();
+	/**
+	 * Calculates which events in a list are within the user's current view.
+	 * @param list A List of events.
+	 * @return inView An ArrayList of events in the user's current view.
+	 */
+	private ArrayList<Event> eventsInView(List<Event> list){
+		ArrayList<Event> inView = new ArrayList<Event>();
 
 		ICalendarView currentView = CalendarTabPanel.getCalendarView();
 		Iterator<Event> iterator = list.iterator();
