@@ -10,6 +10,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -19,6 +21,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
@@ -29,9 +32,10 @@ public class CategoryPanel extends JPanel implements MouseListener{
 	private CategoryListPanel categoryListPanel;
 
 	private JButton addCategoryButton, deleteCategoryButton;
-
+	JLabel errorLabel = new JLabel("Cannot delete default(*) categories");
+	
 	public CategoryPanel() {
-		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][grow, fill]"));
+		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][][grow, fill]"));
 
 		try {
 			addCategoryButton = new JButton("<html>New<br/>Category</html>",
@@ -52,7 +56,11 @@ public class CategoryPanel extends JPanel implements MouseListener{
 		p.add(addCategoryButton);
 		p.add(deleteCategoryButton);
 		
+		
+		errorLabel.setForeground(Color.RED);
+		errorLabel.setVisible(false);
 		this.add(p, "wrap");
+		this.add(errorLabel, "alignx center, hmax 15, wrap");
 		this.add(categoryListPanel, "grow, push");
 
 	}
@@ -83,6 +91,7 @@ public class CategoryPanel extends JPanel implements MouseListener{
 			}
 		}
 		deleteCategoryButton.setEnabled(deleteEnabled);
+		errorLabel.setVisible(!deleteEnabled);
 		repaint();
 	}
 

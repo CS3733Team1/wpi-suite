@@ -262,15 +262,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		Collections.sort(commitments);
 		Collections.sort(multiDayEvents);
 
-		for(int i = 0; i < events.size(); i++) {
-			Event event = events.get(i);
-			Date start = event.getStartDate();
-			Calendar startCal = createCalendarFromDate(start);
-			int index = getIndexofDay(startCal);
-			days.get(index).incrementNumEvComs();
-			if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
-		}
-
 		for(int i = 0; i < multiDayEvents.size(); i++) {
 			Event event = multiDayEvents.get(i);
 			Date start = event.getStartDate();
@@ -290,6 +281,15 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 				if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
 				iterCal.add(Calendar.DATE, 1);
 			}
+		}
+		
+		for(int i = 0; i < events.size(); i++) {
+			Event event = events.get(i);
+			Date start = event.getStartDate();
+			Calendar startCal = createCalendarFromDate(start);
+			int index = getIndexofDay(startCal);
+			days.get(index).incrementNumEvComs();
+			if(!daysWithEvComs.contains(days.get(index))) daysWithEvComs.add(days.get(index));
 		}
 
 		for(int i = 0; i < commitments.size(); i++) {
@@ -350,6 +350,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 				multiDay.add(multiDayEventPanel);
 
 				if(isFirstPanel) {
+					System.out.println("Adding first panel: " + multiDayEvent.getName());
 					multiDayEventPanels.add(multiDayEventPanel);
 					indexOfMultiday = days.get(index).addEvComPanel(multiDayEventPanel);
 					isFirstPanel = false;
