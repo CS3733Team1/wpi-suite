@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Help Template</title>
+</head>
+<body>
+<h1>Adding Text</h1>
+<p>Surround help text with paragraph tags ("p" in angle brackets). Each section should have a heading 
+describing the section's subject. Remember that linebreaks don't show up unless you use a "br" tag.
+</p>
+<h2>Adding Images to Text</h2>
+<p>Images can be added with an image tag. When adding an image, make sure you copy the image file into 
+the help folder (this document's parent directory) and refer to an image as a relative path.
+<br>Be sure that you <b>precisely follow</b> the format of image tags given in the example below. 
+Otherwise, the parser will break.
+<br><img src="question.png" alt="Question mark" width="24" height="24">
+</p>
+<h1>Adding Headings</h1>
+<p>A heading is marked with the "h<i>x</i>" tag, where <i>x</i> is a positive integer which describes 
+the level of nesting of the heading. That is, headings provide a way to organize a document into a tree; 
+h1 headings are root nodes, h2 headings should be children of h1 sections, h3 headings children of h2, and so on.
+</p>
+<h2>This Heading Is a Child of "Adding Headings"</h2>
+<h3>This Heading Is a Child of "This Heading Is a Child of "Adding Headings""</h3>
+</body>
+</html>

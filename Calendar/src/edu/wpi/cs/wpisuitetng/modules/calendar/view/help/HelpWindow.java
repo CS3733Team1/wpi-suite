@@ -231,7 +231,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		}
 		
 		try {
-			File f = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help/example.html");
+			File f = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help/template.html");
 			System.out.println("f path " + f.getAbsolutePath());
 			
 			display.setEditorKit(new HTMLEditorKit());
