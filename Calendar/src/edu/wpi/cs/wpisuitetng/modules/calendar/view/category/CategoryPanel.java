@@ -59,8 +59,11 @@ public class CategoryPanel extends JPanel implements MouseListener{
 		
 		errorLabel.setForeground(Color.RED);
 		errorLabel.setVisible(false);
+		
+		JLabel defaultCategory = new JLabel("Default(*) categories cannot be deleted");
 		this.add(p, "wrap");
-		this.add(errorLabel, "alignx center, hmax 15, wrap");
+		//this.add(errorLabel, "alignx center, hmax 15, wrap");
+		this.add(defaultCategory, "alignx center, hmax 15, wrap");
 		this.add(categoryListPanel, "grow, push");
 
 	}

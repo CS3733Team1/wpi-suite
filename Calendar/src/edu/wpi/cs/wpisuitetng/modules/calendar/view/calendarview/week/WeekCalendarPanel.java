@@ -163,7 +163,6 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 		for (int x = 0; x < 7; x++){
 			if (foundyou.get(x).size() > 0){
 				JPanel day = weekpanel.get(x);
-//				day.setBackground(Color.RED);
 				StringBuilder bob = new StringBuilder();
 				bob.append("<html>");
 				int i=1;
@@ -336,14 +335,15 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	//Mouse listener to like the labels in week view to the corresponding day view
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(e.getClickCount() == 2) {
 		WeekView week = weeklayer.getWeek();
 		WeekNamePanel weekName = (WeekNamePanel)e.getSource();
 		Calendar clickedDay = weekName.getDate();
-		System.out.println("it worked!!!");
 		CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
 		
 		tab.displayDayView();
-		tab.setCalendarViewDate(clickedDay);		
+		tab.setCalendarViewDate(clickedDay);
+		}
 	}
 	
 	// Unused
