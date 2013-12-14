@@ -24,7 +24,7 @@ public class DeleteCategoryObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// The response will not include a body as this is HTTP.DELETE
 		// Do nothing
-		System.out.println("	The request to delete a category was successful.");
+		System.out.println("	The request to delete a category was succesful.");
 	}
 
 	@Override
