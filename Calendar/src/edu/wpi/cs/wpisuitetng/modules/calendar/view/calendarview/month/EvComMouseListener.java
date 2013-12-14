@@ -70,7 +70,7 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(eventBeingDragged != null) monthView.setDragData(eventBeingDragged.getCategory().getColor(), eventBeingDragged.getName(), dragMultiDay, daysToLeft, totalDays);
-		else monthView.setDragData(commitmentBeingDragged.getCategory().getColor(), commitmentBeingDragged.getName(), dragMultiDay, daysToLeft, totalDays);
+		else if(commitmentBeingDragged != null) monthView.setDragData(commitmentBeingDragged.getCategory().getColor(), commitmentBeingDragged.getName(), dragMultiDay, daysToLeft, totalDays);
 		monthView.setDragging(true);
 		monthView.updateDragCoor(e.getPoint());
 		monthView.repaint();
@@ -83,7 +83,6 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 		}
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {}
 
 	@Override
@@ -94,10 +93,17 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 			if(eventBeingDragged != null) {
 				eventBeingDragged.getStartDate().setDate(eventBeingDragged.getStartDate().getDate() + (finalIndex - initialIndex));
 				eventBeingDragged.getEndDate().setDate(eventBeingDragged.getEndDate().getDate() + (finalIndex - initialIndex));
+				
+				//UPDATE EVENT
+				
 				monthView.createEvComPanels();
 				monthView.updateEvComs();
 			} else if(commitmentBeingDragged != null) {
 				commitmentBeingDragged.getDueDate().setDate(commitmentBeingDragged.getDueDate().getDate() + (finalIndex - initialIndex));
+				
+				//UPDATE COMMITMENT
+				
+				
 				monthView.createEvComPanels();
 				monthView.updateEvComs();
 			}

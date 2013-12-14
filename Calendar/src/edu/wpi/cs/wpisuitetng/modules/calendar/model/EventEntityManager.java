@@ -120,8 +120,28 @@ public class EventEntityManager implements EntityManager<Event> {
 	public Event update(Session s, String content)
 			throws WPISuiteException {
 
-		// This module does not allow Events to be modified, so throw an exception
-		throw new WPISuiteException();
+		Event updatedEvent = Event.fromJSON(content);
+		/*
+		 * Because of the disconnected objects problem in db4o, we can't just save Commitments.
+		 * We have to get the original defect from db4o, copy properties from updatedCommitment,
+		 * then save the original Commitment again.
+		 */
+		List<Model> oldEvents = db.retrieve(Event.class, "id", updatedEvent.getUniqueID(), s.getProject());
+		//System.out.println(oldCommitments.toString());
+		if(oldEvents.size() < 1 || oldEvents.get(0) == null) {
+			throw new BadRequestException("Event with ID does not exist.");
+		}
+
+		Event existingEvent = (Event)oldEvents.get(0);		
+
+		// copy values to old commitment and fill in our changeset appropriately
+		existingEvent.copyFrom(updatedEvent);
+
+		if(!db.save(existingEvent, s.getProject())) {
+			throw new WPISuiteException();
+		}
+
+		return existingEvent;
 	}
 
 	/*
