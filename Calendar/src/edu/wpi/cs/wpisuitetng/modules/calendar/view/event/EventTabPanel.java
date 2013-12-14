@@ -13,10 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.event;
 import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.event.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -27,6 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import com.toedter.calendar.JDateChooser;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
@@ -53,7 +53,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	private JTextArea descriptionTextArea;
 
 	private Checkbox allDayEventCheckbox;
-	private DateTimeChooser allDayTimeChooser_;
+	private JDateChooser allDayTimeChooser_;
 	boolean allDayEvent_;
 
 	// Buttons
@@ -111,16 +111,18 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		};
 		allDayEventCheckbox.addItemListener(itemListener);
 		this.add(allDayEventCheckbox, "wrap");
-		
+
 		// All Day Event Date Chooser
-		allDayTimeChooser_=new DateTimeChooser("Day: ", new Date());
-		allDayTimeChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
+		//DateChooser for choosing days
+		allDayTimeChooser_=new JDateChooser(new Date());
+		allDayTimeChooser_.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+			public void propertyChange(PropertyChangeEvent e) {
+				dayChanged();
 				validateFields();
 			}
 		});
-		this.add(allDayTimeChooser_, "wrap");
+		add(allDayTimeChooser_, "wmin 100");
 
 
 		//duration
@@ -144,15 +146,15 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		// Recurring Events
 		eventRecurringPanel = new EventRecurringPanel(new Date());
 		eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
-			
+
 			@Override
 			public void RecurringChangedEventOccurred(RecurringChangedEvent evt) {
 				validateFields();
 			}
 		});
 		add(eventRecurringPanel, "cell 0 4,alignx left");
-		
-		
+
+
 		// Category
 		this.add(new JLabel("Category:"), "cell 0 5");
 		categoryPickerPanel = new CategoryPickerPanel();
@@ -212,13 +214,19 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		}
 
 		if (!allDayEvent_){
-			allDayTimeChooser_.disable();
+			allDayTimeChooser_.setEnabled(false);
 			//validate times and duration between them
 			if (!durationChooser_.hasValidDuration()){
 				enableAddEvent=false;
 			}
+		} else {
+			allDayTimeChooser_.setEnabled(true);
+			Date currDate_ = new Date();
+			if(!(currDate_.before(allDayTimeChooser_.getDate()))) {
+				enableAddEvent=false;
+			}
 		}
-		
+
 		if(!eventRecurringPanel.validateRecurring(durationChooser_.getStartDate()))
 		{
 			enableAddEvent = false;
@@ -228,8 +236,17 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	}
 
 	public Event getFilledEvent() {
-		Date startDate=durationChooser_.getStartDate();
-		Date endDate=durationChooser_.getEndDate();
+		Date startDate;
+		Date endDate;
+		if(!allDayEvent_){
+			startDate=durationChooser_.getStartDate();
+			endDate=durationChooser_.getEndDate();
+		} else {
+			Date temp = allDayTimeChooser_.getDate();
+			startDate = temp;
+			temp.setHours(5);
+			endDate = temp;
+		}
 
 		//make a new event with start and end times
 		return new Event(nameTextField.getText(), startDate, endDate, calendarPicker.isTeam(), 
@@ -238,12 +255,12 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	public void allDayEventCheckboxChanged(){
 		allDayEvent_=allDayEventCheckbox.getState();
-		if (allDayEvent_){
-			durationChooser_.disable();
-			allDayTimeChooser_.enable();
-		}else{
+		if (!allDayEvent_){
 			durationChooser_.enable();
-			allDayTimeChooser_.disable();
+			allDayTimeChooser_.setEnabled(false);
+		}else{
+			durationChooser_.disable();
+			allDayTimeChooser_.setEnabled(true);
 		}
 	}
 
@@ -274,11 +291,21 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	public ArrayList<Event> getFilledEvents() {
 		int numOfEvents = numOfEvents();
-		
+
 		ArrayList<Event> eventList = new ArrayList<Event>();
-		Date startDate=durationChooser_.getStartDate();
-		Date endDate=durationChooser_.getEndDate();
-		
+		Date startDate;
+		Date endDate;
+		if(!allDayEvent_) {
+			startDate=durationChooser_.getStartDate();
+			endDate=durationChooser_.getEndDate();
+		} else {
+			startDate = allDayTimeChooser_.getDate();
+			Date tempDate = allDayTimeChooser_.getDate();
+			tempDate.setHours(24);
+			allDayTimeChooser_.setDate(tempDate);
+			endDate = allDayTimeChooser_.getDate();
+		}
+
 		for(int i = 0, day = startDate.getDay(); i < numOfEvents; ++day)
 		{
 			if(day == 7)
@@ -292,8 +319,27 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			startDate.setDate(startDate.getDate() + 1);
 			endDate.setDate(endDate.getDate() + 1);
 			//make a new event with start and end times
-				
+
 		}
 		return eventList;
 	}
+
+	private void dayChanged(){
+		//		System.out.println("Day Changed");
+		fillDay();
+		//DateTimeChanged();
+	}
+
+	private void fillDay(){
+		//		System.out.println("\nFilling Day...");
+		Date day=allDayTimeChooser_.getDate();
+		day.setHours(0);
+
+	}
+
+	private long normalizeToTheMinute(long timeMs){
+		long minutes=timeMs/60000;//count the minutes (integer)
+		return minutes*60000+59999;//make it right at the end of the millis
+	}
+
 }
