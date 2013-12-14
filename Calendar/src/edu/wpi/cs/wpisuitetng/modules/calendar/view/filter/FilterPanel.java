@@ -44,6 +44,8 @@ public class FilterPanel extends JPanel implements MouseListener {
 		
 		this.add(p, "wrap");
 		this.add(filterListPanel, "grow, push");
+		//initially disables delete button so users don't think they can delete the default filter
+		deleteFilterButton.setEnabled(false);
 	}
 	
 	public void setAddFilterListener(ActionListener al) {
