@@ -79,7 +79,7 @@ public class MainView {
 
 		calendarPanel.createCalendar();
 	
-		new Timer(false).scheduleAtFixedRate(new UpdateTimerTask(), 30 * 1000, 10000);
+		new Timer(true).scheduleAtFixedRate(new UpdateTimerTask(), 30 * 1000, 10000);
 		
 	}
 
