@@ -12,6 +12,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 
@@ -25,6 +27,12 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DeleteEventContr
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventTabController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterObserver;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 public class MainView {
 
@@ -32,16 +40,17 @@ public class MainView {
 	private static CalendarPanel calendarPanel;
 	private static CalendarToolBar calendarToolBar;
 
+	RetrieveCommitmentController	rcomc = new RetrieveCommitmentController();
+	RetrieveEventController			revec = new RetrieveEventController();
+	RetrieveCategoryController		rcatc = new RetrieveCategoryController();
+	RetrieveFilterController		rfilc = new RetrieveFilterController();
 	public MainView() {
 		calendarPanel = new CalendarPanel();
 		calendarToolBar = new CalendarToolBar();
 		
 		calendarPanel.addChangeListener(new ChangeToolBarController(calendarToolBar, calendarPanel));
 
-		RetrieveCommitmentController	rcomc = new RetrieveCommitmentController();
-		RetrieveEventController			revec = new RetrieveEventController();
-		RetrieveCategoryController		rcatc = new RetrieveCategoryController();
-		RetrieveFilterController		rfilc = new RetrieveFilterController();
+		
 		
 		calendarPanel.addAncestorListener(rcomc);
 		calendarPanel.addAncestorListener(revec);
@@ -68,6 +77,21 @@ public class MainView {
 		tabs.add(tab);
 
 		calendarPanel.createCalendar();
+		
+		new Timer().schedule(new TimerTask(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				System.out.println("Auto refresh at");
+				rcomc.retrieveMessages();
+				revec.retrieveMessages();
+				rcatc.retrieveMessages();
+				rfilc.retrieveMessages();
+			}
+			
+		}, 0, 10000);
+		
 	}
 
 	public List<JanewayTabModel> getTabs() {
@@ -92,4 +116,7 @@ public class MainView {
 	{
 		return MainView.calendarToolBar;
 	}
+	
+	
 }
+
