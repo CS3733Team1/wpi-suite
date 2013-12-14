@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.help;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -10,8 +12,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,18 +28,24 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.JTree;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
+
+import com.sun.xml.internal.txw2.Document;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -210,8 +222,9 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		parser = XMLParser.getParser();
 		
-		findDocs();
+		//findDocs();
 		System.out.println(new File("").getAbsoluteFile().getParent());
+		docs.add("<html><body><h1>Welcome</h1><p>placeholder</p></body></html>");
 		if(docs.size() > 0)
 		{
 			//display.setText(docs.get(0));
