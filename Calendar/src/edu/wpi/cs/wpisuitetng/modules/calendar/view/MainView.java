@@ -38,6 +38,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 public class MainView {
 
+	private static boolean isLoggedIn = false;
 	private List<JanewayTabModel> tabs;
 	private static CalendarPanel calendarPanel;
 	private static CalendarToolBar calendarToolBar;
@@ -79,28 +80,8 @@ public class MainView {
 		tabs.add(tab);
 
 		calendarPanel.createCalendar();
-		
-		
-		new Timer(true).schedule(new TimerTask(){
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				System.out.println("Auto refresh at");
-				SwingUtilities.invokeLater(new Runnable() {
-				public void run(){
-					if (ConfigManager.getConfig().getUserName() != null)
-					{
-						System.out.println("USER " + ConfigManager.getConfig().getUserName());
-						rcomc.retrieveMessages();
-						revec.retrieveMessages();
-						rcatc.retrieveMessages();
-						rfilc.retrieveMessages();
-					}
-				}});
-			}
-			
-		}, 30 * 1000, 10000);
+	
+		new Timer(false).scheduleAtFixedRate(new UpdateTimerTask(), 30 * 1000, 10000);
 		
 	}
 
@@ -126,7 +107,34 @@ public class MainView {
 	{
 		return MainView.calendarToolBar;
 	}
-	
-	
+	public static synchronized boolean getIsLoggedIn()
+	{
+		return isLoggedIn;
+	}
+	public static synchronized void setIsLoggedIn(boolean logged)
+	{
+		isLoggedIn = logged;
+	}
+	class UpdateTimerTask extends TimerTask
+	{
+		@Override
+		public void run() {
+				// TODO Auto-generated method stub
+				System.out.println("Auto refresh at");
+				if (isLoggedIn)
+				{
+					SwingUtilities.invokeLater(new Runnable() {
+					public void run(){
+						System.out.println("USER " + ConfigManager.getConfig().getUserName());
+						rcomc.retrieveMessages();
+						revec.retrieveMessages();
+						rcatc.retrieveMessages();
+						rfilc.retrieveMessages();
+					
+					}});
+				}
+			}
+		}
+		
 }
 

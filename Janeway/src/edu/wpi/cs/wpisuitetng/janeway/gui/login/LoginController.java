@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.configuration.NetworkConfiguration;
@@ -145,6 +146,8 @@ public class LoginController implements ActionListener {
 			projectSelectRequest.addObserver(new ProjectSelectRequestObserver(this));
 			projectSelectRequest.setBody(ConfigManager.getConfig().getProjectName());
 			projectSelectRequest.send();
+			
+			MainView.setIsLoggedIn(true);
 		}
 		else {
 			JOptionPane.showMessageDialog(view, "Unable to login: no cookies returned.", "Login Error", 
