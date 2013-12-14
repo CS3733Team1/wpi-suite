@@ -29,7 +29,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 public class DayCalendar extends JPanel implements ICalendarView{
 
 	private DayCalendarScrollPane dayscroll;
-	private DayArea daylayer;
+	private DayHolderPanel daylayer;
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	private JLabel dayLabel;
 	private JPanel daytitle;
@@ -42,39 +42,39 @@ public class DayCalendar extends JPanel implements ICalendarView{
 		
 		this.setLayout(new MigLayout("fill, insets 0"));
 
-		daylayer = new DayArea();
+		daylayer = new DayHolderPanel();
 
-//		JPanel daytitle = new JPanel(new MigLayout("fill, insets 0", "[10%]0[90%]"));
-//
-//		dayLabel = new JLabel(weekNames[(daylayer.getDayViewDate().getDay())], JLabel.CENTER);
-//		dayLabel.setFont(new Font(dayLabel.getName(), Font.BOLD, 14));
-//		dayname = new JPanel(new MigLayout("fill"));
-//		Calendar cal = Calendar.getInstance();
-//
-//		Date today = daylayer.getDayViewDate();
-//		int currentYear = today.getYear() + 1900;
-//		int currentMonth = today.getMonth();
-//		int currentDate = today.getDate();
-//
-//		if(cal.get(Calendar.MONTH) == currentMonth &&
-//				cal.get(Calendar.YEAR) == currentYear && 
-//				cal.get(Calendar.DATE) == currentDate){
-//			dayname.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
-//		}else{
-//			dayname.setBorder(new MatteBorder(0, 0, 5, 0, Color.gray));
-//		}
-//		
-//		dayname.add(dayLabel, "grow, aligny center");
-//		dayname.setBackground(Color.white);
-//
-//		JPanel time = new JPanel(new MigLayout("fill"));
-//		time.add(new JLabel(" "), "grow, aligny center");
-//		time.setBackground(Color.white);
-//
-//		daytitle.add(time, "aligny center, w 5000, hmin 50, hmax 50,grow");
-//		daytitle.add(dayname,  "aligny center, w 5000,hmin 50, hmax 50, grow");
-//
-//		this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
+		JPanel daytitle = new JPanel(new MigLayout("fill, insets 0", "[10%]0[90%]"));
+
+		dayLabel = new JLabel(weekNames[(daylayer.getDayViewDate().getDay())], JLabel.CENTER);
+		dayLabel.setFont(new Font(dayLabel.getName(), Font.BOLD, 14));
+		dayname = new JPanel(new MigLayout("fill"));
+		Calendar cal = Calendar.getInstance();
+
+		Date today = daylayer.getDayViewDate();
+		int currentYear = today.getYear() + 1900;
+		int currentMonth = today.getMonth();
+		int currentDate = today.getDate();
+
+		if(cal.get(Calendar.MONTH) == currentMonth &&
+				cal.get(Calendar.YEAR) == currentYear && 
+				cal.get(Calendar.DATE) == currentDate){
+			dayname.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+		}else{
+			dayname.setBorder(new MatteBorder(0, 0, 5, 0, Color.gray));
+		}
+		
+		dayname.add(dayLabel, "grow, aligny center");
+		dayname.setBackground(Color.white);
+
+		JPanel time = new JPanel(new MigLayout("fill"));
+		time.add(new JLabel(" "), "grow, aligny center");
+		time.setBackground(Color.white);
+
+		daytitle.add(time, "aligny center, w 5000, hmin 50, hmax 50,grow");
+		daytitle.add(dayname,  "aligny center, w 5000,hmin 50, hmax 50, grow");
+
+		this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
 
 		dayscroll = new DayCalendarScrollPane(daylayer);
 
@@ -85,45 +85,36 @@ public class DayCalendar extends JPanel implements ICalendarView{
 
 	}
 
+	public void updateDay(){
+		Calendar cal = Calendar.getInstance();
 
-	public void paint(Graphics g){
-//		if (daylayer != null){
-//			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
-//		}
+		Date today = daylayer.getDayViewDate();
+		int currentYear = today.getYear() + 1900;
+		int currentMonth = today.getMonth();
+		int currentDate = today.getDate();
 
-		super.paint(g);
+		if(cal.get(Calendar.MONTH) == currentMonth &&
+				cal.get(Calendar.YEAR) == currentYear && 
+				cal.get(Calendar.DATE) == currentDate){
+			dayname.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+		}else{
+			dayname.setBorder(new MatteBorder(0, 0, 5, 0, Color.gray));
+		}
+		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
+		daytitle.resize(size());
+	}
+	
+	public Date getDate(){
+		return daylayer.getDayViewDate();
 	}
 
-//	public void updateDay(){
-//		Calendar cal = Calendar.getInstance();
-//
-//		Date today = daylayer.getDayViewDate();
-//		int currentYear = today.getYear() + 1900;
-//		int currentMonth = today.getMonth();
-//		int currentDate = today.getDate();
-//
-//		if(cal.get(Calendar.MONTH) == currentMonth &&
-//				cal.get(Calendar.YEAR) == currentYear && 
-//				cal.get(Calendar.DATE) == currentDate){
-//			dayname.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
-//		}else{
-//			dayname.setBorder(new MatteBorder(0, 0, 5, 0, Color.gray));
-//		}
-//		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
-////		daytitle.resize(size());
-//	}
-	
-//	public Date getDate(){
-//		return daylayer.getDayViewDate();
-//	}
-//
-//	public void repaint(){
-//		if (daylayer != null){
-//			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
-//		}
-//
-//		super.repaint();
-//	}
+	public void repaint(){
+		if (daylayer != null){
+			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+		}
+
+		super.repaint();
+	}
 
 	@Override
 	public String getTitle() {
@@ -155,9 +146,7 @@ public class DayCalendar extends JPanel implements ICalendarView{
 
 	@Override
 	public void viewDate(Calendar date) {
-//		// TODO Auto-generated method stub
-//		daylayer.viewDate(date.getTime());
-//		updateDay();
+		daylayer.viewDate(date);
 	}
 
 }

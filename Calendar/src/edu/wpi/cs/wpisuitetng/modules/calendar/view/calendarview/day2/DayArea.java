@@ -3,6 +3,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,9 +31,11 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 
 //Height of This Panel is 1440 Calculation Dependent
-public class DayArea extends JPanel implements ICalendarView, ListDataListener{
+public class DayArea extends JPanel implements ListDataListener{
 	private static final int pixPerMin = 1;
     private static final int timePix = 0; //width reserved for times on lefthand side
+	private static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
     
     private List<ISchedulable> events;
     
@@ -44,15 +48,45 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
 		
 		int height = 1440;
-		int width = 950;
+		int width = 900;
 		
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
+		this.setMinimumSize(new Dimension(0,1440));
 		
 		showEvent();
 		
 		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
+		
+	}
+	
+	public DayArea(Date d){
+		events = new LinkedList<ISchedulable>();
+		
+		currentDay = d;
+		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
+		
+		int height = 1440;
+		int width = 900;
+		
+		this.setSize(width, height);
+		this.setPreferredSize(new Dimension(width, height));
+		this.setMinimumSize(new Dimension(0,1440));
+		
+		showEvent();
+		
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
+		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
+		
+	}
+	
+	public void reSize(int width){
+		this.setSize(width, 1440);
+		this.setPreferredSize(new Dimension(width, 1440));
+		this.setMinimumSize(new Dimension(0,1440));
+		
+		this.repaint();
 	}
 	
 	public void paintBorder(Graphics g){
@@ -62,16 +96,6 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
 		drawHours(g);
 		
 		this.validate();
-	}
-	
-	public void repaint(){
-		if (this.getParent() != null){
-			if (this.getParent().getWidth() != this.getWidth()){
-				this.setSize(this.getParent().getWidth(), this.getHeight());
-			}
-		}
-		
-		super.repaint();
 	}
 	
 	/**
@@ -224,12 +248,12 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
                          
                          int endXPixel = startXPixel + pixelWidth;
 
-                         JPanel panel = new ScheduleItem(test, startXPixel, startYPixel, pixelWidth, getLengthMinutes(test));
+                         JPanel panel = new ScheduleItem(test, startXPixel, startYPixel, pixelWidth, getLengthMinutes(test), divisions, i);
                          
                          JLabel name = new JLabel(test.getName());
                          //TODO align name in center, set minimum width to 0, maximum width to panel width
                                 //panel width is totSpace/divisions
-                         panel.add(name);
+                         panel.add(name, "wmin 0");
                         
                          //Format information for tooltip
                          StringBuilder infobuilder = new StringBuilder();
@@ -291,7 +315,7 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
                          panel.setFocusable(true);
                         
                          //TODO add panel w/ new constraint system (pixels)
-                         this.add(panel);
+                         this.add(panel, "wmin 0");
                    }
             }
      }
@@ -345,6 +369,7 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
      public void showEvent()
      {
     	 this.removeAll();
+    	 events.clear();
     	 	findSchedulableItems();
             ArrayList<ArrayList<ISchedulable>> eventMap = new ArrayList<ArrayList<ISchedulable>>();
             eventMap=generateMap();
@@ -353,35 +378,42 @@ public class DayArea extends JPanel implements ICalendarView, ListDataListener{
            //this.repaint();
      }
 	
-	
-	@Override
+	public Date getDayViewDate(){
+		return currentDay;
+	}
+     
 	public String getTitle() {
-		return "hello";
+		return monthNames[currentDay.getMonth()] + " "+ currentDay.getDate()+ ", " + (currentDay.getYear() + 1900);
 	}
 
-	@Override
 	public void next() {
 		currentDay.setDate(currentDay.getDate()+1);
 		showEvent();
 	}
 
-	@Override
 	public void previous() {
 		currentDay.setDate(currentDay.getDate()-1);
 		showEvent();
 	}
 
-	@Override
 	public void today() {
 		currentDay = new Date();
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
 		showEvent();
 	}
 
-	@Override
 	public void viewDate(Calendar date) {
-		currentDay = date.getTime();
-		showEvent();
+		if (currentDay.compareTo(date.getTime()) != 0){
+			currentDay = date.getTime();
+			showEvent();
+		}
+	}
+	
+	public void viewDate(Date date){
+		if (currentDay.compareTo(date) != 0){
+			currentDay = date;
+			showEvent();
+		}
 	}
 
 	@Override

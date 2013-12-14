@@ -18,11 +18,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 
 public class DayCalendarScrollPane extends JScrollPane {
-	private DayArea daylayer;
+	private DayHolderPanel daylayer;
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	private JLabel dayLabel;
 	
-	public DayCalendarScrollPane(DayArea day){
+	public DayCalendarScrollPane(DayHolderPanel day){
 		super(day);
 		
 		daylayer = day;

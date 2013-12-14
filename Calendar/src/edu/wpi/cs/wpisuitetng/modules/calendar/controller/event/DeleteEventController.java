@@ -17,7 +17,6 @@ import java.util.List;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
