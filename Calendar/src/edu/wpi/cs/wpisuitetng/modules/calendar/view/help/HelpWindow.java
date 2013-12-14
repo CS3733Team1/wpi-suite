@@ -230,19 +230,10 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		}
 		
 		try {
-			File f = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help/example.html");
+			File f = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help/template.html");
 			System.out.println("f path " + f.getAbsolutePath());
-			
 			display.setEditorKit(new HTMLEditorKit());
-			
-			//StyledDocument doc = display.getStyledDocument();
-		    //Style style = doc.addStyle("StyleName", null);
-		    //doc.insertString(0, readHTML(f.getPath()), style);
-		    
-		    //StyleConstants.setFontFamily(style, Font.SANS_SERIF);
-		    //StyleConstants.setFontSize(style, 12);
 		    String html = readHTML(f.getPath());
-		    
 		    html = fixHTMLImages(html);
 		    System.out.println("html is " + html);
 			display.setText(html);
@@ -251,7 +242,6 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			display.setText(docs.get(0));
 			e.printStackTrace();
 		}
-		
 		
 		backlist = new ArrayList<String>();
 		backlistCurrent = 0;
