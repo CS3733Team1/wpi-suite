@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Date;
@@ -86,6 +87,9 @@ public class DayCalendar extends JPanel implements ICalendarView{
 		
 		mscroll = new DayMultiScrollPane(multiview);
 		this.add(mscroll, "grow, wrap, hmin 120, hmax 120");
+		mscroll.getViewport().repaint();
+		multiview.repaint();
+		mscroll.updateUI();
 
 		this.add(dayscroll, "grow, push");
 		
@@ -93,6 +97,8 @@ public class DayCalendar extends JPanel implements ICalendarView{
 		
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
 		dayscroll.getVerticalScrollBar().setValue(3*end/8);
+		
+		this.repaint();
 
 	}
 
@@ -123,14 +129,19 @@ public class DayCalendar extends JPanel implements ICalendarView{
 		if (daylayer != null){
 			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
 		}
+		if (multiview != null){
+			mscroll.setPreferredSize(multiview.getPreferredSize());
+			updateMultiDay();
+		}
 
 		super.repaint();
 	}
 	
 	public void updateMultiDay(){
 		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
-		mscroll.getViewport().updateUI();
-		mscroll.updateUI();
+		mscroll.getViewport().repaint();
+		multiview.repaint();
+		mscroll.revalidate();
 	}
 
 	@Override

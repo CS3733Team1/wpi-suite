@@ -11,6 +11,7 @@ public class DayMultiScrollPane extends JScrollPane{
 	private MultidayEventView mday;
 	
 	public DayMultiScrollPane(MultidayEventView hold){
+		super(hold);
 		mday = hold;
 		
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
