@@ -38,7 +38,7 @@ public class UpdateCommitmentController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Commitment updatedCommitment = view.getFilledCommitment();
-		updatedCommitment.setID(oldCommitment.getID());
+		updatedCommitment.setID(oldCommitment.getID());	//TODO: this doesn't seem tow rok because commitments have id and uniqueID which are duplicated - they do the same thing. Here, id is updated but UniqueID is used for identifying commitments
 	
 		System.out.println("Updating commitment: name = " + oldCommitment.getName() + "; uid = " + oldCommitment.getUniqueID());
 

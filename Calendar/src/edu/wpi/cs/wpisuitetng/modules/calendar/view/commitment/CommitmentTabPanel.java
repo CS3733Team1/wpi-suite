@@ -75,6 +75,8 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 
 	public CommitmentTabPanel(JEditorPane display, Commitment c)
 	{
+		System.out.println("CommitmentTabPanel: Making tab to edit commitment: "+c.toString());
+		
 		isEditMode = true;
 		editCommitment = c;
 		this.display = display;
