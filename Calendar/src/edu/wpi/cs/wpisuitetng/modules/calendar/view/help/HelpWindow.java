@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.help;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -9,7 +11,12 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -28,12 +35,17 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
+import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
+
+import com.sun.xml.internal.txw2.Document;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -59,13 +71,14 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	JCheckBox bTopic, bSummary, bDetail;
 	JButton bApply, bCancel;
 	
-	ArrayList<Tag> docs;
+	ArrayList<String> docs;
 	String include = "";
 	String exclude = "";
 	boolean lods[] = {true, true, true};
-	ArrayList<Tag> backlist;
+	ArrayList<String> backlist;
 	int backlistCurrent;
 	XMLParser parser;
+	int[][] cellSizes;
 	
 	/*
 	public static void main(String[] args)
@@ -84,7 +97,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	{
 		//set up main panel
 		display = new JTextPane();
-		display.setPreferredSize(new Dimension(258, 543));
+//		display.setMinimumSize(new Dimension(258, 543));
 		display.setEditable(false);
 		StyleContext sc = StyleContext.getDefaultStyleContext();
 		TabSet tabs = new TabSet(new TabStop[] {new TabStop(20), new TabStop(20)}); //http://stackoverflow.com/questions/757692/how-do-you-set-the-tab-size-in-a-jeditorpane
@@ -92,64 +105,63 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		display.setParagraphAttributes(paraSet, false);
 		
 		displayScroll = new JScrollPane(display);
-		displayScroll.setMinimumSize(new Dimension(260, 545));
+//		displayScroll.setMinimumSize(new Dimension(260, 545));
 		displayScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		displayScroll.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		displayScroll.setVisible(true);
 		
 		search = new JTextPane();
-		search.setMinimumSize(new Dimension(260, 25));
-		search.setMaximumSize(new Dimension(260, 25));
+//		search.setMinimumSize(new Dimension(260, 25));
 		search.setText("Search...");
 		search.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		search.addFocusListener(this);
 		
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Documents");
 		docMenu = new JTree(top);
-		docMenu.setMinimumSize(new Dimension(120, 500));
+//		docMenu.setMinimumSize(new Dimension(120, 500));
 		docMenu.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		docMenu.setOpaque(true);
 		docMenu.setShowsRootHandles(true);
 		docMenu.addTreeSelectionListener(this);
 		
 		docMenuPane = new JScrollPane(docMenu);
-		docMenuPane.setMinimumSize(new Dimension(120, 580));
+//		docMenuPane.setMinimumSize(new Dimension(120, 580));
 		docMenuPane.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		docMenuPane.setVisible(true);
 		
 		bGo = new JButton("Go");
-		bGo.setMinimumSize(new Dimension(50,25));
+//		bGo.setMinimumSize(new Dimension(50,25));
 		bGo.setToolTipText("Go");
 		bGo.addMouseListener(this);
 		bSettings = new JButton("S");
-		bSettings.setMinimumSize(new Dimension(50,25));
+//		bSettings.setMinimumSize(new Dimension(50,25));
 		bSettings.setToolTipText("Settings");
 		bSettings.addMouseListener(this);
 		bBack = new JButton("<");
-		bBack.setMinimumSize(new Dimension(50,25));
+//		bBack.setMinimumSize(new Dimension(50,25));
 		bBack.setToolTipText("Back");
 		bBack.addMouseListener(this);
 		bForward = new JButton(">");
-		bForward.setMinimumSize(new Dimension(50,25));
+//		bForward.setMinimumSize(new Dimension(50,25));
 		bForward.setToolTipText("Forward");
 		bForward.addMouseListener(this);
 		bHome = new JButton("Home");
-		bHome.setMinimumSize(new Dimension(110,25));
+//		bHome.setMinimumSize(new Dimension(110,25));
 		bHome.setToolTipText("Home");
 		bHome.addMouseListener(this);
 		
-		this.setLayout(new MigLayout("fill", "10[120]10[260]10[50]10[50]10","10[25]10[25]10[25]10[475]10"));
+		this.setLayout(new MigLayout("fill", "[25%][51%][12%][12%]","[4%][4%][4%][88%]"));
 		this.setMinimumSize(new Dimension(530, 600));
-		this.setPreferredSize(new Dimension(530, 600));
+		//this.setPreferredSize(new Dimension(530, 600));
 		
-		this.add(displayScroll, "cell 1 1 1 3");
-		this.add(search, "cell 1 0");
-		this.add(docMenuPane, "cell 0 0 1 4");
-		this.add(bGo, "cell 2 0");
-		this.add(bSettings, "cell 3 0");
-		this.add(bBack, "cell 2 1");
-		this.add(bForward, "cell 3 1");
-		this.add(bHome, "cell 2 2 2 1");
+		this.add(displayScroll, "cell 1 1 1 3, grow");
+		this.add(search, "cell 1 0, grow");
+		this.add(docMenuPane, "cell 0 0 1 4, grow");
+		this.add(bGo, "cell 2 0, grow");
+		this.add(bSettings, "cell 3 0, grow");
+		this.add(bBack, "cell 2 1, grow");
+		this.add(bForward, "cell 3 1, grow");
+		this.add(bHome, "cell 2 2 2 1, grow");
 		
 		//set up settings panel
 		settings = new JPopupMenu("Settings");
@@ -206,18 +218,43 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		settings.setVisible(false);
 		//set up backend
-		docs = new ArrayList<Tag>();
+		docs = new ArrayList<String>();
 		
 		parser = XMLParser.getParser();
 		
 		//findDocs();
-		docs.add(new Tag("Welcome", "placeholder"));
+		System.out.println(new File("").getAbsoluteFile().getParent());
+		docs.add("<html><body><h1>Welcome</h1><p>placeholder</p></body></html>");
 		if(docs.size() > 0)
 		{
-			display.setText(findTopLevelTag("Welcome").sprintTag());
+			//display.setText(docs.get(0));
 		}
 		
-		backlist = new ArrayList<Tag>();
+		try {
+			File f = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help/example.html");
+			System.out.println("f path " + f.getAbsolutePath());
+			
+			display.setEditorKit(new HTMLEditorKit());
+			
+			//StyledDocument doc = display.getStyledDocument();
+		    //Style style = doc.addStyle("StyleName", null);
+		    //doc.insertString(0, readHTML(f.getPath()), style);
+		    
+		    //StyleConstants.setFontFamily(style, Font.SANS_SERIF);
+		    //StyleConstants.setFontSize(style, 12);
+		    String html = readHTML(f.getPath());
+		    
+		    html = fixHTMLImages(html);
+		    System.out.println("html is " + html);
+			display.setText(html);
+		} catch (Exception e) {
+			System.err.println("file not found");
+			display.setText(docs.get(0));
+			e.printStackTrace();
+		}
+		
+		
+		backlist = new ArrayList<String>();
 		backlistCurrent = 0;
 		backlist.add(docs.get(0));
 		bBack.setEnabled(false);
@@ -249,26 +286,97 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 * @param file The filepath of an XML file to add
 	 * @return The resulting Tag
 	 */
-	Tag addDoc(String file)
+	String addDoc(String file)
 	{
-		docs.add(parser.readTagFromFile(file));
-		return parser.readTagFromFile(file);
+		docs.add(readHTML(file));
+		return readHTML(file);
 	}
 	
 	/**
-	 * Adds all XML files in the current working directory to the list of documents.
+	 * Adds all HTML files in the current working directory to the list of documents.
 	 */
 	void findDocs()
 	{
-		File file = new File(".");
+		File file = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help");
 		for(String s: file.list())
 		{
-			if(s.length() > 4 && s.substring(s.length() - 4).equals(".xml"))
+			if(s.length() > 4 && s.substring(s.length() - 4).equals(".html"))
 			{
 				System.out.println(s);
 				addDoc(new File(s).getPath());
 			}
 		}
+	}
+	
+	String readHTML(String path)
+	{
+		String output = "";
+		File file = new File(path);
+		Scanner s;
+		try {
+			s = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			System.err.println("file " + file.toString() + " not found");
+			e.printStackTrace();
+			return null;
+		}
+		
+		while(s.hasNextLine())
+		{
+			output += s.nextLine();
+		}
+		
+		s.close();
+		return output;
+	}
+	
+	String fixHTMLImages(String html)
+	{
+		String output = "";
+		String buffer = html;
+		String temp = "";
+		String parent;
+		int ind;
+		ArrayList<String> imageNames = new ArrayList<String>();
+		
+		if(!html.contains("<img src=\""))
+			return html;
+		
+		File file = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help");
+		for(String s: file.list())
+		{
+			if(s.length() > 4 && s.substring(s.length() - 4).equals(".png")
+			|| s.substring(s.length() - 4).equals(".jpg"))
+			{
+				System.out.println(s);
+				imageNames.add(s);
+			}
+		}
+		
+		parent = file.getAbsolutePath();
+		
+		while(buffer.contains("<img src=\""))
+		{
+			ind = buffer.indexOf("<img src=\"");
+			temp = buffer.substring(ind + 10, buffer.indexOf("\" ", ind));
+			if(imageNames.contains(temp))
+			{
+				output += buffer.substring(0, ind + 10);
+				output += "file:///" + parent + "/" + temp;;
+				output += buffer.substring(ind + 10 + temp.length(), ind + 10 + temp.length() + 2);
+			}
+			else
+			{
+				System.err.println("image file " + temp + " not found");
+				output += buffer.substring(0, ind + 10 + temp.length() + 2);
+			}
+			
+			buffer = buffer.substring(ind + 10 + temp.length() + 2);
+		}
+		
+		output += buffer;
+		//output.replaceAll("<img src=\"(.*)\" alt=\".*\" width=\"24\" height=\"24\">", "img src=\"" + new File("").getAbsoluteFile().getParent() + "/Calendar/help/.*png\"");
+		return output;
 	}
 	
 	/**
@@ -281,19 +389,19 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	String filterDocs(String include, String exclude, boolean[] lods)
 	{
 		String results = "";
-		
+		/*
 		if(lods.length != 3)
 		{
 			System.err.println("not enough arguments to filterDocs, expected boolean[3]");
 			return null;
 		}
 		
-		for(Tag t: docs)
+		for(String t: docs)
 		{
-			if((t.findText(include) || include.equals("")) && (lods[0] || lods[1] || lods[2])
-			&& !t.name.equals("Welcome"))
+			if((t.contains(include) || include.equals("")) && (lods[0] || lods[1] || lods[2])
+			&& !t.contains("Welcome")) //BUGBUG this is wrong, fix this
 			{
-				results += t.name + "\n";
+				results += t + "\n";
 			}
 			else
 			{
@@ -320,7 +428,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			
 			results += "\n";
 		}
-		
+		*/
 		return results;
 	}
 	
@@ -330,9 +438,10 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 */
 	void addDocsToTree(DefaultMutableTreeNode top)
 	{
+		/*
 		DefaultMutableTreeNode node, node2;
 		
-		for(Tag t: docs)
+		for(String t: docs)
 		{
 			node = new DefaultMutableTreeNode(t);
 			for(Tag child: t.children)
@@ -342,13 +451,14 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			}
 			top.add(node);
 		}
+		*/
 	}
 	
 	/**
 	 * Updates the list of previously-visited documents.
 	 * @param t A new document to add to the list
 	 */
-	void updateBacklist(Tag t)
+	void updateBacklist(String t)
 	{
 		if(!t.equals(backlist.get(backlistCurrent)))
 		{
@@ -391,12 +501,13 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 */
 	Tag findTopLevelTag(String name)
 	{
+		/*
 		for(Tag t: docs)
 		{
 			if(t.name.equals(name))
 				return t;
 		}
-		
+		*/
 		return null;
 	}
 
@@ -460,7 +571,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			Tag t = (Tag) node.getUserObject();
 			System.out.println(t.name + " selected");
 			display.setText(t.sprintTag());
-			updateBacklist(t);
+			//updateBacklist(t);
 		}
 	}
 
@@ -496,7 +607,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			if(backlistCurrent > 0)
 			{
 				backlistCurrent--;
-				display.setText(backlist.get(backlistCurrent).sprintTag());
+				display.setText(backlist.get(backlistCurrent));
 				bForward.setEnabled(true);
 				if(backlistCurrent == 0)
 					bBack.setEnabled(false);
@@ -508,7 +619,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			if(backlistCurrent < backlist.size() - 1)
 			{
 				backlistCurrent++;
-				display.setText(backlist.get(backlistCurrent).sprintTag());
+				display.setText(backlist.get(backlistCurrent));
 				bBack.setEnabled(true);
 				if(backlistCurrent == backlist.size() - 1)
 					bForward.setEnabled(false);
@@ -518,10 +629,10 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		if(e.getSource().equals(bHome))
 		{
 			backlist.clear();
-			backlist.add(findTopLevelTag("Welcome"));
+			//backlist.add(findTopLevelTag("Welcome"));
 			backlistCurrent = 0;
 			
-			display.setText(backlist.get(0).sprintTag());
+			display.setText(backlist.get(0));
 			
 			bBack.setEnabled(false);
 			bForward.setEnabled(false);
