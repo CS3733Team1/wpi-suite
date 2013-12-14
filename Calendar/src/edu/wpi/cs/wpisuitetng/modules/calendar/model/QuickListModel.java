@@ -76,6 +76,7 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 			while(iterator.hasNext()) {
 				temp = iterator.next();
 				Date tempDate = temp.getDueDate();
+				// set tempDate to the Sunday of the week that temp is part of
 				tempDate.setDate(tempDate.getDate() - tempDate.getDay());
 				if(temp.getDueDate() == ((WeekCalendarPanel) currentView).getWeekStart()) {
 					inView.add(temp);
@@ -127,30 +128,37 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 			int endComparison;
 			while(iterator.hasNext())
 			{
-				
 				temp = iterator.next();
 				startComparison = temp.getStartDate().compareTo(today);
 				endComparison = temp.getEndDate().compareTo(today);
 				if(((startComparison == 0) || (endComparison == 0))
-						|| (startComparison == -1 && endComparison == 1))
+						|| (startComparison < 0 && endComparison > 0))
 					inView.add(temp);
 			}
 			return inView;
 		}
 		else if (currentView instanceof WeekCalendarPanel)
-		{
+		{ 
+			int startComparison;
+			int endComparison;
+			Date startOfWeek = ((WeekCalendarPanel) currentView).getWeekStart();
+			Date endOfWeek = startOfWeek;
+			endOfWeek.setDate(startOfWeek.getDate() + 6);
 			while(iterator.hasNext()) {
 				temp = iterator.next();
-				Date tempDate = temp.getStartDate();
-				tempDate.setDate(tempDate.getDate() - tempDate.getDay());
-				if(temp.getStartDate() == ((WeekCalendarPanel) currentView).getWeekStart()) {
+				// As long as the event does not begin after the week ends or end
+				// before the week begins, then part of the event must occur within
+				// the current week.
+				startComparison = temp.getStartDate().compareTo(endOfWeek);
+				endComparison = temp.getEndDate().compareTo(startOfWeek);
+				if(startComparison <= 0 && endComparison >= 0) {
 					inView.add(temp);
 				}
 			}
 			return inView;
 		}
 		else if (currentView instanceof MonthCalendarView)
-		{
+		{ // code below not yet functional
 			while(iterator.hasNext()) {
 				temp = iterator.next();
 				int month = ((MonthCalendarView) currentView).getMonth();
@@ -161,7 +169,7 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 			return inView;
 		}
 		else if (currentView instanceof YearCalendarView)
-		{
+		{ // code below not yet functional
 			while(iterator.hasNext()) {
 				temp = iterator.next();
 				int year = ((YearCalendarView) currentView).getYear();
