@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
+import java.awt.Point;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -20,11 +21,15 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListMode
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RightClickCommitmentMenu;
 
 public class CommitmentSubTabPanel extends JPanel implements ListItemListener<Commitment> {
 	
 	//private CommitmentListPanel commitmentListPanel;
 	private SRList<Commitment> commitmentList;
+	
+	private RightClickCommitmentMenu rightClickCommitmentMenu;
+	private CalendarPanel calendarPanel;
 	
 	public CommitmentSubTabPanel(CalendarPanel calendarPanel) {
 		this.setLayout(new MigLayout("fill"));
@@ -48,8 +53,12 @@ public class CommitmentSubTabPanel extends JPanel implements ListItemListener<Co
 	public void itemDoubleClicked(Commitment listObject) {}
 
 	@Override
-	public void itemRightClicked(Commitment listObject) {}
+	public void itemFocused(Commitment listObject) {}
 
 	@Override
-	public void itemFocused(Commitment listObject) {}
+	public void itemRightClicked(Commitment listObject, Point p) {
+		List<Commitment> listofCommitment = commitmentList.getSelectedItems();
+		rightClickCommitmentMenu = new RightClickCommitmentMenu(listofCommitment, calendarPanel);
+		rightClickCommitmentMenu.show(commitmentList, (int)p.getX(), (int)p.getY());
+	}
 }
