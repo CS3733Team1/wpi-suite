@@ -45,7 +45,6 @@ public class CategoryPanel extends JPanel implements ListItemListener<Category> 
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_category.png"))));
 		} catch (IOException e) {e.printStackTrace();}
 
-		//this.categoryListPanel = new CategoryListPanel();
 		this.categoryList = new SRList<Category>(CategoryListModel.getCategoryListModel());
 		categoryList.setListItemRenderer(new CategoryListItemRenderer());
 		categoryList.addListItemListener(this);
@@ -84,7 +83,6 @@ public class CategoryPanel extends JPanel implements ListItemListener<Category> 
 	public void itemsSelected(List<Category> listObjects) {
 		boolean deleteEnabled = true;
 		for(Category c: listObjects) {
-			System.out.println(c.getName());
 			if(CategoryListModel.getCategoryListModel().isDefault(c)) {
 				deleteEnabled = false;
 			}

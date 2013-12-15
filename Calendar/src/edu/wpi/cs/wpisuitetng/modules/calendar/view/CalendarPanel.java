@@ -50,9 +50,4 @@ public class CalendarPanel extends JTabbedPane {
 	public synchronized CalendarTabPanel getCalendarTabPanel() {
 		return calendarPanel;
 	}
-	
-	public void refreshSelectedPanel(){
-		if(this.getSelectedComponent() instanceof CalendarTabPanel)
-			((CalendarTabPanel)this.getSelectedComponent()).resetSelection();
-	}
 }

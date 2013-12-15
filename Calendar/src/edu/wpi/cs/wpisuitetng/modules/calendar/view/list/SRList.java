@@ -75,7 +75,7 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 	private void render() {
 		listPanel.clear();
 		for(ListItem<T> listItem: listItems) {
-			listItem.setComponent(listItemRenderer.getRenderedListComponent(this, listItem.getListObject(), listItem.isSelected(), listItem.isFocused()));
+			listItem.setComponent(listItemRenderer.getRenderedListComponent(this, listItem.getListObject(), listItem.isSelected(), listItem.isFocused(), listItem.isDoubleClicked()));
 			listPanel.add(listItem.getComponent());
 		}
 		this.revalidate();
@@ -102,7 +102,23 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 		int indexOfMousePress = listPanel.getIndexOfComponent(listPanel.getComponentAt(e.getPoint()));
 		if(indexOfMousePress >= 0) {
 			if(e.getClickCount() == 2) {
+				clearSelection();
+				listItems.get(indexOfMousePress).toggleDoubleClicked();
 				this.fireItemDoubleClicked(listItems.get(indexOfMousePress).getListObject());
+			} else if(e.isShiftDown()) {
+				clearSelection();
+				if(selectionStartIndex <= indexOfMousePress) {
+					for(int i = selectionStartIndex; i <= indexOfMousePress; i++) {
+						listItems.get(i).setSelected(true);
+						selectedListItems.add(listItems.get(i));
+					}
+				} else if(selectionStartIndex > indexOfMousePress) {
+					for(int i = indexOfMousePress; i <= selectionStartIndex; i++) {
+						listItems.get(i).setSelected(true);
+						selectedListItems.add(listItems.get(i));
+					}
+				}
+				this.fireItemsSelected(getSelectedItems());
 			} else if(e.isControlDown()) {
 				listItems.get(selectionStartIndex).setFocused(false);
 				if(listItems.get(indexOfMousePress).isSelected()) {
@@ -114,14 +130,7 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 					listItems.get(indexOfMousePress).setFocused(true);
 					selectedListItems.add(listItems.get(indexOfMousePress));
 				}
-				this.fireItemsSelected(getSelectedItems());
-			} else if(e.isShiftDown()) {
-				clearSelection();
-				if(selectionStartIndex < indexOfMousePress) {
-					for(int i = selectionStartIndex; i <= indexOfMousePress; i++) listItems.get(i).setSelected(true);
-				} else if(selectionStartIndex > indexOfMousePress) {
-					for(int i = indexOfMousePress; i <= selectionStartIndex; i++) listItems.get(i).setSelected(true);
-				}
+				selectionStartIndex = indexOfMousePress;
 				this.fireItemsSelected(getSelectedItems());
 			} else {
 				// Clear the selection
@@ -136,10 +145,9 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 					listItems.get(indexOfMousePress).setFocused(true);
 					selectedListItems.add(listItems.get(indexOfMousePress));
 				}
+				selectionStartIndex = indexOfMousePress;
 				this.fireItemsSelected(getSelectedItems());
 			}
-
-			selectionStartIndex = indexOfMousePress;
 		} else {
 			selectionStartIndex = 0;
 			clearSelection();

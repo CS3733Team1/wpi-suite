@@ -41,7 +41,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGro
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayArea;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
@@ -194,18 +193,13 @@ public class CalendarTabPanel extends JPanel {
 		calendarViewPanel.repaint();
 	}
 
-	public void resetSelection() {
-		commitmentSubTabPanel.getCommitmentsList().clearSelection();
-		//quickListTabPanel.getCommitmentsList().clearSelection();
-	}
-
 	public List<Commitment> getSelectedCommitmentList() {
 		List<Commitment> selectedCommitments =  new ArrayList<Commitment>();
 		if(calendarView instanceof MonthCalendarView)
 			selectedCommitments.addAll(((MonthCalendarView)calendarView).getSelectedCommitments());
 		
 		if(filterCategoryTabbedPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
-			selectedCommitments.addAll(commitmentSubTabPanel.getCommitmentsList().getSelectedValuesList());
+			selectedCommitments.addAll(commitmentSubTabPanel.getSelectedCommitments());
 		//else if(filterCategoryTabbedPane.getSelectedComponent() instanceof QuickListTabPanel)
 			//selectedCommitments.addAll(quickListTabPanel.getCommitmentsList().getSelectedValuesList());
 		
