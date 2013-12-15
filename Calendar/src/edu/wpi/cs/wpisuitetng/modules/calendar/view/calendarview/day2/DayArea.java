@@ -207,6 +207,9 @@ public class DayArea extends JPanel implements ListDataListener{
 	 public void sortEvents(){
 		Collections.sort(events, new Comparator<ISchedulable>(){
 			public int compare(ISchedulable o1, ISchedulable o2) {
+				if(o1.getStartDate().equals(o2.getStartDate())){
+					return getLengthMinutes(o1)-getLengthMinutes(o2);
+				}
 				return o1.getStartDate().compareTo(o2.getStartDate());
 			}
 

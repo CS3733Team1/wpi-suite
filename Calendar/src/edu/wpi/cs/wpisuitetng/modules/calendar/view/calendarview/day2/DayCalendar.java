@@ -49,7 +49,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 		daylayer = new DayHolderPanel();
 
-		JPanel daytitle = new JPanel(new MigLayout("fill, insets 0", "[10%]0[90%]"));
+		daytitle = new JPanel(new MigLayout("fill, insets 0", "[10%]0[90%]"));
 
 		dayLabel = new JLabel(weekNames[(daylayer.getDayViewDate().getDay())], JLabel.CENTER);
 		dayLabel.setFont(new Font(dayLabel.getName(), Font.BOLD, 14));
@@ -86,7 +86,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		multiview = new MultidayEventView(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
 		
 		mscroll = new DayMultiScrollPane(multiview);
-		this.add(mscroll, "grow, wrap, hmin 120, hmax 120");
+		this.add(mscroll, "grow, wrap, hmin 80, hmax 80");
 		mscroll.setWheelScrollingEnabled(true);
 		mscroll.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		mscroll.getViewport().repaint();
@@ -155,14 +155,15 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	public void next() {
 		// TODO Auto-generated method stub
 		daylayer.next();
+		updateDay();
 		updateMultiDay();
 	}
 
 	@Override
 	public void previous() {
 		// TODO Auto-generated method stub
-
 		daylayer.previous();
+		updateDay();
 		updateMultiDay();
 	}
 
@@ -170,6 +171,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	public void today() {
 		// TODO Auto-generated method stub
 		daylayer.today();
+		updateDay();
 		updateMultiDay();
 	}
 
