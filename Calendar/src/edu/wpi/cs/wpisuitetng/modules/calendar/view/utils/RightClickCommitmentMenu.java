@@ -19,13 +19,14 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPane
 public class RightClickCommitmentMenu extends JPopupMenu implements MouseListener{
 
 	private List<Commitment> commitments;
+	private CalendarPanel calendarPanel;
 	
 	private JMenuItem deleteButton;
 	private JMenuItem editButton;
 	
-	private CommitmentListPanel commitmentListPanel;
 
-	public RightClickCommitmentMenu(List<Commitment> c, final CommitmentListPanel commitmentListPanel){
+	public RightClickCommitmentMenu(List<Commitment> c, final CalendarPanel calendarPanel){
+		this.calendarPanel = calendarPanel;
 		commitments = c;
 		deleteButton = new JMenuItem ("Delete");
 		editButton = new JMenuItem ("Edit");
@@ -83,8 +84,9 @@ public class RightClickCommitmentMenu extends JPopupMenu implements MouseListene
 			public void mouseReleased(MouseEvent e) {
 				//iterate through all commitments in this edit menu's list of commitments
 				for(Commitment commitment : commitments){
-					commitmentListPanel.setSelectedCommitment(commitment);	//set it as the selected commitment in the CommitmentListPanel
-					commitmentListPanel.openUpdateCommitmentTabPanel();		//call the panel's method to edit the selected commitment
+//					commitmentListPanel.setSelectedCommitment(commitment);	//set it as the selected commitment in the CommitmentListPanel
+//					commitmentListPanel.openUpdateCommitmentTabPanel();		//call the panel's method to edit the selected commitment
+					openUpdateCommitmentTab(calendarPanel, commitment);
 				}
 				System.out.println("Mouse Released on edit button");
 			}

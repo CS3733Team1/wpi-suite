@@ -181,7 +181,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 			if (r != null && r.contains(e.getPoint())) {
 				//selectedCommitment = commitmentList.getModel().getElementAt(commitmentList.locationToIndex(e.getPoint()));
 				commitmentList.setSelectedIndex(commitmentList.locationToIndex(e.getPoint()));
-				rightClickCommitmentMenu = new RightClickCommitmentMenu(commitmentList.getSelectedValuesList(), this);
+				rightClickCommitmentMenu = new RightClickCommitmentMenu(commitmentList.getSelectedValuesList(), calendarPanel);
 				rightClickCommitmentMenu.show(e.getComponent(),e.getX(),e.getY());
 			}
 		}
