@@ -24,8 +24,4 @@ public class ListItem<T> {
 	
 	public boolean isSelected() {return this.isSelected;}
 	public void setSelected(boolean selected) {this.isSelected = selected;}
-	public boolean toggleSelection() {
-		isSelected = !isSelected;
-		return isSelected;
-	}
 }

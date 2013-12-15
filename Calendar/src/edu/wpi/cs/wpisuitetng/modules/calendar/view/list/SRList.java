@@ -1,86 +1,150 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.list;
 
-import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 public class SRList<T> extends JScrollPane implements MouseListener, ListDataListener {
-	// Constants
-	public static int SCROLLBAR_AS_NEEDED = 1;
-	public static int SCROLLBAR_NEVER = 2;
-	public static int SCROLLBAR_ALWAYS = 3;
-
 	// Variables
 	private ListItemRenderer<T> listItemRenderer;
 	private ListModel<T> listModel;
-	private boolean hasScrollPane;
 	private List<ListItem<T>> listItems;
-	
-	private JScrollPane scrollPane;
+	private ListPanel listPanel;
+
+	private List<ListItem<T>> selectedListItems;
+
+	private int selectionStartIndex;
+
+	List<ListItemListener<T>> listItemListeners;
 
 	public SRList(ListModel<T> listModel) {
 		this.listModel = listModel;
-		hasScrollPane = false;
 		listItems = new ArrayList<ListItem<T>>();
+		listItemListeners = new ArrayList<ListItemListener<T>>();
+		selectedListItems = new ArrayList<ListItem<T>>();
 
-		setScrollable(SCROLLBAR_NEVER, SCROLLBAR_NEVER);
-
+		listPanel = new ListPanel();
+		listPanel.addMouseListener(this);
 		this.addMouseListener(this);
-		this.listModel.addListDataListener(this);
 
+		this.setViewportView(listPanel);
+		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		this.setListItemRenderer(new DefaultListItemRenderer<T>());
+
+		fillListItems();
+		this.listModel.addListDataListener(this);
 		render();
 	}
 
-
 	// ListPanel Settings
-
-	public void setScrollable(int verticalScrollType, int horizontalScrollType) {
-		if(SCROLLBAR_NEVER == verticalScrollType && verticalScrollType == horizontalScrollType) {
-			if(hasScrollPane) { // Remove the ScrollPane
-				this.remove(scrollPane);
-				for(Component c: scrollPane.getComponents()) this.add(c);
-				scrollPane.removeAll();
-			}
-		} else {
-			if(!hasScrollPane) { // Build the ScrollPane
-				scrollPane = new JScrollPane();
-			}
-			// Set the settings of the ScrollPane
-
-		}
-	}
 
 	public void setListItemRenderer(ListItemRenderer<T> renderer) {
 		this.listItemRenderer = renderer;
 	}
 
+	@Override
+	public void setHorizontalScrollBarPolicy(int policy) {
+		if(listPanel != null) {
+			listPanel.setTracksViewportWidth(policy == JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			super.setHorizontalScrollBarPolicy(policy);
+		}
+	}
 
-	// Logic / Data Builders
-	
-	private void updateListItems() {
-		
+	@Override
+	public void setVerticalScrollBarPolicy(int policy) {
+		if(listPanel != null) {
+			listPanel.setTracksViewportHeight(policy == JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			super.setVerticalScrollBarPolicy(policy);
+		}
+	}
+
+	// Logic / Data Builders / Other
+	private void fillListItems() {
+		listItems.clear();
+		selectedListItems.clear();
+		for(int i = 0; i < listModel.getSize(); i++) listItems.add(new ListItem<T>(listModel.getElementAt(i)));;
 	}
 
 	private void render() {
-		if(hasScrollPane) ;
-		else this.removeAll();
+		listPanel.clear();
 		for(ListItem<T> listItem: listItems) {
 			listItem.setComponent(listItemRenderer.getRenderedListComponent(this, listItem.getListObject(), listItem.isSelected(), listItem.isFocused()));
+			listPanel.add(listItem.getComponent());
 		}
+		this.revalidate();
+		this.repaint();
+	}
+
+	private void clearSelection() {
+		for(ListItem<T> listItem: selectedListItems) {
+			listItem.setSelected(false);
+			listItem.setFocused(false);
+		}
+		this.selectedListItems.clear();
+	}
+
+	public List<T> getSelectedItems() {
+		List<T> selected = new ArrayList<T>();
+		for(ListItem<T> listItem: selectedListItems) selected.add(listItem.getListObject());
+		return selected;
 	}
 
 	// Listeners
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+		int indexOfMousePress = listPanel.getIndexOfComponent(listPanel.getComponentAt(e.getPoint()));
+		if(indexOfMousePress >= 0) {
+			if(e.getClickCount() == 2) {
+				this.fireItemDoubleClicked(listItems.get(indexOfMousePress).getListObject());
+			} else if(e.isControlDown()) {
+				listItems.get(selectionStartIndex).setFocused(false);
+				if(listItems.get(indexOfMousePress).isSelected()) {
+					listItems.get(indexOfMousePress).setSelected(false);
+					listItems.get(indexOfMousePress).setFocused(false);
+					selectedListItems.remove(listItems.get(indexOfMousePress));
+				} else {
+					listItems.get(indexOfMousePress).setSelected(true);
+					listItems.get(indexOfMousePress).setFocused(true);
+					selectedListItems.add(listItems.get(indexOfMousePress));
+				}
+				this.fireItemsSelected(getSelectedItems());
+			} else if(e.isShiftDown()) {
+				clearSelection();
+				if(selectionStartIndex < indexOfMousePress) {
+					for(int i = selectionStartIndex; i <= indexOfMousePress; i++) listItems.get(i).setSelected(true);
+				} else if(selectionStartIndex > indexOfMousePress) {
+					for(int i = indexOfMousePress; i <= selectionStartIndex; i++) listItems.get(i).setSelected(true);
+				}
+				this.fireItemsSelected(getSelectedItems());
+			} else {
+				// Clear the selection
+				boolean prevSelectionState = listItems.get(indexOfMousePress).isSelected();
+				clearSelection();
+				if(prevSelectionState) {
+					listItems.get(indexOfMousePress).setSelected(false);
+					listItems.get(indexOfMousePress).setFocused(false);
+					selectedListItems.remove(listItems.get(indexOfMousePress));
+				} else {
+					listItems.get(indexOfMousePress).setSelected(true);
+					listItems.get(indexOfMousePress).setFocused(true);
+					selectedListItems.add(listItems.get(indexOfMousePress));
+				}
+				this.fireItemsSelected(getSelectedItems());
+			}
+
+			selectionStartIndex = indexOfMousePress;
+		} else {
+			selectionStartIndex = 0;
+			clearSelection();
+		}
+		render();
 	}
 
 	@Override
@@ -90,14 +154,46 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		for(int i = e.getIndex0(); i <= e.getIndex1(); i++) listItems.add(i, new ListItem<T>(listModel.getElementAt(i)));;
-		render();
+		if(listModel.getSize() != 0) {
+			//for(int i = e.getIndex0(); i <= e.getIndex1(); i++) listItems.add(i, new ListItem<T>(listModel.getElementAt(i)));;
+			fillListItems();
+			render();
+		}
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		for(int i = e.getIndex0(); i <= e.getIndex1(); i++) listItems.remove(i);
+		//for(int i = e.getIndex0(); i <= e.getIndex1(); i++) listItems.remove(i);
+		fillListItems();
 		render();
+	}
+
+	public void fireItemDoubleClicked(T listObject) {
+		for(ListItemListener<T> l: listItemListeners) l.itemDoubleClicked(listObject);
+	}
+
+	public void fireItemRightClicked(T listObject) {
+		for(ListItemListener<T> l: listItemListeners) l.itemRightClicked(listObject);
+	}
+
+	public void fireItemsSelected(List<T> listObjects) {
+		for(ListItemListener<T> l: listItemListeners) l.itemsSelected(listObjects);
+	}
+
+	public void fireItemFocused(T listObject) {
+		for(ListItemListener<T> l: listItemListeners) l.itemFocused(listObject);
+	}
+
+	public void addListItemListener(ListItemListener<T> l) {
+		listItemListeners.add(l);
+	}
+
+	public void removeListItemListener(ListItemListener<T> l) {
+		listItemListeners.remove(l);
+	}
+
+	public List<ListItemListener<T>> getListItemListeners() {
+		return listItemListeners;
 	}
 
 	// Unused

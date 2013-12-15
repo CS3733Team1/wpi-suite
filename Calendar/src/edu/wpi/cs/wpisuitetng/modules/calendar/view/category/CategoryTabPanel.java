@@ -60,7 +60,6 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 			setViewAddCategoryPanel();
 		} else if(e.getActionCommand().equals("delete")) {
 			delControl.deleteCategories(categoryPanel.getSelectedCategories());
-			categoryPanel.clearSelection();
 		} else if(e.getActionCommand().equals("addok")) {
 			addControl.addCategory(addCatPanel.getCategory());
 			this.setViewCategoryPanel();
