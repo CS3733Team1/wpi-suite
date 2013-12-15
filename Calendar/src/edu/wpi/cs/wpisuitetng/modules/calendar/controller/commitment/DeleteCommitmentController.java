@@ -30,12 +30,26 @@ public class DeleteCommitmentController implements ActionListener {
 		this.calendarPanel = calendarPanel;
 	}
 
+	public void deleteSelectedCommitments(ActionEvent e){
+		actionPerformed(e);
+	}
+	
+	public static void deleteCommitments(List<Commitment> c){
+		CommitmentListModel model = CommitmentListModel.getCommitmentListModel();
+		List<Commitment> commitmentList = c;
+		deleteCommitmentList(c, model);
+	}
+	
 	/**
 	 * Handles the pressing of the Remove Commitment button
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		List<Commitment> commitmentList = calendarPanel.getCalendarTabPanel().getSelectedCommitmentList();
+		deleteCommitmentList(commitmentList, this.model);
+	}
+	
+	private static void deleteCommitmentList(List<Commitment> commitmentList, CommitmentListModel model){
 		for (Commitment commitment: commitmentList) {
 			System.out.println("Deleting commitment: name = " + commitment.getName() + "; uid = " + commitment.getUniqueID());
 

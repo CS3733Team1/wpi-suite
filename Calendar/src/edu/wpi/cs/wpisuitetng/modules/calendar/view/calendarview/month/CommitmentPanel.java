@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.List;
 
 import javax.swing.JLabel;
 
@@ -16,6 +17,7 @@ public class CommitmentPanel extends EvComPanel {
 	
 	private JLabel commitmentNameLabel;
 	private JLabel commitmentTimeLabel;
+	private List<Commitment> commitmentList;
 	
 	public CommitmentPanel(Commitment commitment) {
 		super(false, false);
@@ -50,7 +52,7 @@ public class CommitmentPanel extends EvComPanel {
 			commitmentTimeLabel.setForeground(textColor);
 		}
 	}
-	
+
 	@Override
 	public void setSelected(boolean isSelected) {		
 		this.isSelected = isSelected;

@@ -357,7 +357,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	 * @param date
 	 */
 	public void setDate(Date date){
-//		System.out.println("\t\t\tDTC: Setting date to " +date.toString());
+//		System.out.println("\t\tDTC: Setting date to " +date.toString());
 		date.setSeconds(59);
 		setDay(date);
 		setTime(date);
@@ -379,8 +379,8 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	 * @param date
 	 */
 	public void setTime(Date date){
-		String strTime=DateUtils.timeToString(date_);
-//		System.out.println("\t\t\tDTC: Setting time to " +DateUtils.timeToString(date_));
+		String strTime=DateUtils.timeToString(date);
+//		System.out.println("\t\t\tDTC: Setting time to " +DateUtils.timeToString(date));
 		timeCombo_.setSelectedItem(strTime);
 //		fillTime(); //the setSelecteditem() above should automatically fire a propertychanged event which calls fillTime()
 	}
