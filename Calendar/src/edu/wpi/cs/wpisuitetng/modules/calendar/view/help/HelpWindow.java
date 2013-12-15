@@ -198,25 +198,11 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		parser = XMLParser.getParser();
 		
 		findDocs();
-		System.out.println(new File("").getAbsoluteFile().getParent());
 		docs.add(new HTMLDocument("<html><body><h1>Welcome</h1><p>placeholder</p></body></html>", "Welcome"));
+		display.setEditorKit(new HTMLEditorKit());
 		if(docs.size() > 0)
 		{
-			//display.setText(docs.get(0));
-		}
-		
-		try {
-			File f = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help/template.html");
-			System.out.println("f path " + f.getAbsolutePath());
-			display.setEditorKit(new HTMLEditorKit());
-		    String html = readHTML(f.getPath());
-		    html = fixHTMLImages(html);
-		    System.out.println("html is " + html);
-			display.setText(html);
-		} catch (Exception e) {
-			System.err.println("file not found");
-			display.setText(docs.get(0).getText());
-			e.printStackTrace();
+			display.setText(findTopLevelHTMLDocument("Welcome").getText());
 		}
 		
 		backlist = new ArrayList<HTMLDocument>();
