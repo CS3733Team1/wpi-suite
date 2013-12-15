@@ -345,6 +345,13 @@ public class SchedulableResizer extends MouseAdapter
 			if (item instanceof Commitment){
 				UpdateCommitmentController updatecommitment = new UpdateCommitmentController(((Commitment) item));
 			}
+			
+			if (source.getParent() != null && source.getParent() instanceof DayArea){
+				DayArea parent = ((DayArea) source.getParent());
+				parent.showEvent();
+				parent.repaint();
+				parent.revalidate();
+			}
 		}
 
 		if (source instanceof JComponent)
