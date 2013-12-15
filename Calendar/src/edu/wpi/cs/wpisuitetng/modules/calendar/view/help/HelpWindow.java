@@ -69,7 +69,6 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	ArrayList<HTMLDocument> backlist;
 	int backlistCurrent;
 	XMLParser parser;
-	int[][] cellSizes;
 
 	/**
 	 * Creates all of the GUI components and sets up their action listeners.
@@ -198,7 +197,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		parser = XMLParser.getParser();
 		
-		//findDocs();
+		findDocs();
 		System.out.println(new File("").getAbsoluteFile().getParent());
 		docs.add(new HTMLDocument("<html><body><h1>Welcome</h1><p>placeholder</p></body></html>", "Welcome"));
 		if(docs.size() > 0)
@@ -254,8 +253,10 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 */
 	String addDoc(String file)
 	{
-		docs.add(new HTMLDocument(readHTML(file)));
-		return readHTML(file);
+		String absname = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help").getAbsoluteFile().getAbsolutePath();
+		String html = fixHTMLImages(readHTML(absname + "/" + file));
+		docs.add(new HTMLDocument(html, parser.getHTMLTitle(html)));
+		return html;
 	}
 	
 	/**
@@ -263,12 +264,14 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 */
 	void findDocs()
 	{
+		System.out.println("findDocs()");
 		File file = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help");
 		for(String s: file.list())
 		{
-			if(s.length() > 4 && s.substring(s.length() - 4).equals(".html"))
+			System.out.println(s);
+			if(s.length() > 5 && s.endsWith(".html"))
 			{
-				System.out.println(s);
+				System.out.println("yes");
 				addDoc(new File(s).getPath());
 			}
 		}
@@ -355,25 +358,28 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	String filterDocs(String include, String exclude, boolean[] lods)
 	{
 		String results = "";
-		/*
+		
 		if(lods.length != 3)
 		{
 			System.err.println("not enough arguments to filterDocs, expected boolean[3]");
 			return null;
 		}
 		
-		for(String t: docs)
+		for(HTMLDocument doc: docs)
 		{
-			if((t.contains(include) || include.equals("")) && (lods[0] || lods[1] || lods[2])
-			&& !t.contains("Welcome")) //BUGBUG this is wrong, fix this
+			if((doc.getText().contains(include) || include.equals(""))
+			&& (lods[0] || lods[1] || lods[2])
+			&& !doc.getTitle().contains("Welcome")
+			&& (!doc.getText().contains(exclude) || exclude.equals(""))) //BUGBUG this is wrong, fix this
 			{
-				results += t + "\n";
+				results += "<h1><u>" + doc.getTitle() + "</u></h1>";
+				results += parser.unwrapHTML(doc.getText(), false) + "<br>";
 			}
 			else
 			{
 				continue;
 			}
-			
+			/*
 			if(lods[0]) //show topic-level-of-detail results
 			{
 				if((t.getChildHTMLDocument("Topic").findText(include) || include.equals("")) && !t.getChildHTMLDocument("Topic").findText(exclude))
@@ -391,11 +397,11 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 				if((t.getChildHTMLDocument("Detail").findText(include) || include.equals("")) && !t.getChildHTMLDocument("Detail").findText(exclude))
 					results += t.getChildHTMLDocument("Detail").sprintHTMLDocument();
 			}
-			
-			results += "\n";
+			*/
+			results += "<br>";
 		}
-		*/
-		return results;
+		
+		return parser.wrapHTML(results, "Search Results");
 	}
 	
 	/**
@@ -404,20 +410,22 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 */
 	void addDocsToTree(DefaultMutableTreeNode top)
 	{
-		/*
+		
 		DefaultMutableTreeNode node, node2;
 		
-		for(String t: docs)
+		for(HTMLDocument doc: docs)
 		{
-			node = new DefaultMutableTreeNode(t);
+			node = new DefaultMutableTreeNode(doc.getTitle());
+			/*
 			for(HTMLDocument child: t.children)
 			{
 				node2 = new DefaultMutableTreeNode(child);
 				node.add(node2);
 			}
+			*/
 			top.add(node);
 		}
-		*/
+		
 	}
 	
 	/**
@@ -467,13 +475,13 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 */
 	HTMLDocument findTopLevelHTMLDocument(String name)
 	{
-		/*
-		for(HTMLDocument t: docs)
+		
+		for(HTMLDocument doc: docs)
 		{
-			if(t.name.equals(name))
-				return t;
+			if(doc.getTitle().equals(name))
+				return doc;
 		}
-		*/
+		
 		return null;
 	}
 
@@ -532,12 +540,16 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		if(node == null)
 			return;
-		if(node.getUserObject() instanceof HTMLDocument)
+		if(node.getUserObject() instanceof String)
 		{
-			HTMLDocument doc = (HTMLDocument) node.getUserObject();
-			System.out.println(doc.getTitle() + " selected");
-			display.setText(doc.getText());
-			updateBacklist(doc);
+			System.out.println((String) node.getUserObject());
+			if(findTopLevelHTMLDocument((String) node.getUserObject()) != null)
+			{
+				HTMLDocument doc = findTopLevelHTMLDocument((String) node.getUserObject());
+				System.out.println(doc.getTitle() + " selected");
+				display.setText(doc.getText());
+				updateBacklist(doc);
+			}
 		}
 	}
 
@@ -589,7 +601,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		if(e.getSource().equals(bHome))
 		{
 			backlist.clear();
-			//backlist.add(findTopLevelHTMLDocument("Welcome"));
+			backlist.add(findTopLevelHTMLDocument("Welcome"));
 			backlistCurrent = 0;
 			
 			display.setText(backlist.get(0).getText());
