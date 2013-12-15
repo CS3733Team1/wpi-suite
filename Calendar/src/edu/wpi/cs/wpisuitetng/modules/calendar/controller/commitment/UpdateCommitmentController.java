@@ -35,6 +35,10 @@ public class UpdateCommitmentController implements ActionListener {
 		this.commitmentDisplay = view.getCommitmentView();
 	}
 	
+	public UpdateCommitmentController(Commitment commitmentBeingDragged) {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Commitment updatedCommitment = view.getFilledCommitment();
