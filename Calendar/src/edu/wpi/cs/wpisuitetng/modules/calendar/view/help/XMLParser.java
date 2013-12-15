@@ -198,4 +198,103 @@ public class XMLParser
 		s.close();
 		return parseToTag(input);
 	}
+	
+	String getHTMLSection(String html, String headName, boolean getTitle)
+	{
+		String output = "";
+		String buffer = html;
+		int ind, depth;
+		
+		ind = buffer.indexOf(">" + headName + "</h");
+		depth = getHeaderDepth(buffer.substring(ind - 1, ind));
+		buffer = buffer.substring(ind - 3);
+		output += buffer.substring(0, 4 + headName.length() + 5);
+		buffer = buffer.substring(4 + headName.length() + 5);
+		
+		while(buffer.contains("<h"))
+		{
+			ind = buffer.indexOf("<h");
+			output += buffer.substring(0, ind);
+			buffer = buffer.substring(ind);
+			
+			if(getHeaderDepth(buffer.substring(ind, ind + 4)) <= depth) //a header with the same or lower depth than this one can't belong to this one
+			{
+				if(getTitle)
+				{
+					output = wrapHTML(output, getHTMLTitle(html));
+				}
+				else
+				{
+					output = wrapHTML(output);
+				}
+				return output;
+			}
+			else
+			{
+				ind = buffer.indexOf("</h");
+				output += buffer.substring(0, ind + 5);
+				buffer = buffer.substring(ind + 5);
+			}
+		}
+		//this header is the last one at its level in the file, so the rest of the file belongs to this header
+		ind = buffer.indexOf("</body>");
+		output += buffer.substring(0, ind);
+		
+		if(getTitle)
+		{
+			output = wrapHTML(output, getHTMLTitle(html));
+		}
+		else
+		{
+			output = wrapHTML(output);
+		}
+		
+		return output;
+	}
+	
+	int getHeaderDepth(String header)
+	{
+		if(header.length() == 4 && header.startsWith("<h") && header.endsWith(">"))
+			return Integer.parseInt(header.substring(2,3));
+		else
+			return 0;
+	}
+	
+	String getHTMLTitle(String html)
+	{
+		String output = "";
+		
+		if(html.contains("<title>"))
+		{
+			output = html.substring(html.indexOf("<title>") + 7, html.indexOf("</title>"));
+		}
+		
+		return output;
+	}
+	
+	String wrapHTML(String html)
+	{
+		return "<!DOCTYPE html><html><body>" + html + "</body></html>";
+	}
+	
+	String wrapHTML(String html, String title)
+	{
+		return "<!DOCTYPE html><html><body><title>" + title + "</title>" + html + "</body></html>";
+	}
+	
+	String unwrapHTML(String html, boolean keepTitle)
+	{
+		if(keepTitle && html.contains("<title>"))
+		{
+			return html.substring(html.indexOf("<title>"), html.indexOf("</body>"));
+		}
+		else if(html.contains("<title>"))
+		{
+			return html.substring(html.indexOf("</title>") + 8, html.indexOf("</body>"));
+		}
+		else
+		{
+			return html.substring(html.indexOf("<body>") + 6, html.indexOf("</body>"));
+		}
+	}
 }

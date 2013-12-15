@@ -6,20 +6,23 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JTree;
 import javax.swing.border.EtchedBorder;
@@ -44,40 +47,30 @@ import net.miginfocom.swing.MigLayout;
  * @author trdesilva
  */
 @SuppressWarnings("serial")
-public class HelpWindow extends JPanel implements ActionListener, MouseListener, FocusListener, TreeSelectionListener, ItemListener
+public class HelpWindow extends JPanel implements ActionListener, MouseListener, FocusListener, TreeSelectionListener, ItemListener, KeyListener
 {
 	JTextPane display;
 	JScrollPane displayScroll;
-	JTextPane search;
+	JTextField search;
 	JTree docMenu;
 	JScrollPane docMenuPane;
-	JButton bGo, bSettings, bBack, bForward, bHome;
+	JButton bGo, bBack, bForward, bHome;
 	
-	JPopupMenu settings;
-	JTextPane filter;
+	JPanel settings;
+	JTextField filter;
 	JPanel checkPanel;
 	JCheckBox bTopic, bSummary, bDetail;
-	JButton bApply, bCancel;
+	JButton bClear;
 	
-	ArrayList<String> docs;
+	ArrayList<HTMLDocument> docs;
 	String include = "";
 	String exclude = "";
 	boolean lods[] = {true, true, true};
-	ArrayList<String> backlist;
+	ArrayList<HTMLDocument> backlist;
 	int backlistCurrent;
 	XMLParser parser;
 	int[][] cellSizes;
-	
-	/*
-	public static void main(String[] args)
-	{
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                go();
-            }
-        });
-	}
-	*/
+
 	/**
 	 * Creates all of the GUI components and sets up their action listeners.
 	 */
@@ -98,11 +91,12 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		displayScroll.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		displayScroll.setVisible(true);
 		
-		search = new JTextPane();
+		search = new JTextField();
 //		search.setMinimumSize(new Dimension(260, 25));
 		search.setText("Search...");
 		search.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		search.addFocusListener(this);
+		search.addKeyListener(this);
 		
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Documents");
 		docMenu = new JTree(top);
@@ -121,10 +115,6 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 //		bGo.setMinimumSize(new Dimension(50,25));
 		bGo.setToolTipText("Go");
 		bGo.addMouseListener(this);
-		bSettings = new JButton("S");
-//		bSettings.setMinimumSize(new Dimension(50,25));
-		bSettings.setToolTipText("Settings");
-		bSettings.addMouseListener(this);
 		bBack = new JButton("<");
 //		bBack.setMinimumSize(new Dimension(50,25));
 		bBack.setToolTipText("Back");
@@ -145,26 +135,26 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		this.add(displayScroll, "cell 1 1 1 3, grow");
 		this.add(search, "cell 1 0, grow");
 		this.add(docMenuPane, "cell 0 0 1 4, grow");
-		this.add(bGo, "cell 2 0, grow");
-		this.add(bSettings, "cell 3 0, grow");
+		this.add(bGo, "cell 2 0 2 1, grow");
 		this.add(bBack, "cell 2 1, grow");
 		this.add(bForward, "cell 3 1, grow");
 		this.add(bHome, "cell 2 2 2 1, grow");
 		
 		//set up settings panel
-		settings = new JPopupMenu("Settings");
-		settings.setLayout(new MigLayout("fill", "10[75]10[75]10", "10[25][105]10[25]10[25]10"));
-		settings.setPreferredSize(new Dimension(180, 220));
+		settings = new JPanel();
+		settings.setLayout(new MigLayout("fill", "[100%]", "[14%][58%][14%][14%]"));
+		settings.setMinimumSize(new Dimension(180, 220));
+		settings.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
-		filter = new JTextPane();
+		filter = new JTextField();
 		filter.setMinimumSize(new Dimension(160, 25));
-		filter.setMaximumSize(new Dimension(160, 25));
 		filter.setText("Exclude...");
 		filter.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		filter.addFocusListener(this);
+		filter.addKeyListener(this);
 		
 		checkPanel = new JPanel();
-		checkPanel.setLayout(new MigLayout("fill", "[160]", "[35][35][35]"));
+		checkPanel.setLayout(new MigLayout("fill", "[100%]", "[33%][33%][33%]"));
 		checkPanel.setMinimumSize(new Dimension(160, 75));
 		checkPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		checkPanel.setVisible(true);
@@ -185,34 +175,32 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		bDetail.setMinimumSize(new Dimension(110, 25));
 		bDetail.addItemListener(this);
 		
-		checkPanel.add(bTopic, "cell 0 0");
-		checkPanel.add(bSummary, "cell 0 1");
-		checkPanel.add(bDetail, "cell 0 2");
+		checkPanel.add(bTopic, "cell 0 0, grow");
+		checkPanel.add(bSummary, "cell 0 1, grow");
+		checkPanel.add(bDetail, "cell 0 2, grow");
 		
-		bApply = new JButton("Apply");
-		bApply.setMinimumSize(new Dimension(75,25));
-		bApply.setToolTipText("Apply these search filters");
-		bApply.addMouseListener(this);
-		bCancel = new JButton("Cancel");
-		bCancel.setMinimumSize(new Dimension(75,25));
-		bCancel.setToolTipText("Cancel filtering and close this menu");
-		bCancel.addMouseListener(this);
+		bClear = new JButton("Clear");
+		bClear.setMinimumSize(new Dimension(75,25));
+		bClear.setToolTipText("Cancel filtering and clear fields");
+		bClear.addMouseListener(this);
 		
-		settings.add(new JLabel("Show only..."), "cell 0 0 2 1");
-		settings.add(checkPanel, "cell 0 1 2 1");
-		settings.add(filter, "cell 0 2 2 1");
-		settings.add(bApply, "cell 0 3");
-		settings.add(bCancel, "cell 1 3");
+		settings.add(new JLabel("Show only..."), "cell 0 0, grow");
+		settings.add(checkPanel, "cell 0 1, grow");
+		settings.add(filter, "cell 0 2, grow");
+		settings.add(bClear, "cell 0 3, grow");
 		
-		settings.setVisible(false);
+		settings.setVisible(true);
+		
+		this.add(settings, "cell 2 3 2 1, grow");
+		
 		//set up backend
-		docs = new ArrayList<String>();
+		docs = new ArrayList<HTMLDocument>();
 		
 		parser = XMLParser.getParser();
 		
 		//findDocs();
 		System.out.println(new File("").getAbsoluteFile().getParent());
-		docs.add("<html><body><h1>Welcome</h1><p>placeholder</p></body></html>");
+		docs.add(new HTMLDocument("<html><body><h1>Welcome</h1><p>placeholder</p></body></html>", "Welcome"));
 		if(docs.size() > 0)
 		{
 			//display.setText(docs.get(0));
@@ -228,11 +216,11 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			display.setText(html);
 		} catch (Exception e) {
 			System.err.println("file not found");
-			display.setText(docs.get(0));
+			display.setText(docs.get(0).getText());
 			e.printStackTrace();
 		}
 		
-		backlist = new ArrayList<String>();
+		backlist = new ArrayList<HTMLDocument>();
 		backlistCurrent = 0;
 		backlist.add(docs.get(0));
 		bBack.setEnabled(false);
@@ -260,13 +248,13 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	}
 	
 	/**
-	 * Adds a Tag from the specified XML file to the list of documents that can be displayed.
+	 * Adds an HTMLDocument from the specified XML file to the list of documents that can be displayed.
 	 * @param file The filepath of an XML file to add
-	 * @return The resulting Tag
+	 * @return The resulting HTMLDocument
 	 */
 	String addDoc(String file)
 	{
-		docs.add(readHTML(file));
+		docs.add(new HTMLDocument(readHTML(file)));
 		return readHTML(file);
 	}
 	
@@ -358,11 +346,11 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	}
 	
 	/**
-	 * Gives a String containing the printed versions of Tags which fit the given search criteria.
-	 * @param include A String that the Tags must contain
-	 * @param exclude A String that the Tags cannot contain
+	 * Gives a String containing the printed versions of HTMLDocuments which fit the given search criteria.
+	 * @param include A String that the HTMLDocuments must contain
+	 * @param exclude A String that the HTMLDocuments cannot contain
 	 * @param lods A 3-tuple that says which levels of detail to search
-	 * @return Topic, Summary, and Detail Tags which fit the criteria
+	 * @return Topic, Summary, and Detail HTMLDocuments which fit the criteria
 	 */
 	String filterDocs(String include, String exclude, boolean[] lods)
 	{
@@ -388,20 +376,20 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			
 			if(lods[0]) //show topic-level-of-detail results
 			{
-				if((t.getChildTag("Topic").findText(include) || include.equals("")) && !t.getChildTag("Topic").findText(exclude))
-					results += t.getChildTag("Topic").sprintTag();
+				if((t.getChildHTMLDocument("Topic").findText(include) || include.equals("")) && !t.getChildHTMLDocument("Topic").findText(exclude))
+					results += t.getChildHTMLDocument("Topic").sprintHTMLDocument();
 			}
 			
 			if(lods[1]) //show summaries
 			{
-				if((t.getChildTag("Summary").findText(include) || include.equals("")) && !t.getChildTag("Summary").findText(exclude))
-					results += t.getChildTag("Summary").sprintTag();
+				if((t.getChildHTMLDocument("Summary").findText(include) || include.equals("")) && !t.getChildHTMLDocument("Summary").findText(exclude))
+					results += t.getChildHTMLDocument("Summary").sprintHTMLDocument();
 			}
 			
 			if(lods[2]) //show details
 			{
-				if((t.getChildTag("Detail").findText(include) || include.equals("")) && !t.getChildTag("Detail").findText(exclude))
-					results += t.getChildTag("Detail").sprintTag();
+				if((t.getChildHTMLDocument("Detail").findText(include) || include.equals("")) && !t.getChildHTMLDocument("Detail").findText(exclude))
+					results += t.getChildHTMLDocument("Detail").sprintHTMLDocument();
 			}
 			
 			results += "\n";
@@ -422,7 +410,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		for(String t: docs)
 		{
 			node = new DefaultMutableTreeNode(t);
-			for(Tag child: t.children)
+			for(HTMLDocument child: t.children)
 			{
 				node2 = new DefaultMutableTreeNode(child);
 				node.add(node2);
@@ -436,7 +424,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 * Updates the list of previously-visited documents.
 	 * @param t A new document to add to the list
 	 */
-	void updateBacklist(String t)
+	void updateBacklist(HTMLDocument t)
 	{
 		if(!t.equals(backlist.get(backlistCurrent)))
 		{
@@ -473,14 +461,14 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	}
 	
 	/**
-	 * Finds a Tag in the top level of the list of documents with the given name.
+	 * Finds a HTMLDocument in the top level of the list of documents with the given name.
 	 * @param name The name to search for
-	 * @return The first Tag in the top level of the tree with the given name
+	 * @return The first HTMLDocument in the top level of the tree with the given name
 	 */
-	Tag findTopLevelTag(String name)
+	HTMLDocument findTopLevelHTMLDocument(String name)
 	{
 		/*
-		for(Tag t: docs)
+		for(HTMLDocument t: docs)
 		{
 			if(t.name.equals(name))
 				return t;
@@ -544,12 +532,12 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		if(node == null)
 			return;
-		if(node.getUserObject() instanceof Tag)
+		if(node.getUserObject() instanceof HTMLDocument)
 		{
-			Tag t = (Tag) node.getUserObject();
-			System.out.println(t.name + " selected");
-			display.setText(t.sprintTag());
-			//updateBacklist(t);
+			HTMLDocument doc = (HTMLDocument) node.getUserObject();
+			System.out.println(doc.getTitle() + " selected");
+			display.setText(doc.getText());
+			updateBacklist(doc);
 		}
 	}
 
@@ -557,66 +545,6 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	public void mouseClicked(MouseEvent e)
 	{
 		if(e.getSource().equals(bGo))
-		{
-			if(!search.getText().equals("Search..."))
-				include = search.getText();
-			else
-				include = "";
-			
-			display.setText(filterDocs(include, exclude, lods));
-			
-			if(display.getText().equals(""))
-				display.setText("No matches found");
-		}
-		
-		if(e.getSource().equals(bSettings))
-		{
-			settings.show(this, bSettings.getX() - (settings.getWidth()) + bSettings.getWidth(), bSettings.getY());
-			
-			bTopic.setSelected(lods[0]);
-			bSummary.setSelected(lods[1]);
-			bDetail.setSelected(lods[2]);
-			
-			settings.setVisible(true);
-		}
-		
-		if(e.getSource().equals(bBack))
-		{
-			if(backlistCurrent > 0)
-			{
-				backlistCurrent--;
-				display.setText(backlist.get(backlistCurrent));
-				bForward.setEnabled(true);
-				if(backlistCurrent == 0)
-					bBack.setEnabled(false);
-			}
-		}
-		
-		if(e.getSource().equals(bForward))
-		{
-			if(backlistCurrent < backlist.size() - 1)
-			{
-				backlistCurrent++;
-				display.setText(backlist.get(backlistCurrent));
-				bBack.setEnabled(true);
-				if(backlistCurrent == backlist.size() - 1)
-					bForward.setEnabled(false);
-			}
-		}
-		
-		if(e.getSource().equals(bHome))
-		{
-			backlist.clear();
-			//backlist.add(findTopLevelTag("Welcome"));
-			backlistCurrent = 0;
-			
-			display.setText(backlist.get(0));
-			
-			bBack.setEnabled(false);
-			bForward.setEnabled(false);
-		}
-		
-		if(e.getSource().equals(bApply))
 		{
 			if(!search.getText().equals("Search..."))
 				include = search.getText();
@@ -634,7 +562,43 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 				display.setText("No matches found");
 		}
 		
-		if(e.getSource().equals(bCancel))
+		if(e.getSource().equals(bBack))
+		{
+			if(backlistCurrent > 0)
+			{
+				backlistCurrent--;
+				display.setText(backlist.get(backlistCurrent).getText());
+				bForward.setEnabled(true);
+				if(backlistCurrent == 0)
+					bBack.setEnabled(false);
+			}
+		}
+		
+		if(e.getSource().equals(bForward))
+		{
+			if(backlistCurrent < backlist.size() - 1)
+			{
+				backlistCurrent++;
+				display.setText(backlist.get(backlistCurrent).getText());
+				bBack.setEnabled(true);
+				if(backlistCurrent == backlist.size() - 1)
+					bForward.setEnabled(false);
+			}
+		}
+		
+		if(e.getSource().equals(bHome))
+		{
+			backlist.clear();
+			//backlist.add(findTopLevelHTMLDocument("Welcome"));
+			backlistCurrent = 0;
+			
+			display.setText(backlist.get(0).getText());
+			
+			bBack.setEnabled(false);
+			bForward.setEnabled(false);
+		}
+		
+		if(e.getSource().equals(bClear))
 		{
 			lods[0] = true;
 			lods[1] = true;
@@ -646,8 +610,10 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			
 			filter.setText("Exclude...");
 			exclude = "";
+			search.setText("Search...");
+			include = "";
 			
-			settings.setVisible(false);
+			exclude = "";
 		}
 	}
 
@@ -684,7 +650,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	{
 		if(e.getSource().equals(bTopic))
 		{
-			if(e.getStateChange() == e.DESELECTED)
+			if(e.getStateChange() == ItemEvent.DESELECTED)
 			{
 				lods[0] = false;
 			}
@@ -696,7 +662,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		if(e.getSource().equals(bSummary))
 		{
-			if(e.getStateChange() == e.DESELECTED)
+			if(e.getStateChange() == ItemEvent.DESELECTED)
 			{
 				lods[1] = false;
 			}
@@ -708,7 +674,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		if(e.getSource().equals(bDetail))
 		{
-			if(e.getStateChange() == e.DESELECTED)
+			if(e.getStateChange() == ItemEvent.DESELECTED)
 			{
 				lods[2] = false;
 			}
@@ -717,6 +683,40 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 				lods[2] = true;
 			}
 		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+		{			
+			if(!search.getText().equals("Search..."))
+				include = search.getText();
+			else
+				include = "";
+			
+			if(!filter.getText().equals("Exclude..."))
+				exclude = filter.getText();
+			else
+				exclude = "";
+			
+			display.setText(filterDocs(include, exclude, lods));
+			
+			if(display.getText().equals(""))
+				display.setText("No matches found");
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
