@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 
 import java.awt.Dimension;
+import java.util.Date;
 
 import javax.swing.JPanel;
 
@@ -23,6 +24,14 @@ public class ScheduleItem extends JPanel{
 		this.setMinimumSize(new Dimension(0,0));
 	}
 	
+	public void updateSize(int x, int y, int w, int h){
+		StartX = x;
+		StartY = y;
+		width = w;
+		height = h;
+		this.setBounds(StartX, StartY, width, height);
+	}
+	
 	public void repaint(){
 		if (this.getParent() != null){
 			 StartX = location*(this.getParent().getWidth()/division);
@@ -33,6 +42,24 @@ public class ScheduleItem extends JPanel{
 		this.setBounds(StartX, StartY, width, height);
 		
 		super.repaint();
+	}
+	
+	public ISchedulable getDisplayItem(){
+		return display;
+	}
+	
+	public Date getStartTime(){
+		Date start = display.getStartDate();
+		start.setHours(0);
+		start.setMinutes(StartY);
+		return start;
+	}
+	
+	public Date getEndTime(){
+		Date end = display.getEndDate();
+		end.setHours(0);
+		end.setMinutes(StartY+height);
+		return end;
 	}
     
    

@@ -31,6 +31,7 @@ public class UpdateEventController implements ActionListener
 	
 	public UpdateEventController(Event updatedEvent)
 	{
+		System.out.println(updatedEvent);
 		this.model = EventListModel.getEventListModel();
 		this.eventToUpdate = updatedEvent;
 		updateEventInServer();
