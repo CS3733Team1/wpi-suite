@@ -12,6 +12,8 @@ public class CustomListSelectionModel extends DefaultListSelectionModel {
                 super.removeSelectionInterval(index0, index1);
             } else {
                 super.addSelectionInterval(index0, index1);
+                //Makes default categories unselectable
+                super.removeSelectionInterval(0, 4);
             }
         }
         gestureStarted = true;

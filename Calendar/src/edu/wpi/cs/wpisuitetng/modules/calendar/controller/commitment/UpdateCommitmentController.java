@@ -38,7 +38,7 @@ public class UpdateCommitmentController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Commitment updatedCommitment = view.getFilledCommitment();
-		updatedCommitment.setID(oldCommitment.getID());
+		updatedCommitment.setUniqueID(oldCommitment.getUniqueID());
 	
 		System.out.println("Updating commitment: name = " + oldCommitment.getName() + "; uid = " + oldCommitment.getUniqueID());
 
