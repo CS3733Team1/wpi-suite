@@ -35,7 +35,10 @@ public abstract class EvComPanel extends JPanel {
 				@Override
 				public void mouseExited(MouseEvent e) {}	
 				@Override
-				public void mouseClicked(MouseEvent e) {}
+				public void mouseClicked(MouseEvent e) 
+				{
+					if (e.getClickCount() == 2) getParent().getParent().getParent().dispatchEvent(e);
+				}
 				@Override
 				public void mouseEntered(MouseEvent e) {}
 			});

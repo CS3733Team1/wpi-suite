@@ -23,6 +23,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
@@ -40,7 +41,7 @@ public class JanewayFrame extends JFrame {
 
 	/** A panel to contain the tabs */
 	protected final TabPanel tabPanel;
-	
+
 	/** The singelton instance */
 	private static JanewayFrame instance = null;
 
@@ -50,6 +51,11 @@ public class JanewayFrame extends JFrame {
 	private JanewayFrame(List<IJanewayModule> modules) {
 		// Set window properties
 		setTitle("Janeway - WPI Suite Desktop Client");
+
+		// Set the JFrame Icon in the upper left corner
+		ImageIcon popTART = new ImageIcon("images/popTART.png");
+		this.setIconImage(popTART.getImage());
+
 		setMinimumSize(new Dimension(800, 600)); // minimum window size is 800 x 600
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -85,16 +91,16 @@ public class JanewayFrame extends JFrame {
 		JanewayKeyEventDispatcher keyEventDispatcher = new JanewayKeyEventDispatcher(this, modules);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
 		addGlobalKeyboardShortcuts(keyEventDispatcher);
-		
+
 	}
-	
+
 	public static JanewayFrame getInstance() {
 		if (instance == null) {
 			throw new RuntimeException("You must call the initialize method of JanewayFrame before calling getInstance!");
 		}
 		return instance;
 	}
-	
+
 	public static JanewayFrame initialize(List<IJanewayModule> modules) {
 		if (instance != null) {
 			throw new RuntimeException("JanewayFrame is already initialized!");
@@ -115,7 +121,7 @@ public class JanewayFrame extends JFrame {
 	 * @param keyEventDispatcher the current key event dispatcher
 	 */
 	private void addGlobalKeyboardShortcuts(JanewayKeyEventDispatcher keyEventDispatcher) {
-		
+
 		// control + page down: switch to the module tab to the right
 		keyEventDispatcher.addGlobalKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control PAGE_DOWN"), new AbstractAction() {
 			@Override
@@ -123,7 +129,7 @@ public class JanewayFrame extends JFrame {
 				tabPanel.switchToRightTab();
 			}
 		}));
-		
+
 		// control + page up: switch to the module tab to the left
 		keyEventDispatcher.addGlobalKeyboardShortcut(new KeyboardShortcut(KeyStroke.getKeyStroke("control PAGE_UP"), new AbstractAction() {
 			@Override

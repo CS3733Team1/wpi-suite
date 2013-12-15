@@ -30,11 +30,9 @@ public class MultidayEventView extends JPanel{
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-
+		
 		showEvents();
 		DisplayEventDropDown();
-
-		this.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
 		
 		this.setOpaque(false);
 		this.setVisible(true);
@@ -44,13 +42,20 @@ public class MultidayEventView extends JPanel{
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-
+		
 		this.removeAll();
 
 		showEvents();
 		DisplayEventDropDown();
 		
 		System.err.println(this.getPreferredSize());
+	}
+	
+	public void reSize(int width){
+		this.setSize(width, this.getPreferredSize().height);
+		this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
+		
+		this.repaint();
 	}
 	
 	/**
@@ -73,11 +78,15 @@ public class MultidayEventView extends JPanel{
 		sortEvents();
 
 		this.setLayout(new MigLayout("fill", 
-				"[20%][80%]", 
+				"[10%][90%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 
 		
 	}
+	
+	public int getNumberofEvents(){
+		return multidaye.size();
+		}
 
 	/**
 	 * Getter Method for isEventShowing
@@ -110,15 +119,15 @@ public class MultidayEventView extends JPanel{
 	 */
 	public void DisplayEventDropDown(){
 		displayEvents.clear();
-
+		int height = 0;
 		int x = 0;
 		for (Event eve: multidaye){
 			JPanel multipane = new JPanel(new MigLayout("fill", "[][][]", "[]"));
-
-			//Bob The Builder builds the string, which contains the event info
+			
+			//Bob The Builder builds the string, which contains the event info, for the tooltip
 			StringBuilder bob = new StringBuilder();
 			bob.append("<html>");
-			bob.append("<html><p style='width:175px'><b>Name: </b>");
+			bob.append("<html><p style='width:175px'><b>Event Name: </b>");
 			bob.append(eve.getName());
 			bob.append("<br><b>Start: </b>");
 			bob.append(DateFormat.getInstance().format(eve.getStartDate()));
@@ -134,27 +143,33 @@ public class MultidayEventView extends JPanel{
 			}
 			bob.append("</p></html>");
 
+			StringBuilder eventNameBob = new StringBuilder();
+			eventNameBob.append("<html>");
+			eventNameBob.append("<html><p style='width:175px'><b>Event Name: </b>");
+			eventNameBob.append(eve.getName());
+			eventNameBob.append("</p></html>");
+			
+			
 			//Adds a mouselistener to the event
 			//multipane.addMouseListener(new EventMouseListener(eve, multipane));
 
-			JLabel eventinfo = new JLabel(bob.toString());
-
+			JLabel eventInfo = new JLabel(eventNameBob.toString());
+			
 			Date evestart = eve.getStartDate();
 			if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).compareTo(cdate) != 0){
-				System.err.println("Previous!");
 				StringBuilder previousbuilder = new StringBuilder();
-				previousbuilder.append("<html><p><b><font size=\"6\"> &lt;- </font></b></p></html>");
+				previousbuilder.append("<html><p><b><font size=\"4\"> &lt;- </font></b></p></html>");
 				JLabel previous = new JLabel(previousbuilder.toString());
 				multipane.add(previous, "cell 0 0, grow, push, wmin 0");
 			}
 
-			multipane.add(eventinfo, "cell 1 0, grow, push, wmin 0");
-
+			multipane.add(eventInfo, "cell 1 0, grow, push, wmin 0");
+			multipane.setToolTipText(bob.toString());
+			
 			Date eveend = eve.getEndDate();
 			if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).compareTo(cdate) != 0){
-				System.err.println("Next!");
 				StringBuilder nextbuilder = new StringBuilder();
-				nextbuilder.append("<html><p><b><font size=\"6\"> -&gt; </font></b></p></html>");
+				nextbuilder.append("<html><p><b><font size=\"4\"> -&gt; </font></b></p></html>");
 				JLabel next = new JLabel(nextbuilder.toString());
 				multipane.add(next, "cell 2 0, grow, push, wmin 0");
 			}
@@ -168,10 +183,10 @@ public class MultidayEventView extends JPanel{
 				//Determines whether text needs to be black or white
 				hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
 				if(hsb[2]<0.5){
-					eventinfo.setForeground(Color.WHITE);
+					eventInfo.setForeground(Color.WHITE);
 				}
 				else{
-					eventinfo.setForeground(Color.BLACK);
+					eventInfo.setForeground(Color.BLACK);
 				}
 			}
 			else{
@@ -182,20 +197,23 @@ public class MultidayEventView extends JPanel{
 			//Builds a string to place it in miglayout
 			StringBuilder evebuilder = new StringBuilder();
 			evebuilder.append("cell ");
-			evebuilder.append("0");
+			evebuilder.append("1");
 			evebuilder.append(" ");
 			evebuilder.append(new Integer(x).toString());
 			evebuilder.append(" ");
-			evebuilder.append("2");
+			evebuilder.append("0");
 			evebuilder.append(" ");
 			evebuilder.append("0");
 			evebuilder.append(",grow, push, wmin 0");
 
 			this.add(multipane, evebuilder.toString());
+			height += multipane.getPreferredSize().height;
 			displayEvents.add(multipane);
 			x++;
 		}
 
+		this.setPreferredSize(new Dimension(this.getWidth(), height+20));
+		this.revalidate();
 		repaint();
 		this.updateUI();
 	}

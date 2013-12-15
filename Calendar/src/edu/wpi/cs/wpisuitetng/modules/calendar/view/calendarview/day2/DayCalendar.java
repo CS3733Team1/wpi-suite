@@ -22,12 +22,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
-public class DayCalendar extends JPanel implements ICalendarView{
+public class DayCalendar extends JPanel implements ICalendarView, ListDataListener{
 
 	private DayCalendarScrollPane dayscroll;
 	private DayHolderPanel daylayer;
@@ -37,13 +40,11 @@ public class DayCalendar extends JPanel implements ICalendarView{
 	private JLabel dayLabel;
 	private JPanel daytitle;
 	private JPanel dayname;
-	
+	private int scrollSpeed = 15;
 
 
 	public DayCalendar(){
 
-		
-		
 		this.setLayout(new MigLayout("fill, insets 0"));
 
 		daylayer = new DayHolderPanel();
@@ -75,30 +76,31 @@ public class DayCalendar extends JPanel implements ICalendarView{
 		time.add(new JLabel(" "), "grow, aligny center");
 		time.setBackground(Color.white);
 
-		daytitle.add(time, "aligny center, w 5000, hmin 50, hmax 50,grow");
+		daytitle.add(time, "aligny center, w 5000, hmin 50, hmax 50, grow");
 		daytitle.add(dayname,  "aligny center, w 5000,hmin 50, hmax 50, grow");
 
 		this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
 
 		dayscroll = new DayCalendarScrollPane(daylayer);
 		
-		
 		multiview = new MultidayEventView(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
 		
 		mscroll = new DayMultiScrollPane(multiview);
-		this.add(mscroll, "grow, wrap, hmin 120, hmax 120");
+		this.add(mscroll, "grow, wrap, hmin 80, hmax 80");
+		mscroll.setWheelScrollingEnabled(true);
+		mscroll.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		mscroll.getViewport().repaint();
 		multiview.repaint();
 		mscroll.updateUI();
 
 		this.add(dayscroll, "grow, push");
 		
-		
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 		
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
 		dayscroll.getVerticalScrollBar().setValue(3*end/8);
 		
-		this.repaint();
+		//this.repaint();
 
 	}
 
@@ -130,7 +132,7 @@ public class DayCalendar extends JPanel implements ICalendarView{
 			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
 		}
 		if (multiview != null){
-			mscroll.setPreferredSize(multiview.getPreferredSize());
+			multiview.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
 			updateMultiDay();
 		}
 
@@ -139,9 +141,6 @@ public class DayCalendar extends JPanel implements ICalendarView{
 	
 	public void updateMultiDay(){
 		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
-		mscroll.getViewport().repaint();
-		multiview.repaint();
-		mscroll.revalidate();
 	}
 
 	@Override
@@ -178,6 +177,21 @@ public class DayCalendar extends JPanel implements ICalendarView{
 	@Override
 	public void viewDate(Calendar date) {
 		daylayer.viewDate(date);
+		updateMultiDay();
+	}
+
+	@Override
+	public void intervalAdded(ListDataEvent e) {
+		updateMultiDay();
+	}
+
+	@Override
+	public void intervalRemoved(ListDataEvent e) {
+		updateMultiDay();
+	}
+
+	@Override
+	public void contentsChanged(ListDataEvent e) {
 		updateMultiDay();
 	}
 

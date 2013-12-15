@@ -17,6 +17,8 @@ import javax.swing.JEditorPane;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -30,26 +32,40 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class UpdateCommitmentController implements ActionListener {
 	CommitmentListModel model;
 	CommitmentTabPanel view;
-	Commitment oldCommitment;
+	Commitment commitmentToUpdate;
 	
-	public UpdateCommitmentController(CommitmentTabPanel view, Commitment oldCommitment) {
+	public UpdateCommitmentController(CommitmentTabPanel view, Commitment commitmentToUpdate) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.view = view;
-		this.oldCommitment = oldCommitment;
+		this.commitmentToUpdate = commitmentToUpdate;
 	}
 	
+	public UpdateCommitmentController(Commitment updatedCommitment)
+	{
+		this.model = CommitmentListModel.getCommitmentListModel();
+		this.commitmentToUpdate = updatedCommitment;
+		updateCommitmentInServer();
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Commitment updatedCommitment = view.getFilledCommitment();
-		updatedCommitment.setUniqueID(oldCommitment.getUniqueID());
+		this.commitmentToUpdate = view.getFilledCommitment();
+		commitmentToUpdate.setUniqueID(commitmentToUpdate.getUniqueID());
+		commitmentToUpdate.setOwnerID(commitmentToUpdate.getOwnerID());
+		commitmentToUpdate.setOwnerName(commitmentToUpdate.getOwnerName());	
+		
+		updateCommitmentInServer();
+	}
 	
-		System.out.println("Updating commitment: name = " + updatedCommitment.toString());//oldCommitment.getName() + "; uid = " + oldCommitment.getUniqueID());
+	public void updateCommitmentInServer()
+	{
+		System.out.println("Updating commitment: name = " + commitmentToUpdate.getName() + "; uid = " + commitmentToUpdate.getUniqueID());
 
 		// Create a Post Request
 		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.POST);
 		
 		// Put the new message in the body of the request
-		request.setBody(updatedCommitment.toJSON()); 
+		request.setBody(commitmentToUpdate.toJSON()); 
 		
 		// Add an observer to process the response
 		request.addObserver(new UpdateCommitmentObserver(this));
@@ -59,9 +75,22 @@ public class UpdateCommitmentController implements ActionListener {
 	}
 
 	public void updateCommitmentInModel(Commitment newCommitment) {
+
 		System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
-		model.updateCommitment(oldCommitment, newCommitment);
+		model.updateCommitment(commitmentToUpdate, newCommitment);
 		view.closeCommitmentPanel();
+
+		if (commitmentToUpdate != null)
+		{
+			System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
+			model.updateCommitment(commitmentToUpdate, newCommitment);
+			
+			if (view != null)
+			{
+				view.closeCommitmentPanel();
+			}
+		}		
+
 	}
 
 }

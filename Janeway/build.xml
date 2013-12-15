@@ -30,6 +30,9 @@
 		<javac srcdir="src" destdir="build" includeJavaRuntime="yes" debug="true" target="${java-version}" debuglevel="lines,vars,source" includeantruntime="false">
 			<classpath refid="classpath" />
 		</javac>
+		<copy todir="build/images">
+			<fileset dir="images" includes="*.png" />
+		</copy>
 	</target>
 	<target name="compile-test" depends="compile">
 		<mkdir dir="build-test" />

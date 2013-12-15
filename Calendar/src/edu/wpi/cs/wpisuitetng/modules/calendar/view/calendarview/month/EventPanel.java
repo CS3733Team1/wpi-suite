@@ -58,4 +58,9 @@ public class EventPanel extends EvComPanel {
 	}
 
 	public Event getEvent() {return this.event;}
+
+	public void setBackgroundColor(Color background) {
+		this.backgroundColor = background;
+		this.update();
+	}
 }
