@@ -24,14 +24,17 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CustomListSelectionModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RightClickCommitmentMenu;
 
 /**
  * This is the view where the list of commitments are displayed.
@@ -50,6 +53,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 	private JButton updateCommitmentButton;
 	private JButton cancelButton;
 	private Commitment selectedCommitment;
+	private RightClickCommitmentMenu rightClickCommitmentMenu;
 	/**
 	 * Constructor for the CommitmentListPanel creates both the list of commitments
 	 * and the scroll pane that they are displayed on.
@@ -68,6 +72,9 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		return commitmentList;
 	}
 
+	/**
+	 * Detailed Commitment view
+	 */
 	public void editCommitment() {
 		this.removeAll();
 		this.repaint();
@@ -118,16 +125,23 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		commitmentList.addMouseListener(this);
 	}
 
-	private void openUpdateCommitmentTabPanel() {
-		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(detailDisplay, selectedCommitment);
-		ImageIcon miniCommitmentIcon = new ImageIcon();
-		try {
-			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
-		} catch (IOException exception) {}
-		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
-		calendarPanel.setSelectedComponent(commitmentPanel);	
+	public void openUpdateCommitmentTabPanel() {
+//		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(selectedCommitment);
+//		ImageIcon miniCommitmentIcon = new ImageIcon();
+//		try {
+//			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
+//		} catch (IOException exception) {}
+//		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
+//		calendarPanel.setSelectedComponent(commitmentPanel);	
+		RightClickCommitmentMenu.openUpdateCommitmentTab(calendarPanel, selectedCommitment);
+		
 	}
 
+	public void setSelectedCommitment(Commitment c){
+		selectedCommitment = c;
+	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("cancel")) {
@@ -139,32 +153,50 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		}
 	}
 
+	/**
+	 * Mouse clicked anywhere in the JListPanel
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() == 2) {
-			Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
-			if (r != null && r.contains(e.getPoint())) {
-				selectedCommitment = commitmentList.getModel().getElementAt(commitmentList.locationToIndex(e.getPoint()));
-				editCommitment();
+		if (e.getClickCount() == 2) {	//if it's a double click
+			Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());	//get the commitment rectangle in which the mouse was clicked
+			if (r != null && r.contains(e.getPoint())) {	//if the click was within a valid commitment
+				selectedCommitment = commitmentList.getModel().getElementAt(commitmentList.locationToIndex(e.getPoint()));	//set the selected commitment as the one that was right clicked
+				editCommitment();	//edit the selected commitment
 			}
 		}
 	}
-	
+
+	/**
+	 * Mouse pressed anywhere in the panel
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
 		if(r == null || !r.contains(e.getPoint())) {
+			//toggle selection of the clicked commitment
 			if(Arrays.binarySearch(commitmentList.getSelectedIndices(), commitmentList.getLastVisibleIndex()) >= 0)
 				commitmentList.getSelectionModel().removeIndexInterval(commitmentList.getLastVisibleIndex(), commitmentList.getLastVisibleIndex());
 			else commitmentList.getSelectionModel().addSelectionInterval(commitmentList.getLastVisibleIndex(), commitmentList.getLastVisibleIndex());
 		}
 	}
-	
+
 	// Unused
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
+	
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+		if (e.isPopupTrigger()){
+			Rectangle r = commitmentList.getCellBounds(0, commitmentList.getLastVisibleIndex());
+			if (r != null && r.contains(e.getPoint())) {
+				//selectedCommitment = commitmentList.getModel().getElementAt(commitmentList.locationToIndex(e.getPoint()));
+				commitmentList.setSelectedIndex(commitmentList.locationToIndex(e.getPoint()));
+				rightClickCommitmentMenu = new RightClickCommitmentMenu(commitmentList.getSelectedValuesList(), calendarPanel);
+				rightClickCommitmentMenu.show(e.getComponent(),e.getX(),e.getY());
+			}
+		}
+	}
 }
