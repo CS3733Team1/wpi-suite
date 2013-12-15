@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.utils;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 public class DateUtils {
@@ -17,6 +18,10 @@ public class DateUtils {
 		return timeToString(hours, minutes);
 	}
 
+	public static String dateToSting(Date date){
+		return DateFormat.getInstance().format(date);
+	}
+	
 	public static String timeToString(int hours, int minutes){
 		String strAmPm = " " + ((hours < 12) ? "AM" : "PM");
 

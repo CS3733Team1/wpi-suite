@@ -13,6 +13,19 @@ public class UtilitiesTest {
 	/*************************** TEST TIME (IN DATE) TO STRING *************************/
 	
 	@Test
+	public void testDayToString(){
+		Date testDate=new Date();
+		testDate.setMonth(2);
+		testDate.setDate(3);
+		testDate.setYear(15);
+		testDate.setHours(3);
+		testDate.setMinutes(30);
+		String strDate=DateUtils.dateToSting(testDate);
+		System.out.println("Returned dat as string: "+ strDate);
+		assertEquals("3/3/15 3:30 AM", strDate);
+	}
+	
+	@Test
 	public void testTimeToStringWithNoon() {
 		Date noon = new Date();
 		noon.setHours(12);
