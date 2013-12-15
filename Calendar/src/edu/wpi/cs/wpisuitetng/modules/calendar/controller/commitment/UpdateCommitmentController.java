@@ -24,16 +24,20 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/**
+ * An instance of this class may be used to edit commitment
+ * @author TeamTART
+ *
+ */
 public class UpdateCommitmentController implements ActionListener {
 	CommitmentListModel model;
 	CommitmentTabPanel view;
-	Commitment oldCommitment;
 	Commitment commitmentToUpdate;
 	
-	public UpdateCommitmentController(CommitmentTabPanel view, Commitment oldCommitment) {
+	public UpdateCommitmentController(CommitmentTabPanel view, Commitment commitmentToUpdate) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.view = view;
-		this.oldCommitment = oldCommitment;
+		this.commitmentToUpdate = commitmentToUpdate;
 	}
 	
 	public UpdateCommitmentController(Commitment updatedCommitment)
@@ -46,9 +50,9 @@ public class UpdateCommitmentController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.commitmentToUpdate = view.getFilledCommitment();
-		commitmentToUpdate.setUniqueID(oldCommitment.getUniqueID());
-		commitmentToUpdate.setOwnerID(oldCommitment.getOwnerID());
-		commitmentToUpdate.setOwnerName(oldCommitment.getOwnerName());	
+		commitmentToUpdate.setUniqueID(commitmentToUpdate.getUniqueID());
+		commitmentToUpdate.setOwnerID(commitmentToUpdate.getOwnerID());
+		commitmentToUpdate.setOwnerName(commitmentToUpdate.getOwnerName());	
 		
 		updateCommitmentInServer();
 	}
@@ -71,16 +75,22 @@ public class UpdateCommitmentController implements ActionListener {
 	}
 
 	public void updateCommitmentInModel(Commitment newCommitment) {
-		if (oldCommitment != null)
+
+		System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
+		model.updateCommitment(commitmentToUpdate, newCommitment);
+		view.closeCommitmentPanel();
+
+		if (commitmentToUpdate != null)
 		{
 			System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
-			model.updateCommitment(oldCommitment, newCommitment);
+			model.updateCommitment(commitmentToUpdate, newCommitment);
 			
 			if (view != null)
 			{
 				view.closeCommitmentPanel();
 			}
 		}		
+
 	}
 
 }
