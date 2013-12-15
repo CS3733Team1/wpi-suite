@@ -33,6 +33,7 @@ public class CommitmentSubTabPanel extends JPanel implements ListItemListener<Co
 	
 	public CommitmentSubTabPanel(CalendarPanel calendarPanel) {
 		this.setLayout(new MigLayout("fill"));
+		this.calendarPanel = calendarPanel;
 		
 		//commitmentListPanel = new CommitmentListPanel(calendarPanel);
 		commitmentList = new SRList<Commitment>(FilteredCommitmentsListModel.getFilteredCommitmentsListModel());
