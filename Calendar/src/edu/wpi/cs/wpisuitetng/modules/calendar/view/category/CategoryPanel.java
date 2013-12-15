@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
@@ -96,7 +97,7 @@ public class CategoryPanel extends JPanel implements ListItemListener<Category> 
 	public void itemDoubleClicked(Category listObject) {}
 
 	@Override
-	public void itemRightClicked(Category listObject) {}
+	public void itemRightClicked(Category listObject, Point p) {}
 
 	@Override
 	public void itemFocused(Category listObject) {}
