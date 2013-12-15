@@ -479,6 +479,10 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public int getMonth() {
 		return currentMonth.get(Calendar.MONTH);
 	}
+	
+	public int getYear() {
+		return currentMonth.get(Calendar.YEAR);
+	}
 
 	public List<Event> getSelectedEvents() {
 		List<Event> selectedEvents = new ArrayList<Event>();
