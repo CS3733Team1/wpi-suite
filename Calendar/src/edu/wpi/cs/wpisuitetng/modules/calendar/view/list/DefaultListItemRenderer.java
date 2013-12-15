@@ -12,7 +12,7 @@ public class DefaultListItemRenderer<T> implements ListItemRenderer<T> {
 
 	@Override
 	public JComponent getRenderedListComponent(SRList<T> listPanel,
-			T listObject, boolean isSelected, boolean hasFocus) {
+			T listObject, boolean isSelected, boolean hasFocus, boolean doubleClicked) {
 		
 		JPanel p = new JPanel();
 		JLabel label = new JLabel(listObject.toString());
