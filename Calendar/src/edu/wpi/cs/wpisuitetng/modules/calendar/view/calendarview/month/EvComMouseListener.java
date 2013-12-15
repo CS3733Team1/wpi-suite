@@ -138,12 +138,13 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 				} else if(commitmentBeingDragged != null) {
 					commitmentBeingDragged.getDueDate().setDate(commitmentBeingDragged.getDueDate().getDate() + (finalIndex - initialIndex));
 
-					//UPDATE COMMITMENT
+					//Save updated commitment on the server
 					new UpdateCommitmentController(commitmentBeingDragged);
 
 					monthView.createEvComPanels();
 					monthView.updateEvComs();
 				}
+
 			}
 
 			eventBeingDragged = null;
@@ -163,6 +164,18 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 
 				tab.displayDayView();
 				tab.setCalendarViewDate(clickedDay);
+			}
+			else if(e.getSource() instanceof EventPanel) 
+			{
+				Event event = ((EventPanel)e.getSource()).getEvent();
+			} 
+			else if(e.getSource() instanceof CommitmentPanel) 
+			{
+				Commitment commitment = ((CommitmentPanel)e.getSource()).getCommitment();
+			} 
+			else if(e.getSource() instanceof MultiDayEventPanel) 
+			{
+				Event event = ((MultiDayEventPanel)e.getSource()).getEvent();
 			}
 		}
 	}
