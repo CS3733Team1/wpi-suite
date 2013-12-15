@@ -163,11 +163,8 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		if(listModel.getSize() != 0) {
-			//for(int i = e.getIndex0(); i <= e.getIndex1(); i++) listItems.add(i, new ListItem<T>(listModel.getElementAt(i)));;
-			fillListItems();
-			render();
-		}
+		fillListItems();
+		render();
 	}
 
 	@Override
