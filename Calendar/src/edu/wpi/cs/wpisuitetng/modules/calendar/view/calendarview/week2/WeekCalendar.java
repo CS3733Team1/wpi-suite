@@ -15,6 +15,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,16 +33,19 @@ import javax.swing.event.ListDataListener;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayMultiScrollPane;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.MultidayEventView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekNamePanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
  * The second level of the week view hierarchy. Holds the WeekCalendarLayerPane and the WeekCalendarScrollPane.
  */
 
-public class WeekCalendar extends JPanel implements ICalendarView, ListDataListener, ComponentListener {
+public class WeekCalendar extends JPanel implements ICalendarView, ListDataListener, ComponentListener, MouseListener {
 
 	private WeekCalendarScrollPane weekscroll;
 	private WeekHolderPanel weeklayer;
@@ -74,7 +79,8 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		
 		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		for(int days = 1; days < 8; days++){
-			JPanel weekName = new JPanel(new MigLayout("fill, insets 0"));
+			WeekNamePanel weekName = new WeekNamePanel();
+			weekName.setDate(weeklayer.getCalendarDate());
 			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
 			label.setFont(new Font(label.getName(), Font.BOLD, 14));
 			weekdays.add(label);
@@ -84,6 +90,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 			
 	
 			weekName.setBackground(Color.white);
+			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny bottom, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
 		}
@@ -247,4 +254,27 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
+
+	public void mouseClicked(MouseEvent e) {
+		if(e.getClickCount() == 2) {
+			WeekNamePanel weekName = (WeekNamePanel)e.getSource();
+			Calendar clickedDay = weekName.getDate();
+			if(this.getParent().getParent() != null)
+			{
+				CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
+				tab.displayDayView();
+				tab.setCalendarViewDate(clickedDay);
+			}
+		}
+	}
+
+	//Unused
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
 }
