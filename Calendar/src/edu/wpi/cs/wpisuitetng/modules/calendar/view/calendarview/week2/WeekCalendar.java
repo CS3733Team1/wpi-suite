@@ -32,6 +32,8 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayMultiScrollPane;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.MultidayEventView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
@@ -42,6 +44,8 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 
 	private WeekCalendarScrollPane weekscroll;
 	private WeekHolderPanel weeklayer;
+	private MultidayEventWeekView multiview;
+	private WeekMultiScrollPane mscroll;
 	private JPanel weektitle;
 	private List<JPanel> weekpanel;
 	List<JLabel> weekdays;
@@ -90,8 +94,13 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		filler.add(weektitle, "growx, wrap, wmin 0");
 		this.add(filler, "growx, wrap, wmin 0");
 		
+		multiview = new MultidayEventWeekView(weeklayer.getMultiDayEvents(), weeklayer.getDayViewDate());
 		
-		
+		mscroll = new WeekMultiScrollPane(multiview);
+		this.add(mscroll, "grow, wrap, hmin 120, hmax 120");
+		mscroll.getViewport().repaint();
+		multiview.repaint();
+		mscroll.updateUI();
 		
 		this.add(weekscroll, "grow");
 		
@@ -140,7 +149,15 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		if (weeklayer != null){
 			weeklayer.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*3));
 		}
+		if (multiview != null){
+			multiview.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*2));
+			updateMultiDay();
+		}
 		super.repaint();
+	}
+	
+	public void updateMultiDay(){
+		multiview.updateMultiDay(weeklayer.getMultiDayEvents(), weeklayer.getDayViewDate());
 	}
 	
 	public Date getWeekStart()
@@ -176,7 +193,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	public void next() {
 		// TODO Auto-generated method stub
 		weeklayer.next();
-		updateWeekHeader();
+		updateMultiDay();
 		repaint();
 	}
 
@@ -184,7 +201,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	public void previous() {
 		// TODO Auto-generated method stub
 		weeklayer.previous();
-		updateWeekHeader();
+		updateMultiDay();
 		repaint();
 	}
 
@@ -192,29 +209,29 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	public void today() {
 		// TODO Auto-generated method stub
 		weeklayer.today();
-		updateWeekHeader();
+		updateMultiDay();
 		repaint();
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		rebuildDays();
+		updateMultiDay();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		rebuildDays();
+		updateMultiDay();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		rebuildDays();
+		updateMultiDay();
 	}
 
 	@Override
 	public void viewDate(Calendar date) {
 		weeklayer.viewDate(date);
-		updateWeekHeader();
+		updateMultiDay();
 		repaint();
 	}
 	

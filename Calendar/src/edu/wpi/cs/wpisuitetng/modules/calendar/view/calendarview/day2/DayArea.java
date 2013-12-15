@@ -399,6 +399,7 @@ public class DayArea extends JPanel implements ListDataListener{
 	}
 
 	public List<Event> getMultiDayEvents(){
+		findSchedulableItems();
 		return multi;
 	}
 

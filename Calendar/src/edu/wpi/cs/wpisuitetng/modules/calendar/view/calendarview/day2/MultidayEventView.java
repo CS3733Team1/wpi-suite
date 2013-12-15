@@ -33,8 +33,6 @@ public class MultidayEventView extends JPanel{
 
 		showEvents();
 		DisplayEventDropDown();
-
-		this.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
 		
 		this.setOpaque(false);
 		this.setVisible(true);
@@ -51,6 +49,13 @@ public class MultidayEventView extends JPanel{
 		DisplayEventDropDown();
 		
 		System.err.println(this.getPreferredSize());
+	}
+	
+	public void reSize(int width){
+		this.setSize(width, this.getPreferredSize().height);
+		this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
+		
+		this.repaint();
 	}
 	
 	/**
@@ -73,7 +78,7 @@ public class MultidayEventView extends JPanel{
 		sortEvents();
 
 		this.setLayout(new MigLayout("fill", 
-				"[20%][80%]", 
+				"[10%][90%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 
 		
@@ -110,7 +115,7 @@ public class MultidayEventView extends JPanel{
 	 */
 	public void DisplayEventDropDown(){
 		displayEvents.clear();
-
+		int height = 0;
 		int x = 0;
 		for (Event eve: multidaye){
 			JPanel multipane = new JPanel(new MigLayout("fill", "[][][]", "[]"));
@@ -182,20 +187,23 @@ public class MultidayEventView extends JPanel{
 			//Builds a string to place it in miglayout
 			StringBuilder evebuilder = new StringBuilder();
 			evebuilder.append("cell ");
-			evebuilder.append("0");
+			evebuilder.append("1");
 			evebuilder.append(" ");
 			evebuilder.append(new Integer(x).toString());
 			evebuilder.append(" ");
-			evebuilder.append("2");
+			evebuilder.append("0");
 			evebuilder.append(" ");
 			evebuilder.append("0");
 			evebuilder.append(",grow, push, wmin 0");
 
 			this.add(multipane, evebuilder.toString());
+			height += multipane.getPreferredSize().height;
 			displayEvents.add(multipane);
 			x++;
 		}
 
+		this.setPreferredSize(new Dimension(this.getWidth(), height+20));
+		this.revalidate();
 		repaint();
 		this.updateUI();
 	}

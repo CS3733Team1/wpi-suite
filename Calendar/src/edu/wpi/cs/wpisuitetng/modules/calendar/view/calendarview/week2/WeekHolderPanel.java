@@ -4,12 +4,19 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 import javax.swing.JPanel;
+import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayArea;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.HourLabels;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
 public class WeekHolderPanel extends JPanel{
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -63,8 +70,78 @@ public class WeekHolderPanel extends JPanel{
 		this.repaint();
 	}
 	
+	public List<List<Event>> getMultiDayEvents(){
+		Date key;
+		List<Event> mevents = new LinkedList<Event>();
+		
+		ListIterator<Event> event = FilteredEventsListModel.getFilteredEventsListModel().getList().listIterator();
+		
+		Date enddate = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate()+7);
+		while(event.hasNext()){
+			Event eve = new Event(event.next());
+			Date evedate = eve.getStartDate();
+			key = new Date(evedate.getYear(),evedate.getMonth(),evedate.getDate(),evedate.getHours(),0);
+			if ((key.after(currentDay) || key.equals(currentDay)) && key.before(enddate) ){
+				if(eve.getStartDate().getDate() == eve.getEndDate().getDate()
+				&& eve.getStartDate().getMonth() == eve.getEndDate().getMonth()
+				&& eve.getStartDate().getYear() == eve.getEndDate().getYear())
+				{
+					//eventlist.add(eve);
+				}
+				else
+				{
+					//System.out.println("Mutliday event " + eve.getName() + " found, if");
+					mevents.add(eve);
+				}
+			}
+			else if(currentDay.after(eve.getStartDate()) && currentDay.before(eve.getEndDate()))
+			{
+				//System.out.println("Mutliday event " + eve.getName() + " found, else");
+				mevents.add(eve);
+			}
+		}
+		
+		
+		Date eveenddate = new Date();
+		ArrayList<Integer> weekdays = new ArrayList<Integer>();
+		Date iter = (Date) currentDay.clone();
+		for(int i = 0; i < 7; i++)
+		{
+			weekdays.add(i, iter.getDate());
+			iter.setDate(iter.getDate() + 1);
+		}
+		
+		List<List<Event>> multilistlist = new LinkedList<List<Event>>();
+		for(int i = 0; i < 7; i++)
+		{
+			multilistlist.add(new LinkedList<Event>());
+		}
+		
+		for(Event e: mevents)
+		{
+			if(currentDay.before(e.getStartDate()))
+				iter = (Date) e.getStartDate().clone();
+			else
+				iter = (Date) currentDay.clone();
+			eveenddate.setDate(e.getEndDate().getDate() + 1);
+			while(!(iter.getDate() == eveenddate.getDate() || iter.getDate() == enddate.getDate()))
+			{
+				//System.out.println("Iter " + iter.getDate());
+				if(weekdays.contains(iter.getDate()))
+				{
+					multilistlist.get(weekdays.indexOf(iter.getDate())).add(e);
+					break;
+					//System.out.println("Event " + e.getName() + " added to index " + weekdays.indexOf(iter.getDate()));
+				}
+				iter.setDate(iter.getDate() + 1); //setDate knows where month boundaries are
+			}
+		}
+		
+		return multilistlist;
+	}
+	
 	public Date getDayViewDate(){
-		return day.get(0).getDayViewDate();
+		return currentDay;
 	}
      
 	public String getTitle() {

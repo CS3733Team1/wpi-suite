@@ -22,12 +22,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
-public class DayCalendar extends JPanel implements ICalendarView{
+public class DayCalendar extends JPanel implements ICalendarView, ListDataListener{
 
 	private DayCalendarScrollPane dayscroll;
 	private DayHolderPanel daylayer;
@@ -93,7 +96,7 @@ public class DayCalendar extends JPanel implements ICalendarView{
 
 		this.add(dayscroll, "grow, push");
 		
-		
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 		
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
 		dayscroll.getVerticalScrollBar().setValue(3*end/8);
@@ -130,7 +133,7 @@ public class DayCalendar extends JPanel implements ICalendarView{
 			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
 		}
 		if (multiview != null){
-			mscroll.setPreferredSize(multiview.getPreferredSize());
+			multiview.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
 			updateMultiDay();
 		}
 
@@ -139,9 +142,6 @@ public class DayCalendar extends JPanel implements ICalendarView{
 	
 	public void updateMultiDay(){
 		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
-		mscroll.getViewport().repaint();
-		multiview.repaint();
-		mscroll.revalidate();
 	}
 
 	@Override
@@ -178,6 +178,21 @@ public class DayCalendar extends JPanel implements ICalendarView{
 	@Override
 	public void viewDate(Calendar date) {
 		daylayer.viewDate(date);
+		updateMultiDay();
+	}
+
+	@Override
+	public void intervalAdded(ListDataEvent e) {
+		updateMultiDay();
+	}
+
+	@Override
+	public void intervalRemoved(ListDataEvent e) {
+		updateMultiDay();
+	}
+
+	@Override
+	public void contentsChanged(ListDataEvent e) {
 		updateMultiDay();
 	}
 
