@@ -156,8 +156,8 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getClickCount() == 2) {
-			if(e.getComponent() instanceof DayPanel) {
-				DayPanel day = (DayPanel)e.getComponent();
+			if(monthView.getComponentAt(e.getPoint()) instanceof DayPanel) {
+				DayPanel day = (DayPanel)monthView.getComponentAt(e.getPoint());
 				Calendar clickedDay = day.getDate();
 				CalendarTabPanel tab = (CalendarTabPanel)(monthView.getParent().getParent());
 
