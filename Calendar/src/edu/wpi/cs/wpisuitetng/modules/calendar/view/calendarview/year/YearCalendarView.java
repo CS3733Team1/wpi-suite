@@ -39,6 +39,8 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 
 	// Used to store the number of columns that the Months will occupy
 	private int columns;
+	
+	private int scrollSpeed = 15;
 
 	// Handles on the events and commitments models
 	private FilteredEventsListModel filteredEventsModel;
@@ -69,7 +71,10 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 		this.updateDates();
 
 		JScrollPane scrollPane = new JScrollPane(monthsContainerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
+		
+		scrollPane.setWheelScrollingEnabled(true);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
+		
 		this.add(scrollPane, "grow");
 		this.addAncestorListener(this);
 		this.addComponentListener(this);

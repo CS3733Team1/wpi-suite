@@ -8,6 +8,7 @@ import org.junit.Test;
 public class CommitmentQuickListTests {
 
 	
+
 	
 	@Before
 	public void setUp()
@@ -20,5 +21,6 @@ public class CommitmentQuickListTests {
 	{
 		fail("Not yet implemented.");
 	}
+
 
 }

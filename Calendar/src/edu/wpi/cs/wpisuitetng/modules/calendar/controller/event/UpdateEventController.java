@@ -27,11 +27,6 @@ public class UpdateEventController implements ActionListener
 		this.model = EventListModel.getEventListModel();
 		this.view = view;
 		this.oldEvent = oldEvent;
-		
-		eventToUpdate = view.getFilledEvent();
-		eventToUpdate.setUniqueID(oldEvent.getUniqueID());
-		eventToUpdate.setOwnerID(oldEvent.getOwnerID());
-		eventToUpdate.setOwnerName(oldEvent.getOwnerName());
 	}
 	
 	public UpdateEventController(Event updatedEvent)
@@ -44,6 +39,11 @@ public class UpdateEventController implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		eventToUpdate = view.getFilledEvent();
+		eventToUpdate.setUniqueID(oldEvent.getUniqueID());
+		eventToUpdate.setOwnerID(oldEvent.getOwnerID());
+		eventToUpdate.setOwnerName(oldEvent.getOwnerName());
+		
 		updateEventInServer();
 	}
 	
@@ -77,11 +77,4 @@ public class UpdateEventController implements ActionListener
 			}
 		}		
 	}
-
-//	public void updateCommitmentInModel(Commitment newCommitment) {
-//		System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
-//		model.updateCommitment(oldCommitment, newCommitment);
-//		commitmentDisplay.setText(newCommitment.toString());
-//		view.closeCommitmentPanel();
-//	}
 }

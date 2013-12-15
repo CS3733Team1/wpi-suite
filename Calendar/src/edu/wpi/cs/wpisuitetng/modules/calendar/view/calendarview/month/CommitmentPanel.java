@@ -59,4 +59,9 @@ public class CommitmentPanel extends EvComPanel {
 	}
 	
 	public Commitment getCommitment() {return this.commitment;}
+
+	public void setBackgroundColor(Color background) {
+		this.backgroundColor = background;
+		this.update();
+	}
 }

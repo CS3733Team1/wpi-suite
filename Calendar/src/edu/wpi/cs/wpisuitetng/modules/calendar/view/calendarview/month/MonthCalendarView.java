@@ -16,8 +16,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -39,30 +37,30 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
-public class MonthCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener, MouseListener{
+public class MonthCalendarView extends JPanel implements ICalendarView, AncestorListener, ComponentListener, ListDataListener {
 	// A List holding all of the Day Panels as to be able to modify the contents [No need to recreate a new day on view changes]
 	private ArrayList<DayPanel> days;
 
 	// A List holding all of the Day Panels containing Events or commitments as to be able to easily which ones need to be
 	// changed on a resize
 	private List<DayPanel> daysWithEvComs;
-
 	// A List holding the MultiDayEvents currently displayed in the view
 	private List<Event> multiDayEvents;
-
 	// A List holding the Events currently displayed in the view
 	private List<Event> events;
-
 	// A List holding the Commitments currently displayed in the view
 	private List<Commitment> commitments;
 
 	private List<MultiDayEventPanel> multiDayEventPanels;
 	private List<EventPanel> eventPanels;
 	private List<CommitmentPanel> commitmentPanels;
+
+	protected List<List<MultiDayEventPanel>> selectedMultiDayEvents;
+	protected List<EventPanel> selectedEvents;
+	protected List<CommitmentPanel> selectedCommitmentPanels;
 
 	// A Calendar to keep track of the month the user is currently viewing
 	private Calendar currentMonth;
@@ -107,10 +105,13 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		eventPanels = new ArrayList<EventPanel>();
 		commitmentPanels = new ArrayList<CommitmentPanel>();
 
+		selectedMultiDayEvents = new ArrayList<List<MultiDayEventPanel>>();
+		selectedEvents = new ArrayList<EventPanel>();
+		selectedCommitmentPanels = new ArrayList<CommitmentPanel>();
+		
 		this.setLayout(new MigLayout("fill, gap 0 0, wrap 7",
 				"[14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%]",
 				"[9%][13%][13%][13%][13%][13%][13%]"));
-		this.setBackground(Color.WHITE);
 		this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 
 		this.currentMonth = createCalendar();
@@ -125,7 +126,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 		for(String weekDay: CalendarUtils.weekNamesAbbr) {
 			JPanel titlePanel = new JPanel(new MigLayout("fill, insets 0", "[center]"));
-			titlePanel.setBackground(Color.WHITE);
 			JLabel weekDayLabel = new JLabel(weekDay, JLabel.RIGHT);
 			weekDayLabel.setForeground(CalendarUtils.titleNameColor);
 			weekDayLabel.setFont(new Font(weekDayLabel.getFont().getName(), Font.BOLD, 14));
@@ -186,7 +186,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 		for(int i = 0; i < days.size(); i++) {
 			DayPanel dayPanel = days.get(i);
-			dayPanel.addMouseListener(this);
 			indexInDaysOfCal.put(month.getTime().toString(), i);
 			dayPanel.setDate(cloneCalendar(month),  month.get(Calendar.MONTH) == savedMonth);
 			dayPanel.setIsToday(false);
@@ -255,6 +254,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			daysWithEvComs.get(i).clearEvComs();
 		}
 
+		selectedMultiDayEvents.clear();
+		selectedEvents.clear();
+		selectedCommitmentPanels.clear();
 		multiDayEventPanels.clear();
 		eventPanels.clear();
 		commitmentPanels.clear();
@@ -371,7 +373,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 			int index = getIndexofDay(startCal);
 			EventPanel eventPanel = new EventPanel(event);
-			eventPanel.setBackground(days.get(index).getBackground());
+			eventPanel.setBackgroundColor(days.get(index).getBackground());
 			eventPanels.add(eventPanel);
 			days.get(index).addEvComPanel(eventPanel);
 		}
@@ -383,7 +385,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 			int index = getIndexofDay(dueCal);
 			CommitmentPanel commitmentPanel = new CommitmentPanel(commitment);
-			commitmentPanel.setBackground(days.get(index).getBackground());
+			commitmentPanel.setBackgroundColor(days.get(index).getBackground());
 			commitmentPanels.add(commitmentPanel);
 			days.get(index).addEvComPanel(commitmentPanel);
 		}
@@ -477,18 +479,18 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public int getMonth() {
 		return currentMonth.get(Calendar.MONTH);
 	}
+	
+	public int getYear() {
+		return currentMonth.get(Calendar.YEAR);
+	}
 
 	public List<Event> getSelectedEvents() {
 		List<Event> selectedEvents = new ArrayList<Event>();
 
-		for(EventPanel eventPanel: eventPanels) {
-			if(eventPanel.isSelected())
-				if(!selectedEvents.contains(eventPanel.getEvent())) selectedEvents.add(eventPanel.getEvent());
-		}
+		for(EventPanel eventPanel: eventPanels) selectedEvents.add(eventPanel.getEvent());
 
-		for(MultiDayEventPanel multiDayEventPanel: multiDayEventPanels) {
-			if(multiDayEventPanel.isSelected())
-				if(!selectedEvents.contains(multiDayEventPanel.getEvent())) selectedEvents.add(multiDayEventPanel.getEvent());
+		for(List<MultiDayEventPanel> multiDayEventPanels: this.selectedMultiDayEvents) {
+			selectedEvents.add(multiDayEventPanels.get(0).getEvent());
 		}
 
 		return selectedEvents;
@@ -497,10 +499,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public List<Commitment> getSelectedCommitments() {
 		List<Commitment> selectedCommitments = new ArrayList<Commitment>();
 
-		for(CommitmentPanel commitmentPanel: commitmentPanels) {
-			if(commitmentPanel.isSelected())
-				if(!selectedCommitments.contains(commitmentPanel.getCommitment())) selectedCommitments.add(commitmentPanel.getCommitment());
-		}
+		for(CommitmentPanel commitmentPanel: selectedCommitmentPanels) selectedCommitments.add(commitmentPanel.getCommitment());
 
 		return selectedCommitments;
 	}
@@ -574,18 +573,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		}
 	}
 	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if(e.getClickCount() == 2) {
-			DayPanel day = (DayPanel)e.getSource();
-			Calendar clickedDay = day.getDate();
-			CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
-			
-			tab.displayDayView();
-			tab.setCalendarViewDate(clickedDay);
-		}
-	}
-	
 	public void setDragging(boolean dragging) {
 		isDragging = dragging;
 	}
@@ -620,6 +607,17 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		}
 	}
 	
+	public void clearSelection() {
+		for(List<MultiDayEventPanel> multidayEventsList: this.selectedMultiDayEvents) {
+			for(MultiDayEventPanel multidayEventPanel: multidayEventsList) multidayEventPanel.setSelected(false);
+		}
+		for(EventPanel eventPanel: selectedEvents) eventPanel.setSelected(false);
+		for(CommitmentPanel commitmentPanel: selectedCommitmentPanels) commitmentPanel.setSelected(false);
+		selectedMultiDayEvents.clear();
+		selectedEvents.clear();
+		selectedCommitmentPanels.clear();
+	}
+	
 	// Unused
 	@Override
 	public void ancestorMoved(AncestorEvent e) {}
@@ -631,12 +629,4 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-	@Override
-	public void mouseExited(MouseEvent e) {}
-	@Override
-	public void mousePressed(MouseEvent e) {}
-	@Override
-	public void mouseReleased(MouseEvent e) {}
 }
