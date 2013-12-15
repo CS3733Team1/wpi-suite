@@ -27,7 +27,6 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 /**
  * This class shows single-day events in week view. It is a component of the WeekCalendarLayerPane, along
@@ -449,7 +448,7 @@ public class EventWeekView extends JPanel{
 					infobuilder.append("</p></html>");
 					panel.setToolTipText(infobuilder.toString());
 					if(e instanceof Event)
-						panel.addMouseListener(new EventMouseListener((Event) e, panel));
+						//panel.addMouseListener(new EventMouseListener((Event) e, panel));
 					/*else if(test instanceof Commitment)
 						panel.addMouseListener(new CommitmentMouseListener((Commitment) test, panel));
 					*/
