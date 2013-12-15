@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,24 +23,41 @@ public class MultidayEventWeekView extends JPanel {
 	private List<List<Event>> multidaye;
 	private List<JPanel> displayEvents;
 	private Date cdate;
-	private static boolean isEventShowing = false;
+	private static boolean isEventShowing = true;
 	
-	public MultidayEventWeekView(List<List<Event>> multiday, Dimension size, Date current){
+	public MultidayEventWeekView(List<List<Event>> multiday, Date current){
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
 		
-		this.setSize(size);
-		this.setPreferredSize(size);
-		
 		showEvents();
-		
-		if (isEventShowing){
-			DisplayEventDropDown();
-		}
+		DisplayEventDropDown();
 		
 		this.setOpaque(false);
 		this.setVisible(true);
+	}
+	
+	
+	public void updateMultiDay(List<List<Event>> multiday, Date current){
+		System.err.println(multiday);
+		System.err.println(current);
+		
+		multidaye = multiday;
+		displayEvents = new LinkedList<JPanel>();
+		cdate = current;
+
+		this.removeAll();
+
+		showEvents();
+		DisplayEventDropDown();
+		
+	}
+	
+	public void reSize(int width){
+		this.setSize(width, this.getPreferredSize().height);
+		this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
+		
+		this.repaint();
 	}
 	
 	/**
@@ -63,24 +80,6 @@ public class MultidayEventWeekView extends JPanel {
 				"0[9%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]0", 
 				"0[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 		
-		int y = 1;
-		JPanel eventinfo = new JPanel();
-		eventinfo.add(new JLabel("Multiday Event"), "wmin 0, aligny top, alignx center");
-		StringBuilder evebuilder = new StringBuilder();
-		evebuilder.append("cell ");
-		evebuilder.append("0");
-		evebuilder.append(" ");
-		evebuilder.append("0");
-		evebuilder.append(" ");
-		evebuilder.append("8");
-		evebuilder.append(" ");
-		evebuilder.append("0");
-		evebuilder.append(",grow, push");
-		
-		
-		eventinfo.setBackground(Color.PINK);
-		this.add(eventinfo, evebuilder.toString());
-		eventinfo.addMouseListener(new MultidayWeekListener(this));
 	}
 	
 	/**
@@ -114,7 +113,7 @@ public class MultidayEventWeekView extends JPanel {
 	 */
 	public void DisplayEventDropDown(){
 		displayEvents.clear();
-		
+		int height = 0;
 		int y = 1;
 		int x = 1;
 		Date current = cdate;
@@ -197,6 +196,7 @@ public class MultidayEventWeekView extends JPanel {
 				evebuilder.append(",grow, push, wmin 0");
 
 				this.add(multipane, evebuilder.toString());
+				height += multipane.getPreferredSize().height;
 				displayEvents.add(multipane);
 				x++;
 			}
@@ -204,6 +204,8 @@ public class MultidayEventWeekView extends JPanel {
 			y++;
 		}
 		
+		this.setPreferredSize(new Dimension(this.getWidth(), height+20));
+		this.revalidate();
 		repaint();
 		this.updateUI();
 	}
