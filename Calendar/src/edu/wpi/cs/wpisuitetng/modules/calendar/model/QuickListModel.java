@@ -86,10 +86,12 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 		}
 		else if (currentView instanceof MonthCalendarView)
 		{
+			int month = ((MonthCalendarView) currentView).getMonth();
+			int year = ((MonthCalendarView) currentView).getYear();
 			while(iterator.hasNext()) {
 				temp = iterator.next();
-				int month = ((MonthCalendarView) currentView).getMonth();
-				if(temp.getDueDate().getMonth() == month) {
+				if(temp.getDueDate().getMonth() == month
+						&& temp.getDueDate().getYear() == year) {
 					inView.add(temp);
 				}
 			}
@@ -97,13 +99,12 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 		}
 		else if (currentView instanceof YearCalendarView)
 		{
+			int year = ((YearCalendarView) currentView).getYear();
 			while(iterator.hasNext()) {
 				temp = iterator.next();
-				int year = ((YearCalendarView) currentView).getYear();
 				if(temp.getDueDate().getYear() == year) {
 					inView.add(temp);
 				}
-
 			}
 			return inView;
 		}
@@ -158,11 +159,15 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 			return inView;
 		}
 		else if (currentView instanceof MonthCalendarView)
-		{ // code below not yet functional
+		{ 
+			int month = ((MonthCalendarView) currentView).getMonth();
+			int year = ((MonthCalendarView) currentView).getYear();
+			Date lastMonth = new Date(year, month, 0);
+			Date nextMonth = new Date(year, month + 1, 1);
 			while(iterator.hasNext()) {
 				temp = iterator.next();
-				int month = ((MonthCalendarView) currentView).getMonth();
-				if(temp.getStartDate().getMonth() == month) {
+				if(temp.getStartDate().before(nextMonth)
+						&& temp.getEndDate().after(lastMonth)) {
 					inView.add(temp);
 				}
 			}
@@ -170,9 +175,9 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 		}
 		else if (currentView instanceof YearCalendarView)
 		{ 
+			int year = ((YearCalendarView) currentView).getYear();
 			while(iterator.hasNext()) {
 				temp = iterator.next();
-				int year = ((YearCalendarView) currentView).getYear();
 				if(temp.getStartDate().getYear() <= year
 						&& temp.getEndDate().getYear() >= year) {
 					inView.add(temp);
