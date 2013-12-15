@@ -28,10 +28,10 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	// Always Visible
 	private TransparentButton addCommitmentButton;
 	private TransparentButton addEventButton;
-
+	private TransparentButton helpButton;
+	
 	// Visible only when commitments/events are selected on either calendar tab
-	private TransparentButton deleteCommitmentButton;
-	private TransparentButton deleteEventButton;
+	private TransparentButton deleteButton;
 
 	//private TransparentButton easterEgg;
 	
@@ -46,15 +46,17 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		try {
 			refreshButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
 
+			helpButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/question.png"))));
+			
 			addCommitmentButton = new TransparentButton("<html>New<br/>Commitment</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png"))));
-			deleteCommitmentButton = new TransparentButton("<html>Delete<br/>Commitment</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_commitment.png"))));
-
+			deleteButton = new TransparentButton("<html>Delete</html>",
+					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_icon.png"))));
+			
+			
 			addEventButton = new TransparentButton("<html>New<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
-			deleteEventButton = new TransparentButton("<html>Delete<br/>Event</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_event.png"))));
+			
 
 			//easterEggIcons = new ImageIcon[4];
 			//easterEggIcons[0] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
@@ -81,11 +83,12 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
 		this.add(refreshButton);
 
-		this.add(addCommitmentButton, "align center, split 4");
-		this.add(deleteCommitmentButton);
-
+		this.add(addCommitmentButton, "align center, split 3");
 		this.add(addEventButton);
-		this.add(deleteEventButton);
+		this.add(deleteButton);
+		
+		
+		this.add(helpButton, "align right");
 
 		//if(eggHatched) {
 		//	this.add(weatherPanel);
@@ -96,13 +99,28 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 	// Notifies CalendarToolBar that the buttons should switch to the Event/CommitmentTab button arrangement.
 	// Delete Event and Commitment removed.
-	public void setToolBarEventCommitment() {
+	public void setToolBarCommitment() {
 		this.removeAll();
 		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
 		this.add(refreshButton);
 
 		this.add(addCommitmentButton, "align center, split 2");
-		this.add(addEventButton);
+		this.add(deleteButton);
+		
+		this.add(helpButton, "align right");
+
+		this.repaint();
+	}
+	
+	public void setToolBarEvent() {
+		this.removeAll();
+		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
+		this.add(refreshButton);
+
+		this.add(addEventButton, "align center, split 2");
+		this.add(deleteButton);
+		
+		this.add(helpButton, "align right");
 
 		this.repaint();
 	}
@@ -118,7 +136,7 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	}
 
 	public void deleteEventButtonListener(ActionListener l) {
-		deleteEventButton.addActionListener(l);
+		deleteButton.addActionListener(l);
 	}
 
 	public void addCommitmentButtonListener(ActionListener l) {
@@ -126,9 +144,13 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	}
 
 	public void deleteCommitmentButtonListener(ActionListener l) {
-		deleteCommitmentButton.addActionListener(l);
+		deleteButton.addActionListener(l);
 	}
 
+	public void helpButtonListener(ActionListener l) {
+		helpButton.addActionListener(l);
+	}
+	
 	public synchronized void clickRefreshButton() {
 		this.refreshButton.doClick();
 	}
