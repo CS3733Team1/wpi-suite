@@ -179,6 +179,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	@Override
 	public void viewDate(Calendar date) {
 		daylayer.viewDate(date);
+		updateDay();
 		updateMultiDay();
 	}
 
