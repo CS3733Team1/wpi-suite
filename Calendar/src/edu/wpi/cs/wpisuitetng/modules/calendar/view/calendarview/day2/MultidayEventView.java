@@ -30,7 +30,7 @@ public class MultidayEventView extends JPanel{
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-
+		
 		showEvents();
 		DisplayEventDropDown();
 		
@@ -42,7 +42,7 @@ public class MultidayEventView extends JPanel{
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-
+		
 		this.removeAll();
 
 		showEvents();

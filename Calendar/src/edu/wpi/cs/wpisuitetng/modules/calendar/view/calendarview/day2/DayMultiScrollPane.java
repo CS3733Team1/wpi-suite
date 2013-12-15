@@ -9,10 +9,14 @@ import javax.swing.border.MatteBorder;
 public class DayMultiScrollPane extends JScrollPane{
 	
 	private MultidayEventView mday;
+	private int scrollSpeed = 15;
 	
 	public DayMultiScrollPane(MultidayEventView hold){
 		super(hold);
 		mday = hold;
+		
+		this.setWheelScrollingEnabled(true);
+		this.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
