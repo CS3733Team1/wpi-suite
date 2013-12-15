@@ -86,7 +86,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		multiview = new MultidayEventView(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
 		
 		mscroll = new DayMultiScrollPane(multiview);
-		this.add(mscroll, "grow, wrap, hmin 120, hmax 120");
+		this.add(mscroll, "grow, wrap, hmin 80, hmax 80");
 		mscroll.setWheelScrollingEnabled(true);
 		mscroll.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		mscroll.getViewport().repaint();
