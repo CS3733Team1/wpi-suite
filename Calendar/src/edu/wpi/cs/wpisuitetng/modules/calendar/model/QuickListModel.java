@@ -169,14 +169,14 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 			return inView;
 		}
 		else if (currentView instanceof YearCalendarView)
-		{ // code below not yet functional
+		{ 
 			while(iterator.hasNext()) {
 				temp = iterator.next();
 				int year = ((YearCalendarView) currentView).getYear();
-				if(temp.getStartDate().getYear() == year) {
+				if(temp.getStartDate().getYear() <= year
+						&& temp.getEndDate().getYear() >= year) {
 					inView.add(temp);
 				}
-
 			}
 			return inView;
 		}
