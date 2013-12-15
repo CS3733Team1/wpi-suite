@@ -112,7 +112,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		this.setLayout(new MigLayout("fill, gap 0 0, wrap 7",
 				"[14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%][14.2857%]",
 				"[9%][13%][13%][13%][13%][13%][13%]"));
-		this.setBackground(Color.WHITE);
 		this.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 
 		this.currentMonth = createCalendar();
@@ -127,7 +126,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 		for(String weekDay: CalendarUtils.weekNamesAbbr) {
 			JPanel titlePanel = new JPanel(new MigLayout("fill, insets 0", "[center]"));
-			titlePanel.setBackground(Color.WHITE);
 			JLabel weekDayLabel = new JLabel(weekDay, JLabel.RIGHT);
 			weekDayLabel.setForeground(CalendarUtils.titleNameColor);
 			weekDayLabel.setFont(new Font(weekDayLabel.getFont().getName(), Font.BOLD, 14));
@@ -375,7 +373,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 			int index = getIndexofDay(startCal);
 			EventPanel eventPanel = new EventPanel(event);
-			eventPanel.setBackground(days.get(index).getBackground());
+			eventPanel.setBackgroundColor(days.get(index).getBackground());
 			eventPanels.add(eventPanel);
 			days.get(index).addEvComPanel(eventPanel);
 		}
@@ -387,7 +385,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 
 			int index = getIndexofDay(dueCal);
 			CommitmentPanel commitmentPanel = new CommitmentPanel(commitment);
-			commitmentPanel.setBackground(days.get(index).getBackground());
+			commitmentPanel.setBackgroundColor(days.get(index).getBackground());
 			commitmentPanels.add(commitmentPanel);
 			days.get(index).addEvComPanel(commitmentPanel);
 		}
