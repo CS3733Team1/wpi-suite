@@ -16,7 +16,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentListPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 
-public class RightClickCommitmentMenu extends JPopupMenu implements MouseListener{
+public class RightClickCommitmentMenu extends JPopupMenu{
 
 	private List<Commitment> commitments;
 	
@@ -32,25 +32,17 @@ public class RightClickCommitmentMenu extends JPopupMenu implements MouseListene
 		this.add(deleteButton);
 		this.add(editButton);
 		
-
+		//Mouse actions to perform for the delete button
 		deleteButton.addMouseListener(new MouseListener(){
 			
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
+			public void mouseClicked(MouseEvent e) {}
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
+			public void mouseEntered(MouseEvent e) {}
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
+			public void mouseExited(MouseEvent e) {}
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
+			public void mousePressed(MouseEvent e) {}
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				DeleteCommitmentController.deleteCommitments(commitments);;
@@ -58,68 +50,33 @@ public class RightClickCommitmentMenu extends JPopupMenu implements MouseListene
 			}
 		});
 		
+		//Mouse actions to perform for the edit button
 		editButton.addMouseListener(new MouseListener(){
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
 			
 			/**
-			 * When the mouse is released on the Edit Button, Edit all selected commitments
+			 * When the mouse is released on the Edit Button, Edit all selected commitments in new CommitmentTabs
 			 */
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				//iterate through all commitments in this edit menu's list of commitments
+				//iterate through all commitments in this edit menu's list of selected commitments
 				for(Commitment commitment : commitments){
 					commitmentListPanel.setSelectedCommitment(commitment);	//set it as the selected commitment in the CommitmentListPanel
 					commitmentListPanel.openUpdateCommitmentTabPanel();		//call the panel's method to edit the selected commitment
 				}
 				System.out.println("Mouse Released on edit button");
 			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
 		});
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 	public static void openUpdateCommitmentTab(CalendarPanel calendarPanel, Commitment commitment) {
 		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(commitment);
 		ImageIcon miniCommitmentIcon = new ImageIcon();
@@ -129,6 +86,5 @@ public class RightClickCommitmentMenu extends JPopupMenu implements MouseListene
 		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
 		calendarPanel.setSelectedComponent(commitmentPanel);	
 	}
-	
 
 }

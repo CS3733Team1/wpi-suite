@@ -214,7 +214,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		boolean enableAddCommitment = true;
 		
 		if(isEditMode) {
-			System.out.println("Edit Mode");
+			System.out.println("CommitmentTabPanel: Edit Mode");
 			enableAddCommitment = !validateEdit();
 		}
 
