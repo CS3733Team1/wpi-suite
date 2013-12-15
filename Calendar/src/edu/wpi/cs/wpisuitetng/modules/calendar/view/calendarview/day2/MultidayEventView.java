@@ -30,7 +30,7 @@ public class MultidayEventView extends JPanel{
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-
+		
 		showEvents();
 		DisplayEventDropDown();
 		
@@ -42,7 +42,7 @@ public class MultidayEventView extends JPanel{
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-
+		
 		this.removeAll();
 
 		showEvents();
@@ -157,7 +157,6 @@ public class MultidayEventView extends JPanel{
 			
 			Date evestart = eve.getStartDate();
 			if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).compareTo(cdate) != 0){
-				System.err.println("Previous!");
 				StringBuilder previousbuilder = new StringBuilder();
 				previousbuilder.append("<html><p><b><font size=\"4\"> &lt;- </font></b></p></html>");
 				JLabel previous = new JLabel(previousbuilder.toString());
@@ -166,9 +165,9 @@ public class MultidayEventView extends JPanel{
 
 			multipane.add(eventInfo, "cell 1 0, grow, push, wmin 0");
 			multipane.setToolTipText(bob.toString());
+			
 			Date eveend = eve.getEndDate();
 			if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).compareTo(cdate) != 0){
-				System.err.println("Next!");
 				StringBuilder nextbuilder = new StringBuilder();
 				nextbuilder.append("<html><p><b><font size=\"4\"> -&gt; </font></b></p></html>");
 				JLabel next = new JLabel(nextbuilder.toString());

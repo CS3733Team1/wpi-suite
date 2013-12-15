@@ -34,6 +34,7 @@ public class WeekCalendarScrollPane extends JScrollPane {
 	private WeekHolderPanel weeklayer;
 	private List<JPanel> weekpanel;
 	private JPanel weektitle;
+	private int scrollSpeed = 15;
 	
 	public WeekCalendarScrollPane(WeekHolderPanel day){
 		super(day);
@@ -44,6 +45,8 @@ public class WeekCalendarScrollPane extends JScrollPane {
 		weektitle.setBackground(Color.WHITE);
 		weekpanel = new LinkedList<JPanel>();
 		
+		this.setWheelScrollingEnabled(true);
+		this.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		
 		this.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
 		for(int days = 1; days < 8; days++){

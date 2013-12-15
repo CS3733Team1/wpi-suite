@@ -21,12 +21,16 @@ public class DayCalendarScrollPane extends JScrollPane {
 	private DayHolderPanel daylayer;
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	private JLabel dayLabel;
+	private int scrollSpeed = 15;
 	
 	public DayCalendarScrollPane(DayHolderPanel day){
 		super(day);
 		
 		daylayer = day;
-	
+		
+		this.setWheelScrollingEnabled(true);
+		this.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
+		
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
 	}

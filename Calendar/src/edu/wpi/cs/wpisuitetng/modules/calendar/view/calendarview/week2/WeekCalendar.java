@@ -59,7 +59,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		
 		weeklayer = new WeekHolderPanel();
 		weekpanel = new LinkedList<JPanel>();
-		weektitle = new JPanel(new MigLayout("fill, insets 0","0[8.66%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]3[12.312%]0[45]0" ));
+		weektitle = new JPanel(new MigLayout("fill, insets 0","0[10%]5[14%]5[14%]5[14%]5[14%]5[14%]5[14%]5[14%]0[45]0" ));
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
 		time.add(new JLabel(""), "grow, aligny bottom");
@@ -97,7 +97,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		multiview = new MultidayEventWeekView(weeklayer.getMultiDayEvents(), weeklayer.getDayViewDate());
 		
 		mscroll = new WeekMultiScrollPane(multiview);
-		this.add(mscroll, "grow, wrap, hmin 120, hmax 120");
+		this.add(mscroll, "grow, wrap, hmin 80, hmax 80");
 		mscroll.getViewport().repaint();
 		multiview.repaint();
 		mscroll.updateUI();

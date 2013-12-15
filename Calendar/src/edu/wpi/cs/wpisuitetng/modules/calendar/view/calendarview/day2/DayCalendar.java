@@ -40,13 +40,11 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	private JLabel dayLabel;
 	private JPanel daytitle;
 	private JPanel dayname;
-	
+	private int scrollSpeed = 15;
 
 
 	public DayCalendar(){
 
-		
-		
 		this.setLayout(new MigLayout("fill, insets 0"));
 
 		daylayer = new DayHolderPanel();
@@ -78,18 +76,19 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		time.add(new JLabel(" "), "grow, aligny center");
 		time.setBackground(Color.white);
 
-		daytitle.add(time, "aligny center, w 5000, hmin 50, hmax 50,grow");
+		daytitle.add(time, "aligny center, w 5000, hmin 50, hmax 50, grow");
 		daytitle.add(dayname,  "aligny center, w 5000,hmin 50, hmax 50, grow");
 
 		this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
 
 		dayscroll = new DayCalendarScrollPane(daylayer);
 		
-		
 		multiview = new MultidayEventView(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
 		
 		mscroll = new DayMultiScrollPane(multiview);
-		this.add(mscroll, "grow, wrap, hmin 120, hmax 120");
+		this.add(mscroll, "grow, wrap, hmin 80, hmax 80");
+		mscroll.setWheelScrollingEnabled(true);
+		mscroll.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		mscroll.getViewport().repaint();
 		multiview.repaint();
 		mscroll.updateUI();
@@ -101,7 +100,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
 		dayscroll.getVerticalScrollBar().setValue(3*end/8);
 		
-		this.repaint();
+		//this.repaint();
 
 	}
 
