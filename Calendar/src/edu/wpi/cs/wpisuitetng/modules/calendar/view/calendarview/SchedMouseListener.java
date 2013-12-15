@@ -1,5 +1,5 @@
 /*******************************************************************************
-x * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2013 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.ListIterator;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
@@ -29,41 +28,42 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
+/**
+ * SchedMouseListener implements MouseListener.
+ * It is used for keeping track of selected ISchedulables in day and week view,
+ * as well as setting the background color for their tooltips
+ */
 public class SchedMouseListener implements MouseListener{
 
-	ISchedulable sched;
-	JPanel epanel;
-	
-	static List<ISchedulable> selectedScheds= Collections.synchronizedList(new ArrayList<ISchedulable>());
-	static List<JPanel> selectedPanels= Collections.synchronizedList(new ArrayList<JPanel>());
-	
-	private Color originalColor;
-	
+	private ISchedulable sched;
+	private JPanel epanel;
+
+	private static List<ISchedulable> selectedScheds= Collections.synchronizedList(new ArrayList<ISchedulable>());
+	private static List<JPanel> selectedPanels= Collections.synchronizedList(new ArrayList<JPanel>());
+
 	public SchedMouseListener(ISchedulable sched, JPanel epanel){
 		this.sched=sched;
 		this.epanel=epanel;
+		//store "default" color for this panel in foreground so it can be retrieved when de-selected
+		this.epanel.setForeground(sched.getCategory().getColor());
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		if (sched.getCategory() != null){
-			UIManager.put("ToolTip.background",new ColorUIResource(sched.getCategory().getColor()));
-			float[] hsb=new float[3];
-			Color catColor=sched.getCategory().getColor();
-			hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
-			if(hsb[2]<0.5){
-				UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
-			}
-			else{
-				UIManager.put("ToolTip.foreground", new ColorUIResource(Color.BLACK));
-			}
+		UIManager.put("ToolTip.background",new ColorUIResource(sched.getCategory().getColor()));
+		float[] hsb=new float[3];
+		Color catColor=sched.getCategory().getColor();
+		hsb=Color.RGBtoHSB(catColor.getRed(), catColor.getGreen(), catColor.getBlue(), hsb);
+
+		//if background is too dark, turn text white
+		if(hsb[2]<0.5){
+			UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
 		}
 		else{
-			UIManager.put("ToolTip.background", new ColorUIResource(Color.CYAN));
-			UIManager.put("ToolTip.foreground",new ColorUIResource(Color.BLACK));
+			UIManager.put("ToolTip.foreground", new ColorUIResource(Color.BLACK));
 		}
 	}
-	
+
 	@Override
 	public void mouseExited(MouseEvent e) {
 		UIManager.put("ToolTip.foreground",UIManager.getDefaults().getString("ToolTip.foreground"));
@@ -73,27 +73,34 @@ public class SchedMouseListener implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int ctrldwn = MouseEvent.CTRL_DOWN_MASK;
+		
+		//was ctrl key held while mouse was clicked?
 		boolean multiSelect = ((e.getModifiersEx() & ctrldwn) == ctrldwn);
-		if(multiSelect) {
+		if(multiSelect){
+			//if this one is already selected, remove it from the selection list
 			if(selectedScheds.contains(sched)){
 				selectedScheds.remove(sched);
 				selectedPanels.remove(this.epanel);
 				deselectPanel(this.epanel);
 			}
+			//if this one isn't already selected, add it to the list
 			else{
 				selectedScheds.add(sched);
 				selectedPanels.add(this.epanel);
 				selectPanel(this.epanel);
-				
+
 			}
-		} else {
+		}
+		else{
 			if(selectedScheds.contains(sched)){
-				boolean multiple = (selectedScheds.size()!=1);
+				//were multiple panels selected when click occurred
+				boolean multiple = (selectedScheds.size()>1);
 				selectedScheds.clear();
 				for(JPanel panel : selectedPanels){
 					deselectPanel(panel);
 				}
 				selectedPanels.clear();
+				//remove all panels except the one clicked
 				if(multiple){
 					selectedScheds.add(sched);
 					selectedPanels.add(this.epanel);
@@ -109,10 +116,9 @@ public class SchedMouseListener implements MouseListener{
 				selectedScheds.add(sched);
 				selectedPanels.add(this.epanel);
 				selectPanel(this.epanel);
-				
+
 			}
 		}
-//		invertBGColor(this.epanel);
 	}
 
 	@Override
@@ -122,11 +128,14 @@ public class SchedMouseListener implements MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
-	
+
+	/**
+	 * Returns the selected events
+	 * @return a List<Event> representing the events selected on the calendar
+	 */
 	public static List<Event> getSelectedEvents(){
 		ArrayList<Event> selectedEvents = new ArrayList<Event>();
-		ListIterator<ISchedulable> iter;
-		iter=selectedScheds.listIterator();
+		ListIterator<ISchedulable> iter = selectedScheds.listIterator();
 		while(iter.hasNext()){
 			ISchedulable test = iter.next();
 			if(test instanceof Event){
@@ -135,11 +144,14 @@ public class SchedMouseListener implements MouseListener{
 		}
 		return selectedEvents;
 	}
-	
+
+	/**
+	 * Returns the selected commitments
+	 * @return a List<Commitment> representing the commitments selected on the calendar
+	 */
 	public static List<Commitment> getSelectedCommitments(){
 		ArrayList<Commitment> selectedCommits = new ArrayList<Commitment>();
-		ListIterator<ISchedulable> iter;
-		iter=selectedScheds.listIterator();
+		ListIterator<ISchedulable> iter = selectedScheds.listIterator();
 		while(iter.hasNext()){
 			ISchedulable test = iter.next();
 			if(test instanceof Commitment){
@@ -149,31 +161,26 @@ public class SchedMouseListener implements MouseListener{
 		return selectedCommits;
 	}
 	
-	private void invertBGColor(JPanel panel){
-		int newRGB;
-		float[] hsb = new float[3];
-		Color panelColor=panel.getBackground();
-		hsb=Color.RGBtoHSB(panelColor.getRed(), panelColor.getGreen(), panelColor.getBlue(), hsb);
-		newRGB=Color.HSBtoRGB(1-hsb[0], hsb[1], hsb[2]);
-		Color newPanelColor = new Color(newRGB);
-		panel.setBackground(newPanelColor);
+	/**
+	 * Removes all the ISchedulables being tracked as selected. Primarily for use by the DayArea panel.
+	 */
+	public static void clearSelection(){
+		selectedScheds.clear();
+		ListIterator<JPanel> iter = selectedPanels.listIterator();
+		while(iter.hasNext()){
+			deselectPanel(iter.next());
+		}
+		selectedPanels.clear();
 	}
-	
+
 	private void selectPanel(JPanel panel){
-		originalColor = panel.getBackground();
-		panel.setBackground(CalendarUtils.darken(originalColor));
+		panel.setBackground(CalendarUtils.darken(panel.getBackground()));
 		JLabel j = (JLabel)panel.getComponent(0);
 		j.setForeground(CalendarUtils.textColor(panel.getBackground()));
-		
 	}
-	
-	private void deselectPanel(JPanel panel){
-		
-		if (originalColor == null || panel.getBackground() == null){
-			selectPanel(panel);
-			return;
-		}
-		panel.setBackground(originalColor);
+
+	private static void deselectPanel(JPanel panel){
+		panel.setBackground(panel.getForeground());
 		JLabel j = (JLabel)panel.getComponent(0);
 		j.setForeground(CalendarUtils.textColor(panel.getBackground()));
 	}
