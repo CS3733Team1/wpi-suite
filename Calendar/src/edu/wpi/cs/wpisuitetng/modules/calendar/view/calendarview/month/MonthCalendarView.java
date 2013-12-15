@@ -256,6 +256,9 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 			daysWithEvComs.get(i).clearEvComs();
 		}
 
+		selectedMultiDayEvents.clear();
+		selectedEvents.clear();
+		selectedCommitmentPanels.clear();
 		multiDayEventPanels.clear();
 		eventPanels.clear();
 		commitmentPanels.clear();

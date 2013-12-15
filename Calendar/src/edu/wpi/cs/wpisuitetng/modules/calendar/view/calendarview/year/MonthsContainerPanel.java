@@ -23,9 +23,9 @@ public class MonthsContainerPanel extends JPanel implements Scrollable {
 	
 	// Unused
 	@Override
-	public Dimension getPreferredScrollableViewportSize() {return null;}
+	public Dimension getPreferredScrollableViewportSize() {return this.getPreferredSize();}
 	@Override
-	public int getScrollableBlockIncrement(Rectangle r, int i, int j) {return 0;}
+	public int getScrollableBlockIncrement(Rectangle r, int i, int j) {return 1;}
 	@Override
-	public int getScrollableUnitIncrement(Rectangle r, int i, int j) {return 0;}
+	public int getScrollableUnitIncrement(Rectangle r, int i, int j) {return 1;}
 }
