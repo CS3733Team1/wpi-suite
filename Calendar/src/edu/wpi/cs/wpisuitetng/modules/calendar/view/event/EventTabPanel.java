@@ -245,11 +245,14 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	public ArrayList<Event> getFilledEvents() {
 		int numOfEvents = numOfEvents();
-		
 		ArrayList<Event> eventList = new ArrayList<Event>();
 		Date startDate=durationChooser_.getStartDate();
 		Date endDate=durationChooser_.getEndDate();
-		
+		if(numOfEvents == 1)
+		{
+			eventList.add(getFilledEvent());
+			return eventList;
+		}
 		for(int i = 0, day = startDate.getDay(); i < numOfEvents; ++day)
 		{
 			if(day == 7)
