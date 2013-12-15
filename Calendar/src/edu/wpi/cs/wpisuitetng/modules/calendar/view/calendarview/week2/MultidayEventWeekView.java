@@ -140,10 +140,13 @@ public class MultidayEventWeekView extends JPanel {
 				}
 				bob.append("</p></html>");
 
-				//Adds a mouselistener to the event
-				//multipane.addMouseListener(new EventMouseListener(eve, multipane));
+				StringBuilder eventNameBob = new StringBuilder();
+				eventNameBob.append("<html>");
+				eventNameBob.append("<html><p style='width:175px'><b>Event Name: </b>");
+				eventNameBob.append(eve.getName());
+				eventNameBob.append("</p></html>");
 
-				JLabel eventinfo = new JLabel(bob.toString());
+				JLabel eventinfo = new JLabel(eventNameBob.toString());
 
 				Date evestart = eve.getStartDate();
 				if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).before(cdate)){
@@ -154,7 +157,8 @@ public class MultidayEventWeekView extends JPanel {
 				}
 
 				multipane.add(eventinfo, "cell 1 0, grow, push, wmin 0");
-
+				multipane.setToolTipText(bob.toString());
+				
 				Date eveend = eve.getEndDate();
 				if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).after(new Date(cdate.getYear(), cdate.getMonth(), cdate.getDate()+6))){
 					StringBuilder nextbuilder = new StringBuilder();
