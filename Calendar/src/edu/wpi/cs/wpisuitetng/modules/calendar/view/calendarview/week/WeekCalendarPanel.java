@@ -336,7 +336,6 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getClickCount() == 2) {
-		WeekView week = weeklayer.getWeek();
 		WeekNamePanel weekName = (WeekNamePanel)e.getSource();
 		Calendar clickedDay = weekName.getDate();
 		CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
