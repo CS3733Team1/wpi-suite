@@ -22,8 +22,8 @@ public class MultiDayEventPanel extends EvComPanel {
 	public MultiDayEventPanel(Event event, int textType) {
 		super(true, false);
 		this.event = event;
-		this.selectedBackgroundColor = event.getCategory().getColor();
-		this.backgroundColor = CalendarUtils.blend(selectedBackgroundColor, Color.white, (float) 0.4);
+		this.backgroundColor = event.getCategory().getColor();
+		this.selectedBackgroundColor = CalendarUtils.blend(backgroundColor, Color.BLACK, (float) 0.4);
 		this.textColor = CalendarUtils.titleNameColor;
 		this.selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
 

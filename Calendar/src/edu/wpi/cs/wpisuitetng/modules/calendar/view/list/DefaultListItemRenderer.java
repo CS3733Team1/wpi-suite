@@ -11,14 +11,13 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 public class DefaultListItemRenderer<T> implements ListItemRenderer<T> {
 
 	@Override
-	public JComponent getRenderedListComponent(SRList<T> listPanel,
-			T listObject, boolean isSelected, boolean hasFocus, boolean doubleClicked) {
+	public JComponent getRenderedListComponent(SRList<T> listPanel, ListItem<T> listItem, T listObject) {
 		
 		JPanel p = new JPanel();
 		JLabel label = new JLabel(listObject.toString());
 		p.add(label);
 		
-		p.setBackground(isSelected ? CalendarUtils.selectionColor : Color.WHITE);
+		p.setBackground(listItem.isSelected() ? CalendarUtils.selectionColor : Color.WHITE);
 		
 		return p;
 	}

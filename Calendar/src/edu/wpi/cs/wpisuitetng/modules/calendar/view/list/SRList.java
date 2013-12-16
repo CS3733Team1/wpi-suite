@@ -70,13 +70,13 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 	private void fillListItems() {
 		listItems.clear();
 		selectedListItems.clear();
-		for(int i = 0; i < listModel.getSize(); i++) listItems.add(new ListItem<T>(listModel.getElementAt(i)));;
+		for(int i = 0; i < listModel.getSize(); i++) listItems.add(new ListItem<T>(this, listModel.getElementAt(i)));;
 	}
 
-	private void render() {
+	protected void render() {
 		listPanel.clear();
 		for(ListItem<T> listItem: listItems) {
-			listItem.setComponent(listItemRenderer.getRenderedListComponent(this, listItem.getListObject(), listItem.isSelected(), listItem.isFocused(), listItem.isDoubleClicked()));
+			listItem.setComponent(listItemRenderer.getRenderedListComponent(this, listItem, listItem.getListObject()));
 			listPanel.add(listItem.getComponent());
 		}
 		this.revalidate();
@@ -101,7 +101,7 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 	@Override
 	public void mousePressed(MouseEvent e) {
 		int indexOfMousePress = listPanel.getIndexOfComponent(listPanel.getComponentAt(e.getPoint()));
-		if(indexOfMousePress >= 0) {
+		if(indexOfMousePress >= 0 && !e.isPopupTrigger()) {
 			if(e.getClickCount() == 2) {
 				clearSelection();
 				listItems.get(indexOfMousePress).toggleDoubleClicked();
@@ -154,6 +154,16 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 			clearSelection();
 		}
 		render();
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (e.isPopupTrigger()) {
+			int indexOfMousePress = listPanel.getIndexOfComponent(listPanel.getComponentAt(e.getPoint()));
+			if(indexOfMousePress >= 0) {
+				this.fireItemRightClicked(listItems.get(indexOfMousePress).getListObject(), e.getPoint());
+			}
+		}
 	}
 
 	@Override
@@ -209,13 +219,4 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		if (e.isPopupTrigger()) {
-			int indexOfMousePress = listPanel.getIndexOfComponent(listPanel.getComponentAt(e.getPoint()));
-			if(indexOfMousePress >= 0) {
-				this.fireItemRightClicked(listItems.get(indexOfMousePress).getListObject(), e.getPoint());
-			}
-		}
-	}
 }

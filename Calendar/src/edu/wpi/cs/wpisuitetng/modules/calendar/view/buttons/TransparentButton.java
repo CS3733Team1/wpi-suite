@@ -28,7 +28,7 @@ public class TransparentButton extends JButton implements MouseListener {
 		this.setContentAreaFilled(false);
 		this.setBorderPainted(false);
 		this.setFocusable(false);
-
+		
 		this.addMouseListener(this);
 	}
 
