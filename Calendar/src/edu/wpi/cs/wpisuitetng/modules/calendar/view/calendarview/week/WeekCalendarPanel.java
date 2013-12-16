@@ -35,7 +35,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.DayPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
@@ -336,7 +335,6 @@ public class WeekCalendarPanel extends JPanel implements ICalendarView, ListData
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getClickCount() == 2) {
-		WeekView week = weeklayer.getWeek();
 		WeekNamePanel weekName = (WeekNamePanel)e.getSource();
 		Calendar clickedDay = weekName.getDate();
 		CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());

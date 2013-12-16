@@ -18,13 +18,13 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;
 
@@ -32,17 +32,17 @@ public class CategoryPanel extends JPanel implements ListItemListener<Category> 
 	//private CategoryListPanel categoryListPanel;
 	private SRList<Category> categoryList;
 	
-	private JButton addCategoryButton, deleteCategoryButton;
+	private TransparentButton addCategoryButton, deleteCategoryButton;
 	JLabel errorLabel = new JLabel("Cannot delete default(*) categories");
 	
 	public CategoryPanel() {
 		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][][grow, fill]"));
 
 		try {
-			addCategoryButton = new JButton("<html>New<br/>Category</html>",
+			addCategoryButton = new TransparentButton("<html>New<br/>Category</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_category.png"))));
 
-			deleteCategoryButton = new JButton("<html>Delete<br/>Category</html>",
+			deleteCategoryButton = new TransparentButton("<html>Delete<br/>Category</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_category.png"))));
 		} catch (IOException e) {e.printStackTrace();}
 

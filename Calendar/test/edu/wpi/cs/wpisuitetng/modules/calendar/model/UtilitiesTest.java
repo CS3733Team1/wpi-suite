@@ -5,12 +5,13 @@ import java.util.Date;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
-
 import static org.junit.Assert.*;
 
+@SuppressWarnings("deprecation")
 public class UtilitiesTest {
 	
 	/*************************** TEST TIME (IN DATE) TO STRING *************************/
+	
 	
 	@Test
 	public void testDayToString(){

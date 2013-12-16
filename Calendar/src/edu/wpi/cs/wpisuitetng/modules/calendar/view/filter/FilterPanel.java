@@ -8,26 +8,26 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 
 public class FilterPanel extends JPanel implements MouseListener {
 	FilterListPanel filterListPanel;
 
-	private JButton addFilterButton, deleteFilterButton;
+	private TransparentButton addFilterButton, deleteFilterButton;
 
 	public FilterPanel() {
 		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][grow, fill]"));
 
 		try {
-			addFilterButton = new JButton("<html>New<br/>Filter</html>",
+			addFilterButton = new TransparentButton("<html>New<br/>Filter</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_filter.png"))));
 
-			deleteFilterButton = new JButton("<html>Delete<br/>Filter</html>",
+			deleteFilterButton = new TransparentButton("<html>Delete<br/>Filter</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_filter.png"))));
 		} catch (IOException e) {e.printStackTrace();}
 
@@ -68,24 +68,21 @@ public class FilterPanel extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent arg0) {
 		boolean deleteEnabled = true;
 		for( Filter c: getSelectedFilters()){
-			if(FilterListModel.getFilterListModel().isDefault(c))
-			{
+			if(FilterListModel.getFilterListModel().isDefault(c)) {
 				deleteEnabled = false;
 			}
 		}
 		deleteFilterButton.setEnabled(deleteEnabled);
-		repaint();
+		this.revalidate();
+		this.repaint();
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {}
-
 	@Override
 	public void mouseExited(MouseEvent arg0) {}
-
 	@Override
 	public void mousePressed(MouseEvent arg0) {}
-
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
 }
