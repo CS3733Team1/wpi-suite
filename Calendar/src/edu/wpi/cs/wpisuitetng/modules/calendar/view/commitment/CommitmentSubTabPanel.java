@@ -10,28 +10,56 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
-import javax.swing.JList;
+import java.awt.Point;
+import java.util.List;
+
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RightClickCommitmentMenu;
 
-public class CommitmentSubTabPanel extends JPanel {
+public class CommitmentSubTabPanel extends JPanel implements ListItemListener<Commitment> {
 	
-	private CommitmentListPanel commitmentListPanel;
+	//private CommitmentListPanel commitmentListPanel;
+	private SRList<Commitment> commitmentList;
+	
+	private RightClickCommitmentMenu rightClickCommitmentMenu;
+	private CalendarPanel calendarPanel;
 	
 	public CommitmentSubTabPanel(CalendarPanel calendarPanel) {
 		this.setLayout(new MigLayout("fill"));
+		this.calendarPanel = calendarPanel;
 		
-		commitmentListPanel = new CommitmentListPanel(calendarPanel);
-		JPanel p = new JPanel(new MigLayout("fill"));
-		p.add(commitmentListPanel, "grow, push");
+		//commitmentListPanel = new CommitmentListPanel(calendarPanel);
+		commitmentList = new SRList<Commitment>(FilteredCommitmentsListModel.getFilteredCommitmentsListModel());
+		commitmentList.setListItemRenderer(new CommitmentListItemRenderer());
+		commitmentList.addListItemListener(this);
 		
-		this.add(p, "grow, push");
+		this.add(commitmentList, "grow");
 	}
 	
-	public JList<Commitment> getCommitmentsList() {
-		return commitmentListPanel.getCommitmentList();
+	public List<Commitment> getSelectedCommitments() {
+		return commitmentList.getSelectedItems();
+	}
+
+	@Override
+	public void itemsSelected(List<Commitment> listObjects) {}
+
+	@Override
+	public void itemDoubleClicked(Commitment listObject) {}
+
+	@Override
+	public void itemFocused(Commitment listObject) {}
+
+	@Override
+	public void itemRightClicked(Commitment listObject, Point p) {
+		List<Commitment> listofCommitment = commitmentList.getSelectedItems();
+		rightClickCommitmentMenu = new RightClickCommitmentMenu(listofCommitment, calendarPanel);
+		rightClickCommitmentMenu.show(commitmentList, (int)p.getX(), (int)p.getY());
 	}
 }

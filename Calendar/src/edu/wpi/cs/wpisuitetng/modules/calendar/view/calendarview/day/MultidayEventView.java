@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
+//import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 /**
  * This class shows multi-day events in day view. It is a component of the DayCalendarLayerPane, along
@@ -156,7 +156,7 @@ public class MultidayEventView extends JPanel{
 			bob.append("</p></html>");
 
 			//Adds a mouselistener to the event
-			multipane.addMouseListener(new EventMouseListener(eve, multipane));
+			//multipane.addMouseListener(new EventMouseListener(eve, multipane));
 
 			JLabel eventinfo = new JLabel(bob.toString());
 

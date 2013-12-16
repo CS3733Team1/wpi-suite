@@ -11,43 +11,44 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;
 
-public class CategoryPanel extends JPanel implements MouseListener{
-	private CategoryListPanel categoryListPanel;
-
-	private JButton addCategoryButton, deleteCategoryButton;
+public class CategoryPanel extends JPanel implements ListItemListener<Category> {
+	//private CategoryListPanel categoryListPanel;
+	private SRList<Category> categoryList;
+	
+	private TransparentButton addCategoryButton, deleteCategoryButton;
 	JLabel errorLabel = new JLabel("Cannot delete default(*) categories");
 	
 	public CategoryPanel() {
 		this.setLayout(new MigLayout("fill", "[grow, fill]", "[][][grow, fill]"));
 
 		try {
-			addCategoryButton = new JButton("<html>New<br/>Category</html>",
+			addCategoryButton = new TransparentButton("<html>New<br/>Category</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_category.png"))));
 
-			deleteCategoryButton = new JButton("<html>Delete<br/>Category</html>",
+			deleteCategoryButton = new TransparentButton("<html>Delete<br/>Category</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_category.png"))));
 		} catch (IOException e) {e.printStackTrace();}
 
-		this.categoryListPanel = new CategoryListPanel();
-
-		this.categoryListPanel.getCategoryList().addMouseListener(this);
+		this.categoryList = new SRList<Category>(CategoryListModel.getCategoryListModel());
+		categoryList.setListItemRenderer(new CategoryListItemRenderer());
+		categoryList.addListItemListener(this);
 		
 		addCategoryButton.setActionCommand("add");
 		deleteCategoryButton.setActionCommand("delete");
@@ -56,7 +57,6 @@ public class CategoryPanel extends JPanel implements MouseListener{
 		p.add(addCategoryButton);
 		p.add(deleteCategoryButton);
 		
-		
 		errorLabel.setForeground(Color.RED);
 		errorLabel.setVisible(false);
 		
@@ -64,8 +64,8 @@ public class CategoryPanel extends JPanel implements MouseListener{
 		this.add(p, "wrap");
 		//this.add(errorLabel, "alignx center, hmax 15, wrap");
 		this.add(defaultCategory, "alignx center, hmax 15, wrap");
-		this.add(categoryListPanel, "grow, push");
-
+		//this.add(categoryListPanel, "grow, push");
+		this.add(categoryList, "grow, push");
 	}
 	
 	public void setAddCategoryListener(ActionListener al) {
@@ -77,19 +77,14 @@ public class CategoryPanel extends JPanel implements MouseListener{
 	}
 
 	public List<Category> getSelectedCategories() {
-		return categoryListPanel.getCategoryList().getSelectedValuesList();
-	}
-
-	public void clearSelection() {
-		categoryListPanel.clearSelection();
+		return categoryList.getSelectedItems();
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void itemsSelected(List<Category> listObjects) {
 		boolean deleteEnabled = true;
-		for( Category c: getSelectedCategories()){
-			if(CategoryListModel.getCategoryListModel().isDefault(c))
-			{
+		for(Category c: listObjects) {
+			if(CategoryListModel.getCategoryListModel().isDefault(c)) {
 				deleteEnabled = false;
 			}
 		}
@@ -99,14 +94,11 @@ public class CategoryPanel extends JPanel implements MouseListener{
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {}
+	public void itemDoubleClicked(Category listObject) {}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {}
+	public void itemRightClicked(Category listObject, Point p) {}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
+	public void itemFocused(Category listObject) {}
 }
