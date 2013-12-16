@@ -44,10 +44,14 @@ public class DayArea extends JPanel implements ListDataListener{
 	private List<Event> multi;
 
 	private Date currentDay;
+	private SchedulableResizer resizelistener;
+	private SchedulableMover movelistener;
 
 	public DayArea(){
 		events = new LinkedList<ISchedulable>();
 		multi = new LinkedList<Event>();
+		resizelistener = new SchedulableResizer();
+		movelistener = new SchedulableMover();
 
 		currentDay = new Date();
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
@@ -87,6 +91,8 @@ public class DayArea extends JPanel implements ListDataListener{
 	public DayArea(Date d){
 		events = new LinkedList<ISchedulable>();
 		multi = new LinkedList<Event>();
+		resizelistener = new SchedulableResizer();
+		movelistener = new SchedulableMover();
 
 		currentDay = d;
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
@@ -204,6 +210,9 @@ public class DayArea extends JPanel implements ListDataListener{
 	 public void sortEvents(){
 		Collections.sort(events, new Comparator<ISchedulable>(){
 			public int compare(ISchedulable o1, ISchedulable o2) {
+				if(o1.getStartDate().equals(o2.getStartDate())){
+					return getLengthMinutes(o1)-getLengthMinutes(o2);
+				}
 				return o1.getStartDate().compareTo(o2.getStartDate());
 			}
 
@@ -340,6 +349,9 @@ public class DayArea extends JPanel implements ListDataListener{
 
 				//add mouse listener to event panels, change tooltip background, allow for selection
 				panel.addMouseListener(new SchedMouseListener(test, panel));
+				//http://www.camick.com/java/source/ComponentResizer.java
+				resizelistener.registerComponent(panel);
+				movelistener.registerComponent(panel);
 
 				//set panel background based on category
 				panel.setBackground(test.getCategory().getColor());
