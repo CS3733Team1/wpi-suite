@@ -164,7 +164,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		
 				// Calendar
 				JLabel label = new JLabel("Calendar:");
-				this.add(label, "flowx,cell 0 3");
+				this.add(label, "flowx,cell 0 4");
 		
 		// Recurring Events
 		eventRecurringPanel = new EventRecurringPanel(new Date());
@@ -175,7 +175,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				validateFields();
 			}
 		});
-		add(eventRecurringPanel, "cell 0 4,alignx left");
+		add(eventRecurringPanel, "cell 0 3,alignx left");
 		
 		
 		// Category
@@ -191,7 +191,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		JScrollPane scrollp = new JScrollPane(descriptionTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(scrollp, "cell 0 6,push ,height 5000,grow");
+		this.add(scrollp, "cell 0 7, grow, push, span, h 5000, wrap");
 
 		// Add / Cancel buttons
 		addEventButton = new JButton("Add Event");
@@ -208,7 +208,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		//Action Listener for Cancel Button
 		cancelButton.addActionListener(this);
 		calendarPicker = new CalendarPicker();
-		this.add(calendarPicker, "cell 0 3,alignx left");
+		this.add(calendarPicker, "cell 0 4,alignx left");
 
 		validateFields();
 	}
