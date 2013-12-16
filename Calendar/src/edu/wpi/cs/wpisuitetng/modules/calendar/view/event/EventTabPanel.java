@@ -191,7 +191,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		JScrollPane scrollp = new JScrollPane(descriptionTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(scrollp, "cell 0 6,push ,height 5000,grow");
+		this.add(scrollp, "cell 0 7, grow, push, span, h 5000, wrap");
 
 		// Add / Cancel buttons
 		addEventButton = new JButton("Add Event");
