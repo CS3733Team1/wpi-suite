@@ -45,11 +45,13 @@ public class DayArea extends JPanel implements ListDataListener{
 
 	private Date currentDay;
 	private SchedulableResizer resizelistener;
+	private SchedulableMover movelistener;
 
 	public DayArea(){
 		events = new LinkedList<ISchedulable>();
 		multi = new LinkedList<Event>();
 		resizelistener = new SchedulableResizer();
+		movelistener = new SchedulableMover();
 
 		currentDay = new Date();
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
@@ -90,6 +92,7 @@ public class DayArea extends JPanel implements ListDataListener{
 		events = new LinkedList<ISchedulable>();
 		multi = new LinkedList<Event>();
 		resizelistener = new SchedulableResizer();
+		movelistener = new SchedulableMover();
 
 		currentDay = d;
 		currentDay = new Date(currentDay.getYear(), currentDay.getMonth(), currentDay.getDate());
@@ -348,6 +351,7 @@ public class DayArea extends JPanel implements ListDataListener{
 				panel.addMouseListener(new SchedMouseListener(test, panel));
 				//http://www.camick.com/java/source/ComponentResizer.java
 				resizelistener.registerComponent(panel);
+				movelistener.registerComponent(panel);
 
 				//set panel background based on category
 				panel.setBackground(test.getCategory().getColor());

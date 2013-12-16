@@ -336,21 +336,23 @@ public class SchedulableResizer extends MouseAdapter
 		source.setCursor( sourceCursor );
 		
 		if (source instanceof ScheduleItem){
-			((ScheduleItem) source).getStartTime();
-			((ScheduleItem) source).getEndTime();
-			ISchedulable item = ((ScheduleItem) source).getDisplayItem();
-			if (item instanceof edu.wpi.cs.wpisuitetng.modules.calendar.model.Event){
-				UpdateEventController updateevent = new UpdateEventController(((edu.wpi.cs.wpisuitetng.modules.calendar.model.Event) item));
-			}
-			if (item instanceof Commitment){
-				UpdateCommitmentController updatecommitment = new UpdateCommitmentController(((Commitment) item));
-			}
-			
-			if (source.getParent() != null && source.getParent() instanceof DayArea){
-				DayArea parent = ((DayArea) source.getParent());
-				parent.showEvent();
-				parent.repaint();
-				parent.revalidate();
+			if (((ScheduleItem) source).isChanged()){
+				((ScheduleItem) source).getStartTime();
+				((ScheduleItem) source).getEndTime();
+				ISchedulable item = ((ScheduleItem) source).getDisplayItem();
+				if (item instanceof edu.wpi.cs.wpisuitetng.modules.calendar.model.Event){
+					UpdateEventController updateevent = new UpdateEventController(((edu.wpi.cs.wpisuitetng.modules.calendar.model.Event) item));
+				}
+				if (item instanceof Commitment){
+					UpdateCommitmentController updatecommitment = new UpdateCommitmentController(((Commitment) item));
+				}
+
+				if (source.getParent() != null && source.getParent() instanceof DayArea){
+					DayArea parent = ((DayArea) source.getParent());
+					parent.showEvent();
+					parent.repaint();
+					parent.revalidate();
+				}
 			}
 		}
 
@@ -432,7 +434,6 @@ public class SchedulableResizer extends MouseAdapter
 		}
 		
 		if (source instanceof ScheduleItem){
-			System.err.println("Hello!");
 			((ScheduleItem) source).updateSize(x, y, width, height);
 		}
 		else{
