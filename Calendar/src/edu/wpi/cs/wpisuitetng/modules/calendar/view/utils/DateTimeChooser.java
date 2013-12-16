@@ -300,9 +300,9 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 			//see if the day is in the past
 			if (date_.after(new Date())){
 				warningEnabled_=false;
-				System.out.println("\t\t(future) Date with new time is "+date_.toString());
+//				System.out.println("\t\t(future) Date with new time is "+date_.toString());
 			}else{//time in the past
-				System.out.println("\tDTC: ERROR: time in the past!");
+//				System.out.println("\tDTC: ERROR: time in the past!");
 				setPastWarning();
 			}
 			updateError();
