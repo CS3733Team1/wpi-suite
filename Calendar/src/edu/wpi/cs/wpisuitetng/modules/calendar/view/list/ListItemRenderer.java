@@ -1,7 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.list;
 
-import javax.swing.JComponent;
+import java.util.List;
 
 public interface ListItemRenderer<T> {
-	public JComponent getRenderedListComponent(SRList<T> listPanel, ListItem<T> listItem, T listObject);
+	public void createRenderedListComponents(SRList<T> listPanel, List<ListItem<T>> listItems);
+	public void updateRenderedListComponents(SRList<T> listPanel, List<ListItem<T>> listItems);
 }
