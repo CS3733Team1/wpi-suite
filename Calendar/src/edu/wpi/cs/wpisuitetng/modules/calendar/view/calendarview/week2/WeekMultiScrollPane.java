@@ -6,8 +6,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.MultidayEventView;
-
 public class WeekMultiScrollPane extends JScrollPane{
 
 private MultidayEventWeekView mday;

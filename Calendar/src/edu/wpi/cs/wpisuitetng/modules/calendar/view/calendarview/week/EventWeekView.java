@@ -13,7 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
