@@ -62,6 +62,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private JLabel wrongDaySelectionErrorLabel;
 	private JCheckBox chckbxMakeRecurring;
 	private boolean isRecurring;
+	
 	public EventRecurringPanel(Date startDate) {
 		this.buildLayout(startDate, false);
 	}

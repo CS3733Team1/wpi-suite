@@ -178,6 +178,12 @@ public class WeekHolderPanel extends JPanel{
 	public Date getDate(int day){
 		return this.day.get(day-1).getDayViewDate();
 	}
+	
+	public Calendar getCalendarDate(){
+		Calendar c = Calendar.getInstance();
+		c.setTime(this.currentDay);
+		return c;
+	}
 
 	public void viewDate(Calendar date) {
 		Date today = date.getTime();
