@@ -29,7 +29,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DeleteEventContr
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventTabController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterController;
-
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.help.HelpButtonController;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
