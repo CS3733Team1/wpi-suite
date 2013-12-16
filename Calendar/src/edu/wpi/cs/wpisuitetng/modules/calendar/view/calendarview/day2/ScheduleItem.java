@@ -1,11 +1,16 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class ScheduleItem extends JPanel{
 	private ISchedulable display;
@@ -21,6 +26,7 @@ public class ScheduleItem extends JPanel{
 		division = div;
 		location = spot;
 		
+		this.setBorder(BorderFactory.createLineBorder(CalendarUtils.darken(display.getCategory().getColor()),2,true));
 		this.setMinimumSize(new Dimension(0,0));
 	}
 	
