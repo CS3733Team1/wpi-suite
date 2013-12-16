@@ -13,11 +13,14 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -82,7 +85,11 @@ public class SchedMouseListener implements MouseListener{
 			if (sched instanceof Event)
 			{
 				EventTabPanel editEventPanel = new EventTabPanel((Event)sched);
-				MainView.getCurrentCalendarPanel().addTab("Update Event", editEventPanel);
+				ImageIcon miniEventIcon = new ImageIcon();
+				try {
+					miniEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
+				} catch (IOException exception) {}
+				MainView.getCurrentCalendarPanel().addTab("Update Event", miniEventIcon, editEventPanel);
 				MainView.getCurrentCalendarPanel().setSelectedComponent(editEventPanel);
 			}
 			else if(sched instanceof Commitment) 

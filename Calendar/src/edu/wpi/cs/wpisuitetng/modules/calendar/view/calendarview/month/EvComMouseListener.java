@@ -3,9 +3,13 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.UpdateEventController;
@@ -15,6 +19,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RightClickCommitmentMenu;
 
 public class EvComMouseListener implements MouseListener, MouseMotionListener{
 	private MonthCalendarView monthView;
@@ -172,7 +177,11 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 			{
 				Event event = ((EventPanel)e.getSource()).getEvent();
 				EventTabPanel editEventPanel = new EventTabPanel(event);
-				MainView.getCurrentCalendarPanel().addTab("Update Event", editEventPanel);
+				ImageIcon miniEventIcon = new ImageIcon();
+				try {
+					miniEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
+				} catch (IOException exception) {}
+				MainView.getCurrentCalendarPanel().addTab("Update Event", miniEventIcon, editEventPanel);
 				MainView.getCurrentCalendarPanel().setSelectedComponent(editEventPanel);
 				
 			} 
@@ -180,14 +189,22 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 			{
 				Commitment commitment = ((CommitmentPanel)e.getSource()).getCommitment();
 				CommitmentTabPanel editCommitmentPanel = new CommitmentTabPanel(commitment);
-				MainView.getCurrentCalendarPanel().addTab("Update Commitmement", editCommitmentPanel);
+				ImageIcon miniCommitmentIcon = new ImageIcon();
+				try {
+					miniCommitmentIcon = new ImageIcon(ImageIO.read(RightClickCommitmentMenu.class.getResource("/images/commitment.png")));
+				} catch (IOException exception) {}
+				MainView.getCurrentCalendarPanel().addTab("Update Commitment", miniCommitmentIcon, editCommitmentPanel);
 				MainView.getCurrentCalendarPanel().setSelectedComponent(editCommitmentPanel);
 			} 
 			else if(e.getSource() instanceof MultiDayEventPanel) 
 			{
 				Event event = ((MultiDayEventPanel)e.getSource()).getEvent();
 				EventTabPanel editEventPanel = new EventTabPanel(event);
-				MainView.getCurrentCalendarPanel().addTab("Update Event", editEventPanel);
+				ImageIcon miniEventIcon = new ImageIcon();
+				try {
+					miniEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
+				} catch (IOException exception) {}
+				MainView.getCurrentCalendarPanel().addTab("Update Event", miniEventIcon, editEventPanel);
 				MainView.getCurrentCalendarPanel().setSelectedComponent(editEventPanel);
 			}
 		}
