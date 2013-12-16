@@ -43,7 +43,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RightClickCommitmentMe
  * @author
  */
 
-public class CommitmentListPanel extends JPanel implements ActionListener, MouseListener {
+public class CommitmentListPanel extends JPanel implements MouseListener {
 
 	private FilteredCommitmentsListModel model;
 	private CalendarPanel calendarPanel;
@@ -88,9 +88,7 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		detailDisplay.setEditable(false);
 
 		updateCommitmentButton.setActionCommand("updatecommitment");
-		updateCommitmentButton.addActionListener(this);
 		cancelButton.setActionCommand("cancel");
-		cancelButton.addActionListener(this);
 
 		JPanel p = new JPanel();
 		p.add(updateCommitmentButton);
@@ -125,34 +123,10 @@ public class CommitmentListPanel extends JPanel implements ActionListener, Mouse
 		commitmentList.addMouseListener(this);
 	}
 
-	public void openUpdateCommitmentTabPanel() {
-//		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(selectedCommitment);
-//		ImageIcon miniCommitmentIcon = new ImageIcon();
-//		try {
-//			miniCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
-//		} catch (IOException exception) {}
-//		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
-//		calendarPanel.setSelectedComponent(commitmentPanel);	
-		RightClickCommitmentMenu.openUpdateCommitmentTab(calendarPanel, selectedCommitment);
-		
-	}
-
 	public void setSelectedCommitment(Commitment c){
 		selectedCommitment = c;
 	}
 	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("cancel")) {
-			viewCommitments();
-		}
-		else if (e.getActionCommand().equals("updatecommitment")) {
-			viewCommitments();
-			openUpdateCommitmentTabPanel();
-		}
-	}
-
 	/**
 	 * Mouse clicked anywhere in the JListPanel
 	 */

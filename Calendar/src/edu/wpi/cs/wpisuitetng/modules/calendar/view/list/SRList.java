@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.list;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -162,11 +163,8 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		if(listModel.getSize() != 0) {
-			//for(int i = e.getIndex0(); i <= e.getIndex1(); i++) listItems.add(i, new ListItem<T>(listModel.getElementAt(i)));;
-			fillListItems();
-			render();
-		}
+		fillListItems();
+		render();
 	}
 
 	@Override
@@ -180,8 +178,8 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 		for(ListItemListener<T> l: listItemListeners) l.itemDoubleClicked(listObject);
 	}
 
-	public void fireItemRightClicked(T listObject) {
-		for(ListItemListener<T> l: listItemListeners) l.itemRightClicked(listObject);
+	public void fireItemRightClicked(T listObject, Point p) {
+		for(ListItemListener<T> l: listItemListeners) l.itemRightClicked(listObject, p);
 	}
 
 	public void fireItemsSelected(List<T> listObjects) {
@@ -212,5 +210,12 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 	@Override
 	public void mouseExited(MouseEvent e) {}
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+		if (e.isPopupTrigger()) {
+			int indexOfMousePress = listPanel.getIndexOfComponent(listPanel.getComponentAt(e.getPoint()));
+			if(indexOfMousePress >= 0) {
+				this.fireItemRightClicked(listItems.get(indexOfMousePress).getListObject(), e.getPoint());
+			}
+		}
+	}
 }
