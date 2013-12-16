@@ -79,7 +79,7 @@ public class Hour {
 					update = true;
 				}
 			}
-			if(update == false){
+			if(!update){
 				count++;
 				users.add(user);
 			}
@@ -118,7 +118,7 @@ public class Hour {
 	}
 	public boolean switchState()
 	{
-		if(state == true) setColor(new Color(255,20,147));
+		if(state) setColor(new Color(255,20,147));
 		else setColor(Color.white);
 		return !state;
 	}

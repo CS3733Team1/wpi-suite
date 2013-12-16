@@ -91,7 +91,7 @@ public class HourPanel extends JPanel {
 					update = true;
 				}
 			}
-			if(update == false){
+			if(!update){
 				count++;
 				users.add(user);
 			}
@@ -159,7 +159,7 @@ public class HourPanel extends JPanel {
 	}
 	public boolean switchState()
 	{
-		if(state == true) setColor(new Color(255,20,147));
+		if(state) setColor(new Color(255,20,147));
 		else setColor(Color.white);
 		return !state;
 	}
