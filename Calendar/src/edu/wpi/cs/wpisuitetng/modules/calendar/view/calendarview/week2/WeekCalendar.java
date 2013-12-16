@@ -235,16 +235,22 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 		updateMultiDay();
+		updateUI();
+		repaint();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
 		updateMultiDay();
+		updateUI();
+		repaint();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
 		updateMultiDay();
+		updateUI();
+		repaint();
 	}
 
 	@Override
