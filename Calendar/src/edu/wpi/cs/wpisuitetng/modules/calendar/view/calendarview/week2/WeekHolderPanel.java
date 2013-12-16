@@ -13,9 +13,7 @@ import java.util.List;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayArea;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.HourLabels;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
 public class WeekHolderPanel extends JPanel{
