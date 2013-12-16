@@ -40,7 +40,7 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 	public void setViewCategoryPanel() {
 		this.removeAll();
 		this.add(categoryPanel, "grow, push");
-		this.invalidate();
+		this.revalidate();
 		this.repaint();
 	}
 	
@@ -50,7 +50,7 @@ public class CategoryTabPanel extends JPanel implements ActionListener {
 		addCatPanel.setOkListener(this);
 		addCatPanel.setCancelListener(this);
 		this.add(addCatPanel, "grow, push");
-		this.invalidate();
+		this.revalidate();
 		this.repaint();
 	}
 

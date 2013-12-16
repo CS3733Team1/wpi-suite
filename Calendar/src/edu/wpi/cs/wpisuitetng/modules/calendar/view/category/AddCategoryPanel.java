@@ -27,10 +27,11 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 
 public class AddCategoryPanel extends JPanel implements KeyListener, ActionListener {
 	
-	private JButton randomColors;
+	private TransparentButton randomColors;
 	private JButton ok;
 	private JButton cancel;
 	
@@ -45,7 +46,7 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		this.setLayout(new MigLayout("insets 0", "push[center]push", "[][][][]"));
 		
 		try {
-			randomColors = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png"))));
+			randomColors = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png"))));
 		} catch (IOException e) {}
 		
 		ok = new JButton("Ok");
