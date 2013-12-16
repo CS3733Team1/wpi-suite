@@ -26,6 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventTabC
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.help.HelpButtonController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.DisplayScheduledEventTabController;
 
 public class MainView {
 
@@ -61,6 +62,8 @@ public class MainView {
 		
 		calendarToolBar.deleteCommitmentButtonListener(new DeleteCommitmentController(calendarPanel));
 		calendarToolBar.addCommitmentButtonListener(new DisplayCommitmentTabController(calendarPanel));
+		
+		calendarToolBar.addScheduledEventButtonListener(new DisplayScheduledEventTabController(calendarPanel));
 		
 		tabs = new ArrayList<JanewayTabModel>();
 

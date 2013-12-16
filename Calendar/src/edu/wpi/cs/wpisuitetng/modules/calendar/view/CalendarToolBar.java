@@ -33,6 +33,8 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	// Visible only when commitments/events are selected on either calendar tab
 	private TransparentButton deleteButton;
 
+	private TransparentButton scheduledEventButton;
+
 	//private TransparentButton easterEgg;
 	
 	//private ImageIcon[] easterEggIcons;
@@ -56,6 +58,9 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 			
 			addEventButton = new TransparentButton("<html>New<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
+			
+			scheduledEventButton = new TransparentButton("<html>New<br/>Scheduled Event</html>",
+					new ImageIcon(ImageIO.read(getClass().getResource("/images/schedule_icon.png"))));
 			
 
 			//easterEggIcons = new ImageIcon[4];
@@ -167,5 +172,9 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		//	easterEgg.setIcon(easterEggIcons[eggState]);
 		//	easterEgg.setText("" + eggState);
 		//}
+	}
+
+	public void addScheduledEventButtonListener (ActionListener l) {
+		this.scheduledEventButton.addActionListener(l);
 	}
 }
