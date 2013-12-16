@@ -25,10 +25,7 @@ public class TimePanel extends JPanel{
 		{
 			float percentage = (float)(1.0/((end-start)+1))*100;
 			sb.append("0[");
-			if(i == 0 || i == (end-start))
-				percentage = percentage - percentage/2;
-			else 
-				percentage = percentage;
+			if(i == 0 || i == (end-start)) percentage = percentage - percentage/2;
 			sb.append(percentage);
 			sb.append("%]0");
 		}

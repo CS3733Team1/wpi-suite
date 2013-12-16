@@ -15,7 +15,7 @@ public class DefaultListItemRenderer<T> implements ListItemRenderer<T> {
 		for(ListItem<T> listItem: listItems) {
 			CategoryListItem categoryListItem = new CategoryListItem();
 			listItem.setRenderableComponent(categoryListItem);
-			listItem.setComponent(categoryListItem.create(listItem));;
+			listItem.setComponent(categoryListItem.create(listItem));
 		}
 	}
 
