@@ -309,7 +309,8 @@ public class SchedulableMover extends MouseAdapter
 			locationY -= snapSize.height;
 
 		//  Adjustments are finished, move the component
-
+		
+		//updates the bounds of the item
 		if (source instanceof ScheduleItem){
 			((ScheduleItem) source).updateSize(locationX, locationY);
 		}

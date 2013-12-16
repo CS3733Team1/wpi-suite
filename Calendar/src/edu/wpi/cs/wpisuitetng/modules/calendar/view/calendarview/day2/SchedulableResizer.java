@@ -335,7 +335,9 @@ public class SchedulableResizer extends MouseAdapter
 		Component source = e.getComponent();
 		source.setCursor( sourceCursor );
 		
+		//Ensures the item is a scheduleItem
 		if (source instanceof ScheduleItem){
+			//Only updates with server if item was changed
 			if (((ScheduleItem) source).isChanged()){
 				((ScheduleItem) source).getStartTime();
 				((ScheduleItem) source).getEndTime();
@@ -433,6 +435,7 @@ public class SchedulableResizer extends MouseAdapter
 			height += drag;
 		}
 		
+		//updates the bounds of the item
 		if (source instanceof ScheduleItem){
 			((ScheduleItem) source).updateSize(x, y, width, height);
 		}
