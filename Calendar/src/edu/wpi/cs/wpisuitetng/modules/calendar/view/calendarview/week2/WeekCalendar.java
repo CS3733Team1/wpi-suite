@@ -81,6 +81,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		for(int days = 1; days < 8; days++){
 			WeekNamePanel weekName = new WeekNamePanel();
 			weekName.setDate(weeklayer.getCalendarDate());
+			System.out.println(weeklayer.getCalendarDate());
 			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
 			label.setFont(new Font(label.getName(), Font.BOLD, 14));
 			weekdays.add(label);
@@ -132,8 +133,10 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		weektitle.add(time, "aligny center, w 5000, grow, wmin 0");
 		todayIndex = 0;
 		for(int days = 1; days < 8; days++){
-			JPanel weekName = new JPanel(new MigLayout("fill"));
-			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1] + " " + weeklayer.getDate(days));
+			WeekNamePanel weekName = new WeekNamePanel();
+			weekName.setDate(weeklayer.getCalendarDate());
+			System.out.println(weeklayer.getCalendarDate());
+			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
 			label.setFont(new Font(label.getName(), Font.BOLD, 14));
 			weekdays.add(label);
 			weekName.add(label,"grow, aligny bottom");
@@ -143,6 +146,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 			
 			weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
 			weekName.setBackground(Color.white);
+			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny center, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
 		}
@@ -259,6 +263,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		if(e.getClickCount() == 2) {
 			WeekNamePanel weekName = (WeekNamePanel)e.getSource();
 			Calendar clickedDay = weekName.getDate();
+			System.out.println(clickedDay);
 			if(this.getParent().getParent() != null)
 			{
 				CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
