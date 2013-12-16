@@ -15,6 +15,6 @@ public class ListItemExpandListener<T> implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("expand")) listItem.setExpand(true);
 		else if(e.getActionCommand().equals("compress")) listItem.setExpand(false);
-		listItem.requesRender();
+		listItem.requesUpdate();
 	}
 }

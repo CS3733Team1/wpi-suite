@@ -10,7 +10,9 @@ public class ListItem<T> {
 	private boolean isFocused;
 	private boolean isDoubleClicked;
 	private boolean isExpanded;
+	private boolean isDirty;
 	private JComponent component;
+	private RenderableComponent<T> renderableComponent;
 	
 	public ListItem(SRList<T> srList, T listItem) {
 		this.srList = srList;
@@ -21,6 +23,9 @@ public class ListItem<T> {
 	
 	public JComponent getComponent(){return this.component;}
 	public void setComponent(JComponent component) {this.component = component;}
+	
+	public RenderableComponent<T> getRenderableComponent(){return this.renderableComponent;}
+	public void setRenderableComponent(RenderableComponent<T> renderableComponent) {this.renderableComponent = renderableComponent;}
 	
 	public boolean isFocused() {return isFocused;}
 	public void setFocused(boolean focused) {this.isFocused = focused;}
@@ -36,5 +41,15 @@ public class ListItem<T> {
 	public void setExpand(boolean expanded) {this.isExpanded = expanded;}
 	public boolean isExpanded() {return this.isExpanded;}
 
-	public void requesRender() {srList.render();}
+	public boolean isDirty() {return this.isDirty;}
+	
+	public void requesUpdate() {
+		this.isDirty = true;
+		srList.updateComponents();
+	}
+
+	public void update() {
+		this.renderableComponent.update(this);
+		this.isDirty = false;
+	}
 }

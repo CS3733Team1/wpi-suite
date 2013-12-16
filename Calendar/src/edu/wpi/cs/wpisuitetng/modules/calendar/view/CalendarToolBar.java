@@ -33,6 +33,8 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	// Visible only when commitments/events are selected on either calendar tab
 	private TransparentButton deleteButton;
 
+	private TransparentButton scheduledEventButton;
+
 	//private TransparentButton easterEgg;
 	
 	//private ImageIcon[] easterEggIcons;
@@ -56,6 +58,9 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 			
 			addEventButton = new TransparentButton("<html>New<br/>Event</html>",
 					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
+			
+			scheduledEventButton = new TransparentButton("<html>New<br/>Scheduled Event</html>",
+					new ImageIcon(ImageIO.read(getClass().getResource("/images/schedule_icon.png"))));
 			
 
 			//easterEggIcons = new ImageIcon[4];
@@ -81,12 +86,13 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.removeAll();
 		//this.setLayout(new MigLayout("fill", "[][][][][]push[]"));
 		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
+		
+		this.add(addCommitmentButton, "align left, split 3");
+		this.add(addEventButton);
+		this.add(scheduledEventButton);
+				
 		this.add(deleteButton);
 
-		this.add(addCommitmentButton, "align center, split 2");
-		this.add(addEventButton);
-				
-		
 		
 		this.add(helpButton, "align right");
 
@@ -101,11 +107,12 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	// Delete Event and Commitment removed.
 	public void setToolBarCommitment() {
 		this.removeAll();
-		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
+		this.setLayout(new MigLayout("fill", "[50%][50%]"));
 		//this.add(refreshButton);
 
-		this.add(addCommitmentButton, "align center, split 2");
+		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
+		this.add(scheduledEventButton);
 		
 		this.add(helpButton, "align right");
 
@@ -114,16 +121,19 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	
 	public void setToolBarEvent() {
 		this.removeAll();
-		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
+		this.setLayout(new MigLayout("fill", "[50%][50%]"));
 		//this.add(refreshButton);
 
-		this.add(addCommitmentButton, "align center, split 2");
+		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
+		this.add(scheduledEventButton);
 		
 		this.add(helpButton, "align right");
 
 		this.repaint();
 	}
+	
+
 
 	// Functions to set listeners for the buttons
 
@@ -165,5 +175,9 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		//	easterEgg.setIcon(easterEggIcons[eggState]);
 		//	easterEgg.setText("" + eggState);
 		//}
+	}
+
+	public void addScheduledEventButtonListener (ActionListener l) {
+		this.scheduledEventButton.addActionListener(l);
 	}
 }

@@ -29,8 +29,12 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DeleteEventContr
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventTabController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.help.HelpButtonController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.DisplayScheduledEventTabController;
+
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 public class MainView {
 	private List<JanewayTabModel> tabs;
@@ -44,31 +48,29 @@ public class MainView {
 	public MainView() {
 		calendarPanel = new CalendarPanel();
 		calendarToolBar = new CalendarToolBar();
-
+		
 		calendarPanel.addChangeListener(new ChangeToolBarController(calendarToolBar, calendarPanel));
 
-
-
+		
+		
 		calendarPanel.addAncestorListener(rcomc);
 		calendarPanel.addAncestorListener(revec);
 		calendarPanel.addAncestorListener(rcatc);
 		calendarPanel.addAncestorListener(rfilc);
-
+		
 		calendarToolBar.refreshButtonListener(rcomc);
 		calendarToolBar.refreshButtonListener(revec);
 		calendarToolBar.refreshButtonListener(rcatc);
 		calendarToolBar.refreshButtonListener(rfilc);
-
+		
 		calendarToolBar.addEventButtonListener(new DisplayEventTabController(calendarPanel));
 		calendarToolBar.deleteEventButtonListener(new DeleteEventController(calendarPanel));
-
+		
 		calendarToolBar.helpButtonListener(new HelpButtonController(calendarPanel));
-
+		
 		calendarToolBar.deleteCommitmentButtonListener(new DeleteCommitmentController(calendarPanel));
 		calendarToolBar.addCommitmentButtonListener(new DisplayCommitmentTabController(calendarPanel));
-
-		calendarToolBar.addScheduledEventButtonListener(new DisplayScheduledEventTabController(calendarPanel));
-
+		
 		tabs = new ArrayList<JanewayTabModel>();
 
 		JanewayTabModel tab = new JanewayTabModel(getName(), new ImageIcon(),
@@ -78,11 +80,9 @@ public class MainView {
 		tabs.add(tab);
 
 		calendarPanel.createCalendar();
-
-		//Create a new Daemon thread to automatically refresh stuff for us.
-		//it is set to 30 s delay and 10s period.
+	
 		new Timer(true).scheduleAtFixedRate(new UpdateTimerTask(), 30 * 1000, 10000);
-
+		
 	}
 
 	public List<JanewayTabModel> getTabs() {
@@ -92,11 +92,11 @@ public class MainView {
 	public String getName() {
 		return "Calendar";
 	}
-
+	
 	public CalendarToolBar getCalendarToolBar() {
 		return calendarToolBar;
 	}
-
+	
 	public synchronized CalendarPanel getCalendarPanel(){
 		return this.calendarPanel;
 	}
@@ -111,22 +111,22 @@ public class MainView {
 	{
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			System.out.println("Auto refresh at");
-			if (MainView.getCurrentCalendarPanel().isDisplayable() && MainView.getCurrentCalendarPanel().isShowing())
-			{
-				SwingUtilities.invokeLater(new Runnable() {
+				// TODO Auto-generated method stub
+				System.out.println("Auto refresh at");
+				if (MainView.getCurrentCalendarPanel().isDisplayable() && MainView.getCurrentCalendarPanel().isShowing())
+				{
+					SwingUtilities.invokeLater(new Runnable() {
 					public void run(){
 						System.out.println("USER " + ConfigManager.getConfig().getUserName());
 						rcomc.retrieveMessages();
 						revec.retrieveMessages();
 						rcatc.retrieveMessages();
 						rfilc.retrieveMessages();
-
+					
 					}});
+				}
 			}
 		}
-	}
-
+		
 }
 

@@ -335,22 +335,26 @@ public class SchedulableResizer extends MouseAdapter
 		Component source = e.getComponent();
 		source.setCursor( sourceCursor );
 		
+		//Ensures the item is a scheduleItem
 		if (source instanceof ScheduleItem){
-			((ScheduleItem) source).getStartTime();
-			((ScheduleItem) source).getEndTime();
-			ISchedulable item = ((ScheduleItem) source).getDisplayItem();
-			if (item instanceof edu.wpi.cs.wpisuitetng.modules.calendar.model.Event){
-				UpdateEventController updateevent = new UpdateEventController(((edu.wpi.cs.wpisuitetng.modules.calendar.model.Event) item));
-			}
-			if (item instanceof Commitment){
-				UpdateCommitmentController updatecommitment = new UpdateCommitmentController(((Commitment) item));
-			}
-			
-			if (source.getParent() != null && source.getParent() instanceof DayArea){
-				DayArea parent = ((DayArea) source.getParent());
-				parent.showEvent();
-				parent.repaint();
-				parent.revalidate();
+			//Only updates with server if item was changed
+			if (((ScheduleItem) source).isChanged()){
+				((ScheduleItem) source).getStartTime();
+				((ScheduleItem) source).getEndTime();
+				ISchedulable item = ((ScheduleItem) source).getDisplayItem();
+				if (item instanceof edu.wpi.cs.wpisuitetng.modules.calendar.model.Event){
+					UpdateEventController updateevent = new UpdateEventController(((edu.wpi.cs.wpisuitetng.modules.calendar.model.Event) item));
+				}
+				if (item instanceof Commitment){
+					UpdateCommitmentController updatecommitment = new UpdateCommitmentController(((Commitment) item));
+				}
+
+				if (source.getParent() != null && source.getParent() instanceof DayArea){
+					DayArea parent = ((DayArea) source.getParent());
+					parent.showEvent();
+					parent.repaint();
+					parent.revalidate();
+				}
 			}
 		}
 
@@ -431,8 +435,8 @@ public class SchedulableResizer extends MouseAdapter
 			height += drag;
 		}
 		
+		//updates the bounds of the item
 		if (source instanceof ScheduleItem){
-			System.err.println("Hello!");
 			((ScheduleItem) source).updateSize(x, y, width, height);
 		}
 		else{

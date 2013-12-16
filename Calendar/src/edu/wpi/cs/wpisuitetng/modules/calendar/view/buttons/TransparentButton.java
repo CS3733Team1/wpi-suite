@@ -31,6 +31,12 @@ public class TransparentButton extends JButton implements MouseListener {
 		
 		this.addMouseListener(this);
 	}
+	
+	public void reset() {
+		this.setOpaque(false);
+		this.setContentAreaFilled(false);
+		this.setBorderPainted(false);
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {}

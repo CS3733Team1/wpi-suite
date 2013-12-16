@@ -41,7 +41,7 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 
 		fillListItems();
 		this.listModel.addListDataListener(this);
-		render();
+		createComponents();
 	}
 
 	// ListPanel Settings
@@ -73,12 +73,18 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 		for(int i = 0; i < listModel.getSize(); i++) listItems.add(new ListItem<T>(this, listModel.getElementAt(i)));;
 	}
 
-	protected void render() {
+	private void createComponents() {
 		listPanel.clear();
+		listItemRenderer.createRenderedListComponents(this, listItems);
 		for(ListItem<T> listItem: listItems) {
-			listItem.setComponent(listItemRenderer.getRenderedListComponent(this, listItem, listItem.getListObject()));
 			listPanel.add(listItem.getComponent());
 		}
+		this.revalidate();
+		this.repaint();
+	}
+	
+	protected void updateComponents() {
+		listItemRenderer.updateRenderedListComponents(this, listItems);
 		this.revalidate();
 		this.repaint();
 	}
@@ -153,7 +159,7 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 			selectionStartIndex = 0;
 			clearSelection();
 		}
-		render();
+		updateComponents();
 	}
 	
 	@Override
@@ -168,20 +174,19 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		render();
+		createComponents();
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 		fillListItems();
-		render();
+		createComponents();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		//for(int i = e.getIndex0(); i <= e.getIndex1(); i++) listItems.remove(i);
 		fillListItems();
-		render();
+		createComponents();
 	}
 
 	public void fireItemDoubleClicked(T listObject) {

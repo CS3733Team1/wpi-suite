@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.UpdateEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
@@ -63,9 +64,59 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
 	private EventRecurringPanel eventRecurringPanel;
+	
+	// Old Commitment
+	private Event editEvent;
+	private boolean isEditMode;
 
 	public EventTabPanel() {
 		this.buildLayout();
+	}
+	
+	public EventTabPanel(Event e)
+	{
+		isEditMode = true;
+		editEvent = e;
+
+		this.buildLayout();
+		
+		//fill the fields with information from the provided Commitment
+		nameTextField.setText(e.getName());
+		durationChooser_.setStartDate(e.getStartDate());
+		durationChooser_.setEndDate(e.getEndDate());
+		categoryPickerPanel.setSelectedCategory(e.getCategory());
+		descriptionTextArea.setText(e.getDescription());
+		calendarPicker.setSelected(e.getisTeam() ? "Team": "Personal");
+		//eventRecurringPanel.set
+		addEventButton.setText("Update Event");
+		addEventButton.setActionCommand("updateevent");
+		addEventButton.removeActionListener(addEventButton.getActionListeners()[0]); //Remove the addCommitment action listener
+		addEventButton.addActionListener(new UpdateEventController(this, e));	//Add the updateCommitment action listener
+		addEventButton.setEnabled(false);
+		validateFields();
+	}
+	
+	public boolean validateEdit() {
+		boolean noChangesMade = true;
+		if(!editEvent.getName().equals(nameTextField.getText())) {
+			noChangesMade = false;
+		}
+		else if(!editEvent.getStartDate().toString().equals(durationChooser_.getStartDate().toString())){
+			noChangesMade = false;
+		}
+		else if(!editEvent.getEndDate().toString().equals(durationChooser_.getEndDate().toString())){
+			noChangesMade = false;
+		}
+		else if(!editEvent.getCategory().equals(categoryPickerPanel.getSelectedCategory())){
+			noChangesMade = false;
+		}
+		else if(!editEvent.getDescription().equals(descriptionTextArea.getText())){
+			noChangesMade = false;
+		}
+		else if(editEvent.getisTeam() != calendarPicker.isTeam()){
+			noChangesMade = false;
+		}
+		return noChangesMade;
 	}
 
 	/**
@@ -113,7 +164,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		
 				// Calendar
 				JLabel label = new JLabel("Calendar:");
-				this.add(label, "flowx,cell 0 3");
+				this.add(label, "flowx,cell 0 4");
 		
 		// Recurring Events
 		eventRecurringPanel = new EventRecurringPanel(new Date());
@@ -124,7 +175,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				validateFields();
 			}
 		});
-		add(eventRecurringPanel, "cell 0 4,alignx left");
+		add(eventRecurringPanel, "cell 0 3,alignx left");
 		
 		
 		// Category
@@ -140,7 +191,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		JScrollPane scrollp = new JScrollPane(descriptionTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		this.add(scrollp, "cell 0 6,push ,height 5000,grow");
+		this.add(scrollp, "cell 0 7, grow, push, span, h 5000, wrap");
 
 		// Add / Cancel buttons
 		addEventButton = new JButton("Add Event");
@@ -157,7 +208,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		//Action Listener for Cancel Button
 		cancelButton.addActionListener(this);
 		calendarPicker = new CalendarPicker();
-		this.add(calendarPicker, "cell 0 3,alignx left");
+		this.add(calendarPicker, "cell 0 4,alignx left");
 
 		validateFields();
 	}
@@ -173,6 +224,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 */
 	private void validateFields() {		
 		boolean enableAddEvent = true;
+		
+		if(isEditMode) {
+			System.out.println("Edit Mode");
+			enableAddEvent = !validateEdit();
+		}
 
 		//Check the name
 		if(nameTextField.getText().trim().length() == 0) {
