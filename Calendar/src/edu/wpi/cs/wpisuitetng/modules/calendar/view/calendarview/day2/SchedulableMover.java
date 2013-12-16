@@ -24,6 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
  *
  *  Components can be registered when the class is created. Additional
  *  components can be added at any time using the registerComponent() method.
+ *  
+ *  Taken From http://www.camick.com/java/source/ComponentMover.java
  */
 public class SchedulableMover extends MouseAdapter
 {
