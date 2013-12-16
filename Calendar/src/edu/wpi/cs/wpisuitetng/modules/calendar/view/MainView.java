@@ -80,7 +80,9 @@ public class MainView {
 		tabs.add(tab);
 
 		calendarPanel.createCalendar();
-	
+		
+		//Create a new Daemon thread to automatically refresh stuff for us.
+		//it is set to 30 s delay and 10s period.
 		new Timer(true).scheduleAtFixedRate(new UpdateTimerTask(), 30 * 1000, 10000);
 		
 	}
