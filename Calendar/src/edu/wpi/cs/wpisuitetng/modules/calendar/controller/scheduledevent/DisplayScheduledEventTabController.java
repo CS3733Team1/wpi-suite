@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledEventTabPanel;
 
 public class DisplayScheduledEventTabController implements ActionListener {
 		private CalendarPanel calendarPanel;
@@ -19,12 +19,12 @@ public class DisplayScheduledEventTabController implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			EventTabPanel scheduledEventPanel = new EventTabPanel();
+			ScheduledEventTabPanel scheduledEventPanel = new ScheduledEventTabPanel();
 			ImageIcon miniScheduledEventIcon = new ImageIcon();
 			try {
-				miniScheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/schedule_icon.png")));
+				miniScheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/mini_schedule_icon.png")));
 			} catch (IOException exception) {}
-			calendarPanel.addTab("Add Scheduled Event", miniScheduledEventIcon , scheduledEventPanel);
+			calendarPanel.addTab("Create Scheduled Event", miniScheduledEventIcon , scheduledEventPanel);
 			calendarPanel.setSelectedComponent(scheduledEventPanel);
 		}
 	}

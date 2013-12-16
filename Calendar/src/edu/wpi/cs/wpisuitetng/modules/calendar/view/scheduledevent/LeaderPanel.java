@@ -1,4 +1,4 @@
-package when2meet;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Color;
 import java.util.ArrayList;

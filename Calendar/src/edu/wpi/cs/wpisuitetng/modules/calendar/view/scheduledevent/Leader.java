@@ -1,4 +1,4 @@
-package when2meet;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
 

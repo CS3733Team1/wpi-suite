@@ -87,8 +87,9 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		//this.setLayout(new MigLayout("fill", "[][][][][]push[]"));
 		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
 		
-		this.add(addCommitmentButton, "align left, split 2");
+		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
+		this.add(scheduledEventButton);
 				
 		this.add(deleteButton);
 
@@ -109,8 +110,9 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.setLayout(new MigLayout("fill", "[50%][50%]"));
 		//this.add(refreshButton);
 
-		this.add(addCommitmentButton, "align left, split 2");
+		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
+		this.add(scheduledEventButton);
 		
 		this.add(helpButton, "align right");
 
@@ -122,8 +124,9 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.setLayout(new MigLayout("fill", "[50%][50%]"));
 		//this.add(refreshButton);
 
-		this.add(addCommitmentButton, "align left, split 2");
+		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
+		this.add(scheduledEventButton);
 		
 		this.add(helpButton, "align right");
 
