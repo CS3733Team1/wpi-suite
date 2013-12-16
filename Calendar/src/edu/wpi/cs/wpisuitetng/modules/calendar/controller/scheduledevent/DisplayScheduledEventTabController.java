@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledEventTabPanel;
 
 public class DisplayScheduledEventTabController implements ActionListener {
 		private CalendarPanel calendarPanel;
