@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.help.HelpWindow;
 
 public class HelpButtonController implements ActionListener {

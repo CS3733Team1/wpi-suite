@@ -12,12 +12,10 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,14 +30,10 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayMultiScrollPane;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.MultidayEventView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekNamePanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
