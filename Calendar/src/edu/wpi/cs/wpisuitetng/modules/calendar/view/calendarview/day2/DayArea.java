@@ -422,8 +422,8 @@ public class DayArea extends JPanel implements ListDataListener{
 		ArrayList<ArrayList<ISchedulable>> eventMap = new ArrayList<ArrayList<ISchedulable>>();
 		eventMap=generateMap();
 		displayMap(eventMap);
-		//this.revalidate();
-		//this.repaint();
+		this.revalidate();
+		this.repaint();
 	}
 
 	public List<Event> getMultiDayEvents(){

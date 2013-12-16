@@ -92,7 +92,13 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 				label.setForeground(CalendarUtils.timeColor);
 			
 			weekName.setBackground(Color.white);
-			weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			if(weekName.getDate().get(Calendar.YEAR)==Calendar.getInstance().get(Calendar.YEAR) &&
+					weekName.getDate().get(Calendar.DAY_OF_YEAR)==Calendar.getInstance().get(Calendar.DAY_OF_YEAR)){
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+			}
+			else{
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			}
 			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny bottom, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
@@ -147,7 +153,13 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 				label.setForeground(CalendarUtils.timeColor);
 			
 			weekName.setBackground(Color.white);
-			weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			if(weekName.getDate().get(Calendar.YEAR)==Calendar.getInstance().get(Calendar.YEAR) &&
+					weekName.getDate().get(Calendar.DAY_OF_YEAR)==Calendar.getInstance().get(Calendar.DAY_OF_YEAR)){
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+			}
+			else{
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			}
 			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny bottom, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
