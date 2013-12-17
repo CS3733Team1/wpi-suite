@@ -322,7 +322,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			startDate.setDate(startDate.getDate() + 1);
 			endDate.setDate(endDate.getDate() + 1);
 			//make a new event with start and end times
-				
 		}
 		return eventList;
 	}
