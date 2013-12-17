@@ -170,7 +170,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			}
 		};
 		allDayEventCheckbox.addItemListener(itemListener);
-		this.add(allDayEventCheckbox, "alignx left");
+		this.add(allDayEventCheckbox, "cell 0 3, alignx left");
 
 		// All Day Event Date Chooser
 		//DateChooser for choosing days
@@ -182,29 +182,29 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				validateFields();
 			}
 		});
-		add(allDayTimeChooser_, "alignx left");
+		add(allDayTimeChooser_, "cell 0 4, alignx left");
 
 		// Calendar
 		JLabel label = new JLabel("Calendar:");
-		this.add(label, "flowx,cell 0 3");
+		this.add(label, "flowx,cell 0 5");
 
 
 		// Category
-		this.add(new JLabel("Category:"), "cell 0 5");
+		this.add(new JLabel("Category:"), "cell 0 6");
 		categoryPickerPanel = new CategoryPickerPanel();
 		categoryPickerPanel.addActionListener(this);
-		this.add(categoryPickerPanel, "cell 0 5,alignx left");
-		
-		// Recurring Events
-				eventRecurringPanel = new EventRecurringPanel(new Date());
-				eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
+		this.add(categoryPickerPanel, "cell 0 6,alignx left");
 
-					@Override
-					public void recurringChangedEventOccurred(RecurringChangedEvent evt) {
-						validateFields();
-					}
-				});
-					add(eventRecurringPanel, "cell 0 3,alignx left");
+		// Recurring Events
+		eventRecurringPanel = new EventRecurringPanel(new Date());
+		eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
+
+			@Override
+			public void recurringChangedEventOccurred(RecurringChangedEvent evt) {
+				validateFields();
+			}
+		});
+		add(eventRecurringPanel, "cell 0 6,alignx left");
 
 		// Description
 		this.add(new JLabel("Description:"), "cell 0 6");
@@ -233,7 +233,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		cancelButton.addActionListener(this);
 		calendarPicker = new CalendarPicker();
 		calendarPicker.addActionListener(this);
-		this.add(calendarPicker, "cell 0 4,alignx left");
+		this.add(calendarPicker, "cell 0 5,alignx left");
 
 		validateFields();
 	}
