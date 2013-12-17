@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -16,6 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 
 public class RightClickCommitmentMenu extends JPopupMenu implements MouseListener {
+	private final static Logger LOGGER = Logger.getLogger(RightClickCommitmentMenu.class.getName());
 
 	private List<Commitment> commitments;
 	private CalendarPanel calendarPanel;
@@ -41,7 +44,9 @@ public class RightClickCommitmentMenu extends JPopupMenu implements MouseListene
 		ImageIcon miniCommitmentIcon = new ImageIcon();
 		try {
 			miniCommitmentIcon = new ImageIcon(ImageIO.read(RightClickCommitmentMenu.class.getResource("/images/commitment.png")));
-		} catch (IOException exception) {}
+		} catch (IOException exception) {
+			LOGGER.log(Level.WARNING, "/images/commitment.png not found.", exception);
+		}
 		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
 		calendarPanel.setSelectedComponent(commitmentPanel);	
 	}

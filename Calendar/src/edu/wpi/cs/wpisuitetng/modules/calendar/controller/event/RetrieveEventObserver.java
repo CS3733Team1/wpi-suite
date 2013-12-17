@@ -21,8 +21,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * post board messages.
  */
 public class RetrieveEventObserver implements RequestObserver {
-	
-	public RetrieveEventController controller;
+	private RetrieveEventController controller;
 	
 	public RetrieveEventObserver(RetrieveEventController controller) {
 		this.controller = controller;

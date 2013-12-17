@@ -1,10 +1,8 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
@@ -15,12 +13,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -29,9 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
-//import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
+//import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 //Height of This Panel is 1440 Calculation Dependent
 public class DayArea extends JPanel implements ListDataListener{
@@ -47,6 +41,9 @@ public class DayArea extends JPanel implements ListDataListener{
 	private SchedulableResizer resizelistener;
 	private SchedulableMover movelistener;
 
+	/**
+	 * Default constructor, which sets the days date to NOW
+	 */
 	public DayArea(){
 		events = new LinkedList<ISchedulable>();
 		multi = new LinkedList<Event>();
@@ -88,6 +85,10 @@ public class DayArea extends JPanel implements ListDataListener{
 
 	}
 
+	/**
+	 * Constructor used by Week View to get each day to assume as specific date
+	 * @param d
+	 */
 	public DayArea(Date d){
 		events = new LinkedList<ISchedulable>();
 		multi = new LinkedList<Event>();
@@ -111,6 +112,10 @@ public class DayArea extends JPanel implements ListDataListener{
 
 	}
 
+	/**
+	 * Used to resize the day's width to match with parent
+	 * @param width width of parent wants this class to assume
+	 */
 	public void reSize(int width){
 		this.setSize(width, 1440);
 		this.setPreferredSize(new Dimension(width, 1440));
@@ -119,6 +124,10 @@ public class DayArea extends JPanel implements ListDataListener{
 		this.repaint();
 	}
 
+	/**
+	 * Paints the borders of the view
+	 * This method happens before child components are painted
+	 */
 	public void paintBorder(Graphics g){
 
 		super.paintBorder(g);
@@ -134,7 +143,7 @@ public class DayArea extends JPanel implements ListDataListener{
 	 */
 	public void drawHours(Graphics g){
 		for (int x =0; x <= 24; x++){
-			g.setColor(Color.BLACK);
+			g.setColor(Color.LIGHT_GRAY);
 			g.drawLine(0, 60*x, this.getWidth(), 60*x);
 		}
 	}
@@ -166,6 +175,12 @@ public class DayArea extends JPanel implements ListDataListener{
 		return false;
 	}
 
+	/**
+	 * Determines whether two Schedulable items overlap
+	 * @param e1 First Item (Comes before e2)
+	 * @param e2 Second Item (Comes after e1)
+	 * @return whether two Schedulable items overlap
+	 */
 	private boolean overlapEvent(ISchedulable e1,ISchedulable e2){
 
 		if(isBetween(e1.getStartDate(),e2.getStartDate(),e2.getEndDate()) ||
@@ -181,6 +196,11 @@ public class DayArea extends JPanel implements ListDataListener{
 		return false;
 	}
 
+	/**
+	 * Calculates the length of a scheudulable item based off startdate and enddate
+	 * @param sched The instance to be calculated
+	 * @return length of sched in minutes
+	 */
 	private int getLengthMinutes(ISchedulable sched){
 		int length;
 		length = (sched.getEndDate().getHours()-sched.getStartDate().getHours())*60;
@@ -340,7 +360,7 @@ public class DayArea extends JPanel implements ListDataListener{
 				infobuilder.append(test.getCategory().getName());
 
 				//description
-				if(test.getDescription().length()>0){
+				if(test.getDescription() != null && test.getDescription().length()>0){
 					infobuilder.append("<br><b>Description: </b>");
 					infobuilder.append(test.getDescription());
 				}
@@ -350,7 +370,9 @@ public class DayArea extends JPanel implements ListDataListener{
 				//add mouse listener to event panels, change tooltip background, allow for selection
 				panel.addMouseListener(new SchedMouseListener(test, panel));
 				//http://www.camick.com/java/source/ComponentResizer.java
-				resizelistener.registerComponent(panel);
+				if (test instanceof Event){
+					resizelistener.registerComponent(panel);
+				}
 				movelistener.registerComponent(panel);
 
 				//set panel background based on category
@@ -426,8 +448,8 @@ public class DayArea extends JPanel implements ListDataListener{
 		ArrayList<ArrayList<ISchedulable>> eventMap = new ArrayList<ArrayList<ISchedulable>>();
 		eventMap=generateMap();
 		displayMap(eventMap);
-		//this.revalidate();
-		//this.repaint();
+		this.revalidate();
+		this.repaint();
 	}
 
 	public List<Event> getMultiDayEvents(){

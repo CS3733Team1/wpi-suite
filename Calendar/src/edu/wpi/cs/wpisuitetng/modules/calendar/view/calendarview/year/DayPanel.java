@@ -94,6 +94,7 @@ public class DayPanel extends JPanel {
 			default:
 				this.setBackground(highDensity);
 				day.setForeground(CalendarUtils.textColor(highDensity));
+				break;
 			}
 		}
 	}

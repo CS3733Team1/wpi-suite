@@ -1,11 +1,12 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Date;
 
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("deprecation")
 public class UtilitiesTest {
@@ -76,7 +77,7 @@ public class UtilitiesTest {
 	public void testTimeToStringWithPmTime() {
 		Date noon = new Date();
 		noon.setHours(12+3);
-		noon.setMinutes(05);
+		noon.setMinutes(5);
 		String strNoonToString=DateUtils.timeToString(noon).trim();
 		assertEquals("3:05 PM", strNoonToString);
 	}

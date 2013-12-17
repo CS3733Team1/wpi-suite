@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
-	public boolean isReal = true;
+	private boolean isReal = true;
 
 	/**
 	 * @return <b>true</b> if this Category is not a duplicate, <b>false</b> if it is
@@ -133,10 +133,15 @@ public class Category extends DeletableAbstractModel {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Category) {
-			Category categoryOther = (Category)o;
-			return this.getUniqueID() == categoryOther.getUniqueID();
-		} else return false;
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
+		if (!(o instanceof Category))
+			return false;
+
+		Category categoryOther = (Category)o;
+		return this.getUniqueID() == categoryOther.getUniqueID();
 	}
 
 	@Override

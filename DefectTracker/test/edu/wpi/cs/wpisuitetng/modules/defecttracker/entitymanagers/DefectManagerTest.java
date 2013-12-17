@@ -186,7 +186,7 @@ public class DefectManagerTest {
 	
 	@Test
 	public void testCount() {
-		assertEquals(2, manager.Count());
+		assertEquals(2, manager.count());
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -146,7 +146,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 //		dateTimeChooser_.addActionListener(this);
 		dateTimeChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
-			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+			public void dateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 				validateFields();
 			}
 		});

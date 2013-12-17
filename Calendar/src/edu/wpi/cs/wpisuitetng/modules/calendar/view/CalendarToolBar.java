@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -20,8 +22,12 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
+import javax.swing.DebugGraphics;
+import java.awt.Cursor;
 
 public class CalendarToolBar extends JPanel implements ActionListener {
+	private final static Logger LOGGER = Logger.getLogger(CalendarToolBar.class.getName());
+
 	// Always visible
 	private TransparentButton refreshButton;
 
@@ -29,48 +35,61 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	private TransparentButton addCommitmentButton;
 	private TransparentButton addEventButton;
 	private TransparentButton helpButton;
-	
+
 	// Visible only when commitments/events are selected on either calendar tab
 	private TransparentButton deleteButton;
 
 	private TransparentButton scheduledEventButton;
 
 	//private TransparentButton easterEgg;
-	
+
 	//private ImageIcon[] easterEggIcons;
 
 	//int eggState;
 	//boolean eggHatched;
-	
+
 	//private WeatherPanel weatherPanel;
 
 	public CalendarToolBar() {
-		try {
-			refreshButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png"))));
 
-			helpButton = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/question.png"))));
-			
-			addCommitmentButton = new TransparentButton("<html>New<br/>Commitment</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png"))));
-			deleteButton = new TransparentButton("<html>Delete</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_icon.png"))));
-			
-			
-			addEventButton = new TransparentButton("<html>New<br/>Event</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png"))));
-			
-			scheduledEventButton = new TransparentButton("<html>New<br/>Scheduled Event</html>",
-					new ImageIcon(ImageIO.read(getClass().getResource("/images/schedule_icon.png"))));
-			
+		ImageIcon refreshIcon = new ImageIcon();
+		ImageIcon questionIcon = new ImageIcon();
+		ImageIcon addCommitmentIcon = new ImageIcon();
+		ImageIcon deleteIcon = new ImageIcon();
+		ImageIcon addEventIcon = new ImageIcon();
+		ImageIcon scheduleEventIcon = new ImageIcon();
+
+		try {
+			refreshIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/refresh_icon.png")));
+			questionIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/question.png")));
+			addCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png")));
+			deleteIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_icon.png")));
+			addEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png")));
+			scheduleEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/schedule_icon.png")));
 
 			//easterEggIcons = new ImageIcon[4];
 			//easterEggIcons[0] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
 			//easterEggIcons[1] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
 			//easterEggIcons[2] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
 			//easterEggIcons[3] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
-			
-			//easterEgg =  new TransparentButton(easterEggIcons[0]);
-		} catch (IOException e) {}
+		} catch (IOException e) {
+			LOGGER.log(Level.WARNING, "Images not found.", e);
+		}
+
+		deleteButton = new TransparentButton("Delete", deleteIcon);
+		deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		refreshButton = new TransparentButton(refreshIcon);
+
+		addCommitmentButton = new TransparentButton("<html>New<br/>Commitment</html>", addCommitmentIcon);
+		addCommitmentButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		addEventButton = new TransparentButton("<html>New<br/>Event</html>", addEventIcon);
+		addEventButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		scheduledEventButton = new TransparentButton("<html>New<br/>Scheduled<br/>Event</html>", scheduleEventIcon);
+		scheduledEventButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		helpButton = new TransparentButton(questionIcon);
+
+		//easterEgg =  new TransparentButton(easterEggIcons[0]);
 
 		//weatherPanel = new WeatherPanel();
 		//eggHatched = false;
@@ -86,20 +105,20 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.removeAll();
 		//this.setLayout(new MigLayout("fill", "[][][][][]push[]"));
 		this.setLayout(new MigLayout("fill", "[33.3333%][33.3333%][33.3333%]"));
-		
+
 		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
 		this.add(scheduledEventButton);
-				
+
 		this.add(deleteButton);
 
-		
+
 		this.add(helpButton, "align right");
 
 		//if(eggHatched) {
 		//	this.add(weatherPanel);
 		//} else this.add(easterEgg);
-		
+
 		this.updateUI();
 	}
 
@@ -113,12 +132,12 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
 		this.add(scheduledEventButton);
-		
+
 		this.add(helpButton, "align right");
 
 		this.repaint();
 	}
-	
+
 	public void setToolBarEvent() {
 		this.removeAll();
 		this.setLayout(new MigLayout("fill", "[50%][50%]"));
@@ -127,13 +146,25 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
 		this.add(scheduledEventButton);
-		
+
 		this.add(helpButton, "align right");
 
 		this.repaint();
 	}
-	
 
+	public void setToolBarSchedule() {
+		this.removeAll();
+		this.setLayout(new MigLayout("fill", "[50%][50%]"));
+		//this.add(refreshButton);
+
+		this.add(addCommitmentButton, "align left, split 3");
+		this.add(addEventButton);
+		this.add(scheduledEventButton);
+
+		this.add(helpButton, "align right");
+
+		this.repaint();
+	}
 
 	// Functions to set listeners for the buttons
 
@@ -160,10 +191,15 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	public void helpButtonListener(ActionListener l) {
 		helpButton.addActionListener(l);
 	}
-	
+
 	public synchronized void clickRefreshButton() {
 		this.refreshButton.doClick();
 	}
+	
+	public void scheduleButtonListener(ActionListener l){
+		scheduledEventButton.addActionListener(l);
+	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {

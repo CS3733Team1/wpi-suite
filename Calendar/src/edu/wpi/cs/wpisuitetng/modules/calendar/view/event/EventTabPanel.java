@@ -98,8 +98,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	
 	public boolean validateEdit() {
 		boolean noChangesMade = true;
-		System.out.println("Old Category: " + editEvent.getCategory().getUniqueID() + " and New Category: " + categoryPickerPanel.getSelectedCategory().getUniqueID());
-		System.out.println("Old Category: " + editEvent.getCategory().getName() + " and New Category: " + categoryPickerPanel.getSelectedCategory().getName());
 		if(!editEvent.getName().equals(nameTextField.getText())) {
 			noChangesMade = false;
 		}
@@ -111,7 +109,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		}
 		else if(!editEvent.getCategory().equals(categoryPickerPanel.getSelectedCategory())){
 			noChangesMade = false;
-			System.out.println("category edited: " + !noChangesMade);
 		}
 		else if(!editEvent.getDescription().equals(descriptionTextArea.getText())){
 			noChangesMade = false;
@@ -119,7 +116,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		else if(editEvent.getisTeam() != calendarPicker.isTeam()){
 			noChangesMade = false;
 		}
-		System.out.println("have no changes been made? " + noChangesMade);
 		return noChangesMade;
 	}
 
@@ -156,8 +152,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				durationChooser_=new TimeDurationChooser();
 				durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 					@Override
-					public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
-//				System.out.println("Time Duration Changed");
+					public void dateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 						validateFields();
 					}
 				});
@@ -175,7 +170,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
 			
 			@Override
-			public void RecurringChangedEventOccurred(RecurringChangedEvent evt) {
+			public void recurringChangedEventOccurred(RecurringChangedEvent evt) {
 				validateFields();
 			}
 		});
@@ -233,9 +228,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		boolean enableAddEvent = true;
 		
 		if(isEditMode) {
-			System.out.println("Edit Mode");
 			enableAddEvent = !validateEdit();
-			System.out.println("is enabled " + !validateEdit());
 		}
 
 		//Check the name
@@ -284,7 +277,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		System.out.println("All Day Checkbox Changed!");
 		if(e.getActionCommand().equals("cancel")) {
 			this.closeEventPanel();
 		} else {
@@ -330,7 +322,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			startDate.setDate(startDate.getDate() + 1);
 			endDate.setDate(endDate.getDate() + 1);
 			//make a new event with start and end times
-				
 		}
 		return eventList;
 	}

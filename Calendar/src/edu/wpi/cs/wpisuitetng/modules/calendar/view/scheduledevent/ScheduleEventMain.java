@@ -1,10 +1,13 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
-
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -24,10 +27,6 @@ public class ScheduleEventMain extends JPanel{
 		hourList =  new ArrayList<List<Hour>>();
 	}
 	
-	public void setupPanel()
-	{
-		this.setLayout(new MigLayout("fill,insets 0", "0[100%]0","0[]0" ));
-	}
 	
 	public void constructHourTest(int day, int start, int end)
 	{
@@ -64,5 +63,15 @@ public class ScheduleEventMain extends JPanel{
 		followerPanel.updateFollower(list, user);
 	}
 	
+	
+	public void reSize(int width){
+		this.setSize(width, this.getHeight());
+		this.setPreferredSize(new Dimension(width, this.getHeight()));
+		this.setMinimumSize(new Dimension(0,this.getHeight()));
+		followerPanel.reSize(new Integer((int) (width * .50)));
+		leaderPanel.reSize(new Integer((int) (width * .50)));
+		
+		this.repaint();
+	}
 	
 }

@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.util.LinkedList;
@@ -43,7 +43,7 @@ public class WeekCalendarScrollPane extends JScrollPane {
 		this.setWheelScrollingEnabled(true);
 		this.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		
-		this.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
+		this.setBorder(new MatteBorder(2, 0, 0, 0, Color.BLACK));
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout());
 			
@@ -53,13 +53,11 @@ public class WeekCalendarScrollPane extends JScrollPane {
 			weekbuilder.append(" ");
 			weekbuilder.append("0");
 			weekbuilder.append(",wmin 100, alignx left, growy");
-			
 		
 			weekpanel.add(weekName);
 			weektitle.add(weekName, weekbuilder.toString());
 		}
 		
-	
 		JPanel cornertile = new JPanel();
 		cornertile.setBackground(Color.WHITE);
 
@@ -72,7 +70,6 @@ public class WeekCalendarScrollPane extends JScrollPane {
 		weektitle = new JPanel(new MigLayout());
 		weektitle.setBackground(Color.WHITE);
 		weekpanel = new LinkedList<JPanel>();
-		
 
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout());

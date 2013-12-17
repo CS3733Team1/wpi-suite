@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
-
 import net.miginfocom.swing.MigLayout;
 
 public class DayOfWeek extends JPanel {
@@ -107,7 +106,7 @@ public class DayOfWeek extends JPanel {
 	}
 	public boolean switchState()
 	{
-		if(state) setColor(new Color(255,20,147));
+		if(state == true) setColor(new Color(255,20,147));
 		else setColor(Color.white);
 		return !state;
 	}

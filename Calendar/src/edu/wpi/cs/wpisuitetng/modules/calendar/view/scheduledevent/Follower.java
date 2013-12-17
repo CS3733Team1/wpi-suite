@@ -1,6 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -9,7 +11,12 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolTip;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -18,6 +25,7 @@ public class Follower extends JPanel{
 	private int end;
 	private int day;
 	private Color col;
+	private float percentage;
 
 	private List<List<HourPanel>> hourList;
 
@@ -81,7 +89,7 @@ public class Follower extends JPanel{
 		StringBuilder row = new StringBuilder();
 		for(int i = 0; i < end-start; i++)
 		{
-			float percentage = (float)(1.0/(end-start))*100;
+			percentage = (float)(1.0/(end-start))*100;
 			row.append("0[");
 			row.append(percentage);
 			row.append("%]0");
@@ -120,9 +128,9 @@ public class Follower extends JPanel{
 		for(int i = 0; i < day; i++){
 			for(int j = 0; j < end-start; j++)
 			{	StringBuilder sb = new StringBuilder();
-				if(list.get(i).get(j).getState())
+				if(list.get(i).get(j).getState() == true)
 					hourList.get(i).get(j).updateCount(user);
-				if(!list.get(i).get(j).getState())
+				if(list.get(i).get(j).getState() == false)
 					hourList.get(i).get(j).reduceCount(user);
 				sb.append("<html><p style='width:100'><b>Available: </b><br>");
 				for(int z = 0; z < hourList.get(i).get(j).userList().size(); z++)
@@ -147,5 +155,17 @@ public class Follower extends JPanel{
 			}
 		}
 
+	}
+	
+	public void reSize(int width){
+		this.setSize(width, this.getHeight());
+		this.setPreferredSize(new Dimension(width, this.getHeight()));
+		this.setMinimumSize(new Dimension(0,this.getHeight()));
+		
+		for(int i = 0; i < day; i++){
+			for(int j = 0; j < end-start; j++)
+				hourList.get(i).get(j).reSize(new Integer((int) (width * (percentage/100))));
+		}
+		this.repaint();
 	}
 }

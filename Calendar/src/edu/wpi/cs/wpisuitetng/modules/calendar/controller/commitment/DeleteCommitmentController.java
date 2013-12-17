@@ -36,7 +36,6 @@ public class DeleteCommitmentController implements ActionListener {
 	
 	public static void deleteCommitments(List<Commitment> c){
 		CommitmentListModel model = CommitmentListModel.getCommitmentListModel();
-		List<Commitment> commitmentList = c;
 		deleteCommitmentList(c, model);
 	}
 	

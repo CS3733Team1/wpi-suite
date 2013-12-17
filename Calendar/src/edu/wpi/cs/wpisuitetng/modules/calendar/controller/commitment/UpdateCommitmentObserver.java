@@ -18,8 +18,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * to the server to update a commitment.
  */
 
-public class UpdateCommitmentObserver implements RequestObserver
-{
+public class UpdateCommitmentObserver implements RequestObserver {
 	private final UpdateCommitmentController controller;
 
 	/**

@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
  */
 
 public class DisplayCategoryTabController implements ActionListener {
-	CalendarPanel calendarPanel;
+	private CalendarPanel calendarPanel;
 	
 	public DisplayCategoryTabController(CalendarPanel calendarPanel) {
 		this.calendarPanel = calendarPanel;

@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -39,8 +39,6 @@ public class MultidayEventWeekView extends JPanel {
 	
 	
 	public void updateMultiDay(List<List<Event>> multiday, Date current){
-		System.err.println(multiday);
-		System.err.println(current);
 		
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
@@ -186,20 +184,10 @@ public class MultidayEventWeekView extends JPanel {
 					multipane.setBackground(Color.CYAN);
 				}
 				multipane.setFocusable(true);
+				
+				int a = Math.min(8-y, getDateDiff(current, new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()))) + 1;
 
-				//Builds a string to place it in miglayout
-				StringBuilder evebuilder = new StringBuilder();
-				evebuilder.append("cell ");
-				evebuilder.append(new Integer(y).toString());
-				evebuilder.append(" ");
-				evebuilder.append(new Integer(x).toString());
-				evebuilder.append(" ");
-				evebuilder.append(Math.min(8-y, getDateDiff(current, new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate())))+ 1);
-				evebuilder.append(" ");
-				evebuilder.append("0");
-				evebuilder.append(",grow, push, wmin 0");
-
-				this.add(multipane, evebuilder.toString());
+				this.add(multipane, "cell " + y + " " + x + " " + a + " 0, grow, push, wmin 0");
 				height += multipane.getPreferredSize().height;
 				displayEvents.add(multipane);
 				x++;
@@ -214,6 +202,12 @@ public class MultidayEventWeekView extends JPanel {
 		this.updateUI();
 	}
 	
+	/**
+	 * Gets the difference between two dates
+	 * @param d1 Starting Date, which comes before d2
+	 * @param d2 End Date, which comes after d1
+	 * @return The Minimum between 7 and the difference between d1 and d2
+	 */
 	public int getDateDiff(Date d1, Date d2){
 		Date current = d1;
 		int diff = 0;
