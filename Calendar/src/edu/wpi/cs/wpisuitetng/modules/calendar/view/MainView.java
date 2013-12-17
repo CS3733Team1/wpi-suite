@@ -81,7 +81,7 @@ public class MainView {
 
 		//Create a new Daemon thread to automatically refresh stuff for us.
 		//it is set to 30 s delay and 10s period.
-		new Timer(true).scheduleAtFixedRate(new UpdateTimerTask(), 30 * 1000, 10000);
+		//new Timer(true).scheduleAtFixedRate(new UpdateTimerTask(), 30 * 1000, 10000);
 
 	}
 

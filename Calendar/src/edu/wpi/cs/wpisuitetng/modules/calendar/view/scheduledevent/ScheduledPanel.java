@@ -1,6 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.UpdateEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.AddWhenToMeetController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.UpdateWhenToMeetController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import net.miginfocom.swing.MigLayout;
 
@@ -42,7 +45,7 @@ public class ScheduledPanel extends JPanel {
 		
 		addEventButton = new JButton("Update Event");
 		addEventButton.setActionCommand("addevent");
-		addEventButton.addActionListener(new UpdateEventController(this));
+		addEventButton.addActionListener(new UpdateWhenToMeetController(this));
 
 		this.add(eventTitle, "grow, push, alignx center,wrap");
 		this.add(weekNames, "grow, push,wrap");

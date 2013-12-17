@@ -13,12 +13,12 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledEven
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
-public class AddEventController implements ActionListener {
+public class AddWhenToMeetController implements ActionListener {
 
 	
 	private ScheduleEventSetup setup;
 	
-	public AddEventController(ScheduleEventSetup setup) {
+	public AddWhenToMeetController(ScheduleEventSetup setup) {
 		this.setup = setup;
 	}
 

@@ -16,7 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.AddEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.AddWhenToMeetController;
 import net.miginfocom.swing.MigLayout;
 
 public class ScheduleEventSetup extends JPanel implements KeyListener, ActionListener {
@@ -116,7 +117,7 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 		addEventButton = new JButton("Add Event");
 		addEventButton.setEnabled(false);
 		addEventButton.setActionCommand("addevent");
-		//addEventButton.addActionListener(new AddEventController(this));
+		addEventButton.addActionListener(new AddWhenToMeetController(this));
 
 
 		this.add(addEventButton, "cell 0 7,alignx left");
