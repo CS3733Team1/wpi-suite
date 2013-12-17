@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
+import javax.swing.DebugGraphics;
+import java.awt.Cursor;
 
 public class CalendarToolBar extends JPanel implements ActionListener {
 	private final static Logger LOGGER = Logger.getLogger(CalendarToolBar.class.getName());
@@ -75,11 +77,15 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		}
 
 		deleteButton = new TransparentButton("Delete", deleteIcon);
+		deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		refreshButton = new TransparentButton(refreshIcon);
 
 		addCommitmentButton = new TransparentButton("<html>New<br/>Commitment</html>", addCommitmentIcon);
+		addCommitmentButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		addEventButton = new TransparentButton("<html>New<br/>Event</html>", addEventIcon);
+		addEventButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		scheduledEventButton = new TransparentButton("<html>New<br/>Scheduled<br/>Event</html>", scheduleEventIcon);
+		scheduledEventButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		helpButton = new TransparentButton(questionIcon);
 
@@ -160,7 +166,6 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.repaint();
 	}
 
-
 	// Functions to set listeners for the buttons
 
 	public void refreshButtonListener(ActionListener l) {
@@ -194,6 +199,7 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	public void scheduleButtonListener(ActionListener l){
 		scheduledEventButton.addActionListener(l);
 	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {

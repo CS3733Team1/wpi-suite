@@ -18,6 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarToolBar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.help.HelpWindow;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledEventTabPanel;
 
 public class ChangeToolBarController implements ChangeListener {
@@ -41,7 +42,7 @@ public class ChangeToolBarController implements ChangeListener {
 		if(calendarPanel.getSelectedComponent() instanceof EventTabPanel){
 			toolbar.setToolBarEvent();
 		}
-		else if(calendarPanel.getSelectedComponent() instanceof ScheduledEventTabPanel){
+		else if(calendarPanel.getSelectedComponent() instanceof ScheduledEventTabPanel || calendarPanel.getSelectedComponent() instanceof HelpWindow){
 			toolbar.setToolBarSchedule();
 		}
 	}
