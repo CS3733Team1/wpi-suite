@@ -7,7 +7,7 @@
  * 
  * Contributors: Team TART
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,8 +18,8 @@ import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendar;
@@ -38,12 +38,12 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
  * @author Team TART
  *
  */
-public class CommitmentQuickList extends AbstractListModel<Commitment> implements ListDataListener {
+public class QuickListTabPanel extends AbstractListModel<Commitment> implements ListDataListener {
 
 	private ICalendarView currentView;
 	private ArrayList<Commitment> quickList;
 	
-	private CommitmentQuickList(List<Commitment> list){
+	private QuickListTabPanel(List<Commitment> list){
 		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
 	}
 	

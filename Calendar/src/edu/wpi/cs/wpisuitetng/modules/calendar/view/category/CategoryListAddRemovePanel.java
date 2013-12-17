@@ -18,9 +18,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListAddRemoveModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.CategoryListAddRemoveModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.CategoryListModel;
 
 /**
  * This is the view where the list of categories are displayed.

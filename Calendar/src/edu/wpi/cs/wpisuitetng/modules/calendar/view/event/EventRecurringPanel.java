@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEventListener;
 

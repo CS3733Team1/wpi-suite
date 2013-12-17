@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItem;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemRenderer;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;

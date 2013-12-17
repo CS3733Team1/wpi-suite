@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model.filter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +16,10 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 
 /**
  * This is a model for the Filter list. It contains all of the Filters the user has created.

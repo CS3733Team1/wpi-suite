@@ -8,11 +8,15 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model.event;
 
 import java.util.Date;
 
 import com.google.gson.Gson;
+
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.DeletableAbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
 
 /**
  * Data class for Events

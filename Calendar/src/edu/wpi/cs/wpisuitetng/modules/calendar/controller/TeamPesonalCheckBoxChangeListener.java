@@ -6,8 +6,8 @@ import java.awt.event.ItemListener;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventListModel;
 public class TeamPesonalCheckBoxChangeListener implements ItemListener {
 
 	@Override

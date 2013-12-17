@@ -20,8 +20,8 @@ import javax.swing.JTextPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 
 public class DatePanel extends JPanel implements ListDataListener {
 	private Date paneldate;

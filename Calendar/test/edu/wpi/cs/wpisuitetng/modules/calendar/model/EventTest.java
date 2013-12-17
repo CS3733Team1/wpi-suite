@@ -18,6 +18,9 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+
 public class EventTest {
 
 	Date Date1;

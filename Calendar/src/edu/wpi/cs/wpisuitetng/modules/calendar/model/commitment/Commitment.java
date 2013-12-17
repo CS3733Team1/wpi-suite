@@ -8,12 +8,16 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment;
 
 import java.text.DateFormat;
 import java.util.Date;
 
 import com.google.gson.Gson;
+
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.DeletableAbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
 
 /**
  * Class for holding Commitment data. A Commitment must have:<br>

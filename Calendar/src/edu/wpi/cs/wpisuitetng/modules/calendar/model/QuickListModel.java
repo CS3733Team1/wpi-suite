@@ -9,11 +9,17 @@ import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilterChangedListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilterListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayCalendar;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2.WeekCalendar;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 
 public class QuickListModel extends AbstractListModel<DeletableAbstractModel> implements ListDataListener, FilterChangedListener {

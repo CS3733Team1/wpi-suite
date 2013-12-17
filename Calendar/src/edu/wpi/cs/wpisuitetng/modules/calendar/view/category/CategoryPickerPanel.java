@@ -15,8 +15,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.CategoryListModel;
 
 public class CategoryPickerPanel extends JPanel {
 	

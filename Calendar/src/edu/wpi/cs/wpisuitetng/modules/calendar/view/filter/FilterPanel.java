@@ -11,8 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.Filter;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilterListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 
 public class FilterPanel extends JPanel implements MouseListener {

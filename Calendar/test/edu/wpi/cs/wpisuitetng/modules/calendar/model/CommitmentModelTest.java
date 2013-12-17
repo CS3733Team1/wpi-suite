@@ -7,6 +7,9 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
+
 public class CommitmentModelTest {
 	
 	@Before
