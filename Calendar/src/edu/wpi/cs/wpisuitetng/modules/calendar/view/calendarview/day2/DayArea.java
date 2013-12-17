@@ -131,7 +131,7 @@ public class DayArea extends JPanel implements ListDataListener{
 	 */
 	public void drawHours(Graphics g){
 		for (int x =0; x <= 24; x++){
-			g.setColor(Color.BLACK);
+			g.setColor(Color.LIGHT_GRAY);
 			g.drawLine(0, 60*x, this.getWidth(), 60*x);
 		}
 	}
