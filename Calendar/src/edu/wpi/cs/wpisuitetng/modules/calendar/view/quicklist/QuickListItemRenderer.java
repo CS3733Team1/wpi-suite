@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,17 +8,19 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItem;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemRenderer;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.RenderableComponent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;
 
-public class CommitmentListItemRenderer implements ListItemRenderer<Commitment> {
-	private final static Logger LOGGER = Logger.getLogger(CommitmentListItemRenderer.class.getName());
+public class QuickListItemRenderer implements ListItemRenderer<ISchedulable> {
+	private final static Logger LOGGER = Logger.getLogger(QuickListItemRenderer.class.getName());
 
 	private ImageIcon expand, compress;
 
-	public CommitmentListItemRenderer() {
+	public QuickListItemRenderer() {
 		
 		expand = new ImageIcon();
 		compress = new ImageIcon();
@@ -32,17 +34,20 @@ public class CommitmentListItemRenderer implements ListItemRenderer<Commitment> 
 	}
 
 	@Override
-	public void createRenderedListComponents(SRList<Commitment> listPanel, List<ListItem<Commitment>> listItems) {
-		for(ListItem<Commitment> listItem: listItems) {
-			CommitmentListComponent renderableComponent = new CommitmentListComponent(expand, compress);
+	public void createRenderedListComponents(SRList<ISchedulable> listPanel, List<ListItem<ISchedulable>> listItems) {
+		for(ListItem<ISchedulable> listItem: listItems) {
+			RenderableComponent<ISchedulable> renderableComponent;
+			if(listItem.getListObject() instanceof Commitment) renderableComponent = new CommitmentListComponent(expand, compress);
+			else renderableComponent = new EventListComponent(expand, compress);
+			
 			listItem.setRenderableComponent(renderableComponent);
 			listItem.setComponent(renderableComponent.create(listItem));
 		}
 	}
 
 	@Override
-	public void updateRenderedListComponents(SRList<Commitment> listPanel, List<ListItem<Commitment>> listItems) {
-		for(ListItem<Commitment> listItem: listItems) {
+	public void updateRenderedListComponents(SRList<ISchedulable> listPanel, List<ListItem<ISchedulable>> listItems) {
+		for(ListItem<ISchedulable> listItem: listItems) {
 			listItem.update();
 		}
 	}

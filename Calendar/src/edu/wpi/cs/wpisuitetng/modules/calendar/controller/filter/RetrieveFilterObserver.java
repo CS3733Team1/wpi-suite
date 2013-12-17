@@ -12,7 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter;
 
 import javax.swing.SwingUtilities;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.Filter;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 

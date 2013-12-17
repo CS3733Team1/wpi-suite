@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model.filter;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,15 +21,12 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 
-
-/**
- * This class handles database entries for Categories. It runs server-side. It is a singleton.
- */
-public class CategoryEntityManager implements EntityManager<Category> {
+public class FilterEntityManager implements EntityManager<Filter> {
 	/** The database */
-	private final Data db;
-	private static CategoryEntityManager CManager;
+	final Data db;
+	public static FilterEntityManager FManager;
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -39,40 +36,40 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public static CategoryEntityManager getCategoryEntityManager(Data db) {
-		CManager = (CManager == null) ? new CategoryEntityManager(db) : CManager;
-		return CManager;
+	public static FilterEntityManager getFilterEntityManager(Data db) {
+		FManager = (FManager == null) ? new FilterEntityManager(db) : FManager;
+		return FManager;
 	}
 
-	private CategoryEntityManager(Data db) {
+	private FilterEntityManager(Data db) {
 		this.db = db;
 	}
 
-	/**
-	 * Saves a Category when it is received from a client
+	/*
+	 * Saves a Filter when it is received from a client
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category makeEntity(Session s, String content)
+	public Filter makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 		// Parse the message from JSON
-		final Category newMessage = Category.fromJSON(content);
+		final Filter newMessage = Filter.fromJSON(content);
 
 		newMessage.setOwnerName(s.getUsername());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 
-		// Until we find a id that is unique assume another category might already have it
+		// Until we find a id that is unique assume another filter might already have it
 		boolean unique;
 		long id = 0;
 		do {
 			unique = true;
 			id = UUID.randomUUID().getMostSignificantBits();
-			for(Category c : this.getAll(s)) if (c.getUniqueID() == id) unique = false;
+			for(Filter f : this.getAll(s)) if (f.getUniqueID() == id) unique = false;
 		} while(!unique);
 
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new category with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+		System.out.printf("Server: Creating new filter with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
 
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -84,61 +81,61 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		return newMessage;
 	}
 
-	/**
+	/*
 	 * Individual messages cannot be retrieved. This message always throws an exception.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category[] getEntity(Session s, String id)
+	public Filter[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		System.out.printf("Server: Retrieving category with id = %s\n", id);
-		List<Model> list = db.retrieve(Category.class,"UniqueID", Long.parseLong(id), s.getProject());
-		System.out.println("List size = " + list.size());
-		return list.toArray(new Category[list.size()]);
+		System.out.printf("Server: Retrieving Filter with id = %s\n", id);
+		List<Model> list = db.retrieve(Filter.class,"UniqueID", Long.parseLong(id), s.getProject());
+		return list.toArray(new Filter[list.size()]);
 	}
 
-	/**
+	/* 
 	 * Returns all of the messages that have been stored.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public Category[] getAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type Category.
-		// Passing a dummy Category lets the db know what type of object to retrieve
+	public Filter[] getAll(Session s) throws WPISuiteException {
+		// Ask the database to retrieve all objects of the type Commitment.
+		// Passing a dummy Filter lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		System.out.println("Server: Retrieving all categories");
+		System.out.println("Server: Retrieving all filters");
 		
-		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
+		List<Model> messages = db.retrieveAll(new Filter(), s.getProject());
 
 		// Return the list of messages as an array
-		return messages.toArray(new Category[0]);
+		return messages.toArray(new Filter[0]);
 	}
 
-	/**
+	/*
 	 * Message cannot be updated. This method always throws an exception.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category update(Session s, String content)
+	public Filter update(Session s, String content)
 			throws WPISuiteException {
-		// This module does not allow Categories to be modified, so throw an exception
+
+		// This module does not allow Commitments to be modified, so throw an exception
 		throw new WPISuiteException();
 	}
 
-	/**
+	/*
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Category model)
+	public void save(Session s, Filter model)
 			throws WPISuiteException {
 		// Save the given defect in the database
 		db.save(model);
 	}
 
-	public void deleteCategory(Category model){
+	public void deleteFilter(Filter model){
 		db.delete(model);
 	}
 
@@ -149,10 +146,10 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.printf("Server: Deleting category with id = %s\n", id);
+		System.out.printf("Server: Deleting filter with id = %s\n", id);
 		try {
-			Category todelete= (Category) db.retrieve(Category.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
-			deleteCategory(todelete);
+			Filter todelete = (Filter) db.retrieve(Filter.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
+			deleteFilter(todelete);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,8 +164,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-		// This module does not allow Categories to be deleted, so throw an exception
-		db.deleteAll(new Category());
+		db.deleteAll(new Filter());
 	}
 
 	/*
@@ -176,8 +172,8 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public int count() throws WPISuiteException {
-		// Return the number of Categories currently in the database
-		return db.retrieveAll(new Category()).size();
+		// Return the number of Commitments currently in the database
+		return db.retrieveAll(new Commitment()).size();
 	}
 
 	@Override

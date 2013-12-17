@@ -12,13 +12,9 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.ChangeToolBarController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.RetrieveCategoryController;
@@ -107,11 +103,11 @@ public class MainView {
 	{
 		return MainView.calendarToolBar;
 	}
+	/*
 	class UpdateTimerTask extends TimerTask
 	{
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			System.out.println("Auto refresh at");
 			if (MainView.getCurrentCalendarPanel().isDisplayable() && MainView.getCurrentCalendarPanel().isShowing())
 			{
@@ -127,6 +123,6 @@ public class MainView {
 			}
 		}
 	}
-
+	*/
 }
 

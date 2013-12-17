@@ -18,8 +18,8 @@ import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.UpdateEventController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 
 /**
  *  The ComponentResizer allows you to resize a component by dragging a border
@@ -352,8 +352,8 @@ public class SchedulableResizer extends MouseAdapter
 				((ScheduleItem) source).getStartTime();
 				((ScheduleItem) source).getEndTime();
 				ISchedulable item = ((ScheduleItem) source).getDisplayItem();
-				if (item instanceof edu.wpi.cs.wpisuitetng.modules.calendar.model.Event){
-					UpdateEventController updateevent = new UpdateEventController(((edu.wpi.cs.wpisuitetng.modules.calendar.model.Event) item));
+				if (item instanceof edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event){
+					UpdateEventController updateevent = new UpdateEventController(((edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event) item));
 				}
 				if (item instanceof Commitment){
 					UpdateCommitmentController updatecommitment = new UpdateCommitmentController(((Commitment) item));

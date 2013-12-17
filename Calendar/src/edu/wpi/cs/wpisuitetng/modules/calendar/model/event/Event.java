@@ -8,18 +8,22 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model.event;
 
 import java.util.Date;
 
 import com.google.gson.Gson;
+
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.DeletableAbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
 
 /**
  * Data class for Events
  * An event must have a name, a start Date, and an end Date. It can contain a custom
  * description and category.
  */
-public class Event extends DeletableAbstractModel implements Comparable<ISchedulable>, ISchedulable {
+public class Event extends DeletableAbstractModel implements ISchedulable {
 	// Required parameters
 	private String name;
 	private Date startDate;

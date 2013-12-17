@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist;
 
 import java.awt.Color;
 import java.awt.Insets;
@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MultiLineLabel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
@@ -19,7 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.RenderableComponent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
-public class CommitmentListComponent extends RenderableComponent<Commitment> {
+public class CommitmentListComponent extends RenderableComponent<ISchedulable> {
 
 	private JPanel p;
 	private JLabel commitmentNameLabel;
@@ -42,8 +43,8 @@ public class CommitmentListComponent extends RenderableComponent<Commitment> {
 	}
 
 	@Override
-	public JComponent create(ListItem<Commitment> listItem) {
-		Commitment commitment = listItem.getListObject();
+	public JComponent create(ListItem<ISchedulable> listItem) {
+		Commitment commitment = (Commitment)listItem.getListObject();
 
 		p = new JPanel(new MigLayout("fill", "[]push[]"));
 		p.setBackground(listItem.isSelected() ? CalendarUtils.selectionColor : Color.WHITE);
@@ -68,12 +69,12 @@ public class CommitmentListComponent extends RenderableComponent<Commitment> {
 		compressButton = new TransparentButton(compress);
 		compressButton.setMargin(new Insets(0, 0, 0 ,0));
 		compressButton.setActionCommand("compress");
-		compressButton.addActionListener(new ListItemExpandListener<Commitment>(listItem));
+		compressButton.addActionListener(new ListItemExpandListener<ISchedulable>(listItem));
 
 		expandButton = new TransparentButton(expand);
 		expandButton.setMargin(new Insets(0, 0, 0 ,0));
 		expandButton.setActionCommand("expand");
-		expandButton.addActionListener(new ListItemExpandListener<Commitment>(listItem));
+		expandButton.addActionListener(new ListItemExpandListener<ISchedulable>(listItem));
 
 		p.add(commitmentNameLabel, "growx, span 2, wrap");
 		p.add(dueDateLabel);
@@ -83,7 +84,7 @@ public class CommitmentListComponent extends RenderableComponent<Commitment> {
 	}
 
 	@Override
-	public void update(ListItem<Commitment> listItem) {
+	public void update(ListItem<ISchedulable> listItem) {
 		p.setBackground(listItem.isSelected() ? CalendarUtils.selectionColor : Color.WHITE);
 
 		if(listItem.isDirty()) {
