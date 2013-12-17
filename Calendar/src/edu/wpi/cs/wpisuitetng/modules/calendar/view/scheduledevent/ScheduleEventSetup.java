@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,14 +17,17 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
-public class ScheduleEventSetup extends JPanel implements KeyListener, ActionListener {
+public class ScheduleEventSetup extends JPanel implements KeyListener, ActionListener, MouseListener {
 
 	private final String EMPTY_NAME_ERROR = "Name is required.";
 	private JTextField nameTextField;
 	private JPanel nameErrorPanelWrapper;
 	private JLabel nameErrorLabel;
+	private JLabel dayOfWeekErrorLabel;
 	private JButton addEventButton;
 	private boolean enableAddEvent;
+	private boolean containsDaysOfWeek;
+	private DayOfWeekPanel dwp;
 	private final String[] hour = { "Midnight", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM","7 AM", "8 AM", "9 AM","10 AM", "11 AM", "Noon",
 			"1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM","7 PM", "8 PM", "9 PM","10 PM", "11 PM"};
 	public ScheduleEventSetup()
@@ -35,6 +40,7 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 	
 	public void setup()
 	{
+		containsDaysOfWeek = false;
 		this.add(new JLabel("Event Name:"), "cell 0 0, grow");
 		nameErrorPanelWrapper = new JPanel(new MigLayout("fill, insets 0"));
 		nameTextField = new JTextField();
@@ -49,9 +55,6 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 		this.add(new JLabel("Start Time:"), "cell 0 1");
 		this.add(new JLabel("End Time:"), "cell 0 2");
 		
-		this.add(new JLabel("Select Days to Schedule", JLabel.CENTER), "cell 0 3, alignx center, grow");
-		DayOfWeekPanel dwp = new DayOfWeekPanel();
-		this.add(dwp,"cell 0 4, grow,alignx center");
 		
 
 		JComboBox startTime = new JComboBox(hour);
@@ -77,6 +80,15 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
         });            
 		this.add(endTime,"cell 0 2");
 		
+		
+		this.add(new JLabel("Select Days to Schedule", JLabel.CENTER), "cell 0 3, alignx center, grow");
+		dwp = new DayOfWeekPanel();
+		this.add(dwp,"cell 0 4, grow,alignx center");
+		dayOfWeekErrorLabel = new JLabel();
+		dayOfWeekErrorLabel.setVisible(false);
+		this.add(dayOfWeekErrorLabel, "cell 0 5, grow, alignx center");
+		
+		
 		addEventButton = new JButton("Add Event");
 		addEventButton.setActionCommand("addevent");
 //		addEventButton.addActionListener(new AddEventController(this));
@@ -87,6 +99,12 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 		
 	}
 	
+	public void isDayOfWeekHaveDays(boolean state)
+	{
+		containsDaysOfWeek = state;
+	}
+	
+	
 	public void validate()
 	{
 		if(nameTextField.getText().trim().length() == 0) {
@@ -94,10 +112,20 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 			nameErrorLabel.setText(EMPTY_NAME_ERROR);
 			nameErrorLabel.setVisible(true);
 			enableAddEvent = false;
-		} else {
+		}else if(dwp.updateList().size() == 0)
+		{
+			dayOfWeekErrorLabel.setText("Please Selected A Day Of The Week");
+			dayOfWeekErrorLabel.setVisible(true);
+			enableAddEvent = false;
+		} 
+		else {
 			nameErrorPanelWrapper.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51, 0)));
 			nameErrorLabel.setVisible(false);
+			dayOfWeekErrorLabel.setVisible(false);
 		}
+		
+		
+		
 	}
 	
 	@Override
@@ -120,6 +148,36 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		validate();
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		validate();
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		validate();
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
