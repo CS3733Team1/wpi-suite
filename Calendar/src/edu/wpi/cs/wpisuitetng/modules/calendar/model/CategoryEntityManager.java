@@ -93,7 +93,9 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	public Category[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
 		System.out.printf("Server: Retrieving category with id = %s\n", id);
-		return (Category []) (db.retrieve(this.getClass(), "UniqueID", id, s.getProject()).toArray());
+		List<Model> list = db.retrieve(Category.class,"UniqueID", Long.parseLong(id), s.getProject());
+		System.out.println("List size = " + list.size());
+		return list.toArray(new Category[list.size()]);
 	}
 
 	/**
