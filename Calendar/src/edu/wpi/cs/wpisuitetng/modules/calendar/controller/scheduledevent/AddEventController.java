@@ -31,13 +31,15 @@ public class AddEventController implements ActionListener {
 		int startIndex = setup.getStartIndex();
 		int endIndex = setup.getStartIndex();
 		String title = setup.getTitle();
+		String user = setup.getUser();
+		System.out.println("user"+user);
 		System.out.println("StartIndex:"+startIndex+" EndIndex"+endIndex);
 		System.out.println("Did I get HERE");
 		ScheduleEventMain schedule = new ScheduleEventMain();
 		ScheduledPanel schedulePanel = new ScheduledPanel();
 		System.out.println("OR HERE");
-		schedule.setTime(days.size(), 8, 14, CalendarUtils.thatBlue);
-		schedulePanel.setup(title, schedule, days);
+		schedule.setTime(user,days.size(), 8, 14, CalendarUtils.thatBlue);
+		schedulePanel.setup(title, user, schedule, days);
 		System.out.println("Maybe HERE");
 		test.removeAll();
 		System.out.println("Probably not HERE");

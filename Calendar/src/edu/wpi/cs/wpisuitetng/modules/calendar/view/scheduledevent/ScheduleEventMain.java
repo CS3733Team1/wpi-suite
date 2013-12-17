@@ -27,6 +27,12 @@ public class ScheduleEventMain extends JPanel{
 		hourList =  new ArrayList<List<Hour>>();
 	}
 	
+	public void addUser(String user)
+	{
+		this.user = user;
+		System.out.println("user"+user);
+	}
+	
 	
 	public void constructHourTest(int day, int start, int end)
 	{
@@ -44,11 +50,13 @@ public class ScheduleEventMain extends JPanel{
 		}
 	}
 	
-	public void setTime(int day, int start, int end, Color col)
+	
+	
+	public void setTime(String user,int day, int start, int end, Color col)
 	{
 		leaderPanel.setTimeFrame(day, start, end);
 		leaderPanel.setColor(col);
-		leaderPanel.addUser("Bob");
+		leaderPanel.addUser(user);
 		followerPanel.setTimeFrame(day, start, end);
 		followerPanel.setColor(col);
 		constructHourTest(day, start, end);
@@ -60,8 +68,15 @@ public class ScheduleEventMain extends JPanel{
 	}
 	
 	public void updatePanel(List<List<Hour>> list, String user) {
+		System.out.println("user"+user);
 		followerPanel.updateFollower(list, user);
 	}
+	
+	public List<List<Hour>> updateHourList()
+	{
+		return followerPanel.updateHourList();
+	}
+	
 	
 	
 	public void reSize(int width){

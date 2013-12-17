@@ -30,6 +30,7 @@ public class FollowerPanel extends JPanel{
 	}
 
 	public void updateFollower(List<List<Hour>> list, String user) {
+		System.out.println("user"+user);
 		fp.updatePanel(list,user);
 	}
 
@@ -37,6 +38,12 @@ public class FollowerPanel extends JPanel{
 		this.col = col;
 		fp.setColor(col);
 	}
+	
+	public List<List<Hour>> updateHourList()
+	{
+		return fp.updateHourList();
+	}
+	
 	
 	public void reSize(int width){
 		this.setSize(width, this.getHeight());
