@@ -43,6 +43,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGroup;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendar;
@@ -51,6 +52,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+
 import java.awt.Cursor;
 
 
@@ -216,6 +218,10 @@ public class CalendarTabPanel extends JPanel {
 		List<Commitment> selectedCommitments =  new ArrayList<Commitment>();
 		if(calendarView instanceof MonthCalendarView)
 			selectedCommitments.addAll(((MonthCalendarView)calendarView).getSelectedCommitments());
+		else if(calendarView instanceof DayCalendar)
+			selectedCommitments.addAll(SchedMouseListener.getSelectedCommitments());
+		else if(calendarView instanceof WeekCalendar)
+			selectedCommitments.addAll(SchedMouseListener.getSelectedCommitments());
 
 		if(subTabPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
 			selectedCommitments.addAll(commitmentSubTabPanel.getSelectedCommitments());
@@ -227,6 +233,8 @@ public class CalendarTabPanel extends JPanel {
 
 	public List<Event> getSelectedEventList(){
 		if(calendarView instanceof MonthCalendarView) return ((MonthCalendarView)calendarView).getSelectedEvents();
+		else if(calendarView instanceof DayCalendar) return SchedMouseListener.getSelectedEvents();
+		else if(calendarView instanceof WeekCalendar) return SchedMouseListener.getSelectedEvents();
 		else return new ArrayList<Event>();
 	}
 
