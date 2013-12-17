@@ -161,9 +161,9 @@ public class RequirementEntityManager implements EntityManager<Requirement> {
 	
 	
 	 * @return number of requirements stored * @throws WPISuiteException * @throws WPISuiteException * @throws WPISuiteException
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count() */
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#count() */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int count() throws WPISuiteException {
 		return db.retrieveAll(new Requirement()).size();
 	}
 

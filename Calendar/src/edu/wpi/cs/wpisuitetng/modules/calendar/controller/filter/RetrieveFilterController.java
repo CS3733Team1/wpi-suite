@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class RetrieveFilterController implements AncestorListener, ActionListener {
-	FilterListModel model;
+	private FilterListModel model;
 
 	public RetrieveFilterController() {
 		this.model = FilterListModel.getFilterListModel();

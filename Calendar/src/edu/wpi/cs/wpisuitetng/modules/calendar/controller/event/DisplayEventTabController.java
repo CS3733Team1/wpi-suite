@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -26,6 +28,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
  */
 
 public class DisplayEventTabController implements ActionListener {
+	private final static Logger LOGGER = Logger.getLogger(DisplayEventTabController.class.getName());
+	
 	private CalendarPanel calendarPanel;
 	
 	public DisplayEventTabController(CalendarPanel calendarPanel){
@@ -38,10 +42,10 @@ public class DisplayEventTabController implements ActionListener {
 		ImageIcon miniEventIcon = new ImageIcon();
 		try {
 			miniEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
-		} catch (IOException exception) {}
+		} catch (IOException exception) {
+			LOGGER.log(Level.WARNING, "/images/event.png not found.", exception);
+		}
 		calendarPanel.addTab("Add Event", miniEventIcon , eventPanel);
 		calendarPanel.setSelectedComponent(eventPanel);
 	}
-	
-
 }

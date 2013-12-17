@@ -26,6 +26,9 @@ import javax.swing.plaf.ColorUIResource;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
@@ -73,6 +76,21 @@ public class SchedMouseListener implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int ctrldwn = MouseEvent.CTRL_DOWN_MASK;
+		
+		if(e.getClickCount() == 2) {
+			if (sched instanceof Event)
+			{
+				EventTabPanel editEventPanel = new EventTabPanel((Event)sched);
+				MainView.getCurrentCalendarPanel().addTab("Update Event", editEventPanel);
+				MainView.getCurrentCalendarPanel().setSelectedComponent(editEventPanel);
+			}
+			else if(sched instanceof Commitment) 
+			{
+				CommitmentTabPanel editCommitmentPanel = new CommitmentTabPanel((Commitment)sched);
+				MainView.getCurrentCalendarPanel().addTab("Update Commitmement", editCommitmentPanel);
+				MainView.getCurrentCalendarPanel().setSelectedComponent(editCommitmentPanel);
+			} 
+		}
 		
 		//was ctrl key held while mouse was clicked?
 		boolean multiSelect = ((e.getModifiersEx() & ctrldwn) == ctrldwn);

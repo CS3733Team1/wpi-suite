@@ -61,7 +61,7 @@ public class Network {
 		if (config == null) {
 			throw new NullPointerException("The config parameter may not be null.");
 		}
-		
+		System.out.println("Setting default networkconfig");
 		this.defaultNetworkConfiguration = config;
 	}
 	

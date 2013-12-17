@@ -49,6 +49,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	private boolean dayValid_;
 	private boolean timeValid_;
 	private boolean dtValid_;
+	private boolean warningEnabled_=false;
 	
 	//errors
 	private String invalidDayErrorText_="Invalid Day";
@@ -72,7 +73,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 		
 	    // Notify everybody that may be interested.
         for (DateTimeChangedEventListener hl : listeners)
-            hl.DateTimeChangedEventOccurred(evt);
+            hl.dateTimeChangedEventOccurred(evt);
 //		// Notify everybody that may be interested.
 //        Object[] listeners = listenerList.getListenerList();
 //		for (int i = 0; i < listeners.length; i = i + 2) {
@@ -204,6 +205,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 		//Error Label
 		errorLabel=new JLabel("Invalid time!");
 		errorLabel.setVisible(false);
+		errorLabel.setForeground(Color.RED);
 		add(errorLabel);
 		
 		//validation
@@ -215,11 +217,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	}
 	
 	/**
-<<<<<<< HEAD
-	 * Helper method "cieling" the given duration of time in milliseconds as close as possible to the nearest larger minute interval
-=======
 	 * Helper method "ceiling" the given duration of time in milliseconds as close as possible to the nearest larger minute interval
->>>>>>> 032e703545c99d14c41b0b32eaa744c81ac2f63e
 	 * @param timeMs the time, in Milliseconds to "normalize" to the minute
 	 * @return the same time in milliseconds to the minute, one millisecond before the next minute
 	 */
@@ -293,17 +291,21 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 //		System.out.println("\t\tConverting "+strTime+" to time...");
 		Date time = DateUtils.stringToDate(strTime);
 		if (time!=null){
+			
+			//SET THE TIME if it's parsable, even if it's in the past
 			date_.setHours(time.getHours());
 			date_.setMinutes(time.getMinutes());
+			timeValid_=true;
+			
+			//see if the day is in the past
 			if (date_.after(new Date())){
-//				System.out.println("\t\tDate with new time is "+date_.toString());
-				timeValid_=true;
-//				dtValid_=dayValid_;
-				updateError();
+				warningEnabled_=false;
+				System.out.println("\t\t(future) Date with new time is "+date_.toString());
 			}else{//time in the past
-//				System.out.println("\tDTC: ERROR: time in the past!");
-				setTimeError();
+				System.out.println("\tDTC: ERROR: time in the past!");
+				setPastWarning();
 			}
+			updateError();
 		}else{
 			setTimeError();
 		}
@@ -313,7 +315,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	/**
 	 * Gets the day from the JDateCHooser, validates it, and sets this chooser's date to it if it is valid
 	 * Sets an error and invalidates this chooser's DayTime if the day is invalid
-	 * Valid days are today or in the future
+	 * Valid days may be in the past. OLD: are today or in the future
 	 */
 	private void fillDay(){
 //		System.out.println("\nFilling Day...");
@@ -325,26 +327,30 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 			day.setMinutes(1);
 			day.setTime(normalizeToTheMinute(day.getTime()));
 
-			//normalize right now to the very start of today + 1 minute so it's in the future
+//			System.out.println("\tComparing new date ("+day.toString()+") to today ("+rightNow.toString()+")");
+			
+			//SET THE DAY even if it's in the past
+			date_.setYear(day.getYear());
+			date_.setMonth(day.getMonth());
+			date_.setDate(day.getDate());
+			dayValid_=true;			
+			//validate
+//			//normalize right now to the very start of today + 1 minute so it's in the future
 			Date rightNow = new Date();
 			rightNow.setHours(0);
 			rightNow.setMinutes(0);
 			rightNow.setTime(normalizeToTheMinute(rightNow.getTime()));
-			
-//			System.out.println("\tComparing new date ("+day.toString()+") to today ("+rightNow.toString()+")");
-			
-			//validate
-			if (day.after(rightNow)){
-				date_.setYear(day.getYear());
-				date_.setMonth(day.getMonth());
-				date_.setDate(day.getDate());
-				dayValid_=true;
-//				dtValid_=timeValid_;
-				updateError();
+//			if (day.after(rightNow)){
+			//see if the date is in the past or current minute
+			if (date_.after(rightNow)){
+				warningEnabled_=false;
+				System.out.println("\t\t(future) Date with new day is "+date_.toString());
 			}else{
-//				System.out.println("\tError: day was not after right now!");
-				setDayError();
+				System.out.println("\tWarning: day was not after right now!");
+				setPastWarning();
 			}
+			
+			updateError();
 		}else{
 //			System.out.println("\tError: date was null");
 			setDayError();
@@ -401,6 +407,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	private void setError(String errorText){
 		dtValid_=false;
 		errorLabel.setText(errorText);
+		errorLabel.setForeground(Color.RED);
 		errorLabel.setVisible(true);
 		this.setBorder(errorBorder_);
 	}
@@ -411,7 +418,12 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	private void clearErrors(){
 //		System.out.println("\tDTC: Clearing Error");
 		dtValid_=true;
-		errorLabel.setVisible(false);
+		
+		if (warningEnabled_){
+			setPastWarning();
+		}else{
+			errorLabel.setVisible(false);
+		}
 //		timeCombo_.setBorder(normalBorder_);
 //		jDateChooser_.setBorder(normalBorder_);
 		this.setBorder(normalBorder_);
@@ -426,6 +438,16 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 		dayValid_=false;
 //		jDateChooser_.setBorder(errorBorder_);
 		setError(invalidDayErrorText_);
+	}
+	
+	/**
+	 * Sets a warning (error label visible but date still valid)
+	 */
+	private void setPastWarning(){
+		warningEnabled_=true;
+		errorLabel.setText("WARNING: time in the past!");
+		errorLabel.setVisible(true);
+		errorLabel.setForeground(Color.ORANGE);
 	}
 	
 	/**
@@ -446,8 +468,10 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 			setDayError();
 		}else if (!timeValid_){
 			setTimeError();
-		}else if (!dtValid_){	//the day and time are both valid but dtValis is still false
-			clearErrors();		//clear all errors and set dt to True
+		}else if (!dtValid_){	//the day and time are both valid but dtValid is currently set to false
+			clearErrors();		//clear all errors and set dtValid to True
+		}else if (!warningEnabled_){//no errors and dtValid was and is still true, and there's no warning
+			errorLabel.setVisible(false);	//nothing to show
 		}
 	}
 	

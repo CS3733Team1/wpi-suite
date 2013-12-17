@@ -16,7 +16,7 @@ public abstract class DeletableAbstractModel extends AbstractModel {
 	//In the beginning it was described in Model.java
 	//that models shall have a Unique Identifier int
 	//and so it shall be
-	public long uniqueID = 0;
+	protected long uniqueID = 0;
 	
 	protected int ownerID = 0;
 	protected String ownerName;

@@ -36,7 +36,7 @@ public class Filter extends DeletableAbstractModel {
 		this.categories = new ArrayList<Category>();
 		this.isSelected = false;
 	}
-	
+
 	public Filter(String name, long uid) {
 		this.name = name;
 		this.categories = new ArrayList<Category>();
@@ -130,13 +130,8 @@ public class Filter extends DeletableAbstractModel {
 			return list;
 		}
 		int state = -1;
-		try {
-			state = MainView.getCurrentCalendarPanel().getCalendarTabPanel().getTeamPersonalState();
-		}
-		catch (Exception e) {
-			state = -1;
-		}
-		
+		state = MainView.getCurrentCalendarPanel().getCalendarTabPanel().getTeamPersonalState();
+
 		//3 = Both Checked
 		//2 = Personal
 		//1 = Team
@@ -190,12 +185,22 @@ public class Filter extends DeletableAbstractModel {
 	public boolean getSelected() {
 		return this.isSelected;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Filter) {
-			Filter filterOther = (Filter)o;
-			return this.getUniqueID() == filterOther.getUniqueID();
-		} else return false;
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
+		if (!(o instanceof Filter))
+			return false;
+
+		Filter filterOther = (Filter)o;
+		return this.getUniqueID() == filterOther.getUniqueID();
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)this.getUniqueID();
 	}
 }

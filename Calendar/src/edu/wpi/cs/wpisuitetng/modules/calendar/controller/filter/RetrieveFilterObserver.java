@@ -17,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 public class RetrieveFilterObserver implements RequestObserver{
-	public RetrieveFilterController controller;
+	private RetrieveFilterController controller;
 	
 	public RetrieveFilterObserver(RetrieveFilterController controller) {
 		this.controller = controller;

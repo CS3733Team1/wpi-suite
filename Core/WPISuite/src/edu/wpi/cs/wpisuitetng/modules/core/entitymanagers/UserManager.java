@@ -207,7 +207,7 @@ public class UserManager implements EntityManager<User> {
 	}
 
 	@Override
-	public int Count() {
+	public int count() {
 		// TODO pending on get all
 		return 0;
 	}

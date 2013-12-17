@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class RetrieveCategoryController implements AncestorListener, ActionListener{
-	CategoryListModel model;
+	private CategoryListModel model;
 
 	public RetrieveCategoryController() {
 		this.model = CategoryListModel.getCategoryListModel();

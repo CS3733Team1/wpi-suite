@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,23 +18,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 
 /**
  * Handles resizing and scrolling in week view.
  */
 
-public class WeekCalendarScrollPane extends JScrollPane implements ListDataListener {
-	private WeekCalendarLayerPane weeklayer;
+public class WeekCalendarScrollPane extends JScrollPane {
+	private WeekHolderPanel weeklayer;
 	private List<JPanel> weekpanel;
 	private JPanel weektitle;
+	private int scrollSpeed = 15;
 	
-	public WeekCalendarScrollPane(WeekCalendarLayerPane day){
+	public WeekCalendarScrollPane(WeekHolderPanel day){
 		super(day);
 
 		weeklayer = day;
@@ -44,8 +40,10 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 		weektitle.setBackground(Color.WHITE);
 		weekpanel = new LinkedList<JPanel>();
 		
+		this.setWheelScrollingEnabled(true);
+		this.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		
-		this.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
+		this.setBorder(new MatteBorder(2, 0, 0, 0, Color.BLACK));
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout());
 			
@@ -55,20 +53,15 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 			weekbuilder.append(" ");
 			weekbuilder.append("0");
 			weekbuilder.append(",wmin 100, alignx left, growy");
-			
 		
 			weekpanel.add(weekName);
 			weektitle.add(weekName, weekbuilder.toString());
 		}
 		
-	
 		JPanel cornertile = new JPanel();
 		cornertile.setBackground(Color.WHITE);
 
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
-		DisplayCommitments();
 	}
 	
 	public void rebuildDays(){
@@ -77,7 +70,6 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 		weektitle = new JPanel(new MigLayout());
 		weektitle.setBackground(Color.WHITE);
 		weekpanel = new LinkedList<JPanel>();
-		
 
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout());
@@ -96,75 +88,4 @@ public class WeekCalendarScrollPane extends JScrollPane implements ListDataListe
 		JPanel cornertile = new JPanel();
 		cornertile.setBackground(Color.WHITE);
 	}
-	
-	public void DisplayCommitments(){
-		List<List<Commitment>> foundyou = bananaSplit(weeklayer.getWeek().CommitmentsOnCalendar());
-		
-		for (int x = 0; x < 7; x++){
-			if (foundyou.get(x).size() > 0){
-				JPanel day = weekpanel.get(x);
-				day.setBackground(Color.RED);
-				StringBuilder bob = new StringBuilder();
-				bob.append("<html>");
-				for (Commitment commit: foundyou.get(x)){
-					bob.append("<p>");
-					bob.append("<b>Name:</b> ");
-					bob.append(commit.getName());
-					bob.append("<br><b>Description:</b> ");
-					bob.append(commit.getDescription());
-					bob.append("</p>");
-				}
-				bob.append("</html>");
-				day.setToolTipText(bob.toString());
-			}
-		}
-	}
-	
-	/**
-	 * Splits The List Into Hourly Blocks
-	 * @param thoseitems the list being split
-	 * @return split list of hours
-	 */
-	public List<List<Commitment>> bananaSplit(List<Commitment> thoseitems){
-		List<List<Commitment>> dalist = new LinkedList<List<Commitment>>();
-		Date startdate = weeklayer.getWeek().getStart();
-		
-		for (int x = 0; x < 7; x++){
-			List<Commitment> daylist = new LinkedList<Commitment>();
-			for (Commitment commit: thoseitems){
-				Date commitdate = new Date(commit.getDueDate().getYear(), commit.getDueDate().getMonth(), commit.getDueDate().getDate());
-				if (commitdate.equals(startdate)){
-					daylist.add(commit);
-				}
-			}
-			startdate = new Date(startdate.getYear(), startdate.getMonth(), startdate.getDate()+1);
-			dalist.add(daylist);
-		}
-		return dalist;
-	}
-
-	@Override
-	public void intervalAdded(ListDataEvent e) {
-		rebuildDays();
-		DisplayCommitments();
-	}
-
-	@Override
-	public void intervalRemoved(ListDataEvent e) {
-		rebuildDays();
-		DisplayCommitments();
-	}
-
-	@Override
-	public void contentsChanged(ListDataEvent e) {
-		rebuildDays();
-		DisplayCommitments();
-	}
-	
-	public void updateDayHeader(){
-		rebuildDays();
-		DisplayCommitments();
-	}
-	
-	
 }
