@@ -43,7 +43,7 @@ public class ListItem<T> {
 
 	public boolean isDirty() {return this.isDirty;}
 	
-	public void requesUpdate() {
+	public void requestUpdate() {
 		this.isDirty = true;
 		srList.updateComponents();
 	}

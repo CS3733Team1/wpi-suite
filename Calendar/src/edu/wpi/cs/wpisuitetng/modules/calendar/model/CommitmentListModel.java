@@ -75,6 +75,10 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		this.fireContentsChanged(this, 0, this.commitments.size()-1);
 	}
 
+	/**
+	 * Sets the list to mirror the array of commitments being passed in
+	 * @param commitments The list of Commitments the list should mirror
+	 */
 	public synchronized void setCommitments(Commitment[] commitments) {
 		this.commitments.clear();
 		for (int i = 0; i < commitments.length; i++) {
@@ -113,11 +117,19 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments.get(commitments.size() - 1 - index);
 	}
 
+	/**
+	 * Removes a commitment based on an index
+	 * @param index integer representing Commitment to be removed
+	 */
 	public synchronized void removeCommitment(int index) {
 		this.commitments.remove(index);
 		this.fireIntervalRemoved(this, 0, 0);
 	}
-
+	
+	/**
+	 * Removes the specified commitment from the list
+	 * @param commitment Commitment to be removed
+	 */
 	public synchronized void removeCommitment(Commitment commitment) {
 		this.commitments.remove(commitment);
 		this.fireIntervalRemoved(this, 0, 0);
@@ -134,14 +146,26 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 		return commitments.size();
 	}
 
+	/**
+	 * Gets the list of commitments
+	 * @return list of commitments
+	 */
 	public synchronized List<Commitment> getList(){
 		return new ArrayList<Commitment>(commitments);
 	}
 	
+	/**
+	 * general update method, which signals to all the views that the model has changed
+	 */
 	public synchronized void update() {
 		this.fireIntervalAdded(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
 	}
 
+	/**
+	 * Updates the listmodel with the new instance of the commitment
+	 * @param oldCommitment the commitment to be removed from list
+	 * @param newCommitment new updated commitment to be added to list
+	 */
 	public synchronized void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
 		removeCommitment(oldCommitment);
 		addCommitment(newCommitment);

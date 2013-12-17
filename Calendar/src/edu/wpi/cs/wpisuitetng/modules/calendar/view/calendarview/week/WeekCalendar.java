@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -31,6 +31,7 @@ import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
@@ -85,7 +86,13 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 				label.setForeground(CalendarUtils.timeColor);
 			
 			weekName.setBackground(Color.white);
-			weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			if(weekName.getDate().get(Calendar.YEAR)==Calendar.getInstance().get(Calendar.YEAR) &&
+					weekName.getDate().get(Calendar.DAY_OF_YEAR)==Calendar.getInstance().get(Calendar.DAY_OF_YEAR)){
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+			}
+			else{
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			}
 			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny bottom, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
@@ -107,8 +114,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		
 		this.add(weekscroll, "grow");
 		
-		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
-		//DisplayCommitments();
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 		
 		int end = weekscroll.getVerticalScrollBar().getMaximum();
 		weekscroll.getVerticalScrollBar().setValue(end * 3 / 4);
@@ -140,7 +146,13 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 				label.setForeground(CalendarUtils.timeColor);
 			
 			weekName.setBackground(Color.white);
-			weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			if(weekName.getDate().get(Calendar.YEAR)==Calendar.getInstance().get(Calendar.YEAR) &&
+					weekName.getDate().get(Calendar.DAY_OF_YEAR)==Calendar.getInstance().get(Calendar.DAY_OF_YEAR)){
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.thatBlue));
+			}
+			else{
+				weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			}
 			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny bottom, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
@@ -150,7 +162,10 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	public void updateWeekHeader(){
 		rebuildDays();
 	}
-	 
+	
+	/**
+	 * Calculates the new width that children components should take 
+	 */
 	public void repaint(){
 		if (weeklayer != null){
 			weeklayer.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*3));
@@ -162,15 +177,21 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		super.repaint();
 	}
 	
+	/**
+	 * Updates the multidayview with new information
+	 */
 	public void updateMultiDay(){
 		multiview.updateMultiDay(weeklayer.getMultiDayEvents(), weeklayer.getDayViewDate());
+		this.revalidate();
 	}
 	
 	public Date getWeekStart()
 	{
 		return weeklayer.getDate(1);
 	}
-	/*
+
+
+	/**
 	 * Changes the week day names to abbreviations if the panel is too small
 	 */
 	private void updateLayout() {
@@ -227,22 +248,16 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		updateMultiDay();
-		updateUI();
 		repaint();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		updateMultiDay();
-		updateUI();
 		repaint();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		updateMultiDay();
-		updateUI();
 		repaint();
 	}
 

@@ -152,7 +152,7 @@ public class PostBoardEntityManager implements EntityManager<PostBoardMessage> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int count() throws WPISuiteException {
 		// Return the number of PostBoardMessages currently in the database
 		return db.retrieveAll(new PostBoardMessage(null)).size();
 	}

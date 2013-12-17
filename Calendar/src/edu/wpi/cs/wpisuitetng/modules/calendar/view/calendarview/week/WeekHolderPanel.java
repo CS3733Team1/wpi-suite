@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -8,11 +8,12 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JPanel;
+
 import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayArea;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.HourLabels;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayArea;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.HourLabels;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 
@@ -24,6 +25,9 @@ public class WeekHolderPanel extends JPanel{
 	private HourLabels hour;
 	private Date currentDay;
 
+	/**
+	 * Creates a panel which holds the hours and the 7 days of a week
+	 */
 	public WeekHolderPanel(){
 		this.setLayout(new MigLayout("inset 0, fill", 
 				"[9%][13%][13%][13%][13%][13%][13%][13%]"));
@@ -42,6 +46,9 @@ public class WeekHolderPanel extends JPanel{
 		createWeek();
 	}
 	
+	/**
+	 * Creates the days and sets each one with the correct date based on NOW
+	 */
 	public void createWeek(){
 		Date today = new Date();
 		int correctday = today.getDay();
@@ -55,6 +62,10 @@ public class WeekHolderPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * Resizes the width of this view to reflect parents calculated size
+	 * @param width size parent wants view to assume
+	 */
 	public void reSize(int width){
 		this.setSize(width, 1440);
 		this.setPreferredSize(new Dimension(width, 1440));
@@ -68,6 +79,10 @@ public class WeekHolderPanel extends JPanel{
 		this.repaint();
 	}
 	
+	/**
+	 * Calculates the list of multidayevents that belong to the week
+	 * @return list of 7 lists, which contain the multiday events for each day of the week
+	 */
 	public List<List<Event>> getMultiDayEvents(){
 		Date key;
 		List<Event> mevents = new LinkedList<Event>();
@@ -88,13 +103,11 @@ public class WeekHolderPanel extends JPanel{
 				}
 				else
 				{
-					//System.out.println("Mutliday event " + eve.getName() + " found, if");
 					mevents.add(eve);
 				}
 			}
 			else if(currentDay.after(eve.getStartDate()) && currentDay.before(eve.getEndDate()))
 			{
-				//System.out.println("Mutliday event " + eve.getName() + " found, else");
 				mevents.add(eve);
 			}
 		}
@@ -102,16 +115,12 @@ public class WeekHolderPanel extends JPanel{
 		
 		Date eveenddate = new Date();
 		ArrayList<Integer> weekdays = new ArrayList<Integer>();
+		List<List<Event>> multilistlist = new LinkedList<List<Event>>();
 		Date iter = (Date) currentDay.clone();
 		for(int i = 0; i < 7; i++)
 		{
 			weekdays.add(i, iter.getDate());
 			iter.setDate(iter.getDate() + 1);
-		}
-		
-		List<List<Event>> multilistlist = new LinkedList<List<Event>>();
-		for(int i = 0; i < 7; i++)
-		{
 			multilistlist.add(new LinkedList<Event>());
 		}
 		
@@ -146,6 +155,9 @@ public class WeekHolderPanel extends JPanel{
 		return monthNames[currentDay.getMonth()];
 	}
 
+	/**
+	 * Moves the week ahead by one week
+	 */
 	public void next() {
 		currentDay.setDate(currentDay.getDate()+7);
 		for (int x = 0; x < day.size(); x++){
@@ -154,6 +166,9 @@ public class WeekHolderPanel extends JPanel{
 		}
 	}
 
+	/**
+	 * Moves the week back by a week
+	 */
 	public void previous() {
 		currentDay.setDate(currentDay.getDate()-7);
 		for (int x = 0; x < day.size(); x++){
@@ -162,6 +177,9 @@ public class WeekHolderPanel extends JPanel{
 		}
 	}
 
+	/**
+	 * changes the week to NOW's week
+	 */
 	public void today() {
 		Date today = new Date();
 		int correctday = today.getDay();
@@ -183,6 +201,10 @@ public class WeekHolderPanel extends JPanel{
 		return c;
 	}
 
+	/**
+	 * Changes the view of the week to Specific Date
+	 * @param date Date the week will display
+	 */
 	public void viewDate(Calendar date) {
 		Date today = date.getTime();
 		int correctday = today.getDay();

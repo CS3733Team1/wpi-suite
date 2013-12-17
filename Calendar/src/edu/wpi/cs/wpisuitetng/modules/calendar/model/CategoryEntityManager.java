@@ -28,8 +28,8 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
  */
 public class CategoryEntityManager implements EntityManager<Category> {
 	/** The database */
-	final Data db;
-	public static CategoryEntityManager CManager;
+	private final Data db;
+	private static CategoryEntityManager CManager;
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -173,7 +173,7 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int count() throws WPISuiteException {
 		// Return the number of Categories currently in the database
 		return db.retrieveAll(new Category()).size();
 	}

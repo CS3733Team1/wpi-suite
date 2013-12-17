@@ -27,7 +27,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.CommitmentPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;

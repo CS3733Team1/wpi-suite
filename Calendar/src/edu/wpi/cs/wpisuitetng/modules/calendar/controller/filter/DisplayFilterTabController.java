@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
  */
 
 public class DisplayFilterTabController implements ActionListener {
-	CalendarPanel calendarPanel;
+	private CalendarPanel calendarPanel;
 	
 	public DisplayFilterTabController(CalendarPanel calendarPanel) {
 		this.calendarPanel = calendarPanel;

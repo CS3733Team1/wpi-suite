@@ -17,7 +17,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class ScheduleEventSetup extends JPanel implements KeyListener, ActionListener {
 
-	private final String EMPTY_NAME_ERROR = "Name is required.";
+	private final static String EMPTY_NAME_ERROR = "Name is required.";
 	private JTextField nameTextField;
 	private JPanel nameErrorPanelWrapper;
 	private JLabel nameErrorLabel;
@@ -54,7 +54,7 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 		this.add(dwp,"cell 0 4, grow,alignx center");
 		
 
-		JComboBox startTime = new JComboBox(hour);
+		JComboBox<String> startTime = new JComboBox<String>(hour);
 		startTime.setSelectedIndex(8);
 		
 		startTime.addActionListener(new ActionListener(){
@@ -64,11 +64,11 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
         });            
 		this.add(startTime,"cell 0 1");
 		
-		JComboBox endTime = new JComboBox(hour);
+		JComboBox<String> endTime = new JComboBox<String>(hour);
 		endTime.setSelectedIndex(8);
 		endTime.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-            	 JComboBox combo = (JComboBox)e.getSource();
+            	 JComboBox<String> combo = (JComboBox<String>)e.getSource();
             	 int index = combo.getSelectedIndex();
                  String currentQuantity = hour[index];
                  

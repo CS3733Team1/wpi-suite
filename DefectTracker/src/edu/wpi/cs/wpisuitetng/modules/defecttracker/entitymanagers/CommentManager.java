@@ -101,7 +101,7 @@ public class CommentManager implements EntityManager<Comment> {
 	}
 
 	@Override
-	public int Count() throws NotImplementedException {
+	public int count() throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 

@@ -59,7 +59,7 @@ public class TimeDurationChooser extends JPanel {
 		// Notify everybody that may be interested.
 		DateTimeChangedEvent evt = new DateTimeChangedEvent(startDate_.toString()+"-"+endDate_.toString());
         for (DateTimeChangedEventListener hl : listeners)
-            hl.DateTimeChangedEventOccurred(evt);
+            hl.dateTimeChangedEventOccurred(evt);
 	}
 	
 	/**
@@ -111,7 +111,7 @@ public class TimeDurationChooser extends JPanel {
 		startDateChooser_=new DateTimeChooser("Start Time:");
 		startDateChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
-			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+			public void dateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 				startDateChanged();
 			}
 		});
@@ -127,7 +127,7 @@ public class TimeDurationChooser extends JPanel {
 		endDateChooser_=new DateTimeChooser("End Time:", endDate_);
 		endDateChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
-			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+			public void dateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 				endDateChanged();
 			}
 		});

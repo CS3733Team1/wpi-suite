@@ -152,8 +152,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				durationChooser_=new TimeDurationChooser();
 				durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 					@Override
-					public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
-//				System.out.println("Time Duration Changed");
+					public void dateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 						validateFields();
 					}
 				});
@@ -171,7 +170,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
 			
 			@Override
-			public void RecurringChangedEventOccurred(RecurringChangedEvent evt) {
+			public void recurringChangedEventOccurred(RecurringChangedEvent evt) {
 				validateFields();
 			}
 		});
@@ -181,11 +180,13 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		// Category
 		this.add(new JLabel("Category:"), "cell 0 5");
 		categoryPickerPanel = new CategoryPickerPanel();
+		categoryPickerPanel.addActionListener(this);
 		this.add(categoryPickerPanel, "cell 0 5,alignx left");
 
 		// Description
 		this.add(new JLabel("Description:"), "cell 0 6");
 		descriptionTextArea = new JTextArea();
+		descriptionTextArea.addKeyListener(this);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 
@@ -208,6 +209,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		//Action Listener for Cancel Button
 		cancelButton.addActionListener(this);
 		calendarPicker = new CalendarPicker();
+		calendarPicker.addActionListener(this);
 		this.add(calendarPicker, "cell 0 4,alignx left");
 
 		validateFields();
@@ -226,7 +228,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		boolean enableAddEvent = true;
 		
 		if(isEditMode) {
-			System.out.println("Edit Mode");
 			enableAddEvent = !validateEdit();
 		}
 
@@ -276,7 +277,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		System.out.println("All Day Checkbox Changed!");
 		if(e.getActionCommand().equals("cancel")) {
 			this.closeEventPanel();
 		} else {
@@ -322,7 +322,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			startDate.setDate(startDate.getDate() + 1);
 			endDate.setDate(endDate.getDate() + 1);
 			//make a new event with start and end times
-				
 		}
 		return eventList;
 	}
