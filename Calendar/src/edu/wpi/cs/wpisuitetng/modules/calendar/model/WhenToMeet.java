@@ -14,7 +14,9 @@ public class WhenToMeet extends DeletableAbstractModel {
 	
 	public WhenToMeet()
 	{
-		
+		hours=null;
+		name=null;
+		daysoccuring=null;
 	}
 	public WhenToMeet(ArrayList< ArrayList< Hour > > thehours, String thename, boolean [] days)
 	{
