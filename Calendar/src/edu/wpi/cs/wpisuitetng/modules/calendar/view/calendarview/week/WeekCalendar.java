@@ -31,6 +31,7 @@ import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
@@ -113,8 +114,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		
 		this.add(weekscroll, "grow");
 		
-		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
-		//DisplayCommitments();
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 		
 		int end = weekscroll.getVerticalScrollBar().getMaximum();
 		weekscroll.getVerticalScrollBar().setValue(end * 3 / 4);
@@ -162,7 +162,10 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	public void updateWeekHeader(){
 		rebuildDays();
 	}
-	 
+	
+	/**
+	 * Calculates the new width that children components should take 
+	 */
 	public void repaint(){
 		if (weeklayer != null){
 			weeklayer.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*3));
@@ -174,15 +177,21 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		super.repaint();
 	}
 	
+	/**
+	 * Updates the multidayview with new information
+	 */
 	public void updateMultiDay(){
 		multiview.updateMultiDay(weeklayer.getMultiDayEvents(), weeklayer.getDayViewDate());
+		this.revalidate();
 	}
 	
 	public Date getWeekStart()
 	{
 		return weeklayer.getDate(1);
 	}
-	/*
+
+
+	/**
 	 * Changes the week day names to abbreviations if the panel is too small
 	 */
 	private void updateLayout() {
@@ -239,22 +248,16 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		updateMultiDay();
-		updateUI();
 		repaint();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		updateMultiDay();
-		updateUI();
 		repaint();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		updateMultiDay();
-		updateUI();
 		repaint();
 	}
 

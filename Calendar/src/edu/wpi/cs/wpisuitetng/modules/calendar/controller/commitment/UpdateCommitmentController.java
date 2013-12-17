@@ -30,12 +30,21 @@ public class UpdateCommitmentController implements ActionListener {
 	private CommitmentTabPanel view;
 	private Commitment commitmentToUpdate;
 	
+	/**
+	 * Constructor used by the commitment list or edit commitment panel to update commitment
+	 * @param view The view, which needs to be closed after edit is entered
+	 * @param commitmentToUpdate commitment to update
+	 */
 	public UpdateCommitmentController(CommitmentTabPanel view, Commitment commitmentToUpdate) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.view = view;
 		this.commitmentToUpdate = commitmentToUpdate;
 	}
 	
+	/**
+	 * This constructor is used by views for updating dragged commitments
+	 * @param updatedCommitment commitment being updated
+	 */
 	public UpdateCommitmentController(Commitment updatedCommitment) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.commitmentToUpdate = updatedCommitment;
@@ -53,9 +62,10 @@ public class UpdateCommitmentController implements ActionListener {
 		updateCommitmentInServer();
 	}
 	
+	/**
+	 * Makes a request to the server to update a commitment based on the unique idea of the commitment
+	 */
 	public void updateCommitmentInServer() {
-		System.out.println("Updating commitment: name = " + commitmentToUpdate.getName() + "; uid = " + commitmentToUpdate.getUniqueID());
-
 		// Create a Post Request
 		final Request request = Network.getInstance().makeRequest("calendar/commitment", HttpMethod.POST);
 		
@@ -69,13 +79,13 @@ public class UpdateCommitmentController implements ActionListener {
 		request.send();
 	}
 
+	/**
+	 * Updates the model with the new commitment recieved from the server
+	 * @param newCommitment commitment to be added to the model
+	 */
 	public void updateCommitmentInModel(Commitment newCommitment) {
 
-		System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
-		model.updateCommitment(commitmentToUpdate, newCommitment);
-
 		if (commitmentToUpdate != null) {
-			System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
 			model.updateCommitment(commitmentToUpdate, newCommitment);
 			
 			if (view != null) {

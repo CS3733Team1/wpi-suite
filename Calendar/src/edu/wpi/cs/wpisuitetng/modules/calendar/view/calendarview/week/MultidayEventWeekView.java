@@ -39,8 +39,6 @@ public class MultidayEventWeekView extends JPanel {
 	
 	
 	public void updateMultiDay(List<List<Event>> multiday, Date current){
-		System.err.println(multiday);
-		System.err.println(current);
 		
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
@@ -204,6 +202,12 @@ public class MultidayEventWeekView extends JPanel {
 		this.updateUI();
 	}
 	
+	/**
+	 * Gets the difference between two dates
+	 * @param d1 Starting Date, which comes before d2
+	 * @param d2 End Date, which comes after d1
+	 * @return The Minimum between 7 and the difference between d1 and d2
+	 */
 	public int getDateDiff(Date d1, Date d2){
 		Date current = d1;
 		int diff = 0;

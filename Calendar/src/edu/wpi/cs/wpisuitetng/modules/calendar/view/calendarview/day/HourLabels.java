@@ -52,7 +52,7 @@ public class HourLabels extends JPanel{
 	 */
 	public void drawHours(Graphics g){
 		for (int x =0; x <= 23; x++){
-			g.setColor(Color.BLACK);
+			g.setColor(Color.LIGHT_GRAY);
 			g.drawString(DateUtils.hourString(x),0,60*x);
 		}
 	}
