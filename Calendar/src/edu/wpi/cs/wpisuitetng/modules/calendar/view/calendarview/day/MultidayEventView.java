@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
 //import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 /**
@@ -172,7 +173,7 @@ public class MultidayEventView extends JPanel{
 
 
 			//Adds a mouselistener to the event
-			//multipane.addMouseListener(new EventMouseListener(eve, multipane));
+			multipane.addMouseListener(new SchedMouseListener(eve, multipane));
 
 			JLabel eventInfo = new JLabel(eventNameBob.toString());
 
