@@ -69,7 +69,7 @@ public class DayOfWeekPanel extends JPanel {
 		      public void mouseReleased(MouseEvent e) {
 		    	  int deltaX = e.getXOnScreen() - screenX;
 		          int deltaY = e.getYOnScreen() - screenY;
-		    	  if(isDragged == true){
+		    	  if(isDragged){
 		    		  System.out.println("Drag Relased");
 		    		  
 		    		  System.out.println("DeltaX:" + deltaX + "," +"DeltaY:" + deltaY);
@@ -118,7 +118,7 @@ public class DayOfWeekPanel extends JPanel {
 		ArrayList<String> tempListStorage = new ArrayList<String>();
 		for(int i = 0; i < listDay.size(); i++)
 		{
-			if(listDay.get(i).getState() == true)
+			if(listDay.get(i).getState())
 				tempListStorage.add(listDay.get(i).getDayString());
 		}
 		if(listDay.size() > 0){

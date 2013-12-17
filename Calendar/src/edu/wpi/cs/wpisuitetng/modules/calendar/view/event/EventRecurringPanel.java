@@ -86,16 +86,17 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	 */
 	private void buildLayout(Date startDate, boolean recurringHuh) {
 		
-		setLayout(new MigLayout("", "[][][][][][][][]", "[][][][]"));
-		defaultBorder = this.getBorder();
-		
-		chckbxMakeRecurring = new JCheckBox("Make Recurring");
-		chckbxMakeRecurring.setSelected(recurringHuh);
-		add(chckbxMakeRecurring, "spanx");
-		chckbxMakeRecurring.addActionListener(this);
-		
+	
 		if(recurringHuh)
 		{	
+			setLayout(new MigLayout("", "[][][][][][][][]", "[][][][]"));
+			defaultBorder = this.getBorder();
+			
+			chckbxMakeRecurring = new JCheckBox("Make Recurring");
+			chckbxMakeRecurring.setSelected(recurringHuh);
+			add(chckbxMakeRecurring, "spanx");
+			chckbxMakeRecurring.addActionListener(this);
+			
 			isRecurring = true;
 			JLabel lblRecurring = new JLabel("Recurring: ");
 			add(lblRecurring, "cell 0 1");
@@ -150,7 +151,17 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 			validateRecurring(startDate);
 		}
 		else
+		{
+			setLayout(new MigLayout("", "[]", "[]"));
+			defaultBorder = this.getBorder();
+			
+			chckbxMakeRecurring = new JCheckBox("Make Recurring");
+			chckbxMakeRecurring.setSelected(recurringHuh);
+			add(chckbxMakeRecurring, "spanx");
+			chckbxMakeRecurring.addActionListener(this);
 			isRecurring = false;
+		}
+			
 	}
 
 
