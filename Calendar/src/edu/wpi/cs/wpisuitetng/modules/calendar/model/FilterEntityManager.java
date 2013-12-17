@@ -88,8 +88,9 @@ public class FilterEntityManager implements EntityManager<Filter> {
 	@Override
 	public Filter[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		System.out.printf("Server: Retrieving category with id = %s\n", id);
-		return (Filter []) (db.retrieve(this.getClass(),"UniqueID", id, s.getProject()).toArray());
+		System.out.printf("Server: Retrieving Filter with id = %s\n", id);
+		List<Model> list = db.retrieve(Filter.class,"UniqueID", Long.parseLong(id), s.getProject());
+		return list.toArray(new Filter[list.size()]);
 	}
 
 	/* 
