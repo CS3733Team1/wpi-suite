@@ -49,7 +49,7 @@ public class RightClickCommitmentMenu extends JPopupMenu implements MouseListene
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(e.getSource().equals(deleteButton)) {
-			DeleteCommitmentController.deleteCommitments(commitments);;
+			DeleteCommitmentController.deleteCommitments(commitments);
 			System.out.println("mouse released on Delete Butotn");
 		} else if(e.getSource().equals(editButton)) {
 			for(Commitment commitment : commitments) openUpdateCommitmentTab(commitment);

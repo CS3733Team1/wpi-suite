@@ -45,10 +45,11 @@ public class UpdateCommitmentController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.commitmentToUpdate = view.getFilledCommitment();
-		commitmentToUpdate.setUniqueID(commitmentToUpdate.getUniqueID());
-		commitmentToUpdate.setOwnerID(commitmentToUpdate.getOwnerID());
-		commitmentToUpdate.setOwnerName(commitmentToUpdate.getOwnerName());	
+		Commitment newCommitment = view.getFilledCommitment();
+		newCommitment.setUniqueID(commitmentToUpdate.getUniqueID());
+		newCommitment.setOwnerID(commitmentToUpdate.getOwnerID());
+		newCommitment.setOwnerName(commitmentToUpdate.getOwnerName());
+		commitmentToUpdate = newCommitment;
 		
 		updateCommitmentInServer();
 	}
@@ -84,8 +85,7 @@ public class UpdateCommitmentController implements ActionListener {
 			{
 				view.closeCommitmentPanel();
 			}
-		}		
-
+		}
 	}
 
 }

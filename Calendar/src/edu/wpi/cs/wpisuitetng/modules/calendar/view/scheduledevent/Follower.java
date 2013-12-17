@@ -120,9 +120,9 @@ public class Follower extends JPanel{
 		for(int i = 0; i < day; i++){
 			for(int j = 0; j < end-start; j++)
 			{	StringBuilder sb = new StringBuilder();
-				if(list.get(i).get(j).getState() == true)
+				if(list.get(i).get(j).getState())
 					hourList.get(i).get(j).updateCount(user);
-				if(list.get(i).get(j).getState() == false)
+				if(!list.get(i).get(j).getState())
 					hourList.get(i).get(j).reduceCount(user);
 				sb.append("<html><p style='width:100'><b>Available: </b><br>");
 				for(int z = 0; z < hourList.get(i).get(j).userList().size(); z++)

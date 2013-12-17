@@ -70,7 +70,7 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 	private void fillListItems() {
 		listItems.clear();
 		selectedListItems.clear();
-		for(int i = 0; i < listModel.getSize(); i++) listItems.add(new ListItem<T>(this, listModel.getElementAt(i)));;
+		for(int i = 0; i < listModel.getSize(); i++) listItems.add(new ListItem<T>(this, listModel.getElementAt(i)));
 	}
 
 	private void createComponents() {
