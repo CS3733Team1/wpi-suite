@@ -41,6 +41,7 @@ public class LeaderPanel extends JPanel {
 	public void updatePanels() {
 		lead.getList();
 		ScheduleEventMain wtm = (ScheduleEventMain) this.getParent();
+		System.out.println("user"+getUser());
 		wtm.updatePanel(lead.getList(), getUser());
 	}
 
