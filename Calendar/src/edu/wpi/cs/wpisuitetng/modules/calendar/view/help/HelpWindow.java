@@ -40,9 +40,6 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-
-
-
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -298,7 +295,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			if(imageNames.contains(temp))
 			{
 				output += buffer.substring(0, ind + 10);
-				output += "file:///" + parent + "/" + temp;;
+				output += "file:///" + parent + "/" + temp;
 				output += buffer.substring(ind + 10 + temp.length(), ind + 10 + temp.length() + 2);
 			}
 			else

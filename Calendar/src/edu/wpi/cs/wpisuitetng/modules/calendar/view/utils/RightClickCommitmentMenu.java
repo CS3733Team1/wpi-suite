@@ -15,70 +15,28 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 
-public class RightClickCommitmentMenu extends JPopupMenu{
+public class RightClickCommitmentMenu extends JPopupMenu implements MouseListener {
 
 	private List<Commitment> commitments;
 	private CalendarPanel calendarPanel;
-	
+
 	private JMenuItem deleteButton;
 	private JMenuItem editButton;
-	
 
-	public RightClickCommitmentMenu(List<Commitment> c, final CalendarPanel calendarPanel){
+
+	public RightClickCommitmentMenu(List<Commitment> c, CalendarPanel calendarPanel) {
 		this.calendarPanel = calendarPanel;
 		commitments = c;
 		deleteButton = new JMenuItem ("Delete");
 		editButton = new JMenuItem ("Edit");
 		this.add(deleteButton);
 		this.add(editButton);
-		
-		//Mouse actions to perform for the delete button
-		deleteButton.addMouseListener(new MouseListener(){
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				DeleteCommitmentController.deleteCommitments(commitments);;
-				System.out.println("mouse released on Delete Butotn");
-			}
-		});
-		
-		//Mouse actions to perform for the edit button
-		editButton.addMouseListener(new MouseListener(){
-			
-			/**
-			 * When the mouse is released on the Edit Button, Edit all selected commitments in new CommitmentTabs
-			 */
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				//iterate through all commitments in this edit menu's list of selected commitments
-				for(Commitment commitment : commitments){
-//					commitmentListPanel.setSelectedCommitment(commitment);	//set it as the selected commitment in the CommitmentListPanel
-//					commitmentListPanel.openUpdateCommitmentTabPanel();		//call the panel's method to edit the selected commitment
-					openUpdateCommitmentTab(calendarPanel, commitment);
-				}
-				System.out.println("Mouse Released on edit button");
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-		});
+
+		deleteButton.addMouseListener(this);
+		editButton.addMouseListener(this);
 	}
 
-	public static void openUpdateCommitmentTab(CalendarPanel calendarPanel, Commitment commitment) {
+	public void openUpdateCommitmentTab(Commitment commitment) {
 		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(commitment);
 		ImageIcon miniCommitmentIcon = new ImageIcon();
 		try {
@@ -88,4 +46,23 @@ public class RightClickCommitmentMenu extends JPopupMenu{
 		calendarPanel.setSelectedComponent(commitmentPanel);	
 	}
 
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if(e.getSource().equals(deleteButton)) {
+			DeleteCommitmentController.deleteCommitments(commitments);
+			System.out.println("mouse released on Delete Butotn");
+		} else if(e.getSource().equals(editButton)) {
+			for(Commitment commitment : commitments) openUpdateCommitmentTab(commitment);
+		}
+	}
+
+	//Unused
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
+	@Override
+	public void mousePressed(MouseEvent e) {}
 }

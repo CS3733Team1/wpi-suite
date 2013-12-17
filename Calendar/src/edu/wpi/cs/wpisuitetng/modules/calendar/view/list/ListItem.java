@@ -4,21 +4,28 @@ import javax.swing.JComponent;
 
 public class ListItem<T> {
 	
+	private SRList<T> srList;
 	private T listObject;
 	private boolean isSelected;
 	private boolean isFocused;
 	private boolean isDoubleClicked;
+	private boolean isExpanded;
+	private boolean isDirty;
 	private JComponent component;
+	private RenderableComponent<T> renderableComponent;
 	
-	public ListItem(T listItem) {
+	public ListItem(SRList<T> srList, T listItem) {
+		this.srList = srList;
 		this.listObject = listItem;
-		this.isSelected = false;
 	}
 	
 	public T getListObject(){return this.listObject;}
 	
 	public JComponent getComponent(){return this.component;}
 	public void setComponent(JComponent component) {this.component = component;}
+	
+	public RenderableComponent<T> getRenderableComponent(){return this.renderableComponent;}
+	public void setRenderableComponent(RenderableComponent<T> renderableComponent) {this.renderableComponent = renderableComponent;}
 	
 	public boolean isFocused() {return isFocused;}
 	public void setFocused(boolean focused) {this.isFocused = focused;}
@@ -27,7 +34,22 @@ public class ListItem<T> {
 	public void setSelected(boolean selected) {this.isSelected = selected;}
 
 	public boolean isDoubleClicked() {return this.isDoubleClicked;}
-	public void setDoubleClicked(boolean isDoubleClicked){this.isDoubleClicked = isDoubleClicked;}
+	public void setDoubleClicked(boolean doubleClicked){this.isDoubleClicked = doubleClicked;}
 
 	public void toggleDoubleClicked() {this.isDoubleClicked = !this.isDoubleClicked;}
+
+	public void setExpand(boolean expanded) {this.isExpanded = expanded;}
+	public boolean isExpanded() {return this.isExpanded;}
+
+	public boolean isDirty() {return this.isDirty;}
+	
+	public void requesUpdate() {
+		this.isDirty = true;
+		srList.updateComponents();
+	}
+
+	public void update() {
+		this.renderableComponent.update(this);
+		this.isDirty = false;
+	}
 }

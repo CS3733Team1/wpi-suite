@@ -12,13 +12,14 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.text.DateFormat;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,18 +30,16 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayMultiScrollPane;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.MultidayEventView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
  * The second level of the week view hierarchy. Holds the WeekCalendarLayerPane and the WeekCalendarScrollPane.
  */
 
-public class WeekCalendar extends JPanel implements ICalendarView, ListDataListener, ComponentListener {
+public class WeekCalendar extends JPanel implements ICalendarView, ListDataListener, ComponentListener, MouseListener {
 
 	private WeekCalendarScrollPane weekscroll;
 	private WeekHolderPanel weeklayer;
@@ -74,7 +73,10 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		
 		weekscroll = new WeekCalendarScrollPane(weeklayer);
 		for(int days = 1; days < 8; days++){
-			JPanel weekName = new JPanel(new MigLayout("fill, insets 0"));
+			WeekNamePanel weekName = new WeekNamePanel();
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.setTime(weeklayer.getDate(days));
+			weekName.setDate(cal);
 			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
 			label.setFont(new Font(label.getName(), Font.BOLD, 14));
 			weekdays.add(label);
@@ -82,8 +84,9 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 			if(days == 1 || days == 7)
 				label.setForeground(CalendarUtils.timeColor);
 			
-	
 			weekName.setBackground(Color.white);
+			weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			weekName.addMouseListener(this);
 			weektitle.add(weekName, "aligny bottom, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
 		}
@@ -125,18 +128,21 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		weektitle.add(time, "aligny center, w 5000, grow, wmin 0");
 		todayIndex = 0;
 		for(int days = 1; days < 8; days++){
-			JPanel weekName = new JPanel(new MigLayout("fill"));
-			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1] + " " + weeklayer.getDate(days));
+			WeekNamePanel weekName = new WeekNamePanel();
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.setTime(weeklayer.getDate(days));
+			weekName.setDate(cal);
+			JLabel label = new JLabel(CalendarUtils.weekNamesAbbr[days-1]);
 			label.setFont(new Font(label.getName(), Font.BOLD, 14));
 			weekdays.add(label);
 			weekName.add(label,"grow, aligny bottom");
 			if(days == 1 || days == 7)
 				label.setForeground(CalendarUtils.timeColor);
 			
-			
-			weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
 			weekName.setBackground(Color.white);
-			weektitle.add(weekName, "aligny center, w 5000, grow, wmin 0");
+			weekName.setBorder(new MatteBorder(0, 0, 5, 0, CalendarUtils.timeColor));
+			weekName.addMouseListener(this);
+			weektitle.add(weekName, "aligny bottom, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
 		}
 	}
@@ -194,6 +200,8 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		// TODO Auto-generated method stub
 		weeklayer.next();
 		updateMultiDay();
+		rebuildDays();
+		updateUI();
 		repaint();
 	}
 
@@ -202,6 +210,8 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		// TODO Auto-generated method stub
 		weeklayer.previous();
 		updateMultiDay();
+		rebuildDays();
+		updateUI();
 		repaint();
 	}
 
@@ -210,22 +220,30 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		// TODO Auto-generated method stub
 		weeklayer.today();
 		updateMultiDay();
+		rebuildDays();
+		updateUI();
 		repaint();
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 		updateMultiDay();
+		updateUI();
+		repaint();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
 		updateMultiDay();
+		updateUI();
+		repaint();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
 		updateMultiDay();
+		updateUI();
+		repaint();
 	}
 
 	@Override
@@ -247,4 +265,27 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	public void componentMoved(ComponentEvent e) {}
 	@Override
 	public void componentShown(ComponentEvent e) {}
+
+	public void mouseClicked(MouseEvent e) {
+		if(e.getClickCount() == 2) {
+			WeekNamePanel weekName = (WeekNamePanel)e.getSource();
+			Calendar clickedDay = weekName.getDate();
+			if(this.getParent().getParent() != null)
+			{
+				CalendarTabPanel tab = (CalendarTabPanel)(this.getParent().getParent());
+				tab.displayDayView();
+				tab.setCalendarViewDate(clickedDay);
+			}
+		}
+	}
+
+	//Unused
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
 }

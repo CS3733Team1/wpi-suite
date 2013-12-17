@@ -12,6 +12,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.UpdateEventContr
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 
 public class EvComMouseListener implements MouseListener, MouseMotionListener{
 	private MonthCalendarView monthView;
@@ -168,14 +171,24 @@ public class EvComMouseListener implements MouseListener, MouseMotionListener{
 			else if(e.getSource() instanceof EventPanel) 
 			{
 				Event event = ((EventPanel)e.getSource()).getEvent();
+				EventTabPanel editEventPanel = new EventTabPanel(event);
+				MainView.getCurrentCalendarPanel().addTab("Update Event", editEventPanel);
+				MainView.getCurrentCalendarPanel().setSelectedComponent(editEventPanel);
+				
 			} 
 			else if(e.getSource() instanceof CommitmentPanel) 
 			{
 				Commitment commitment = ((CommitmentPanel)e.getSource()).getCommitment();
+				CommitmentTabPanel editCommitmentPanel = new CommitmentTabPanel(commitment);
+				MainView.getCurrentCalendarPanel().addTab("Update Commitmement", editCommitmentPanel);
+				MainView.getCurrentCalendarPanel().setSelectedComponent(editCommitmentPanel);
 			} 
 			else if(e.getSource() instanceof MultiDayEventPanel) 
 			{
 				Event event = ((MultiDayEventPanel)e.getSource()).getEvent();
+				EventTabPanel editEventPanel = new EventTabPanel(event);
+				MainView.getCurrentCalendarPanel().addTab("Update Event", editEventPanel);
+				MainView.getCurrentCalendarPanel().setSelectedComponent(editEventPanel);
 			}
 		}
 	}

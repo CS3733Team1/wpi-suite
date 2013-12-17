@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 import java.io.IOException;
@@ -40,10 +41,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGroup;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2.WeekCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
@@ -70,7 +69,7 @@ public class CalendarTabPanel extends JPanel {
 
 	private JLabel calendarTitleLabel;
 	
-	private JTabbedPane filterCategoryTabbedPane;
+	private JTabbedPane subTabPane;
 	
 	private CommitmentSubTabPanel commitmentSubTabPanel;
 	//private QuickListTabPanel quickListTabPanel;
@@ -80,8 +79,9 @@ public class CalendarTabPanel extends JPanel {
 		this.setLayout(new MigLayout("fill"));
 		this.setBackground(Color.WHITE);
 
-		filterCategoryTabbedPane = new JTabbedPane();
-		filterCategoryTabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+		subTabPane = new JTabbedPane();
+		subTabPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+		subTabPane.setMinimumSize(new Dimension(280, 64));
 		
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		//quickListTabPanel = new QuickListTabPanel(calendarPanel);
@@ -119,13 +119,13 @@ public class CalendarTabPanel extends JPanel {
 			//filterCategoryTabbedPane.addTab("Quick List", new ImageIcon(ImageIO.read(getClass().getResource("/images/quicklist.png"))), 
 			//		quickListTabPanel);
 			
-			filterCategoryTabbedPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
+			subTabPane.addTab("Commitments", new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png"))), 
 					commitmentSubTabPanel);
 			
-			filterCategoryTabbedPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
+			subTabPane.addTab("Categories", new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png"))), 
 					new CategoryTabPanel());
 			
-			filterCategoryTabbedPane.addTab("Filters", new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))), new FilterTabPanel());
+			subTabPane.addTab("Filters", new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png"))), new FilterTabPanel());
 		} catch (IOException e) {}
 
 		prevButton.setMargin(new Insets(0, 0, 0, 0));
@@ -170,7 +170,7 @@ public class CalendarTabPanel extends JPanel {
 		
 		this.add(topButtonPanel, "growx");
 		
-		this.add(filterCategoryTabbedPane, "grow, span 1 2, wrap");
+		this.add(subTabPane, "grow, span 1 2, wrap");
 		
 		calendarViewPanel = new JPanel(new MigLayout("fill"));
 		calendarViewPanel.setBackground(Color.WHITE);
@@ -198,7 +198,7 @@ public class CalendarTabPanel extends JPanel {
 		if(calendarView instanceof MonthCalendarView)
 			selectedCommitments.addAll(((MonthCalendarView)calendarView).getSelectedCommitments());
 		
-		if(filterCategoryTabbedPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
+		if(subTabPane.getSelectedComponent() instanceof CommitmentSubTabPanel)
 			selectedCommitments.addAll(commitmentSubTabPanel.getSelectedCommitments());
 		//else if(filterCategoryTabbedPane.getSelectedComponent() instanceof QuickListTabPanel)
 			//selectedCommitments.addAll(quickListTabPanel.getCommitmentsList().getSelectedValuesList());
@@ -243,7 +243,7 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void displayDayView() {
-		if(!(calendarView instanceof DayCalendarPanel)) {
+		if(!(calendarView instanceof DayCalendar)) {
 			viewButtonGroup.setSelectedButton(0);
 			calendarViewPanel.removeAll();
 			calendarView = dayView;
@@ -254,7 +254,7 @@ public class CalendarTabPanel extends JPanel {
 		}
 	}
 	public void displayWeekView() {
-		if(!(calendarView instanceof WeekCalendarPanel)){
+		if(!(calendarView instanceof WeekCalendar)){
 			viewButtonGroup.setSelectedButton(1);
 			calendarViewPanel.removeAll();
 			calendarView = weekView;

@@ -11,6 +11,10 @@ public class DayMultiScrollPane extends JScrollPane{
 	private MultidayEventView mday;
 	private int scrollSpeed = 15;
 	
+	/**
+	 * Creates a new ScrollPane for holding the multiday events
+	 * @param hold the multidayeventview being held by the scrollpane
+	 */
 	public DayMultiScrollPane(MultidayEventView hold){
 		super(hold);
 		mday = hold;

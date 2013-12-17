@@ -198,4 +198,9 @@ public class Filter extends DeletableAbstractModel {
 			return this.getUniqueID() == filterOther.getUniqueID();
 		} else return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int)this.getUniqueID();
+	}
 }

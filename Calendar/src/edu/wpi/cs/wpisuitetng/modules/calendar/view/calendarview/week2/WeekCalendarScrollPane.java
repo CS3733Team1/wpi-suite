@@ -11,7 +11,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
 
 import java.awt.Color;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,12 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 
 /**
  * Handles resizing and scrolling in week view.

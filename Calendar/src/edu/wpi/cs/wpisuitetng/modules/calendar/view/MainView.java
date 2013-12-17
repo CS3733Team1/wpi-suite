@@ -12,9 +12,13 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.ChangeToolBarController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.RetrieveCategoryController;
@@ -26,42 +30,45 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventTabC
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.help.HelpButtonController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.DisplayScheduledEventTabController;
 
 public class MainView {
-
 	private List<JanewayTabModel> tabs;
 	private static CalendarPanel calendarPanel;
 	private static CalendarToolBar calendarToolBar;
 
+	RetrieveCommitmentController	rcomc = new RetrieveCommitmentController();
+	RetrieveEventController			revec = new RetrieveEventController();
+	RetrieveCategoryController		rcatc = new RetrieveCategoryController();
+	RetrieveFilterController		rfilc = new RetrieveFilterController();
 	public MainView() {
 		calendarPanel = new CalendarPanel();
 		calendarToolBar = new CalendarToolBar();
-		
+
 		calendarPanel.addChangeListener(new ChangeToolBarController(calendarToolBar, calendarPanel));
 
-		RetrieveCommitmentController	rcomc = new RetrieveCommitmentController();
-		RetrieveEventController			revec = new RetrieveEventController();
-		RetrieveCategoryController		rcatc = new RetrieveCategoryController();
-		RetrieveFilterController		rfilc = new RetrieveFilterController();
-		
+
+
 		calendarPanel.addAncestorListener(rcomc);
 		calendarPanel.addAncestorListener(revec);
 		calendarPanel.addAncestorListener(rcatc);
 		calendarPanel.addAncestorListener(rfilc);
-		
+
 		calendarToolBar.refreshButtonListener(rcomc);
 		calendarToolBar.refreshButtonListener(revec);
 		calendarToolBar.refreshButtonListener(rcatc);
 		calendarToolBar.refreshButtonListener(rfilc);
-		
+
 		calendarToolBar.addEventButtonListener(new DisplayEventTabController(calendarPanel));
 		calendarToolBar.deleteEventButtonListener(new DeleteEventController(calendarPanel));
-		
+
 		calendarToolBar.helpButtonListener(new HelpButtonController(calendarPanel));
-		
+
 		calendarToolBar.deleteCommitmentButtonListener(new DeleteCommitmentController(calendarPanel));
 		calendarToolBar.addCommitmentButtonListener(new DisplayCommitmentTabController(calendarPanel));
-		
+
+		calendarToolBar.addScheduledEventButtonListener(new DisplayScheduledEventTabController(calendarPanel));
+
 		tabs = new ArrayList<JanewayTabModel>();
 
 		JanewayTabModel tab = new JanewayTabModel(getName(), new ImageIcon(),
@@ -71,6 +78,11 @@ public class MainView {
 		tabs.add(tab);
 
 		calendarPanel.createCalendar();
+
+		//Create a new Daemon thread to automatically refresh stuff for us.
+		//it is set to 30 s delay and 10s period.
+		new Timer(true).scheduleAtFixedRate(new UpdateTimerTask(), 30 * 1000, 10000);
+
 	}
 
 	public List<JanewayTabModel> getTabs() {
@@ -80,11 +92,11 @@ public class MainView {
 	public String getName() {
 		return "Calendar";
 	}
-	
+
 	public CalendarToolBar getCalendarToolBar() {
 		return calendarToolBar;
 	}
-	
+
 	public synchronized CalendarPanel getCalendarPanel(){
 		return this.calendarPanel;
 	}
@@ -95,4 +107,26 @@ public class MainView {
 	{
 		return MainView.calendarToolBar;
 	}
+	class UpdateTimerTask extends TimerTask
+	{
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			System.out.println("Auto refresh at");
+			if (MainView.getCurrentCalendarPanel().isDisplayable() && MainView.getCurrentCalendarPanel().isShowing())
+			{
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run(){
+						System.out.println("USER " + ConfigManager.getConfig().getUserName());
+						rcomc.retrieveMessages();
+						revec.retrieveMessages();
+						rcatc.retrieveMessages();
+						rfilc.retrieveMessages();
+
+					}});
+			}
+		}
+	}
+
 }
+

@@ -202,8 +202,8 @@ public class Event extends DeletableAbstractModel implements Comparable<ISchedul
 	 */
 	@Override
 	public int compareTo(ISchedulable other) {
-		if (this.startDate.after(other.getStartDate()) == true) return 1;
-		else if (this.startDate.before(other.getStartDate()) == true) return -1;
+		if (this.startDate.after(other.getStartDate())) return 1;
+		else if (this.startDate.before(other.getStartDate())) return -1;
 		else return 0;
 	}
 	
@@ -225,5 +225,10 @@ public class Event extends DeletableAbstractModel implements Comparable<ISchedul
 		this.uniqueID = e.uniqueID;
 		this.ownerID = e.ownerID;
 		this.ownerName = e.ownerName;
+	}
+	
+	@Override
+	public int hashCode() {
+		return (int)this.getUniqueID();
 	}
 }

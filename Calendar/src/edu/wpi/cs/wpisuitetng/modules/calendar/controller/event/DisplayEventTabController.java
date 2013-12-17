@@ -42,6 +42,4 @@ public class DisplayEventTabController implements ActionListener {
 		calendarPanel.addTab("Add Event", miniEventIcon , eventPanel);
 		calendarPanel.setSelectedComponent(eventPanel);
 	}
-	
-
 }

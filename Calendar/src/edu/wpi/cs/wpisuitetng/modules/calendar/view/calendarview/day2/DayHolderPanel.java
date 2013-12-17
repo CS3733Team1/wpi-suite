@@ -33,12 +33,19 @@ public class DayHolderPanel extends JPanel{
 		this.add(day);
 	}
 	
+	/**
+	 * Resize method to deal with changing parent panel width
+	 * @param width new width to adapt to
+	 */
 	public void reSize(int width){
+		//The height must always be 1440, because 1 pixel per minute
 		this.setSize(width, 1440);
 		this.setPreferredSize(new Dimension(width, 1440));
 		this.setMinimumSize(new Dimension(0,1440));
 		
+		//Give the daypanel 90% of the screen
 		day.reSize(new Integer((int) (width * .9)));
+		//give the hour panel remaining 10%
 		hour.reSize(new Integer((int) (width * .1)));
 		
 		this.repaint();
@@ -56,18 +63,31 @@ public class DayHolderPanel extends JPanel{
 		return day.getTitle();
 	}
 
+	/**
+	 * request that the day move ahead by 1
+	 */
 	public void next() {
 		day.next();
 	}
 
+	/**
+	 * request that the day move back by 1
+	 */
 	public void previous() {
 		day.previous();
 	}
 
+	/**
+	 * request that day displays today
+	 */
 	public void today() {
 		day.today();
 	}
 
+	/**
+	 * Passes request to view a specific date down to the day
+	 * @param date the date being requested
+	 */
 	public void viewDate(Calendar date) {
 		day.viewDate(date);
 	}

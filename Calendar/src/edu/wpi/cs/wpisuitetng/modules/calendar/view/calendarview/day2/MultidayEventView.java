@@ -26,6 +26,11 @@ public class MultidayEventView extends JPanel{
 	private Date cdate;
 	private static boolean isEventShowing = true;
 
+	/**
+	 * Creates a new multiday panel
+	 * @param multiday new list of multiday events
+	 * @param current the starting date the panel is supposed to show
+	 */
 	public MultidayEventView(List<Event> multiday, Date current){
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
@@ -38,6 +43,11 @@ public class MultidayEventView extends JPanel{
 		this.setVisible(true);
 	}
 
+	/**
+	 * Updates the contents of the multiday panel
+	 * @param multiday new list of multiday events
+	 * @param current the starting date the panel is supposed to show
+	 */
 	public void updateMultiDay(List<Event> multiday, Date current){
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
@@ -51,6 +61,10 @@ public class MultidayEventView extends JPanel{
 		System.err.println(this.getPreferredSize());
 	}
 	
+	/**
+	 * Resizing method for adapting to changed with
+	 * @param width the new width to adapt panel to
+	 */
 	public void reSize(int width){
 		this.setSize(width, this.getPreferredSize().height);
 		this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
@@ -70,6 +84,9 @@ public class MultidayEventView extends JPanel{
 		});
 	}
 
+	/**
+	 * Sorts the events and creates a new layout
+	 */
 	public void showEvents(){
 		if (multidaye.size() == 0){
 			return;
@@ -84,9 +101,13 @@ public class MultidayEventView extends JPanel{
 		
 	}
 	
+	/**
+	 * Retrieves number of multiday events
+	 * @return number of events
+	 */
 	public int getNumberofEvents(){
 		return multidaye.size();
-		}
+	}
 
 	/**
 	 * Getter Method for isEventShowing
