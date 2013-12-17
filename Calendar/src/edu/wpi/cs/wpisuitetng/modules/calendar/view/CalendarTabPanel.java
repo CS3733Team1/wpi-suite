@@ -41,10 +41,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGroup;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2.WeekCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
@@ -245,7 +243,7 @@ public class CalendarTabPanel extends JPanel {
 	}
 
 	public void displayDayView() {
-		if(!(calendarView instanceof DayCalendarPanel)) {
+		if(!(calendarView instanceof DayCalendar)) {
 			viewButtonGroup.setSelectedButton(0);
 			calendarViewPanel.removeAll();
 			calendarView = dayView;
@@ -256,7 +254,7 @@ public class CalendarTabPanel extends JPanel {
 		}
 	}
 	public void displayWeekView() {
-		if(!(calendarView instanceof WeekCalendarPanel)){
+		if(!(calendarView instanceof WeekCalendar)){
 			viewButtonGroup.setSelectedButton(1);
 			calendarViewPanel.removeAll();
 			calendarView = weekView;
