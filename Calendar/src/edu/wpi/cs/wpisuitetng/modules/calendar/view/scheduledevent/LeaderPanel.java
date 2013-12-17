@@ -21,7 +21,7 @@ public class LeaderPanel extends JPanel {
 	public LeaderPanel()
 	{
 		hourList = new ArrayList<List<HourPanel>>();
-		this.setLayout(new MigLayout("fill,insets 0", "0[5%]0[95%]0","0[]0"));
+		this.setLayout(new MigLayout("fill,insets 0", "0[10%]0[90%]0","0[]0"));
 		this.setSize(this.getWidth(), this.getHeight());
 		this.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
 		this.setMinimumSize(new Dimension(0,this.getHeight()));
@@ -63,8 +63,8 @@ public class LeaderPanel extends JPanel {
 		this.setSize(width, this.getHeight());
 		this.setPreferredSize(new Dimension(width, this.getHeight()));
 		this.setMinimumSize(new Dimension(0,this.getHeight()));
-		tp.reSize(new Integer((int) (width * .05)));
-		lead.reSize(new Integer((int) (width * .50)));
+		tp.reSize(new Integer((int) (width * .10)));
+		lead.reSize(new Integer((int) (width * .90)));
 		
 		this.repaint();
 	}

@@ -2,12 +2,15 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 import net.miginfocom.swing.MigLayout;
 
 public class TimePanel extends JPanel{
@@ -48,10 +51,13 @@ public class TimePanel extends JPanel{
 			hourPanel.setBackground(Color.white);
 //			hourPanel.setBorder(new MatteBorder(1, 1, 1, 1, Color.white));
 			hourPanel.setLayout(new MigLayout("insets 0 0 0 10"));
+			
+			
 			if(i > 0 && i < end-start){
-				JLabel hourLabel = new JLabel(""+(start+i),JLabel.RIGHT);
+				JLabel hourLabel = new JLabel(DateUtils.hourString(start+i),JLabel.RIGHT);
+				hourLabel.setFont(new Font(hourLabel.getFont().getFontName(),Font.BOLD,10));
+				hourLabel.setForeground(CalendarUtils.timeColor);
 				hourPanel.add( hourLabel, "push, aligny center, alignx right" );
-				hourLabel.setForeground(Color.gray);
 			}
 			listHour.add(hourPanel);
 			this.add(hourPanel, "cell 0 "+i+", grow, push");

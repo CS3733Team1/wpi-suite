@@ -21,9 +21,9 @@ public class ScheduleEventTitlePanel extends JPanel{
 		for(int i = 0; i < (days.size()*2)+2; i++)
 		{
 			if(i == 0 || i== (days.size()+1))
-				col.append("0[2.5%]0");
+				col.append("0[5%]0");
 			else{
-				float panelSize = (float)(47.5/days.size());
+				float panelSize = (float)(45.0/days.size());
 				System.out.println(panelSize);
 				col.append("0[");
 				col.append(panelSize);
@@ -39,7 +39,7 @@ public class ScheduleEventTitlePanel extends JPanel{
 			System.out.println("days"+days.get(i));
 			JLabel day = new JLabel(days.get(i), JLabel.CENTER);
 			day.setForeground(CalendarUtils.titleNameColor);
-			day.setFont(new Font(day.getFont().getFontName(), Font.BOLD, 14));
+			day.setFont(new Font(day.getFont().getFontName(), Font.BOLD, 12));
 			this.add(day, "cell "+(i+1)+" 0, grow, push, wmin 0, alignx center");
 		}
 //		this.add(empty, "cell "+(days.size()+1)+" 0, grow, push, wmin 0");
@@ -47,7 +47,7 @@ public class ScheduleEventTitlePanel extends JPanel{
 		{
 			JLabel day = new JLabel(days.get(i), JLabel.CENTER);
 			day.setForeground(CalendarUtils.titleNameColor);
-			day.setFont(new Font(day.getFont().getFontName(), Font.BOLD, 14));
+			day.setFont(new Font(day.getFont().getFontName(), Font.BOLD, 12));
 			this.add(day, "cell "+(days.size()+2+i)+" 0, grow, push, wmin 0, alignx center");
 		}
 		JPanel space = new JPanel(new MigLayout("fill, insets 0"));

@@ -29,7 +29,7 @@ public class ScheduledPanel extends JPanel {
 		this.scheduleEvent =  scheduleEvent;
 		eventTitle = new JLabel(title, JLabel.CENTER);
 		eventTitle.setForeground(CalendarUtils.titleNameColor);
-		eventTitle.setFont(new Font(eventTitle.getFont().getFontName(), Font.BOLD, 16));
+		eventTitle.setFont(new Font(eventTitle.getFont().getFontName(), Font.BOLD, 14));
 		weekNames = new ScheduleEventTitlePanel(days);
 		scroll = new ScheduleEventMainScrollPane(scheduleEvent);
 		

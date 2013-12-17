@@ -36,7 +36,7 @@ public class AddEventController implements ActionListener {
 		ScheduleEventMain schedule = new ScheduleEventMain();
 		ScheduledPanel schedulePanel = new ScheduledPanel();
 		System.out.println("OR HERE");
-		schedule.setTime(days.size(), startIndex, 10, CalendarUtils.thatBlue);
+		schedule.setTime(days.size(), 8, 14, CalendarUtils.thatBlue);
 		schedulePanel.setup(title, schedule, days);
 		System.out.println("Maybe HERE");
 		test.removeAll();
