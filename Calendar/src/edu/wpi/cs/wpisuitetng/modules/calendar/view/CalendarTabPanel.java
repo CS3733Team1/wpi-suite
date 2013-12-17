@@ -124,6 +124,8 @@ public class CalendarTabPanel extends JPanel {
 			filterIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png")));
 		} catch (IOException e) {
 			LOGGER.log(Level.WARNING, "Images not found.", e);
+		} catch (IllegalArgumentException e){
+			LOGGER.log(Level.WARNING, "Input == NULL!", e);
 		}
 
 		prevButton = new TransparentButton(prevIcon);

@@ -360,7 +360,7 @@ public class DayArea extends JPanel implements ListDataListener{
 				infobuilder.append(test.getCategory().getName());
 
 				//description
-				if(test.getDescription().length()>0){
+				if(test.getDescription() != null && test.getDescription().length()>0){
 					infobuilder.append("<br><b>Description: </b>");
 					infobuilder.append(test.getDescription());
 				}
