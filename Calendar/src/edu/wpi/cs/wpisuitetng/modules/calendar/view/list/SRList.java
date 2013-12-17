@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -82,7 +83,7 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 		this.revalidate();
 		this.repaint();
 	}
-	
+
 	protected void updateComponents() {
 		listItemRenderer.updateRenderedListComponents(this, listItems);
 		this.revalidate();
@@ -107,53 +108,62 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 	@Override
 	public void mousePressed(MouseEvent e) {
 		int indexOfMousePress = listPanel.getIndexOfComponent(listPanel.getComponentAt(e.getPoint()));
-		if(indexOfMousePress >= 0 && !e.isPopupTrigger()) {
-			if(e.getClickCount() == 2) {
-				clearSelection();
-				listItems.get(indexOfMousePress).toggleDoubleClicked();
-				this.fireItemDoubleClicked(listItems.get(indexOfMousePress).getListObject());
-			} else if(e.isShiftDown()) {
-				clearSelection();
-				if(selectionStartIndex <= indexOfMousePress) {
-					for(int i = selectionStartIndex; i <= indexOfMousePress; i++) {
-						listItems.get(i).setSelected(true);
-						selectedListItems.add(listItems.get(i));
+		if(indexOfMousePress >= 0) {
+			if(!SwingUtilities.isRightMouseButton(e)) {
+				if(e.getClickCount() == 2) {
+					clearSelection();
+					listItems.get(indexOfMousePress).toggleDoubleClicked();
+					this.fireItemDoubleClicked(listItems.get(indexOfMousePress).getListObject());
+				} else if(e.isShiftDown()) {
+					clearSelection();
+					if(selectionStartIndex <= indexOfMousePress) {
+						for(int i = selectionStartIndex; i <= indexOfMousePress; i++) {
+							listItems.get(i).setSelected(true);
+							selectedListItems.add(listItems.get(i));
+						}
+					} else if(selectionStartIndex > indexOfMousePress) {
+						for(int i = indexOfMousePress; i <= selectionStartIndex; i++) {
+							listItems.get(i).setSelected(true);
+							selectedListItems.add(listItems.get(i));
+						}
 					}
-				} else if(selectionStartIndex > indexOfMousePress) {
-					for(int i = indexOfMousePress; i <= selectionStartIndex; i++) {
-						listItems.get(i).setSelected(true);
-						selectedListItems.add(listItems.get(i));
+					this.fireItemsSelected(getSelectedItems());
+				} else if(e.isControlDown()) {
+					listItems.get(selectionStartIndex).setFocused(false);
+					if(listItems.get(indexOfMousePress).isSelected()) {
+						listItems.get(indexOfMousePress).setSelected(false);
+						listItems.get(indexOfMousePress).setFocused(false);
+						selectedListItems.remove(listItems.get(indexOfMousePress));
+					} else {
+						listItems.get(indexOfMousePress).setSelected(true);
+						listItems.get(indexOfMousePress).setFocused(true);
+						selectedListItems.add(listItems.get(indexOfMousePress));
 					}
-				}
-				this.fireItemsSelected(getSelectedItems());
-			} else if(e.isControlDown()) {
-				listItems.get(selectionStartIndex).setFocused(false);
-				if(listItems.get(indexOfMousePress).isSelected()) {
-					listItems.get(indexOfMousePress).setSelected(false);
-					listItems.get(indexOfMousePress).setFocused(false);
-					selectedListItems.remove(listItems.get(indexOfMousePress));
+					selectionStartIndex = indexOfMousePress;
+					this.fireItemsSelected(getSelectedItems());
 				} else {
-					listItems.get(indexOfMousePress).setSelected(true);
-					listItems.get(indexOfMousePress).setFocused(true);
-					selectedListItems.add(listItems.get(indexOfMousePress));
+					// Clear the selection
+					boolean prevSelectionState = listItems.get(indexOfMousePress).isSelected();
+					clearSelection();
+					if(prevSelectionState) {
+						listItems.get(indexOfMousePress).setSelected(false);
+						listItems.get(indexOfMousePress).setFocused(false);
+						selectedListItems.remove(listItems.get(indexOfMousePress));
+					} else {
+						listItems.get(indexOfMousePress).setSelected(true);
+						listItems.get(indexOfMousePress).setFocused(true);
+						selectedListItems.add(listItems.get(indexOfMousePress));
+					}
+					selectionStartIndex = indexOfMousePress;
+					this.fireItemsSelected(getSelectedItems());
 				}
-				selectionStartIndex = indexOfMousePress;
-				this.fireItemsSelected(getSelectedItems());
 			} else {
-				// Clear the selection
-				boolean prevSelectionState = listItems.get(indexOfMousePress).isSelected();
-				clearSelection();
-				if(prevSelectionState) {
-					listItems.get(indexOfMousePress).setSelected(false);
-					listItems.get(indexOfMousePress).setFocused(false);
-					selectedListItems.remove(listItems.get(indexOfMousePress));
-				} else {
+				if(!listItems.get(indexOfMousePress).isSelected()) {
 					listItems.get(indexOfMousePress).setSelected(true);
 					listItems.get(indexOfMousePress).setFocused(true);
 					selectedListItems.add(listItems.get(indexOfMousePress));
 				}
 				selectionStartIndex = indexOfMousePress;
-				this.fireItemsSelected(getSelectedItems());
 			}
 		} else {
 			selectionStartIndex = 0;
@@ -161,7 +171,7 @@ public class SRList<T> extends JScrollPane implements MouseListener, ListDataLis
 		}
 		updateComponents();
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.isPopupTrigger()) {
