@@ -1,8 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -10,11 +9,9 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilterChangedListener;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilterListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendar;
@@ -22,94 +19,100 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCale
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 
-public class QuickListModel extends AbstractListModel<DeletableAbstractModel> implements ListDataListener, FilterChangedListener {
+public class QuickListModel extends AbstractListModel<ISchedulable> implements ListDataListener {
 
-	private static QuickListModel filteredEventsListModel;
+	private static QuickListModel quickListModel;
 
-	/** The list of filtered events on the calendar */
-	private List<DeletableAbstractModel> filteredEvents;
+	/** The list of evComs on the calendar */
+	private List<ISchedulable> quickListItems;
+
+	// Stores whether or not Events or Commitments or both show up in the quicklist
+	// 0 Nothing, 1 Events, 2 Commitments, 3 Both
+	private int state;
 
 	private QuickListModel() {
-		filteredEvents=new ArrayList<DeletableAbstractModel>();
-		//filteredEvents = Collections.synchronizedList(new ArrayList<DeletableAbstractModel>());
-		EventListModel.getEventListModel().addListDataListener(this);
-		CommitmentListModel.getCommitmentListModel().addListDataListener(this);
-		FilterListModel.getFilterListModel().addListDataListener(this);
-		filterEvents();
+		quickListItems = new ArrayList<ISchedulable>();
+		state = 3;
+		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
+		FilteredCommitmentsListModel.getFilteredCommitmentsListModel().addListDataListener(this);
 	}
 
-	static public synchronized QuickListModel getFilteredEventsListModel() {
-		if (filteredEventsListModel == null)
-			filteredEventsListModel = new QuickListModel();
-		//filteredEventsListModel.filterEvents();
-		return filteredEventsListModel;
-	}
-
-	private void filterEvents() {
-		filteredEvents.clear();
-		List<Commitment> commitmentList = CommitmentListModel.getCommitmentListModel().getList();
-		List<Event> eventList = EventListModel.getEventListModel().getList();
-		
-		filteredEvents.addAll(FilterListModel.getFilterListModel().applyEventFilter(eventList));
-		filteredEvents.addAll(FilterListModel.getFilterListModel().applyCommitmentFilter(commitmentList));
-		
-		this.fireIntervalAdded(this, 0, Math.max(filteredEvents.size() - 1, 0));
+	static public synchronized QuickListModel getQuickListModel() {
+		if (quickListModel == null)
+			quickListModel = new QuickListModel();
+		return quickListModel;
 	}
 	
+	public void setState(int state) {
+		this.state = state;
+		this.updateList();
+	}
+
 	/**
 	 * Calculates which commitments in a list are within the user's current view.
-	 * @param list A List of commitments.
 	 * @return inView An ArrayList of commitments in the user's current view.
 	 */
-	private ArrayList<Commitment> commitmentsInView(List<Commitment> list){
+	private List<Commitment> commitmentsInView() {
 		ArrayList<Commitment> inView = new ArrayList<Commitment>();
 
 		ICalendarView currentView = CalendarTabPanel.getCalendarView();
-		Iterator<Commitment> iterator = list.iterator();
-		Commitment temp = new Commitment();
-		if (currentView instanceof DayCalendar)
-		{
-			while(iterator.hasNext())
-			{
-				temp = iterator.next();
-				if(temp.getDueDate() == ((DayCalendar) currentView).getDate())
-					inView.add(temp);
-			}
-			return inView;
-		}
-		else if (currentView instanceof WeekCalendar)
-		{
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				Date tempDate = temp.getDueDate();
-				// set tempDate to the Sunday of the week that temp is part of
-				tempDate.setDate(tempDate.getDate() - tempDate.getDay());
-				if(temp.getDueDate() == ((WeekCalendar) currentView).getWeekStart()) {
-					inView.add(temp);
+		if(currentView instanceof DayCalendar) {
+			for(Commitment c: FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList()) {
+				if(c.getDueDate().getDate() == ((DayCalendar)currentView).getDate().getDate()) {
+					inView.add(c);
 				}
 			}
 			return inView;
-		}
-		else if (currentView instanceof MonthCalendarView)
-		{
-			int month = ((MonthCalendarView) currentView).getMonth();
-			int year = ((MonthCalendarView) currentView).getYear();
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				if(temp.getDueDate().getMonth() == month
-						&& temp.getDueDate().getYear() == year) {
-					inView.add(temp);
+		} else if (currentView instanceof WeekCalendar) {
+			for(Commitment c: FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList()) {
+				if(c.getDueDate().getDate() - c.getDueDate().getDay() == ((WeekCalendar)currentView).getWeekStart().getDate()) {
+					inView.add(c);
 				}
 			}
 			return inView;
-		}
-		else if (currentView instanceof YearCalendarView)
-		{
+		} else if (currentView instanceof MonthCalendarView) {
+			return ((MonthCalendarView)currentView).getCommitments();
+		} else if (currentView instanceof YearCalendarView) {
 			int year = ((YearCalendarView) currentView).getYear();
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				if(temp.getDueDate().getYear() == year) {
-					inView.add(temp);
+			for(Commitment c: FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList()) {
+				if(c.getDueDate().getYear() == year) {
+					inView.add(c);
+				}
+			}
+			return inView;
+		}
+		else return inView;
+	}
+
+	/**
+	 * Calculates which events in a list are within the user's current view.
+	 * @return inView An ArrayList of events in the user's current view.
+	 */
+	private List<Event> eventsInView() {
+		ArrayList<Event> inView = new ArrayList<Event>();
+
+		ICalendarView currentView = CalendarTabPanel.getCalendarView();
+		if(currentView instanceof DayCalendar) {
+			for(Event e: FilteredEventsListModel.getFilteredEventsListModel().getList()) {
+				if(e.getStartDate().getDate() == ((DayCalendar)currentView).getDate().getDate()) {
+					inView.add(e);
+				}
+			}
+			return inView;
+		} else if (currentView instanceof WeekCalendar) {
+			for(Event e: FilteredEventsListModel.getFilteredEventsListModel().getList()) {
+				if(e.getStartDate().getDate() - e.getStartDate().getDay() == ((WeekCalendar)currentView).getWeekStart().getDate()) {
+					inView.add(e);
+				}
+			}
+			return inView;
+		} else if (currentView instanceof MonthCalendarView) {
+			return ((MonthCalendarView)currentView).getEvents();
+		} else if (currentView instanceof YearCalendarView) {
+			int year = ((YearCalendarView) currentView).getYear();
+			for(Event e: FilteredEventsListModel.getFilteredEventsListModel().getList()) {
+				if(e.getStartDate().getYear() == year) {
+					inView.add(e);
 				}
 			}
 			return inView;
@@ -117,117 +120,46 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 		else return inView;
 	}
 	
-	/**
-	 * Calculates which events in a list are within the user's current view.
-	 * @param list A List of events.
-	 * @return inView An ArrayList of events in the user's current view.
-	 */
-	private ArrayList<Event> eventsInView(List<Event> list){
-		ArrayList<Event> inView = new ArrayList<Event>();
-
-		ICalendarView currentView = CalendarTabPanel.getCalendarView();
-		Iterator<Event> iterator = list.iterator();
-		Event temp = new Event();
-		if (currentView instanceof DayCalendar)
-		{
-			Date today = ((DayCalendar) currentView).getDate();
-			int startComparison;
-			int endComparison;
-			while(iterator.hasNext())
-			{
-				temp = iterator.next();
-				startComparison = temp.getStartDate().compareTo(today);
-				endComparison = temp.getEndDate().compareTo(today);
-				if(((startComparison == 0) || (endComparison == 0))
-						|| (startComparison < 0 && endComparison > 0))
-					inView.add(temp);
-			}
-			return inView;
-		}
-		else if (currentView instanceof WeekCalendar)
-		{ 
-			int startComparison;
-			int endComparison;
-			Date startOfWeek = ((WeekCalendar) currentView).getWeekStart();
-			Date endOfWeek = startOfWeek;
-			endOfWeek.setDate(startOfWeek.getDate() + 6);
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				// As long as the event does not begin after the week ends or end
-				// before the week begins, then part of the event must occur within
-				// the current week.
-				startComparison = temp.getStartDate().compareTo(endOfWeek);
-				endComparison = temp.getEndDate().compareTo(startOfWeek);
-				if(startComparison <= 0 && endComparison >= 0) {
-					inView.add(temp);
-				}
-			}
-			return inView;
-		}
-		else if (currentView instanceof MonthCalendarView)
-		{ 
-			int month = ((MonthCalendarView) currentView).getMonth();
-			int year = ((MonthCalendarView) currentView).getYear();
-			Date lastMonth = new Date(year, month, 0);
-			Date nextMonth = new Date(year, month + 1, 1);
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				if(temp.getStartDate().before(nextMonth)
-						&& temp.getEndDate().after(lastMonth)) {
-					inView.add(temp);
-				}
-			}
-			return inView;
-		}
-		else if (currentView instanceof YearCalendarView)
-		{ 
-			int year = ((YearCalendarView) currentView).getYear();
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				if(temp.getStartDate().getYear() <= year
-						&& temp.getEndDate().getYear() >= year) {
-					inView.add(temp);
-				}
-			}
-			return inView;
-		}
-		else return inView;
-	}
-
 	@Override
-	public DeletableAbstractModel getElementAt(int index) {
-		return filteredEvents.get(index);
+	public ISchedulable getElementAt(int index) {
+		return quickListItems.get(index);
 	}
 
 	@Override
 	public int getSize() {
-		return filteredEvents.size();
+		return quickListItems.size();
 	}
 
-	// Used to update the filtered contents when there are changes to the EventListModel
-
+	public void updateList() {
+		quickListItems.clear();
+		switch(state) {
+		case 1:
+			quickListItems.addAll(eventsInView());
+			break;
+		case 2:
+			quickListItems.addAll(commitmentsInView());
+			break;
+		case 3:
+			quickListItems.addAll(eventsInView());
+			quickListItems.addAll(commitmentsInView());
+		}
+		//Sort the List!
+		Collections.sort(quickListItems);
+		this.fireIntervalAdded(this, 0, quickListItems.size() - 1);
+	}
+	
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		filterEvents();
+		updateList();
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		filterEvents();
+		updateList();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		filterEvents();
-	}
-
-	@Override
-	public void filterChanged() {
-		filterEvents();
-	}
-
-	public synchronized List<DeletableAbstractModel> getList() {
-		//filterEvents();
-		return filteredEvents;
+		updateList();
 	}
 }

@@ -22,24 +22,29 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class DeleteEventController implements ActionListener {
-	private EventListModel model;
 	private CalendarPanel calendarPanel;
 
-	public DeleteEventController(CalendarPanel calendarPanel){
-		this.model = EventListModel.getEventListModel();
+	public DeleteEventController(CalendarPanel calendarPanel) {
 		this.calendarPanel = calendarPanel;
 	}
-
+	
+	/**
+	 * Handles the pressing of the Remove Commitment button
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		List<Event> eventList = calendarPanel.getCalendarTabPanel().getSelectedEventList();
-		//eventList.addAll(EventMouseListener.getSelected());
-
-		for(Event event: eventList) {
+		deleteEventList(eventList);
+	}
+	
+	public static void deleteEventList(List<Event> eventList){
+		EventListModel model = EventListModel.getEventListModel();
+		
+		for (Event event: eventList) {
 			System.out.println("Deleting event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 
 			// Create a Delete Request
-			final Request request = Network.getInstance().makeRequest("calendar/event/" + event.getUniqueID(), HttpMethod.DELETE);
+			final Request request = Network.getInstance().makeRequest("calendar/commitment/" + event.getUniqueID(), HttpMethod.DELETE);
 
 			// Add an observer to process the response
 			request.addObserver(new DeleteEventObserver());
@@ -47,7 +52,7 @@ public class DeleteEventController implements ActionListener {
 			// Send the request
 			request.send();
 
-			// We must remove the event without knowing the result of the server's response because
+			// We must remove the commitment without knowing the result of the server's response because
 			// of a bug in Java in which you cannot set the body of a HTTP.DELETE request.
 			model.removeEvent(event);
 		}

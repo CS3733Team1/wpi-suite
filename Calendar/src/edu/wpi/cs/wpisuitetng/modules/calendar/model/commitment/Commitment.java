@@ -31,7 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
  * <br>
  * Privately, a Commitment has a uniqueID to help distinguish it in the database.
  */
-public class Commitment extends DeletableAbstractModel implements Comparable<ISchedulable>, ISchedulable {
+public class Commitment extends DeletableAbstractModel implements ISchedulable {
 
 	public static enum State {
 		NEW ("New"),

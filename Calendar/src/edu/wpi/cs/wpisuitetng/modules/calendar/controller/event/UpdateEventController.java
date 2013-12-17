@@ -23,7 +23,6 @@ public class UpdateEventController implements ActionListener {
 	}
 	
 	public UpdateEventController(Event updatedEvent) {
-		System.out.println(updatedEvent);
 		this.model = EventListModel.getEventListModel();
 		this.eventToUpdate = updatedEvent;
 		updateEventInServer();
@@ -57,7 +56,6 @@ public class UpdateEventController implements ActionListener {
 
 	public void updateEventInModel(Event event) {
 		if (oldEvent != null) {
-			System.out.println("	Update event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 			model.updateEvent(oldEvent, event);
 			
 			if (view != null) {

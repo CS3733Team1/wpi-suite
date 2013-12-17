@@ -9,23 +9,24 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist;
 
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.AbstractListModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.QuickListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredCommitmentsListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendar;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendar;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RightClickMenu;
 
 /**
  * This class is used to calculate a list of the user's commitments that fall
@@ -38,107 +39,78 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalend
  * @author Team TART
  *
  */
-public class QuickListTabPanel extends AbstractListModel<Commitment> implements ListDataListener {
-
-	private ICalendarView currentView;
-	private ArrayList<Commitment> quickList;
+public class QuickListTabPanel extends JPanel implements ActionListener, ListItemListener<ISchedulable> {
 	
-	private QuickListTabPanel(List<Commitment> list){
-		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
-	}
+	private SRList<ISchedulable> quickList;
+	private JCheckBox eventsCheckBox;
+	private JCheckBox commitmentsCheckBox;
+	private CalendarPanel calendarPanel;
 	
-	/**
-	 * Calculates which commitments in a list are within the user's current view.
-	 * @param list A List of commitments.
-	 * @return inView An ArrayList of commitments in the user's current view.
-	 */
-	private ArrayList<Commitment> commitmentsInView(List<Commitment> list){
-		ArrayList<Commitment> inView = new ArrayList<Commitment>();
-
-		currentView = CalendarTabPanel.getCalendarView();
-		Iterator<Commitment> iterator = list.iterator();
-		Commitment temp = new Commitment();
-		if (currentView instanceof DayCalendar)
-		{
-			while(iterator.hasNext())
-			{
-				temp = iterator.next();
-				if(temp.getDueDate().equals(((DayCalendar) currentView).getDate()))
-					inView.add(temp);
-			}
-			return inView;
-		}
-		else if (currentView instanceof WeekCalendar)
-		{
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				Date tempDate = temp.getDueDate();
-				tempDate.setDate(tempDate.getDate() - tempDate.getDay());
-				if(temp.getDueDate().equals(((WeekCalendar) currentView).getWeekStart())) {
-					inView.add(temp);
-				}
-			}
-			return inView;
-		}
-		else if (currentView instanceof MonthCalendarView)
-		{
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				int month = ((MonthCalendarView) currentView).getMonth();
-				if(temp.getDueDate().getMonth() == month) {
-					inView.add(temp);
-				}
-			}
-			return inView;
-		}
-		else if (currentView instanceof YearCalendarView)
-		{
-			while(iterator.hasNext()) {
-				temp = iterator.next();
-				int year = ((YearCalendarView) currentView).getYear();
-				if(temp.getDueDate().getYear() == year) {
-					inView.add(temp);
-				}
-
-			}
-			return inView;
-		}
-		else return inView;
+	public QuickListTabPanel(CalendarPanel calendarPanel) {
+		super(new MigLayout("fill"));
+		
+		this.calendarPanel = calendarPanel;
+		
+		quickList = new SRList<ISchedulable>(QuickListModel.getQuickListModel());
+		quickList.setListItemRenderer(new QuickListItemRenderer());
+		quickList.addListItemListener(this);
+		
+		eventsCheckBox = new JCheckBox("Events");
+		commitmentsCheckBox = new JCheckBox("Commitments");
+		
+		eventsCheckBox.setSelected(true);
+		commitmentsCheckBox.setSelected(true);
+		
+		eventsCheckBox.addActionListener(this);
+		commitmentsCheckBox.addActionListener(this);
+		
+		this.add(eventsCheckBox, "split 2, center");
+		this.add(commitmentsCheckBox, "wrap");
+		this.add(quickList, "grow, push");
 	}
 	
-	public ArrayList<Commitment> getQuickList()
-	{
-		return quickList;
+	public List<Commitment> getSelectedCommitments() {
+		List<Commitment> rtnCommitments = new ArrayList<Commitment>();
+		for(ISchedulable item: quickList.getSelectedItems()) {
+			if(item instanceof Commitment) rtnCommitments.add((Commitment)item);
+		}
+		return rtnCommitments;
 	}
+
+	public List<Event> getSelectedEvents() {
+		List<Event> rtnEvents = new ArrayList<Event>();
+		for(ISchedulable item: quickList.getSelectedItems()) {
+			if(item instanceof Event) rtnEvents.add((Event)item);
+		}
+		return rtnEvents;
+	}
+
 	
 	@Override
-	public void intervalAdded(ListDataEvent e) {
-		// TODO Auto-generated method stub
-		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
+	public void itemsSelected(List<ISchedulable> listObjects) {}
+
+	@Override
+	public void itemDoubleClicked(ISchedulable listObject) {}
+
+	@Override
+	public void itemFocused(ISchedulable listObject) {}
+
+	@Override
+	public void itemRightClicked(ISchedulable listObject, Point p) {
+		RightClickMenu menu = new RightClickMenu(this.getSelectedEvents(), this.getSelectedCommitments(), calendarPanel);
+		menu.show(quickList, (int)p.getX(), (int)p.getY());
 	}
 
 	@Override
-	public void intervalRemoved(ListDataEvent e) {
-		// TODO Auto-generated method stub
-		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
+	public void actionPerformed(ActionEvent arg0) {
+		if(eventsCheckBox.isSelected() && commitmentsCheckBox.isSelected()) {
+			QuickListModel.getQuickListModel().setState(3);
+		} else if(eventsCheckBox.isSelected()) {
+			QuickListModel.getQuickListModel().setState(1);
+		} else if(commitmentsCheckBox.isSelected()) {
+			QuickListModel.getQuickListModel().setState(2);
+		} else {
+			QuickListModel.getQuickListModel().setState(0);
+		}
 	}
-
-	@Override
-	public void contentsChanged(ListDataEvent e) {
-		// TODO Auto-generated method stub
-		quickList = commitmentsInView(FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList());
-	}
-
-	@Override
-	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Commitment getElementAt(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
  * An event must have a name, a start Date, and an end Date. It can contain a custom
  * description and category.
  */
-public class Event extends DeletableAbstractModel implements Comparable<ISchedulable>, ISchedulable {
+public class Event extends DeletableAbstractModel implements ISchedulable {
 	// Required parameters
 	private String name;
 	private Date startDate;
