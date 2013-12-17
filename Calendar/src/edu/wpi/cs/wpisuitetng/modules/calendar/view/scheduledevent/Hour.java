@@ -47,6 +47,10 @@ public class Hour {
 	{
 		return hour;
 	}
+	public void  addUsers(ArrayList<String> user)
+	{
+		this.users = users;
+	}
 
 	public void setColor(Color col)
 	{

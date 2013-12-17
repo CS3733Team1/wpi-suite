@@ -12,7 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
 
 /**
  * This class shows multi-day events in week view. It is a component of the WeekCalendarLayerPane, along
@@ -156,6 +157,7 @@ public class MultidayEventWeekView extends JPanel {
 
 				multipane.add(eventinfo, "cell 1 0, grow, push, wmin 0");
 				multipane.setToolTipText(bob.toString());
+				multipane.addMouseListener(new SchedMouseListener(eve,multipane));
 				
 				Date eveend = eve.getEndDate();
 				if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).after(new Date(cdate.getYear(), cdate.getMonth(), cdate.getDate()+6))){

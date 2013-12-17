@@ -181,20 +181,17 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		updateDay();
-		updateMultiDay();
+		repaint();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		updateDay();
-		updateMultiDay();
+		repaint();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		updateDay();
-		updateMultiDay();
+		repaint();
 	}
 
 }

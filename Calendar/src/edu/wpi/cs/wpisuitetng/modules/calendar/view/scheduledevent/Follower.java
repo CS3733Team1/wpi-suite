@@ -78,7 +78,21 @@ public class Follower extends JPanel{
 		});
 	}
 
-
+	public List<List<Hour>>  updateHourList()
+	{
+		List<List<Hour>> hList = new ArrayList<List<Hour>>();
+		
+		for(int i = 0; i < day; i++){
+			ArrayList<Hour> hour = new ArrayList<Hour>();
+			hList.add(hour);
+			for(int j = 0; j < end-start; j++)
+			{	
+				Hour hr = hourList.get(i).get(j).config();
+				hList.get(i).add(hr);
+			}
+		}
+		return hList;
+	}
 
 
 	public void setTimeFrame(int day, int start, int end) {
@@ -125,6 +139,7 @@ public class Follower extends JPanel{
 	}
 	public void updatePanel(List<List<Hour>> list, String user)
 	{
+		System.out.println("user"+user);
 		for(int i = 0; i < day; i++){
 			for(int j = 0; j < end-start; j++)
 			{	StringBuilder sb = new StringBuilder();
@@ -136,8 +151,6 @@ public class Follower extends JPanel{
 				for(int z = 0; z < hourList.get(i).get(j).userList().size(); z++)
 				{
 					sb.append(hourList.get(i).get(j).userList().get(z)+"<br>");
-					
-					
 				}
 				sb.append("</p><br>");
 				hourList.get(i).get(j).setToolTipText(sb.toString());

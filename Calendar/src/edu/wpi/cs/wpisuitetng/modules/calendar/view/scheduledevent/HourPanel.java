@@ -89,7 +89,7 @@ public class HourPanel extends JPanel {
 
 	public void updateCount(String user)
 	{
-
+		System.out.println("user"+user);
 		boolean update = false;
 		if(users.size() == 0)
 		{
@@ -202,6 +202,7 @@ public class HourPanel extends JPanel {
 		hr.setState(this.getState());
 		hr.setColor(this.getColor());
 		hr.setCount(this.getCount());
+		hr.addUsers(users);
 		return hr;
 	}
 	

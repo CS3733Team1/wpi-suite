@@ -5,10 +5,10 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledEventTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledPanel;
 
-public class UpdateEventController implements ActionListener {
+public class UpdateWhenToMeetController implements ActionListener {
 
 	private ScheduledPanel scheduledPanel;
-	public UpdateEventController(ScheduledPanel scheduledPanel) {
+	public UpdateWhenToMeetController(ScheduledPanel scheduledPanel) {
 		// TODO Auto-generated constructor stub
 		this.scheduledPanel = scheduledPanel;
 	}
