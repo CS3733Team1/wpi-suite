@@ -121,10 +121,13 @@ public class DayOfWeekPanel extends JPanel {
 			if(listDay.get(i).getState())
 				tempListStorage.add(listDay.get(i).getDayString());
 		}
-		if(listDay.size() > 0){
+		
+		if(tempListStorage.size() > 0){
 			ScheduleEventSetup swp =(ScheduleEventSetup) this.getParent();
 			swp.isDayOfWeekHaveDays(true);
+			System.out.println("Update True");
 		}else{
+			System.out.println("Update False");
 			ScheduleEventSetup swp =(ScheduleEventSetup) this.getParent();
 			swp.isDayOfWeekHaveDays(false);
 		}
