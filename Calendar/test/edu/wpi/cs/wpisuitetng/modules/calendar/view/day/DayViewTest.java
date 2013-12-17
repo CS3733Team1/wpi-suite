@@ -1,23 +1,25 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.day;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayArea;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.SchedulableMover;
