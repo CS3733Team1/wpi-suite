@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -7,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.UpdateEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import net.miginfocom.swing.MigLayout;
 
 public class ScheduledPanel extends JPanel {
@@ -26,6 +28,8 @@ public class ScheduledPanel extends JPanel {
 	{
 		this.scheduleEvent =  scheduleEvent;
 		eventTitle = new JLabel(title, JLabel.CENTER);
+		eventTitle.setForeground(CalendarUtils.titleNameColor);
+		eventTitle.setFont(new Font(eventTitle.getFont().getFontName(), Font.BOLD, 16));
 		weekNames = new ScheduleEventTitlePanel(days);
 		scroll = new ScheduleEventMainScrollPane(scheduleEvent);
 		
