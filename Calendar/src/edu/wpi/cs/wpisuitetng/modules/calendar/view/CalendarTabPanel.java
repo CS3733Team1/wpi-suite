@@ -51,6 +51,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import java.awt.Cursor;
 
 
 public class CalendarTabPanel extends JPanel {
@@ -133,9 +134,13 @@ public class CalendarTabPanel extends JPanel {
 		nextButton = new TransparentButton(nextIcon);
 
 		dayViewButton = new TransparentToggleButton("Day", dayIcon);
+		dayViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		weekViewButton = new TransparentToggleButton("Week", weekIcon);
+		weekViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		monthViewButton = new TransparentToggleButton("Month", monthIcon);
+		monthViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		yearViewButton = new TransparentToggleButton("Year", yearIcon);
+		yearViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		//filterCategoryTabbedPane.addTab("Quick List", new ImageIcon(), quickListTabPanel);
 		subTabPane.addTab("Commitments", commitmentIcon, commitmentSubTabPanel);
