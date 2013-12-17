@@ -14,4 +14,8 @@ public class ScheduledEventTabPanel extends JPanel {
 		this.add(wtm, "grow,push");
 		
 	}
+	
+	public void closeEventPanel() {
+		this.getParent().remove(this);
+	}
 }
