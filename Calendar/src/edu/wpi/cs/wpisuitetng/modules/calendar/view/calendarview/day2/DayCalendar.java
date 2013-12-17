@@ -11,17 +11,13 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 

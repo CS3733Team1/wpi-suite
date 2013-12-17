@@ -186,20 +186,10 @@ public class MultidayEventWeekView extends JPanel {
 					multipane.setBackground(Color.CYAN);
 				}
 				multipane.setFocusable(true);
+				
+				int a = Math.min(8-y, getDateDiff(current, new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()))) + 1;
 
-				//Builds a string to place it in miglayout
-				StringBuilder evebuilder = new StringBuilder();
-				evebuilder.append("cell ");
-				evebuilder.append(new Integer(y).toString());
-				evebuilder.append(" ");
-				evebuilder.append(new Integer(x).toString());
-				evebuilder.append(" ");
-				evebuilder.append(Math.min(8-y, getDateDiff(current, new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate())))+ 1);
-				evebuilder.append(" ");
-				evebuilder.append("0");
-				evebuilder.append(",grow, push, wmin 0");
-
-				this.add(multipane, evebuilder.toString());
+				this.add(multipane, "cell " + y + " " + x + " " + a + " 0, grow, push, wmin 0");
 				height += multipane.getPreferredSize().height;
 				displayEvents.add(multipane);
 				x++;

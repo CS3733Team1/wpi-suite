@@ -133,10 +133,15 @@ public class Category extends DeletableAbstractModel {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Category) {
-			Category categoryOther = (Category)o;
-			return this.getUniqueID() == categoryOther.getUniqueID();
-		} else return false;
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
+		if (!(o instanceof Category))
+			return false;
+
+		Category categoryOther = (Category)o;
+		return this.getUniqueID() == categoryOther.getUniqueID();
 	}
 
 	@Override

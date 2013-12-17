@@ -3,8 +3,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
@@ -15,12 +13,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -29,9 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
-//import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
+//import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
 //Height of This Panel is 1440 Calculation Dependent
 public class DayArea extends JPanel implements ListDataListener{

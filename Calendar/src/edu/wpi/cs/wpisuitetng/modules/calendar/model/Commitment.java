@@ -350,10 +350,15 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 	
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Commitment) {
-			Commitment commitmentOther = (Commitment)o;
-			return this.getUniqueID() == commitmentOther.getUniqueID();
-		} else return false;
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
+		if (!(o instanceof Commitment))
+			return false;
+
+		Commitment commitmentOther = (Commitment)o;
+		return this.getUniqueID() == commitmentOther.getUniqueID();
 	}
 	
 	@Override

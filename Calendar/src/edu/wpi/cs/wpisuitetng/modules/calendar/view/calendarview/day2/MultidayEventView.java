@@ -35,10 +35,10 @@ public class MultidayEventView extends JPanel{
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-		
+
 		showEvents();
 		DisplayEventDropDown();
-		
+
 		this.setOpaque(false);
 		this.setVisible(true);
 	}
@@ -52,15 +52,15 @@ public class MultidayEventView extends JPanel{
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
-		
+
 		this.removeAll();
 
 		showEvents();
 		DisplayEventDropDown();
-		
+
 		System.err.println(this.getPreferredSize());
 	}
-	
+
 	/**
 	 * Resizing method for adapting to changed with
 	 * @param width the new width to adapt panel to
@@ -68,10 +68,10 @@ public class MultidayEventView extends JPanel{
 	public void reSize(int width){
 		this.setSize(width, this.getPreferredSize().height);
 		this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
-		
+
 		this.repaint();
 	}
-	
+
 	/**
 	 * Sorts the List of Events by StartDate
 	 */
@@ -98,9 +98,9 @@ public class MultidayEventView extends JPanel{
 				"[10%][90%]", 
 				"[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 
-		
+
 	}
-	
+
 	/**
 	 * Retrieves number of multiday events
 	 * @return number of events
@@ -144,7 +144,7 @@ public class MultidayEventView extends JPanel{
 		int x = 0;
 		for (Event eve: multidaye){
 			JPanel multipane = new JPanel(new MigLayout("fill", "[][][]", "[]"));
-			
+
 			//Bob The Builder builds the string, which contains the event info, for the tooltip
 			StringBuilder bob = new StringBuilder();
 			bob.append("<html>");
@@ -169,13 +169,13 @@ public class MultidayEventView extends JPanel{
 			eventNameBob.append("<html><p style='width:175px'><b>Event Name: </b>");
 			eventNameBob.append(eve.getName());
 			eventNameBob.append("</p></html>");
-			
-			
+
+
 			//Adds a mouselistener to the event
 			//multipane.addMouseListener(new EventMouseListener(eve, multipane));
 
 			JLabel eventInfo = new JLabel(eventNameBob.toString());
-			
+
 			Date evestart = eve.getStartDate();
 			if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).compareTo(cdate) != 0){
 				StringBuilder previousbuilder = new StringBuilder();
@@ -186,7 +186,7 @@ public class MultidayEventView extends JPanel{
 
 			multipane.add(eventInfo, "cell 1 0, grow, push, wmin 0");
 			multipane.setToolTipText(bob.toString());
-			
+
 			Date eveend = eve.getEndDate();
 			if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).compareTo(cdate) != 0){
 				StringBuilder nextbuilder = new StringBuilder();
@@ -215,19 +215,7 @@ public class MultidayEventView extends JPanel{
 			}
 			multipane.setFocusable(true);
 
-			//Builds a string to place it in miglayout
-			StringBuilder evebuilder = new StringBuilder();
-			evebuilder.append("cell ");
-			evebuilder.append("1");
-			evebuilder.append(" ");
-			evebuilder.append(new Integer(x).toString());
-			evebuilder.append(" ");
-			evebuilder.append("0");
-			evebuilder.append(" ");
-			evebuilder.append("0");
-			evebuilder.append(",grow, push, wmin 0");
-
-			this.add(multipane, evebuilder.toString());
+			this.add(multipane, "cell 1 " + x + " 0 0, grow, push, wmin 0");
 			height += multipane.getPreferredSize().height;
 			displayEvents.add(multipane);
 			x++;

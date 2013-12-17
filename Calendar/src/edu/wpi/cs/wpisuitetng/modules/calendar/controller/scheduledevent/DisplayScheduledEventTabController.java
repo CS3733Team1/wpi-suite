@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -21,6 +23,8 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledEventTabPanel;
 
 public class DisplayScheduledEventTabController implements ActionListener {
+	private final static Logger LOGGER = Logger.getLogger(DisplayScheduledEventTabController.class.getName());
+	
 		private CalendarPanel calendarPanel;
 
 		public DisplayScheduledEventTabController(CalendarPanel calendarPanel){
@@ -33,7 +37,9 @@ public class DisplayScheduledEventTabController implements ActionListener {
 			ImageIcon miniScheduledEventIcon = new ImageIcon();
 			try {
 				miniScheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/mini_schedule_icon.png")));
-			} catch (IOException exception) {}
+			} catch (IOException exception) {
+				LOGGER.log(Level.WARNING, "/images/mini_schedule_icon.png not found.", exception);
+			}
 			calendarPanel.addTab("Create Scheduled Event", miniScheduledEventIcon , scheduledEventPanel);
 			calendarPanel.setSelectedComponent(scheduledEventPanel);
 		}

@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
-
-import net.miginfocom.swing.MigLayout;
 
 public class HourLabels extends JPanel{
 	private ArrayList<JPanel> hourlist;
@@ -51,17 +50,10 @@ public class HourLabels extends JPanel{
 		for (int currenthour=0; currenthour < 24; currenthour++){
 			JPanel hour = new JPanel();
 
-			StringBuilder hourbuilder = new StringBuilder();
-			hourbuilder.append("cell ");
-			hourbuilder.append("0");
-			hourbuilder.append(" ");
-			hourbuilder.append((new Integer(currenthour)).toString());
-			hourbuilder.append(",grow, push, wmin 0");
-
 			JLabel timeLabel = new JLabel(DateUtils.hourString(currenthour), JLabel.RIGHT);
 			timeLabel.setForeground(CalendarUtils.timeColor);
 			hour.add(timeLabel, "wmin 0");
-			this.add(hour, hourbuilder.toString());
+			this.add(hour, "cell 0 " + currenthour + ", grow, push, wmin 0");
 			hourlist.add(hour);
 		}
 	}
