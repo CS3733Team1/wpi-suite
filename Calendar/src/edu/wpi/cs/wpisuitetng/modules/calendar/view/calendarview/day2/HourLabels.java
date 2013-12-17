@@ -1,6 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -9,17 +11,11 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
-import net.miginfocom.swing.MigLayout;
-
 public class HourLabels extends JPanel{
 	private ArrayList<JPanel> hourlist;
 
 	public HourLabels(){
 		hourlist = new ArrayList<JPanel>();
-		
-		this.setLayout(new MigLayout("fill", 
-				"[100%]", 
-				"[4%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]3[5%]1"));
 		
 		int height = 1440;
 		int width = 100;
@@ -27,8 +23,6 @@ public class HourLabels extends JPanel{
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
 		this.setMinimumSize(new Dimension(0,1440));
-		
-		rebuildHours();
 	}
 	
 	
@@ -37,32 +31,28 @@ public class HourLabels extends JPanel{
 		this.setPreferredSize(new Dimension(width, 1440));
 		this.setMinimumSize(new Dimension(0,1440));
 		
+		this.removeAll();
+		
 		this.repaint();
 	}
+	
+	public void paintBorder(Graphics g){
+
+		super.paintBorder(g);
+
+		drawHours(g);
+
+		this.validate();
+	}
+
 	/**
-	 * Rebuilds the hour panels, so that they are normalized
+	 * Draws The Hours Of DayView
+	 * @param g Graphics which will draw lines representing hours
 	 */
-	public void rebuildHours(){
-		for (int x = 0; x < hourlist.size(); x++){
-			this.remove(hourlist.get(x));
-		}
-
-		hourlist = new ArrayList<JPanel>();
-		for (int currenthour=0; currenthour < 24; currenthour++){
-			JPanel hour = new JPanel();
-
-			StringBuilder hourbuilder = new StringBuilder();
-			hourbuilder.append("cell ");
-			hourbuilder.append("0");
-			hourbuilder.append(" ");
-			hourbuilder.append((new Integer(currenthour)).toString());
-			hourbuilder.append(",grow, push, wmin 0");
-
-			JLabel timeLabel = new JLabel(DateUtils.hourString(currenthour), JLabel.RIGHT);
-			timeLabel.setForeground(CalendarUtils.timeColor);
-			hour.add(timeLabel, "wmin 0");
-			this.add(hour, hourbuilder.toString());
-			hourlist.add(hour);
+	public void drawHours(Graphics g){
+		for (int x =0; x <= 23; x++){
+			g.setColor(Color.BLACK);
+			g.drawString(DateUtils.hourString(x),0,60*x);
 		}
 	}
 }
