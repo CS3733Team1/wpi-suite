@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -32,7 +32,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	private DayHolderPanel daylayer;
 	private MultidayEventView multiview;
 	private DayMultiScrollPane mscroll;
-	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	public static final String[] WEEK_NAMES = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	private JLabel dayLabel;
 	private JPanel daytitle;
 	private JPanel dayname;
@@ -47,7 +47,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 		daytitle = new JPanel(new MigLayout("fill, insets 0", "[10%]0[90%]"));
 
-		dayLabel = new JLabel(weekNames[(daylayer.getDayViewDate().getDay())], JLabel.CENTER);
+		dayLabel = new JLabel(WEEK_NAMES[(daylayer.getDayViewDate().getDay())], JLabel.CENTER);
 		dayLabel.setFont(new Font(dayLabel.getName(), Font.BOLD, 14));
 		dayname = new JPanel(new MigLayout("fill"));
 		Calendar cal = Calendar.getInstance();
@@ -115,7 +115,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		}else{
 			dayname.setBorder(new MatteBorder(0, 0, 5, 0, Color.gray));
 		}
-		dayLabel.setText(weekNames[daylayer.getDayViewDate().getDay()]);
+		dayLabel.setText(WEEK_NAMES[daylayer.getDayViewDate().getDay()]);
 		daytitle.resize(size());
 	}
 	

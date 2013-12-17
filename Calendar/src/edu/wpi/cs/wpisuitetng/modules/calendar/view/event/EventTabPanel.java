@@ -152,7 +152,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				durationChooser_=new TimeDurationChooser();
 				durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 					@Override
-					public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+					public void dateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 						validateFields();
 					}
 				});
@@ -170,7 +170,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		eventRecurringPanel.addRecurringChangedEventListener(new RecurringChangedEventListener() {
 			
 			@Override
-			public void RecurringChangedEventOccurred(RecurringChangedEvent evt) {
+			public void recurringChangedEventOccurred(RecurringChangedEvent evt) {
 				validateFields();
 			}
 		});

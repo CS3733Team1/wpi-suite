@@ -238,7 +238,7 @@ public class ProjectManager implements EntityManager<Project>{
 	}
 
 	@Override
-	public int Count() {
+	public int count() {
 		
 		return 0;
 	}

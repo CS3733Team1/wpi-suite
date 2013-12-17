@@ -76,7 +76,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 		// Notify everybody that may be interested.
 		RecurringChangedEvent evt = new RecurringChangedEvent("");
         for (RecurringChangedEventListener hl : listeners)
-            hl.RecurringChangedEventOccurred(evt);
+            hl.recurringChangedEventOccurred(evt);
 
 	}
 

@@ -26,9 +26,9 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  *
  */
 public class UpdateCommitmentController implements ActionListener {
-	CommitmentListModel model;
-	CommitmentTabPanel view;
-	Commitment commitmentToUpdate;
+	private CommitmentListModel model;
+	private CommitmentTabPanel view;
+	private Commitment commitmentToUpdate;
 	
 	public UpdateCommitmentController(CommitmentTabPanel view, Commitment commitmentToUpdate) {
 		this.model = CommitmentListModel.getCommitmentListModel();
@@ -36,8 +36,7 @@ public class UpdateCommitmentController implements ActionListener {
 		this.commitmentToUpdate = commitmentToUpdate;
 	}
 	
-	public UpdateCommitmentController(Commitment updatedCommitment)
-	{
+	public UpdateCommitmentController(Commitment updatedCommitment) {
 		this.model = CommitmentListModel.getCommitmentListModel();
 		this.commitmentToUpdate = updatedCommitment;
 		updateCommitmentInServer();
@@ -54,8 +53,7 @@ public class UpdateCommitmentController implements ActionListener {
 		updateCommitmentInServer();
 	}
 	
-	public void updateCommitmentInServer()
-	{
+	public void updateCommitmentInServer() {
 		System.out.println("Updating commitment: name = " + commitmentToUpdate.getName() + "; uid = " + commitmentToUpdate.getUniqueID());
 
 		// Create a Post Request
@@ -76,13 +74,11 @@ public class UpdateCommitmentController implements ActionListener {
 		System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
 		model.updateCommitment(commitmentToUpdate, newCommitment);
 
-		if (commitmentToUpdate != null)
-		{
+		if (commitmentToUpdate != null) {
 			System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
 			model.updateCommitment(commitmentToUpdate, newCommitment);
 			
-			if (view != null)
-			{
+			if (view != null) {
 				view.closeCommitmentPanel();
 			}
 		}

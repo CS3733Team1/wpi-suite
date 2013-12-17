@@ -20,8 +20,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * post board messages.
  */
 public class RetrieveCommitmentObserver implements RequestObserver {
-	
-	public RetrieveCommitmentController controller;
+	private RetrieveCommitmentController controller;
 	
 	public RetrieveCommitmentObserver(RetrieveCommitmentController controller) {
 		this.controller = controller;

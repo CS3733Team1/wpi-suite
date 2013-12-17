@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 
 public class DisplayWeekViewController implements ActionListener{
-	CalendarTabPanel view;
+	private CalendarTabPanel view;
 
 	public DisplayWeekViewController(CalendarTabPanel view){
 		this.view = view;

@@ -73,7 +73,7 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 		
 	    // Notify everybody that may be interested.
         for (DateTimeChangedEventListener hl : listeners)
-            hl.DateTimeChangedEventOccurred(evt);
+            hl.dateTimeChangedEventOccurred(evt);
 //		// Notify everybody that may be interested.
 //        Object[] listeners = listenerList.getListenerList();
 //		for (int i = 0; i < listeners.length; i = i + 2) {

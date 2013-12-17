@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
-	public boolean isReal = true;
+	private boolean isReal = true;
 
 	/**
 	 * @return <b>true</b> if this Category is not a duplicate, <b>false</b> if it is

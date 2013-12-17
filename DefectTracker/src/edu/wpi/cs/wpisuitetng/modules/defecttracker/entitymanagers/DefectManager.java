@@ -58,7 +58,7 @@ public class DefectManager implements EntityManager<Defect> {
 		final Defect newDefect = Defect.fromJSON(content);
 		
 		// TODO: increment properly, ensure uniqueness using ID generator.  This is a gross hack.
-		newDefect.setId(Count() + 1);
+		newDefect.setId(count() + 1);
 		
 		List<ValidationIssue> issues = validator.validate(s, newDefect, Mode.CREATE);
 		if(issues.size() > 0) {
@@ -125,7 +125,7 @@ public class DefectManager implements EntityManager<Defect> {
 	}
 	
 	@Override
-	public int Count() {
+	public int count() {
 		// TODO: there must be a faster way to do this with db4o
 		// note that this is not project-specific - ids are unique across projects
 		return db.retrieveAll(new Defect()).size();

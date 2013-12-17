@@ -86,13 +86,13 @@ public class IterationEntityManagerTest {
 	 * @throws WPISuiteException if not valid request */
 	@Test
 	public void testCount() throws WPISuiteException {
-		assertEquals(0, manager.Count());
+		assertEquals(0, manager.count());
 		manager.save(defaultSession, new Iteration(3, "test 3"));
-		assertEquals(1, manager.Count());
+		assertEquals(1, manager.count());
 		manager.save(defaultSession, new Iteration(4, "test 4"));
-		assertEquals(2, manager.Count());
+		assertEquals(2, manager.count());
 		manager.save(defaultSession, new Iteration(5, "test 5"));
-		assertEquals(3, manager.Count());
+		assertEquals(3, manager.count());
 	}
 	
 	/**
@@ -104,9 +104,9 @@ public class IterationEntityManagerTest {
 		manager.save(defaultSession, new Iteration(3, "test 3"));
 		manager.save(defaultSession, new Iteration(4, "test 4"));
 		manager.save(defaultSession, new Iteration(5, "test 5"));
-		assertEquals(3, manager.Count());
+		assertEquals(3, manager.count());
 		manager.deleteAll(defaultSession);
-		assertEquals(0, manager.Count());
+		assertEquals(0, manager.count());
 	}
 	
 	/**
@@ -181,9 +181,9 @@ public class IterationEntityManagerTest {
 	@Test
 	public void testDeleteEntity() throws WPISuiteException {
 		manager.save(defaultSession, new Iteration(3, "test 3"));
-		assertEquals(1, manager.Count());
+		assertEquals(1, manager.count());
 		assertTrue(manager.deleteEntity(defaultSession, "3"));
-		assertEquals(0, manager.Count());
+		assertEquals(0, manager.count());
 		boolean exceptionThrown = false;
 		try {
 			manager.deleteEntity(defaultSession, "3");
@@ -200,12 +200,12 @@ public class IterationEntityManagerTest {
 	@Test
 	public void testUpdatingAnInteration() throws WPISuiteException {
 		manager.save(defaultSession, new Iteration(3, "test 3"));
-		assertEquals(1, manager.Count());
+		assertEquals(1, manager.count());
 		assertEquals(3, manager.getEntity(defaultSession, "3")[0].getId());
 		assertEquals("test 3", manager.getEntity(defaultSession, "3")[0].getName());
 		
 		manager.update(defaultSession, (new Iteration(3, "changed")).toJSON());
-		assertEquals(1, manager.Count());
+		assertEquals(1, manager.count());
 		assertEquals("changed", manager.getEntity(defaultSession, "3")[0].getName());
 		
 		boolean exceptionThrown = false;

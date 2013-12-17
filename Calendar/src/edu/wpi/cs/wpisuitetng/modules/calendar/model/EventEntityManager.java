@@ -194,7 +194,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int count() throws WPISuiteException {
 		// Return the number of Events currently in the database
 		return db.retrieveAll(new Event()).size();
 	}
