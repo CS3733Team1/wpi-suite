@@ -105,7 +105,7 @@ public class TimeDurationChooser extends JPanel {
 	 * Uses the next half-hour increment of time in the future as start time, and an hour after that as end time
 	 */
 	private void buildLayout(){
-		this.setLayout(new MigLayout("insets 1"));
+		this.setLayout(new MigLayout("", "[][]", "[]"));
 		
 		//Start Date Chooser
 		startDateChooser_=new DateTimeChooser("Start Time:");
@@ -117,7 +117,7 @@ public class TimeDurationChooser extends JPanel {
 		});
 		startDate_=startDateChooser_.getDate();
 		prevStartDateTimeMs_=startDate_.getTime();
-		this.add(startDateChooser_, "wrap");
+		this.add(startDateChooser_, "cell 0 0, wrap");
 		
 		//End Date Chooser
 		long endTime=startDate_.getTime()+defaultDuration_*60000;
@@ -131,12 +131,12 @@ public class TimeDurationChooser extends JPanel {
 				endDateChanged();
 			}
 		});
-		this.add(endDateChooser_, "wrap");
+		this.add(endDateChooser_, "cell 0 1, span");
 		
 		//error label
 		errorLabel_=new JLabel();
 		errorLabel_.setVisible(false);
-		this.add(errorLabel_);
+		//this.add(errorLabel_);
 		
 		//validation
 		normalBorder_=this.getBorder();
@@ -290,7 +290,8 @@ public class TimeDurationChooser extends JPanel {
 	private void clearErrors(){
 //		System.out.println("\t\tTDC: Clearing Errors...");
 		allValid_=true;
-		errorLabel_.setVisible(false);
+		this.remove(errorLabel_);
+		//errorLabel_.setVisible(false);
 		this.setBorder(normalBorder_);
 //		System.out.println("\t\tTDC:...done clearing Errors");
 	}
@@ -301,6 +302,7 @@ public class TimeDurationChooser extends JPanel {
 	 */
 	private void setError(String errorText){
 		allValid_=false;
+		this.add(errorLabel_, "cell 0 2");
 		errorLabel_.setText(errorText);
 		errorLabel_.setVisible(true);
 		this.setBorder(errorBorder_);
