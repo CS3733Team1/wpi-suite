@@ -32,7 +32,7 @@ public class DayCalendarScrollPane extends JScrollPane {
 		this.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 		
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		this.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
+		this.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
 	}
 	
 }
