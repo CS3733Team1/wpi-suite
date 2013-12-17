@@ -49,7 +49,7 @@ import net.miginfocom.swing.MigLayout;
  * @author trdesilva
  */
 @SuppressWarnings("serial")
-public class HelpWindow extends JPanel implements ActionListener, MouseListener, FocusListener, TreeSelectionListener, ItemListener, KeyListener
+public class HelpWindow extends JPanel implements ActionListener, MouseListener, FocusListener, TreeSelectionListener, KeyListener
 {
 	JTextPane display;
 	JScrollPane displayScroll;
@@ -60,14 +60,11 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	
 	JPanel settings;
 	JTextField filter;
-	JPanel checkPanel;
-	JCheckBox bTopic, bSummary, bDetail;
 	JButton bClear;
 	
 	ArrayList<HTMLDocument> docs;
 	String include = "";
 	String exclude = "";
-	boolean lods[] = {true, true, true};
 	ArrayList<HTMLDocument> backlist;
 	int backlistCurrent;
 	XMLParser parser;
@@ -133,7 +130,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		
 		//set up settings panel
 		settings = new JPanel();
-		settings.setLayout(new MigLayout("fill", "[100%]", "[14%][58%][14%][14%]"));
+		settings.setLayout(new MigLayout("fill", "[100%]", "[14%][14%][72%]"));
 		settings.setMinimumSize(new Dimension(180, 220));
 		settings.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
@@ -144,41 +141,13 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		filter.addFocusListener(this);
 		filter.addKeyListener(this);
 		
-		checkPanel = new JPanel();
-		checkPanel.setLayout(new MigLayout("fill", "[100%]", "[33%][33%][33%]"));
-		checkPanel.setMinimumSize(new Dimension(160, 75));
-		checkPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		checkPanel.setVisible(true);
-		
-		bTopic = new JCheckBox();
-		bTopic.setText("Topics");
-		bTopic.setSelected(true);
-		bTopic.setMinimumSize(new Dimension(110, 25));
-		bTopic.addItemListener(this);
-		bSummary = new JCheckBox();
-		bSummary.setText("Summaries");
-		bSummary.setSelected(true);
-		bSummary.setMinimumSize(new Dimension(110, 25));
-		bSummary.addItemListener(this);
-		bDetail = new JCheckBox();
-		bDetail.setText("Details");
-		bDetail.setSelected(true);
-		bDetail.setMinimumSize(new Dimension(110, 25));
-		bDetail.addItemListener(this);
-		
-		checkPanel.add(bTopic, "cell 0 0, grow");
-		checkPanel.add(bSummary, "cell 0 1, grow");
-		checkPanel.add(bDetail, "cell 0 2, grow");
-		
 		bClear = new JButton("Clear");
 		bClear.setMinimumSize(new Dimension(75,25));
 		bClear.setToolTipText("Cancel filtering and clear fields");
 		bClear.addMouseListener(this);
 		
-		settings.add(new JLabel("Show only..."), "cell 0 0, grow");
-		settings.add(checkPanel, "cell 0 1, grow");
-		settings.add(filter, "cell 0 2, grow");
-		settings.add(bClear, "cell 0 3, grow");
+		settings.add(filter, "cell 0 0, grow");
+		settings.add(bClear, "cell 0 1 1 1, grow");
 		
 		settings.setVisible(true);
 		
@@ -190,7 +159,6 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		parser = XMLParser.getParser();
 		
 		findDocs();
-		docs.add(new HTMLDocument("<html><body><h1>Welcome</h1><p>placeholder</p></body></html>", "Welcome"));
 		display.setEditorKit(new HTMLEditorKit());
 		if(docs.size() > 0)
 		{
@@ -319,25 +287,24 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 * @param lods A 3-tuple that says which levels of detail to search
 	 * @return Topic, Summary, and Detail HTMLDocuments which fit the criteria
 	 */
-	String filterDocs(String include, String exclude, boolean[] lods)
+	String filterDocs(String include, String exclude)
 	{
 		String results = "";
-		
-		if(lods.length != 3)
-		{
-			System.err.println("not enough arguments to filterDocs, expected boolean[3]");
-			return null;
-		}
+		String text;
+		include = include.toLowerCase();
+		exclude = exclude.toLowerCase();
+		boolean found = false;
 		
 		for(HTMLDocument doc: docs)
 		{
-			if((doc.getText().contains(include) || include.equals(""))
-			&& (lods[0] || lods[1] || lods[2])
+			text = doc.getText().toLowerCase();
+			if((text.contains(include) && !include.equals(""))
 			&& !doc.getTitle().contains("Welcome")
-			&& (!doc.getText().contains(exclude) || exclude.equals("")))
+			&& (!text.contains(exclude) || exclude.equals("")))
 			{
 				results += "<h1><u>" + doc.getTitle() + "</u></h1>";
 				results += parser.unwrapHTML(doc.getText(), false) + "<br>";
+				found = true;
 			}
 			else
 			{
@@ -346,6 +313,9 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			
 			results += "<br>";
 		}
+		
+		if(!found)
+			results = "No results found.";
 		
 		return parser.wrapHTML(results, "Search Results");
 	}
@@ -436,11 +406,13 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		int prevPos = display.getCaretPosition();
 		int newPos;
 		int bottom;
+		Rectangle textRect, visibleRect;
 		String text = display.getText();
 		String temp = "";
 		
 		//System.out.println("Before regex\n" + text);
 		text = text.replaceAll("\\s*(</?[^/bui].*?>)\\s*", "$1");
+		text = text.replaceAll(" +|\\n|\\r", " ");
 		text = text.trim();
 		//System.out.println("After regex\n" + text);
 		newPos = text.indexOf("<h1>" + heading + "</h1>");
@@ -462,17 +434,26 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 				text = text.replaceFirst(temp, "");
 			
 			newPos -= temp.length();
-			System.out.println("Text: " + text.substring(0, 100) + "\nPos: " + newPos);
+			System.out.println("Text: " + text.substring(Math.max(0, newPos - 4000), Math.min(text.length(), newPos + 5000)) + "\nPos: " + newPos);
 		}
-		
+
 		System.out.println(heading + " at " + newPos);
 		
 		if(newPos != -1)
 		{
-			
-			display.setCaretPosition(newPos);
+			display.setCaretPosition(Math.min(display.getDocument().getLength(), newPos));
 		}
 		
+		try {
+			textRect = display.modelToView(newPos);
+		} catch (BadLocationException e) {
+			textRect = display.getVisibleRect();
+			System.err.println("bad rectangle pos");
+		}
+		visibleRect = display.getVisibleRect();
+		textRect.setSize(visibleRect.getSize());
+		
+		display.scrollRectToVisible(textRect);
 	}
 
 	@Override
@@ -546,6 +527,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 				HTMLDocument parent = findTopLevelHTMLDocument((String) ((DefaultMutableTreeNode) node.getParent()).getUserObject());
 				display.setText(parent.getText());
 				scrollToHeading((String) node.getUserObject());
+				updateBacklist(parent);
 				
 			}
 		}
@@ -566,7 +548,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			else
 				exclude = "";
 			
-			display.setText(filterDocs(include, exclude, lods));
+			display.setText(filterDocs(include, exclude));
 			display.setCaretPosition(0);
 			
 			if(display.getText().equals(""))
@@ -613,15 +595,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		}
 		
 		if(e.getSource().equals(bClear))
-		{
-			lods[0] = true;
-			lods[1] = true;
-			lods[2] = true;
-			
-			bTopic.setSelected(true);
-			bSummary.setSelected(true);
-			bDetail.setSelected(true);
-			
+		{			
 			filter.setText("Exclude...");
 			exclude = "";
 			search.setText("Search...");
@@ -660,46 +634,6 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	}
 
 	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-		if(e.getSource().equals(bTopic))
-		{
-			if(e.getStateChange() == ItemEvent.DESELECTED)
-			{
-				lods[0] = false;
-			}
-			else
-			{
-				lods[0] = true;
-			}
-		}
-		
-		if(e.getSource().equals(bSummary))
-		{
-			if(e.getStateChange() == ItemEvent.DESELECTED)
-			{
-				lods[1] = false;
-			}
-			else
-			{
-				lods[1] = true;
-			}
-		}
-		
-		if(e.getSource().equals(bDetail))
-		{
-			if(e.getStateChange() == ItemEvent.DESELECTED)
-			{
-				lods[2] = false;
-			}
-			else
-			{
-				lods[2] = true;
-			}
-		}
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e)
 	{
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)
@@ -714,7 +648,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			else
 				exclude = "";
 			
-			display.setText(filterDocs(include, exclude, lods));
+			display.setText(filterDocs(include, exclude));
 			display.setCaretPosition(0);
 			
 			if(display.getText().equals(""))
