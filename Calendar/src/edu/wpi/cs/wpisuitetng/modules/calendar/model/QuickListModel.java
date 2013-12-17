@@ -11,9 +11,9 @@ import javax.swing.event.ListDataListener;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendarPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2.WeekCalendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 
 public class QuickListModel extends AbstractListModel<DeletableAbstractModel> implements ListDataListener, FilterChangedListener {
@@ -61,24 +61,24 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 		ICalendarView currentView = CalendarTabPanel.getCalendarView();
 		Iterator<Commitment> iterator = list.iterator();
 		Commitment temp = new Commitment();
-		if (currentView instanceof DayCalendarPanel)
+		if (currentView instanceof DayCalendar)
 		{
 			while(iterator.hasNext())
 			{
 				temp = iterator.next();
-				if(temp.getDueDate() == ((DayCalendarPanel) currentView).getDate())
+				if(temp.getDueDate() == ((DayCalendar) currentView).getDate())
 					inView.add(temp);
 			}
 			return inView;
 		}
-		else if (currentView instanceof WeekCalendarPanel)
+		else if (currentView instanceof WeekCalendar)
 		{
 			while(iterator.hasNext()) {
 				temp = iterator.next();
 				Date tempDate = temp.getDueDate();
 				// set tempDate to the Sunday of the week that temp is part of
 				tempDate.setDate(tempDate.getDate() - tempDate.getDay());
-				if(temp.getDueDate() == ((WeekCalendarPanel) currentView).getWeekStart()) {
+				if(temp.getDueDate() == ((WeekCalendar) currentView).getWeekStart()) {
 					inView.add(temp);
 				}
 			}
@@ -122,9 +122,9 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 		ICalendarView currentView = CalendarTabPanel.getCalendarView();
 		Iterator<Event> iterator = list.iterator();
 		Event temp = new Event();
-		if (currentView instanceof DayCalendarPanel)
+		if (currentView instanceof DayCalendar)
 		{
-			Date today = ((DayCalendarPanel) currentView).getDate();
+			Date today = ((DayCalendar) currentView).getDate();
 			int startComparison;
 			int endComparison;
 			while(iterator.hasNext())
@@ -138,11 +138,11 @@ public class QuickListModel extends AbstractListModel<DeletableAbstractModel> im
 			}
 			return inView;
 		}
-		else if (currentView instanceof WeekCalendarPanel)
+		else if (currentView instanceof WeekCalendar)
 		{ 
 			int startComparison;
 			int endComparison;
-			Date startOfWeek = ((WeekCalendarPanel) currentView).getWeekStart();
+			Date startOfWeek = ((WeekCalendar) currentView).getWeekStart();
 			Date endOfWeek = startOfWeek;
 			endOfWeek.setDate(startOfWeek.getDate() + 6);
 			while(iterator.hasNext()) {
