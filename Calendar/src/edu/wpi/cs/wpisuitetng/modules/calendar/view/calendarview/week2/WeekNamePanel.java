@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
 
 import java.util.Calendar;
 

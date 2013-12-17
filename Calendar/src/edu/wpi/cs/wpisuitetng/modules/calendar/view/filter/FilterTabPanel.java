@@ -40,7 +40,7 @@ public class FilterTabPanel extends JPanel implements ActionListener {
 	public void setViewFilterPanel() {
 		this.removeAll();
 		this.add(filterPanel, "grow, push");
-		this.invalidate();
+		this.revalidate();
 		this.repaint();
 	}
 	
@@ -50,7 +50,7 @@ public class FilterTabPanel extends JPanel implements ActionListener {
 		addFilPanel.setOkListener(this);
 		addFilPanel.setCancelListener(this);
 		this.add(addFilPanel, "grow, push");
-		this.invalidate();
+		this.revalidate();
 		this.repaint();
 	}
 

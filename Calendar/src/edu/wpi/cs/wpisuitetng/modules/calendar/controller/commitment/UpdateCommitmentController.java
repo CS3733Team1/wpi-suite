@@ -13,12 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JEditorPane;
-
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -49,10 +45,11 @@ public class UpdateCommitmentController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.commitmentToUpdate = view.getFilledCommitment();
-		commitmentToUpdate.setUniqueID(commitmentToUpdate.getUniqueID());
-		commitmentToUpdate.setOwnerID(commitmentToUpdate.getOwnerID());
-		commitmentToUpdate.setOwnerName(commitmentToUpdate.getOwnerName());	
+		Commitment newCommitment = view.getFilledCommitment();
+		newCommitment.setUniqueID(commitmentToUpdate.getUniqueID());
+		newCommitment.setOwnerID(commitmentToUpdate.getOwnerID());
+		newCommitment.setOwnerName(commitmentToUpdate.getOwnerName());
+		commitmentToUpdate = newCommitment;
 		
 		updateCommitmentInServer();
 	}
@@ -78,7 +75,6 @@ public class UpdateCommitmentController implements ActionListener {
 
 		System.out.println("	Update commitment: name = " + newCommitment.getName() + "; uid = " + newCommitment.getUniqueID());
 		model.updateCommitment(commitmentToUpdate, newCommitment);
-		view.closeCommitmentPanel();
 
 		if (commitmentToUpdate != null)
 		{
@@ -89,8 +85,7 @@ public class UpdateCommitmentController implements ActionListener {
 			{
 				view.closeCommitmentPanel();
 			}
-		}		
-
+		}
 	}
 
 }

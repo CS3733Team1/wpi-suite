@@ -15,21 +15,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEvent;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateTimeChangedEventListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEventListener;
 
@@ -62,6 +57,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	private JLabel wrongDaySelectionErrorLabel;
 	private JCheckBox chckbxMakeRecurring;
 	private boolean isRecurring;
+	
 	public EventRecurringPanel(Date startDate) {
 		this.buildLayout(startDate, false);
 	}
@@ -90,16 +86,17 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	 */
 	private void buildLayout(Date startDate, boolean recurringHuh) {
 		
-		setLayout(new MigLayout("", "[][][][][][][][]", "[][][][]"));
-		defaultBorder = this.getBorder();
-		
-		chckbxMakeRecurring = new JCheckBox("Make Recurring");
-		chckbxMakeRecurring.setSelected(recurringHuh);
-		add(chckbxMakeRecurring, "spanx");
-		chckbxMakeRecurring.addActionListener(this);
-		
+	
 		if(recurringHuh)
 		{	
+			setLayout(new MigLayout("debug", "[][][][][][][][]", "[][][][]"));
+			defaultBorder = this.getBorder();
+			
+			chckbxMakeRecurring = new JCheckBox("Make Recurring");
+			chckbxMakeRecurring.setSelected(recurringHuh);
+			add(chckbxMakeRecurring, "spanx");
+			chckbxMakeRecurring.addActionListener(this);
+			
 			isRecurring = true;
 			JLabel lblRecurring = new JLabel("Recurring: ");
 			add(lblRecurring, "cell 0 1");
@@ -133,7 +130,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 			chckbxSaturday.addActionListener(this);
 
 			JLabel lblNumberOfOccurences = new JLabel("Number of Occurences: ");
-			add(lblNumberOfOccurences, "flowx,cell 0 2 3 1,alignx left");
+			add(lblNumberOfOccurences, "cell 0 2,alignx left, spanx");
 
 			occurrencesErrorLabel = new JLabel(INVALID_OCCURRENCES_ERROR);
 			occurrencesErrorLabel.setForeground(Color.RED);
@@ -142,19 +139,28 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 
 			occurrencesTextField = new JTextField();
 			occurrencesTextField.setText("1");
-			add(occurrencesTextField, "cell 2 2,alignx left");
+			add(occurrencesTextField, "cell 2 2,alignx left, spanx");
 			occurrencesTextField.setColumns(10);
 			occurrencesTextField.addKeyListener(this);
 
 			wrongDaySelectionErrorLabel = new JLabel(INVALID_DAY_SELECTION_ERROR);
 			wrongDaySelectionErrorLabel.setForeground(Color.RED);
 			wrongDaySelectionErrorLabel.setVisible(false);
-			add(wrongDaySelectionErrorLabel, "cell 0 3 6 1");
 			setChkBox(startDate);
 			validateRecurring(startDate);
 		}
 		else
+		{
+			setLayout(new MigLayout("", "[]", "[]"));
+			defaultBorder = this.getBorder();
+			
+			chckbxMakeRecurring = new JCheckBox("Make Recurring");
+			chckbxMakeRecurring.setSelected(recurringHuh);
+			add(chckbxMakeRecurring, "spanx");
+			chckbxMakeRecurring.addActionListener(this);
 			isRecurring = false;
+		}
+			
 	}
 
 
@@ -281,9 +287,15 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 
 			}
 			if(!isValid)
+			{
 				this.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
+				add(wrongDaySelectionErrorLabel, "cell 0 3, spanx");
+			}
 			else
+			{
 				this.setBorder(defaultBorder);
+				this.remove(wrongDaySelectionErrorLabel);
+			}
 			return isValid;
 		}
 		else 

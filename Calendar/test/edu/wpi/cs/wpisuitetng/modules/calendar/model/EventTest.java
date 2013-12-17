@@ -10,17 +10,13 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-
-
 
 public class EventTest {
 
