@@ -142,6 +142,13 @@ public class Event extends DeletableAbstractModel implements Comparable<ISchedul
 				startDate.getMonth() == endDate.getMonth() &&
 				startDate.getDate() == endDate.getDate());
 	}
+	
+	public boolean isAllDay() {
+		System.out.println("START HOUR: "+startDate.getHours()+" START MINUTE: "+startDate.getMinutes());
+		System.out.println("END HOUR: "+endDate.getHours()+" END MINUTE: "+endDate.getMinutes());
+		return((startDate.getHours() == 0 && startDate.getMinutes() == 0)
+				&& (endDate.getHours() == 23 && endDate.getMinutes() == 59));
+	}
 
 	@Override
 	public String toJSON() {

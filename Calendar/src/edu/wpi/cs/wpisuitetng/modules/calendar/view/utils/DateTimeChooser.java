@@ -95,8 +95,8 @@ public class DateTimeChooser extends JPanel implements ActionListener{
 	 * Enabled this component and all sub components and re-validates the day and time
 	 */
 	public void enable(){
-		jDateChooser_.setEnabled(false);
-		timeCombo_.setEnabled(false);
+		jDateChooser_.setEnabled(true);
+		timeCombo_.setEnabled(true);
 		validateDateTime();
 	}
 	

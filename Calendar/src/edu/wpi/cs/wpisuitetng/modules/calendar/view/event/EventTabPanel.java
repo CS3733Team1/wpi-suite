@@ -70,7 +70,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
 	private EventRecurringPanel eventRecurringPanel;
-	
+
 	// Old Commitment
 	private Event editEvent;
 	private boolean isEditMode;
@@ -78,18 +78,28 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	public EventTabPanel() {
 		this.buildLayout();
 	}
-	
+
 	public EventTabPanel(Event e)
 	{
 		isEditMode = true;
 		editEvent = e;
 
 		this.buildLayout();
-		
+
 		//fill the fields with information from the provided Commitment
 		nameTextField.setText(e.getName());
 		durationChooser_.setStartDate(e.getStartDate());
 		durationChooser_.setEndDate(e.getEndDate());
+		allDayTimeChooser_.setDate(e.getStartDate());
+		allDayEvent_ = e.isAllDay();
+		if(allDayEvent_) {
+			allDayEventCheckbox.setEnabled(true);
+			allDayTimeChooser_.setEnabled(true);
+			durationChooser_.disable();
+		} else {
+			allDayTimeChooser_.setEnabled(false);
+			durationChooser_.enable();
+		}
 		categoryPickerPanel.setSelectedCategory(e.getCategory());
 		descriptionTextArea.setText(e.getDescription());
 		calendarPicker.setSelected(e.getisTeam() ? "Team": "Personal");
@@ -101,7 +111,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		addEventButton.setEnabled(false);
 		validateFields();
 	}
-	
+
 	public boolean validateEdit() {
 		boolean noChangesMade = true;
 		if(!editEvent.getName().equals(nameTextField.getText())) {
@@ -143,16 +153,17 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		this.add(nameErrorLabel, "cell 0 0");
 		this.add(nameErrorLabel, "wrap");
 
-		//all day event checkbox (uncomment for checkbox, but note it doesn't do anything yet)
-		//		allDayEvent_=false;
-		//		allDayEventCheckbox=new Checkbox("All Day Event");
-		//		allDayEventCheckbox.addItemListener(new ItemListener(){
-		//			@Override
-		//			public void itemStateChanged(ItemEvent e) {
-		//				allDayEventCheckboxChanged();
-		//			}
-		//		});
-		//		this.add(allDayEventCheckbox, "wrap");
+		//duration
+		durationChooser_=new TimeDurationChooser();
+		durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
+			@Override
+			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+				//				System.out.println("Time Duration Changed");
+				validateFields();
+			}
+		});
+		add(durationChooser_, "cell 0 1, alignx left");
+		this.add(durationChooser_, "alignx left, wrap");
 
 		// All Day Event
 		allDayEvent_ = false;
@@ -176,22 +187,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 				validateFields();
 			}
 		});
-		add(allDayTimeChooser_, "wmin 100");
-
-
-		//duration
-		durationChooser_=new TimeDurationChooser();
-		durationChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
-			@Override
-			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
-				//				System.out.println("Time Duration Changed");
-				validateFields();
-			}
-		});
-		add(durationChooser_, "cell 0 1, alignx left");
-
-
-		this.add(durationChooser_, "alignx left, wrap");
+		add(allDayTimeChooser_, "alignx left, wrap, wmin 100");
 
 		// Calendar
 		JLabel label = new JLabel("Calendar:");
@@ -255,9 +251,9 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 */
 	private void validateFields() {		
 		boolean enableAddEvent = true;
-		
+
 		if(isEditMode) {
-			System.out.println("Edit Mode");
+			//System.out.println("Edit Mode");
 			enableAddEvent = !validateEdit();
 		}
 
@@ -274,12 +270,14 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 		if (!allDayEvent_){
 			allDayTimeChooser_.setEnabled(false);
+			durationChooser_.enable();
 			//validate times and duration between them
 			if (!durationChooser_.hasValidDuration()){
 				enableAddEvent=false;
 			}
 		} else {
 			allDayTimeChooser_.setEnabled(true);
+			durationChooser_.disable();
 			Date currDate_ = new Date();
 			if(!(currDate_.before(allDayTimeChooser_.getDate()))) {
 				enableAddEvent=false;
@@ -298,13 +296,16 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		Date startDate;
 		Date endDate;
 		if(!allDayEvent_){
-			startDate=durationChooser_.getStartDate();
-			endDate=durationChooser_.getEndDate();
+			startDate = durationChooser_.getStartDate();
+			endDate = durationChooser_.getEndDate();
 		} else {
 			Date temp = allDayTimeChooser_.getDate();
-			startDate = temp;
-			temp.setHours(24);
-			endDate = temp;
+			temp.setHours(0);
+			temp.setMinutes(0);
+			startDate = (Date) temp.clone();
+			temp.setHours(23);
+			temp.setMinutes(59);
+			endDate = (Date) temp.clone();
 		}
 
 		//make a new event with start and end times
@@ -313,7 +314,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	}
 
 	public void allDayEventCheckboxChanged(){
-		allDayEvent_=allDayEventCheckbox.getState();
+		allDayEvent_ = allDayEventCheckbox.getState();
 		if (!allDayEvent_){
 			durationChooser_.enable();
 			allDayTimeChooser_.setEnabled(false);
@@ -362,7 +363,6 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			Date tempDate = allDayTimeChooser_.getDate();
 			tempDate.setHours(23);
 			tempDate.setHours(0);
-			allDayTimeChooser_.setDate(tempDate);
 			endDate = allDayTimeChooser_.getDate();
 		}
 		if(numOfEvents == 1)
