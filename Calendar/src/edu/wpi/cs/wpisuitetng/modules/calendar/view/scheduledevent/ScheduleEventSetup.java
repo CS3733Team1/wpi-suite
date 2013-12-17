@@ -99,7 +99,7 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 		addEventButton = new JButton("Add Event");
 		addEventButton.setEnabled(false);
 		addEventButton.setActionCommand("addevent");
-		addEventButton.addActionListener(new AddEventController(this));
+		//addEventButton.addActionListener(new AddEventController(this));
 
 
 		this.add(addEventButton, "cell 0 6,alignx left");
