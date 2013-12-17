@@ -433,12 +433,38 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	
 	void scrollToHeading(String heading)
 	{
-		String text = display.getText();
 		int prevPos = display.getCaretPosition();
-		int newPos = text.indexOf("<h1>" + heading + "</h1>");
+		int newPos;
 		int bottom;
+		String text = display.getText();
+		String temp = "";
 		
-		System.out.println(text);
+		//System.out.println("Before regex\n" + text);
+		text = text.replaceAll("\\s*(</?[^/bui].*?>)\\s*", "$1");
+		text = text.trim();
+		//System.out.println("After regex\n" + text);
+		newPos = text.indexOf("<h1>" + heading + "</h1>");
+		
+		if(text.contains("<title>"))
+		{
+			text = text.substring(0, text.indexOf("<title>")) + text.substring(text.indexOf("</title>") + 8);
+			newPos = text.indexOf("<h1>" + heading + "</h1>");
+		}
+
+		//find all the tags and take them out because caret position is based on rendered text, not raw HTML
+		for(int i = 0; i < newPos; i = text.indexOf("<"))
+		{
+			temp = text.substring(i, text.indexOf(">", i) + 1);
+			temp = temp.replace("\\", "\\\\");
+			if(temp.equals("<br>"))
+				text = text.replaceFirst(temp, "\n");
+			else
+				text = text.replaceFirst(temp, "");
+			
+			newPos -= temp.length();
+			System.out.println("Text: " + text.substring(0, 100) + "\nPos: " + newPos);
+		}
+		
 		System.out.println(heading + " at " + newPos);
 		
 		if(newPos != -1)
