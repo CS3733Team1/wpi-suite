@@ -106,7 +106,7 @@ public class Leader extends JPanel{
 				int dragLocationX = e.getXOnScreen();
 				int dragLocationY = e.getYOnScreen();
 				
-				Point p = (Point) Leader.this.getComponentAt(e.getPoint()).getLocation();
+				Point p = Leader.this.getComponentAt(e.getPoint()).getLocation();
 
 
 				int minX = Math.min(p.x, startLocation.x);

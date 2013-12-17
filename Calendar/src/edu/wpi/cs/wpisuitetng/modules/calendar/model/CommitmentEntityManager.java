@@ -24,8 +24,8 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 
 public class CommitmentEntityManager implements EntityManager<Commitment> {
 	/** The database */
-	final Data db;
-	public static CommitmentEntityManager CManager;
+	private final Data db;
+	private static CommitmentEntityManager CManager;
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -191,7 +191,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count()
 	 */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int count() throws WPISuiteException {
 		// Return the number of Commitments currently in the database
 		return db.retrieveAll(new Commitment()).size();
 	}

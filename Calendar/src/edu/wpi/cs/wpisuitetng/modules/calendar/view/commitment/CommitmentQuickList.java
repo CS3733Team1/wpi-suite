@@ -10,22 +10,22 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Date;
 
 import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.*;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.*;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayCalendar;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2.WeekCalendar;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayCalendar;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month.MonthCalendarView;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalendar;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 
 /**
  * This class is used to calculate a list of the user's commitments that fall
@@ -63,7 +63,7 @@ public class CommitmentQuickList extends AbstractListModel<Commitment> implement
 			while(iterator.hasNext())
 			{
 				temp = iterator.next();
-				if(temp.getDueDate() == ((DayCalendar) currentView).getDate())
+				if(temp.getDueDate().equals(((DayCalendar) currentView).getDate()))
 					inView.add(temp);
 			}
 			return inView;
@@ -74,7 +74,7 @@ public class CommitmentQuickList extends AbstractListModel<Commitment> implement
 				temp = iterator.next();
 				Date tempDate = temp.getDueDate();
 				tempDate.setDate(tempDate.getDate() - tempDate.getDay());
-				if(temp.getDueDate() == ((WeekCalendar) currentView).getWeekStart()) {
+				if(temp.getDueDate().equals(((WeekCalendar) currentView).getWeekStart())) {
 					inView.add(temp);
 				}
 			}

@@ -19,17 +19,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEventListener;
-
-import javax.swing.JCheckBox;
-import javax.swing.border.Border;
 
 public class EventRecurringPanel extends JPanel implements KeyListener, ActionListener {
 	//List of listeners
@@ -77,7 +76,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 		// Notify everybody that may be interested.
 		RecurringChangedEvent evt = new RecurringChangedEvent("");
         for (RecurringChangedEventListener hl : listeners)
-            hl.RecurringChangedEventOccurred(evt);
+            hl.recurringChangedEventOccurred(evt);
 
 	}
 
@@ -205,12 +204,9 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	 */
 	public boolean validateRecurring() {
 		boolean isValid = true;
-		if(chckbxMakeRecurring.isSelected())
-		{
-
+		if(chckbxMakeRecurring.isSelected()) {
 			int dayToday = startDate.getDay();
-			try
-			{
+			try {
 				if(Integer.parseInt(occurrencesTextField.getText()) > 0){
 					isValid = isValid && true;
 					occurrencesErrorLabel.setVisible(false);
@@ -220,8 +216,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 					occurrencesErrorLabel.setVisible(true);
 				}
 			}
-			catch(NumberFormatException e)
-			{
+			catch(NumberFormatException e) {
 				isValid = false;
 				occurrencesErrorLabel.setVisible(true);
 			}

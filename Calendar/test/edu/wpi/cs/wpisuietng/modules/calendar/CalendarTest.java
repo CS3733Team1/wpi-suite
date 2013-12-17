@@ -10,17 +10,25 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.Calendar;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 
 public class CalendarTest {
-
-	@Test
-	public void testCalendarInstance(){
-		Calendar testcal = new Calendar();
-		assertNotNull(testcal);
-	}
+	
+//	@Test
+//	public void testCalendarInstance(){
+//		EventListModel emodel = EventListModel.getEventListModel();
+//		CommitmentListModel cmodel = CommitmentListModel.getCommitmentListModel();
+//		emodel.emptyModel();
+//		cmodel.emptyModel();
+//		
+//		Calendar testcal = new Calendar();
+//		assertNotNull(testcal);
+//		testcal = null;
+//	}
 	
 	@Test
 	public void testAddEventInstance(){

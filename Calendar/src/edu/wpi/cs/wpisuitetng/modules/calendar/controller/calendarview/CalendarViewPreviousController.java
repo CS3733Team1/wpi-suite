@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 
 public class CalendarViewPreviousController implements ActionListener{
-	CalendarTabPanel view;
+	private CalendarTabPanel view;
 
 	public CalendarViewPreviousController(CalendarTabPanel view) {
 		this.view = view;

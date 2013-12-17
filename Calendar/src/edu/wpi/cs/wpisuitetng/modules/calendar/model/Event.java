@@ -209,10 +209,15 @@ public class Event extends DeletableAbstractModel implements Comparable<ISchedul
 	
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Event) {
-			Event eventOther = (Event)o;
-			return this.getUniqueID() == eventOther.getUniqueID();
-		} else return false;
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
+		if (!(o instanceof Event))
+			return false;
+
+		Event eventOther = (Event)o;
+		return this.getUniqueID() == eventOther.getUniqueID();
 	}
 
 	public void copyFrom(Event e) {

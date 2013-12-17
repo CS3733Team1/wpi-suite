@@ -180,7 +180,7 @@ public class RequirementManagerTest {
 	 * @throws WPISuiteException */
 	@Test
 	public void testCount() throws WPISuiteException {
-		assertEquals(2, manager.Count());
+		assertEquals(2, manager.count());
 	}
 
 
