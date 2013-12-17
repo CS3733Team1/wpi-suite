@@ -98,6 +98,8 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	
 	public boolean validateEdit() {
 		boolean noChangesMade = true;
+		System.out.println("Old Category: " + editEvent.getCategory().getUniqueID() + " and New Category: " + categoryPickerPanel.getSelectedCategory().getUniqueID());
+		System.out.println("Old Category: " + editEvent.getCategory().getName() + " and New Category: " + categoryPickerPanel.getSelectedCategory().getName());
 		if(!editEvent.getName().equals(nameTextField.getText())) {
 			noChangesMade = false;
 		}
@@ -109,6 +111,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		}
 		else if(!editEvent.getCategory().equals(categoryPickerPanel.getSelectedCategory())){
 			noChangesMade = false;
+			System.out.println("category edited: " + !noChangesMade);
 		}
 		else if(!editEvent.getDescription().equals(descriptionTextArea.getText())){
 			noChangesMade = false;
@@ -116,6 +119,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		else if(editEvent.getisTeam() != calendarPicker.isTeam()){
 			noChangesMade = false;
 		}
+		System.out.println("have no changes been made? " + noChangesMade);
 		return noChangesMade;
 	}
 
@@ -181,11 +185,13 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		// Category
 		this.add(new JLabel("Category:"), "cell 0 5");
 		categoryPickerPanel = new CategoryPickerPanel();
+		categoryPickerPanel.addActionListener(this);
 		this.add(categoryPickerPanel, "cell 0 5,alignx left");
 
 		// Description
 		this.add(new JLabel("Description:"), "cell 0 6");
 		descriptionTextArea = new JTextArea();
+		descriptionTextArea.addKeyListener(this);
 		descriptionTextArea.setLineWrap(true);
 		descriptionTextArea.setWrapStyleWord(true);
 
@@ -208,6 +214,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		//Action Listener for Cancel Button
 		cancelButton.addActionListener(this);
 		calendarPicker = new CalendarPicker();
+		calendarPicker.addActionListener(this);
 		this.add(calendarPicker, "cell 0 4,alignx left");
 
 		validateFields();
@@ -228,6 +235,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 		if(isEditMode) {
 			System.out.println("Edit Mode");
 			enableAddEvent = !validateEdit();
+			System.out.println("is enabled " + !validateEdit());
 		}
 
 		//Check the name
