@@ -84,7 +84,7 @@ public class CalendarTabPanel extends JPanel {
 
 		subTabPane = new JTabbedPane();
 		subTabPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
-		subTabPane.setMinimumSize(new Dimension(280, 64));
+		subTabPane.setMinimumSize(new Dimension(330, 64));
 
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		//quickListTabPanel = new QuickListTabPanel(calendarPanel);

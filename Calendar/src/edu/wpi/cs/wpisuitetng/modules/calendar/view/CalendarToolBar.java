@@ -146,6 +146,19 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.repaint();
 	}
 
+	public void setToolBarSchedule() {
+		this.removeAll();
+		this.setLayout(new MigLayout("fill", "[50%][50%]"));
+		//this.add(refreshButton);
+
+		this.add(addCommitmentButton, "align left, split 3");
+		this.add(addEventButton);
+		this.add(scheduledEventButton);
+
+		this.add(helpButton, "align right");
+
+		this.repaint();
+	}
 
 
 	// Functions to set listeners for the buttons
@@ -176,6 +189,10 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 	public synchronized void clickRefreshButton() {
 		this.refreshButton.doClick();
+	}
+	
+	public void scheduleButtonListener(ActionListener l){
+		scheduledEventButton.addActionListener(l);
 	}
 
 	@Override
