@@ -33,7 +33,7 @@ public class AddEventObserver implements RequestObserver {
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		System.out.println("	The request to add the event was successful.");
+		System.out.println("	The request to add the event was succesful.");
 
 		// Parse the message out of the response body
 		final Event event = Event.fromJSON(iReq.getResponse().getBody());

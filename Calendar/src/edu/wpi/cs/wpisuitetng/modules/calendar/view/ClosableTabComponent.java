@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -7,10 +8,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 
 public class ClosableTabComponent extends JPanel implements ActionListener {
 
@@ -45,8 +47,9 @@ public class ClosableTabComponent extends JPanel implements ActionListener {
 		label.setBorder(BorderFactory.createEmptyBorder(3, 0, 2, 7));
 		add(label);
 
-		final JButton closeButton = new JButton("\u2716");
+		final TransparentButton closeButton = new TransparentButton("\u2716");
 		closeButton.setFont(closeButton.getFont().deriveFont((float) 8));
+		closeButton.setMinimumSize(new Dimension(16, 16));
 		closeButton.setMargin(new Insets(0, 0, 0, 0));
 		closeButton.addActionListener(this);
 		add(closeButton);

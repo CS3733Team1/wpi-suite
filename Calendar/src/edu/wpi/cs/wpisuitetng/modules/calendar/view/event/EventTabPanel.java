@@ -20,6 +20,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,7 +30,10 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.UpdateEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPicker;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryPickerPanel;
@@ -66,9 +70,59 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	// Error wrappers
 	private JPanel nameErrorPanelWrapper;
 	private EventRecurringPanel eventRecurringPanel;
+	
+	// Old Commitment
+	private Event editEvent;
+	private boolean isEditMode;
 
 	public EventTabPanel() {
 		this.buildLayout();
+	}
+	
+	public EventTabPanel(Event e)
+	{
+		isEditMode = true;
+		editEvent = e;
+
+		this.buildLayout();
+		
+		//fill the fields with information from the provided Commitment
+		nameTextField.setText(e.getName());
+		durationChooser_.setStartDate(e.getStartDate());
+		durationChooser_.setEndDate(e.getEndDate());
+		categoryPickerPanel.setSelectedCategory(e.getCategory());
+		descriptionTextArea.setText(e.getDescription());
+		calendarPicker.setSelected(e.getisTeam() ? "Team": "Personal");
+		//eventRecurringPanel.set
+		addEventButton.setText("Update Event");
+		addEventButton.setActionCommand("updateevent");
+		addEventButton.removeActionListener(addEventButton.getActionListeners()[0]); //Remove the addCommitment action listener
+		addEventButton.addActionListener(new UpdateEventController(this, e));	//Add the updateCommitment action listener
+		addEventButton.setEnabled(false);
+		validateFields();
+	}
+	
+	public boolean validateEdit() {
+		boolean noChangesMade = true;
+		if(!editEvent.getName().equals(nameTextField.getText())) {
+			noChangesMade = false;
+		}
+		else if(!editEvent.getStartDate().toString().equals(durationChooser_.getStartDate().toString())){
+			noChangesMade = false;
+		}
+		else if(!editEvent.getEndDate().toString().equals(durationChooser_.getEndDate().toString())){
+			noChangesMade = false;
+		}
+		else if(!editEvent.getCategory().equals(categoryPickerPanel.getSelectedCategory())){
+			noChangesMade = false;
+		}
+		else if(!editEvent.getDescription().equals(descriptionTextArea.getText())){
+			noChangesMade = false;
+		}
+		else if(editEvent.getisTeam() != calendarPicker.isTeam()){
+			noChangesMade = false;
+		}
+		return noChangesMade;
 	}
 
 	/**
@@ -201,6 +255,11 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	 */
 	private void validateFields() {		
 		boolean enableAddEvent = true;
+		
+		if(isEditMode) {
+			System.out.println("Edit Mode");
+			enableAddEvent = !validateEdit();
+		}
 
 		//Check the name
 		if(nameTextField.getText().trim().length() == 0) {
@@ -266,7 +325,7 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//		System.out.println("All Day Checkbox Changed!");
+		//System.out.println("All Day Checkbox Changed!");
 		if(e.getActionCommand().equals("cancel")) {
 			this.closeEventPanel();
 		} else {
@@ -302,10 +361,15 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 			startDate = allDayTimeChooser_.getDate();
 			Date tempDate = allDayTimeChooser_.getDate();
 			tempDate.setHours(23);
+			tempDate.setHours(0);
 			allDayTimeChooser_.setDate(tempDate);
 			endDate = allDayTimeChooser_.getDate();
 		}
-
+		if(numOfEvents == 1)
+		{
+			eventList.add(getFilledEvent());
+			return eventList;
+		}
 		for(int i = 0, day = startDate.getDay(); i < numOfEvents; ++day)
 		{
 			if(day == 7)
@@ -325,14 +389,14 @@ public class EventTabPanel extends JPanel implements KeyListener, ActionListener
 	}
 
 	private void dayChanged(){
-		//		System.out.println("Day Changed");
-		eventRecurringPanel.setChkBox(allDayTimeChooser_.getDate());
+		//System.out.println("Day Changed");
+		//eventRecurringPanel.setChkBox(allDayTimeChooser_.getDate());
 		fillDay();
 		//DateTimeChanged();
 	}
 
 	private void fillDay(){
-		//		System.out.println("\nFilling Day...");
+		//System.out.println("\nFilling Day...");
 		Date day=allDayTimeChooser_.getDate();
 		day.setHours(0);
 

@@ -24,7 +24,7 @@ public class DeleteFilterObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		// The response will not include a body as this is HTTP.DELETE
 		// Do nothing
-		System.out.println("	The request to delete a filter was successful.");
+		System.out.println("	The request to delete a filter was succesful.");
 	}
 
 	@Override

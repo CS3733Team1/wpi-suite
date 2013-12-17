@@ -11,6 +11,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.category;
 
 import java.awt.Color;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,10 +28,11 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.CategoryListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 
 public class AddCategoryPanel extends JPanel implements KeyListener, ActionListener {
 	
-	private JButton randomColors;
+	private TransparentButton randomColors;
 	private JButton ok;
 	private JButton cancel;
 	
@@ -45,12 +47,13 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		this.setLayout(new MigLayout("insets 0", "push[center]push", "[][][][]"));
 		
 		try {
-			randomColors = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png"))));
+			randomColors = new TransparentButton(new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png"))));
 		} catch (IOException e) {}
 		
 		ok = new JButton("Ok");
 		cancel = new JButton("Cancel");
 		
+		randomColors.setMargin(new Insets(0, 0, 0, 0));
 		randomColors.addActionListener(this);
 		
 		ok.setActionCommand("addok");
@@ -58,12 +61,12 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		
 		cs = new ColorSwatch();
 		
-		nameTextField = new JTextField(20);
+		nameTextField = new JTextField(15);
 		nameTextField.addKeyListener(this);
 		
 		JPanel p = new JPanel();
 		p.add(new JLabel("Name:"));
-		p.add(nameTextField);
+		p.add(nameTextField, "pushy, gapafter 10px");
 		
 		nameErrorLabel = new JLabel("Enter a Name");
 		nameErrorLabel.setForeground(Color.RED);
@@ -72,12 +75,12 @@ public class AddCategoryPanel extends JPanel implements KeyListener, ActionListe
 		this.add(nameErrorLabel, "cell 0 1, alignx center");
 		this.add(cs, "cell 0 2, w 200, h 200, alignx center");
 		
-		JPanel p2 = new JPanel();
-		p2.add(randomColors);
-		p2.add(ok);
-		p2.add(cancel);
+		JPanel p3 = new JPanel();
+		p3.add(randomColors);
+		p3.add(ok);
+		p3.add(cancel);
 		
-		this.add(p2, "cell 0 3, alignx center");
+		this.add(p3, "cell 0 3, alignx center");
 		
 		this.validateFields();
 	}

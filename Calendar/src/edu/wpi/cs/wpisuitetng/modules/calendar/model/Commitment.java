@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -286,8 +287,9 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 	 */
 	@Override
 	public String toString() {
+		
 		String str = "<html><b>Name:</b>  " + getName() +
-				"<br><b>Due Date:</b>  " + getDueDate().toString();
+				"<br><b>Due Date:</b>  " + DateFormat.getInstance().format(getStartDate());
 		if(this.category != null)
 			str += "<br><b>Category:</b> " + getCategory().getName();
 

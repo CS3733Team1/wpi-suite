@@ -19,6 +19,34 @@ public class CategoryTest {
 	}
 
 	@Test
+	public void testUniqueID(){
+		Category check1 = new Category("First", Color.BLACK);
+		Category check2 = new Category("Second", Color.BLUE);
+		assertFalse(check1.getName().equals(check2.getName()));
+	}
+	
+	@Test
+	public void sameNameTest(){
+		Category check1 = new Category("First", Color.BLACK);
+		Category check2 = new Category("First", Color.BLUE);
+		//Unique ID Should Only Be Given Out On Server Side
+		assertTrue(check1.getUniqueID() == check2.getUniqueID());
+	}
+	
+	@Test
+	public void testEventInstanceCloning(){
+		Category check1 = new Category("First", Color.BLACK);
+		assertNotNull(check1.cloneFake());
+	}
+	
+	@Test
+	public void testConstructorCloning(){
+		Category check1 = new Category("First", Color.BLACK);
+		assertEquals(check1.getName(), check1.cloneFake().getName());
+		assertEquals(check1.getColor(), check1.cloneFake().getColor());
+	}
+	
+	@Test
 	public void testCategoryName() {
 		assertEquals("School",cat1.getName());
 		cat1.setName("class");
