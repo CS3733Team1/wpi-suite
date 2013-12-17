@@ -23,6 +23,7 @@ public class DayViewTest {
 	
 	@Before
 	public void setUp() {
+		System.gc();
 		EventListModel emodel = EventListModel.getEventListModel();
 		CommitmentListModel cmodel = CommitmentListModel.getCommitmentListModel();
 		emodel.emptyModel();

@@ -4,9 +4,18 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class CommitmentModelTest {
+	
+	@Before
+	/**
+	 * Used to Other Tests Don't Interfere
+	 */
+	public void GarbageCollect(){
+		System.gc();
+	}
 	
 	@Test
 	/**

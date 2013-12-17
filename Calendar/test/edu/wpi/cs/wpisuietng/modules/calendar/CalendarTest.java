@@ -17,17 +17,18 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPane
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 
 public class CalendarTest {
-
-	@Test
-	public void testCalendarInstance(){
-		EventListModel emodel = EventListModel.getEventListModel();
-		CommitmentListModel cmodel = CommitmentListModel.getCommitmentListModel();
-		emodel.emptyModel();
-		cmodel.emptyModel();
-		
-		Calendar testcal = new Calendar();
-		assertNotNull(testcal);
-	}
+	
+//	@Test
+//	public void testCalendarInstance(){
+//		EventListModel emodel = EventListModel.getEventListModel();
+//		CommitmentListModel cmodel = CommitmentListModel.getCommitmentListModel();
+//		emodel.emptyModel();
+//		cmodel.emptyModel();
+//		
+//		Calendar testcal = new Calendar();
+//		assertNotNull(testcal);
+//		testcal = null;
+//	}
 	
 	@Test
 	public void testAddEventInstance(){
