@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 import java.util.List;
 import java.util.UUID;
 
+
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
@@ -92,8 +93,10 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 	@Override
 	public Commitment[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		System.out.printf("Server: Retrieving category with id = %s\n", id);
-		return (Commitment []) (db.retrieve(this.getClass(), "UniqueID", id, s.getProject()).toArray());
+		System.out.printf("Server: Retrieving commitment with id = %s\n", id);
+		List<Model> list = db.retrieve(Commitment.class,"UniqueID", Long.parseLong(id), s.getProject());
+		System.out.println("List size = " + list.size());
+		return list.toArray(new Commitment[list.size()]);
 	}
 
 	/* 
@@ -128,7 +131,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 		 * We have to get the original defect from db4o, copy properties from updatedCommitment,
 		 * then save the original Commitment again.
 		 */
-		List<Model> oldCommitments = db.retrieve(Commitment.class, "UniqueID", updatedCommitment.getUniqueID(), s.getProject());
+		List<Model> oldCommitments = db.retrieve(Commitment.class, "UniqueID",updatedCommitment.getUniqueID(), s.getProject());
 		//System.out.println(oldCommitments.toString());
 		if(oldCommitments.size() < 1 || oldCommitments.get(0) == null) {
 			throw new BadRequestException("Commitment with ID does not exist.");

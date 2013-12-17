@@ -53,6 +53,9 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	private int todayIndex;
 	private int currentDay; 
 	
+	/**
+	 * Creates New Week View
+	 */
 	public WeekCalendar(){
 		
 		this.setLayout(new MigLayout("fill, insets 0"));

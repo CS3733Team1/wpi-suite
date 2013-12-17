@@ -81,7 +81,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	}
 
 	/*
-	 * Individual messages cannot be retrieved. This message always throws an exception.
+	 * Events can be retrieved
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
@@ -90,7 +90,10 @@ public class EventEntityManager implements EntityManager<Event> {
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
 		// retrieving specific Events.
-		throw new WPISuiteException();
+		System.out.printf("Server: Retrieving Event with id = %s\n", id);
+		List<Model> list = db.retrieve(Event.class,"UniqueID", Long.parseLong(id), s.getProject());
+		System.out.println("List size = " + list.size());
+		return list.toArray(new Event[list.size()]);
 	}
 
 	/* 
@@ -187,7 +190,7 @@ public class EventEntityManager implements EntityManager<Event> {
 	public void deleteAll(Session s) throws WPISuiteException {
 
 		// This module does not allow Events to be deleted, so throw an exception
-		throw new WPISuiteException();
+		db.deleteAll(new Event());
 	}
 
 	/*
