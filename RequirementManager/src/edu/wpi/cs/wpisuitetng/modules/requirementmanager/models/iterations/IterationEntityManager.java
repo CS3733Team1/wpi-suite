@@ -168,9 +168,9 @@ public class IterationEntityManager implements EntityManager<Iteration> {
 	
 	
 	 * @return number of Iterations stored * @throws WPISuiteException * @throws WPISuiteException * @throws WPISuiteException
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count() */
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#count() */
 	@Override
-	public int Count() throws WPISuiteException {
+	public int count() throws WPISuiteException {
 		return db.retrieveAll(new Iteration()).size();
 	}
 

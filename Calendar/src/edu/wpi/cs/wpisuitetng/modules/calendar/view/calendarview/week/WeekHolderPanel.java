@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -8,11 +8,12 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JPanel;
+
 import java.util.List;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.DayArea;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2.HourLabels;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayArea;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.HourLabels;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
 

@@ -29,7 +29,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  *
  */
 public class RetrieveCommitmentController implements AncestorListener, ActionListener {
-	CommitmentListModel model;
+	private CommitmentListModel model;
 
 	public RetrieveCommitmentController() {
 		this.model = CommitmentListModel.getCommitmentListModel();

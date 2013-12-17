@@ -24,8 +24,8 @@ import com.google.gson.Gson;
 public class Category extends DeletableAbstractModel {
 	private String name;
 	private Color color;
-	public boolean isReal = true;
-	
+	private boolean isReal = true;
+
 	/**
 	 * @return <b>true</b> if this Category is not a duplicate, <b>false</b> if it is
 	 */
@@ -36,7 +36,7 @@ public class Category extends DeletableAbstractModel {
 	 * Category constructor
 	 */
 	public Category(){}
-	
+
 	/**
 	 * Category constructor
 	 * @param name
@@ -47,14 +47,14 @@ public class Category extends DeletableAbstractModel {
 		this.color = color;
 		this.isReal = true;
 	}
-	
+
 	public Category(String name, Color color, long uid) {
 		this.name = name;
 		this.color = color;
 		this.isReal = true;
 		this.setUniqueID(uid);
 	}
-	
+
 	/**
 	 * @return the name of the Category
 	 */
@@ -68,7 +68,7 @@ public class Category extends DeletableAbstractModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * @return the Color associated with the Category
 	 */
@@ -82,24 +82,24 @@ public class Category extends DeletableAbstractModel {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
+
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public String toJSON() {
 		//name, dueDate, description, category
 		String str = new Gson().toJson(this, Category.class);
 		return str;
 	}
-	
+
 	/**
 	 * Generates an array of Categories from a JSON String
 	 * @param input JSON String containing multiple serialized Categories
@@ -109,7 +109,7 @@ public class Category extends DeletableAbstractModel {
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Category[].class);
 	}
-	
+
 	/**
 	 * Generates a single Category from a JSON String
 	 * @param input JSON String representing one Category
@@ -119,7 +119,7 @@ public class Category extends DeletableAbstractModel {
 		final Gson parser = new Gson();
 		return parser.fromJson(input, Category.class);
 	}
-	
+
 	/**
 	 * Makes a fake copy of this. Should be used when constructing Events and Commitments with Categories
 	 * to prevent duplicate returns from the database.
@@ -130,12 +130,22 @@ public class Category extends DeletableAbstractModel {
 		cat.isReal = false;
 		return cat;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Category) {
-			Category categoryOther = (Category)o;
-			return this.getUniqueID() == categoryOther.getUniqueID();
-		} else return false;
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
+		if (!(o instanceof Category))
+			return false;
+
+		Category categoryOther = (Category)o;
+		return this.getUniqueID() == categoryOther.getUniqueID();
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)this.getUniqueID();
 	}
 }

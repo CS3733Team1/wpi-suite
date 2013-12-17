@@ -34,14 +34,12 @@ public class AddEventController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//get occurrences 
-		int numOfEvents = view.numOfEvents();
 		ArrayList<Event> events = view.getFilledEvents();
 		Iterator<Event> eventIterator = events.iterator();
 		// Retrieve the event
 		Event event;
 		
-		while(eventIterator.hasNext())
-		{
+		while(eventIterator.hasNext()) {
 			event = eventIterator.next();
 				
 			System.out.println("Adding event: name = " + event.getName() + "; uid = " + event.getUniqueID());

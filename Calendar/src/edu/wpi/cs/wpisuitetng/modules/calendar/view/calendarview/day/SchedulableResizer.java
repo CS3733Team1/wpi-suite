@@ -1,8 +1,18 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
@@ -375,7 +385,7 @@ public class SchedulableResizer extends MouseAdapter
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		if (resizing == false) return;
+		if (!resizing) return;
 
 		Component source = e.getComponent();
 		Point dragged = e.getPoint();

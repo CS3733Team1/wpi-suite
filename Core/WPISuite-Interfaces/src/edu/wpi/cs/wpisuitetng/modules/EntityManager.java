@@ -94,7 +94,7 @@ public interface EntityManager<T extends Model>
 	 * 
 	 * @return	the number of records of this Manager's Model class T
 	 */
-	public int Count() throws WPISuiteException;
+	public int count() throws WPISuiteException;
 
 	/* Advanced Put*/
 	/**

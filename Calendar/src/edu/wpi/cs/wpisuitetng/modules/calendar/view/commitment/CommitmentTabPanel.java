@@ -115,7 +115,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 		else if(editCommitment.getisTeam() != calendarPicker.isTeam()){
 			noChangesMade = false;
 		}
-		else if(editCommitment.getProgress() != commitmentProgressPanel.getSelectedState()){
+		else if(editCommitment.getProgress().equals(commitmentProgressPanel.getSelectedState())){
 			noChangesMade = false;
 		}
 		return noChangesMade;
@@ -146,7 +146,7 @@ public class CommitmentTabPanel extends JPanel implements ActionListener, KeyLis
 //		dateTimeChooser_.addActionListener(this);
 		dateTimeChooser_.addDateTimeChangedEventListener(new DateTimeChangedEventListener(){
 			@Override
-			public void DateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
+			public void dateTimeChangedEventOccurred(DateTimeChangedEvent evt) {
 				validateFields();
 			}
 		});

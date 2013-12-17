@@ -81,7 +81,7 @@ public class Leader extends JPanel{
 			public void mouseReleased(MouseEvent e) {
 				int deltaX = e.getXOnScreen() - screenX;
 				int deltaY = e.getYOnScreen() - screenY;
-				if(isDragged == true){
+				if(isDragged){
 					System.out.println("Drag Relased");
 
 					System.out.println("DeltaX:" + deltaX + "," +"DeltaY:" + deltaY);
@@ -106,7 +106,7 @@ public class Leader extends JPanel{
 				int dragLocationX = e.getXOnScreen();
 				int dragLocationY = e.getYOnScreen();
 				
-				Point p = (Point) Leader.this.getComponentAt(e.getPoint()).getLocation();
+				Point p = Leader.this.getComponentAt(e.getPoint()).getLocation();
 
 
 				int minX = Math.min(p.x, startLocation.x);

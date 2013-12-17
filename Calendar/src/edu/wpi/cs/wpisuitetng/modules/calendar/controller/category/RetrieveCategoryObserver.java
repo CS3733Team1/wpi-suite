@@ -17,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 public class RetrieveCategoryObserver implements RequestObserver{
-	public RetrieveCategoryController controller;
+	private RetrieveCategoryController controller;
 	
 	public RetrieveCategoryObserver(RetrieveCategoryController controller) {
 		this.controller = controller;

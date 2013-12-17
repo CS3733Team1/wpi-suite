@@ -28,7 +28,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * clicks the refresh button.
  */
 public class RetrieveEventController implements AncestorListener, ActionListener {
-	EventListModel model;
+	private EventListModel model;
 
 	public RetrieveEventController() {
 		this.model = EventListModel.getEventListModel();

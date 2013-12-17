@@ -23,24 +23,41 @@ public class MultidayEventWeekView extends JPanel {
 	private List<List<Event>> multidaye;
 	private List<JPanel> displayEvents;
 	private Date cdate;
-	private static boolean isEventShowing = false;
+	private static boolean isEventShowing = true;
 	
-	public MultidayEventWeekView(List<List<Event>> multiday, Dimension size, Date current){
+	public MultidayEventWeekView(List<List<Event>> multiday, Date current){
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
 		
-		this.setSize(size);
-		this.setPreferredSize(size);
-		
 		showEvents();
-		
-		if (isEventShowing){
-			DisplayEventDropDown();
-		}
+		DisplayEventDropDown();
 		
 		this.setOpaque(false);
 		this.setVisible(true);
+	}
+	
+	
+	public void updateMultiDay(List<List<Event>> multiday, Date current){
+		System.err.println(multiday);
+		System.err.println(current);
+		
+		multidaye = multiday;
+		displayEvents = new LinkedList<JPanel>();
+		cdate = current;
+
+		this.removeAll();
+
+		showEvents();
+		DisplayEventDropDown();
+		
+	}
+	
+	public void reSize(int width){
+		this.setSize(width, this.getPreferredSize().height);
+		this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
+		
+		this.repaint();
 	}
 	
 	/**
@@ -63,24 +80,6 @@ public class MultidayEventWeekView extends JPanel {
 				"0[9%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]0", 
 				"0[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
 		
-		int y = 1;
-		JPanel eventinfo = new JPanel();
-		eventinfo.add(new JLabel("Multiday Event"), "wmin 0, aligny top, alignx center");
-		StringBuilder evebuilder = new StringBuilder();
-		evebuilder.append("cell ");
-		evebuilder.append("0");
-		evebuilder.append(" ");
-		evebuilder.append("0");
-		evebuilder.append(" ");
-		evebuilder.append("8");
-		evebuilder.append(" ");
-		evebuilder.append("0");
-		evebuilder.append(",grow, push");
-		
-		
-		eventinfo.setBackground(Color.PINK);
-		this.add(eventinfo, evebuilder.toString());
-		eventinfo.addMouseListener(new MultidayWeekListener(this));
 	}
 	
 	/**
@@ -114,7 +113,7 @@ public class MultidayEventWeekView extends JPanel {
 	 */
 	public void DisplayEventDropDown(){
 		displayEvents.clear();
-		
+		int height = 0;
 		int y = 1;
 		int x = 1;
 		Date current = cdate;
@@ -141,10 +140,13 @@ public class MultidayEventWeekView extends JPanel {
 				}
 				bob.append("</p></html>");
 
-				//Adds a mouselistener to the event
-				//multipane.addMouseListener(new EventMouseListener(eve, multipane));
+				StringBuilder eventNameBob = new StringBuilder();
+				eventNameBob.append("<html>");
+				eventNameBob.append("<html><p style='width:175px'><b>Event Name: </b>");
+				eventNameBob.append(eve.getName());
+				eventNameBob.append("</p></html>");
 
-				JLabel eventinfo = new JLabel(bob.toString());
+				JLabel eventinfo = new JLabel(eventNameBob.toString());
 
 				Date evestart = eve.getStartDate();
 				if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).before(cdate)){
@@ -155,7 +157,8 @@ public class MultidayEventWeekView extends JPanel {
 				}
 
 				multipane.add(eventinfo, "cell 1 0, grow, push, wmin 0");
-
+				multipane.setToolTipText(bob.toString());
+				
 				Date eveend = eve.getEndDate();
 				if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).after(new Date(cdate.getYear(), cdate.getMonth(), cdate.getDate()+6))){
 					StringBuilder nextbuilder = new StringBuilder();
@@ -183,20 +186,11 @@ public class MultidayEventWeekView extends JPanel {
 					multipane.setBackground(Color.CYAN);
 				}
 				multipane.setFocusable(true);
+				
+				int a = Math.min(8-y, getDateDiff(current, new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()))) + 1;
 
-				//Builds a string to place it in miglayout
-				StringBuilder evebuilder = new StringBuilder();
-				evebuilder.append("cell ");
-				evebuilder.append(new Integer(y).toString());
-				evebuilder.append(" ");
-				evebuilder.append(new Integer(x).toString());
-				evebuilder.append(" ");
-				evebuilder.append(Math.min(8-y, getDateDiff(current, new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate())))+ 1);
-				evebuilder.append(" ");
-				evebuilder.append("0");
-				evebuilder.append(",grow, push, wmin 0");
-
-				this.add(multipane, evebuilder.toString());
+				this.add(multipane, "cell " + y + " " + x + " " + a + " 0, grow, push, wmin 0");
+				height += multipane.getPreferredSize().height;
 				displayEvents.add(multipane);
 				x++;
 			}
@@ -204,6 +198,8 @@ public class MultidayEventWeekView extends JPanel {
 			y++;
 		}
 		
+		this.setPreferredSize(new Dimension(this.getWidth(), height+20));
+		this.revalidate();
 		repaint();
 		this.updateUI();
 	}

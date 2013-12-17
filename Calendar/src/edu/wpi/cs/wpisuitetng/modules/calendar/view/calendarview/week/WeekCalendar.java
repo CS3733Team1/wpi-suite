@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,7 +33,6 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekNamePanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**

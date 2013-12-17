@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day2;
+package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 

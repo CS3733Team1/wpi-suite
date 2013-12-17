@@ -12,7 +12,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 import com.google.gson.Gson;
 
@@ -315,8 +314,8 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 	 */
 	@Override
 	public int compareTo(ISchedulable other) {
-		if (this.dueDate.after(other.getStartDate()) == true) return -1;
-		else if (this.dueDate.before(other.getStartDate()) == true) return 1;
+		if (this.dueDate.after(other.getStartDate())) return -1;
+		else if (this.dueDate.before(other.getStartDate())) return 1;
 		else return 0;
 	}
 
@@ -351,9 +350,19 @@ public class Commitment extends DeletableAbstractModel implements Comparable<ISc
 	
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Commitment) {
-			Commitment commitmentOther = (Commitment)o;
-			return this.getUniqueID() == commitmentOther.getUniqueID();
-		} else return false;
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
+		if (!(o instanceof Commitment))
+			return false;
+
+		Commitment commitmentOther = (Commitment)o;
+		return this.getUniqueID() == commitmentOther.getUniqueID();
+	}
+	
+	@Override
+	public int hashCode() {
+		return (int)this.getUniqueID();
 	}
 }
