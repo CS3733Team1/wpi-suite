@@ -84,16 +84,6 @@ public class ScheduledEvent extends DeletableAbstractModel {
 	public void addUser()
 	{
 		
-		for(int i = 0; i < hours.size(); i++)
-		{
-			for(int j = 0; j < hours.get(i).size(); j++)
-			{
-				if(numUsers < hours.get(i).get(j).userList().size())
-				{
-					numUsers = hours.get(i).get(j).userList().size();
-				}
-			}
-		}
 	}
 	public ArrayList<String> getUsers()
 	{
