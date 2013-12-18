@@ -10,6 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.view;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -22,8 +23,6 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
-import javax.swing.DebugGraphics;
-import java.awt.Cursor;
 
 public class CalendarToolBar extends JPanel implements ActionListener {
 	private final static Logger LOGGER = Logger.getLogger(CalendarToolBar.class.getName());
@@ -185,6 +184,10 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	}
 
 	public void deleteCommitmentButtonListener(ActionListener l) {
+		deleteButton.addActionListener(l);
+	}
+	
+	public void deleteScheduledEventListener(ActionListener l) {
 		deleteButton.addActionListener(l);
 	}
 

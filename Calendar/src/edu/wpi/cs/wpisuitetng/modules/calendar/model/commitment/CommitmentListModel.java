@@ -150,14 +150,14 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 * Gets the list of commitments
 	 * @return list of commitments
 	 */
-	public synchronized List<Commitment> getList(){
+	public List<Commitment> getList(){
 		return new ArrayList<Commitment>(commitments);
 	}
 	
 	/**
 	 * general update method, which signals to all the views that the model has changed
 	 */
-	public synchronized void update() {
+	public void update() {
 		this.fireIntervalAdded(this, 0, this.getSize() > 0 ? this.getSize() -1 : 0);
 	}
 
@@ -166,7 +166,7 @@ public class CommitmentListModel extends AbstractListModel<Commitment> {
 	 * @param oldCommitment the commitment to be removed from list
 	 * @param newCommitment new updated commitment to be added to list
 	 */
-	public synchronized void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
+	public void updateCommitment(Commitment oldCommitment, Commitment newCommitment) {
 		removeCommitment(oldCommitment);
 		addCommitment(newCommitment);
 		this.fireIntervalAdded(this, 0, 0);
