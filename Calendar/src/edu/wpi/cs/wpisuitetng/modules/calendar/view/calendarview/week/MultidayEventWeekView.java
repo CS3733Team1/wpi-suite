@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
@@ -32,6 +33,8 @@ public class MultidayEventWeekView extends JPanel {
 	private static boolean isEventShowing = true;
 	
 	private ImageIcon leftIcon, rightIcon;
+	
+	private JScrollPane scrollPane;
 	
 	/**
 	 * Creates a panel that holds the multiday events
@@ -56,6 +59,7 @@ public class MultidayEventWeekView extends JPanel {
 		
 		this.setOpaque(false);
 		this.setVisible(true);
+		this.setLayout(new MigLayout("fillx, insets 0","[9%][13%][13%][13%][13%][13%][13%][13%]18"));
 	}
 	
 	/**
@@ -109,10 +113,7 @@ public class MultidayEventWeekView extends JPanel {
 		}
 		if (shouldret){
 			return;
-		}
-		
-		this.setLayout(new MigLayout("fillx, insets 0", "[9%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]"));
-		
+		}		
 	}
 	
 	/**
@@ -145,11 +146,24 @@ public class MultidayEventWeekView extends JPanel {
 	 * Displays Panels Of MultiDay Events
 	 */
 	public void DisplayEventDropDown(){
+		
+		
 		displayEvents.clear();
 		int height = 0;
 		int y = 1;
 		int x = 1;
 		Date current = cdate;
+		
+		int maxNum = 0;
+		for (List<Event> elist: multidaye) {
+			if(maxNum < elist.size()) maxNum = elist.size();
+		}
+		
+		if(maxNum > 3) 
+			this.setLayout(new MigLayout("fillx, insets 0","[9%][13%][13%][13%][13%][13%][13%][13%]"));
+		else 
+			this.setLayout(new MigLayout("fillx, insets 0","[9%][13%][13%][13%][13%][13%][13%][13%]18"));
+		
 		for (List<Event> elist: multidaye){
 			for (Event eve: elist){
 				JPanel multipane = new JPanel(new MigLayout("fill, insets 0", "[align left][center][align right]"));

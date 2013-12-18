@@ -30,7 +30,6 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredCommitmentsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
@@ -62,7 +61,7 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		
 		weeklayer = new WeekHolderPanel();
 		weekpanel = new LinkedList<JPanel>();
-		weektitle = new JPanel(new MigLayout("fill, insets 0","0[10%]5[14%]5[14%]5[14%]5[14%]5[14%]5[14%]5[14%]0[45]0" ));
+		weektitle = new JPanel(new MigLayout("fill, insets 0","[9%][13%][13%][13%][13%][13%][13%][13%]18"));
 		
 		JPanel time = new JPanel(new MigLayout("fill"));
 		time.add(new JLabel(""), "grow, aligny bottom");
@@ -100,15 +99,9 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 			weektitle.add(weekName, "aligny bottom, w 5000, grow, wmin 0");
 			weekpanel.add(weekName);
 		}
-		JPanel space = new JPanel(new MigLayout("fill, insets 0"));
-		weektitle.add(space);
-		
-		JPanel filler = new JPanel(new MigLayout("fill, insets 0"));
-		filler.add(weektitle, "growx, wrap, wmin 0");
-		this.add(filler, "growx, wrap, wmin 0");
+		this.add(weektitle, "grow, wrap, hmin 50, hmax 50");
 		
 		multiview = new MultidayEventWeekView(weeklayer.getMultiDayEvents(), weeklayer.getDayViewDate());
-		
 		mscroll = new WeekMultiScrollPane(multiview);
 		this.add(mscroll, "grow, wrap, hmin 80, hmax 80");
 		mscroll.getViewport().repaint();
