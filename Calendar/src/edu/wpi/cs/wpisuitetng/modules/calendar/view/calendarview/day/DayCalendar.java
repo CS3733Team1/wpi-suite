@@ -38,7 +38,9 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	private JPanel dayname;
 	private int scrollSpeed = 15;
 
-
+	/**
+	 * Displays a view, which contains all the elements of a day calendar
+	 */
 	public DayCalendar(){
 
 		this.setLayout(new MigLayout("fill, insets 0"));
@@ -100,6 +102,9 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 	}
 
+	/**
+	 * Updates the day to reflect the new current day
+	 */
 	public void updateDay(){
 		Calendar cal = Calendar.getInstance();
 
@@ -123,6 +128,9 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		return daylayer.getDayViewDate();
 	}
 
+	/**
+	 * Overwrites the repaint to ensure that the children assume correct sizes
+	 */
 	public void repaint(){
 		if (daylayer != null){
 			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
@@ -135,6 +143,9 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		super.repaint();
 	}
 	
+	/**
+	 * updates the multiday view to contain the new multiday elements
+	 */
 	public void updateMultiDay(){
 		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
 	}
