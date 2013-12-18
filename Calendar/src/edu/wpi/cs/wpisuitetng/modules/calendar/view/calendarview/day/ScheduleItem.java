@@ -32,7 +32,7 @@ public class ScheduleItem extends JPanel {
 	 * @param spot the position in line of this item
 	 */
 	public ScheduleItem(ISchedulable item, int sx, int sy, int w, int h, int div, int spot){
-		super(new MigLayout("center, gap 0"));
+		super(new MigLayout("insets 0, center, gap 0"));
 		display = item;
 		StartX = sx;
 		StartY = sy;

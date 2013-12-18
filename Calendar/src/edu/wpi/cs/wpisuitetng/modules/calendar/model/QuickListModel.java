@@ -58,7 +58,9 @@ public class QuickListModel extends AbstractListModel<ISchedulable> implements L
 		ICalendarView currentView = CalendarTabPanel.getCalendarView();
 		if(currentView instanceof DayCalendar) {
 			for(Commitment c: FilteredCommitmentsListModel.getFilteredCommitmentsListModel().getList()) {
-				if(c.getDueDate().getDate() == ((DayCalendar)currentView).getDate().getDate()) {
+				if(c.getDueDate().getDate() == ((DayCalendar)currentView).getDate().getDate() && 
+						c.getDueDate().getMonth() == ((DayCalendar)currentView).getDate().getMonth() &&
+						c.getDueDate().getYear() == ((DayCalendar)currentView).getDate().getYear()) {
 					inView.add(c);
 				}
 			}

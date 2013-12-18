@@ -160,7 +160,8 @@ public class DayPanel extends JPanel {
 		} else {
 			if(numRows >= this.numEvComs) {
 				for(JPanel panel: evComPanels) {
-					containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
+					if(panel != null)
+						containerPanel.add(panel, "aligny top, wmin 0, hmin 0, w " + width + ", wmax " + width);
 				}
 			} else {
 				for(JPanel panel: evComPanels) {
