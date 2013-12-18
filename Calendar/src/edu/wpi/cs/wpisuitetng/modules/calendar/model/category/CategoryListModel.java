@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -33,7 +34,7 @@ public class CategoryListModel extends DefaultComboBoxModel<Category> {
 	private static CategoryListModel categoryModel;
 
 	/** The list of commitments on the calendar */
-	private List<Category> categories;
+	private List<Category> categories = new LinkedList<Category>();
 
 	private final Category[] defaultCategories = {
 			new Category("Uncategorized*", new Color(255,234,170), 0), 
