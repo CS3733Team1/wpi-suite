@@ -145,8 +145,14 @@ public class DayArea extends JPanel implements ListDataListener{
 	 */
 	public void drawHours(Graphics g){
 		for (int x =0; x <= 24; x++){
-			g.setColor(Color.LIGHT_GRAY);
-			g.drawLine(0, 60*x, this.getWidth(), 60*x);
+			if (x == 0){
+				g.setColor(Color.DARK_GRAY);
+				g.drawLine(0, 60*x, this.getWidth(), 60*x);
+			}
+			else{
+				g.setColor(Color.LIGHT_GRAY);
+				g.drawLine(0, 60*x, this.getWidth(), 60*x);
+			}
 		}
 	}
 
@@ -205,9 +211,13 @@ public class DayArea extends JPanel implements ListDataListener{
 	 */
 	private int getLengthMinutes(ISchedulable sched){
 		int length;
+		int day = 0;
+		if (sched.getEndDate().getDate() != sched.getStartDate().getDate()){
+			day = 1440;
+		}
 		length = (sched.getEndDate().getHours()-sched.getStartDate().getHours())*60;
 		length += sched.getEndDate().getMinutes()-sched.getStartDate().getMinutes();
-		return length;
+		return length + day;
 	}
 
 	/**

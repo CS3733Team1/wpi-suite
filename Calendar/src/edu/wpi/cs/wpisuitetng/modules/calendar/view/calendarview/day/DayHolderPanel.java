@@ -26,9 +26,9 @@ public class DayHolderPanel extends JPanel{
 		this.setLayout(new MigLayout("inset 0, fill", 
 				"[10%][90%]"));
 
-		prevhour = new HourLabels();
-		hour = new HourLabels();
-		nexthour = new HourLabels();
+		prevhour = new HourLabels(true);
+		hour = new HourLabels(true);
+		nexthour = new HourLabels(true);
 		
 		day = new DayArea();
 		Date time = day.getDayViewDate();
@@ -82,8 +82,28 @@ public class DayHolderPanel extends JPanel{
 		return day.getMultiDayEvents();
 	}
 	
+	public List<Event> getMultiDayEvents(Date pick){
+		if (pick.equals(next.getDayViewDate())){
+			return next.getMultiDayEvents();
+		}
+		else if (pick.equals(previous.getDayViewDate())){
+			return previous.getMultiDayEvents();
+		}
+		else{
+			return day.getMultiDayEvents();
+		}
+	}
+	
 	public Date getDayViewDate(){
 		return day.getDayViewDate();
+	}
+	
+	public Date getPreviousDayViewDate(){
+		return previous.getDayViewDate();
+	}
+	
+	public Date getNextDayViewDate(){
+		return next.getDayViewDate();
 	}
     
 	/**

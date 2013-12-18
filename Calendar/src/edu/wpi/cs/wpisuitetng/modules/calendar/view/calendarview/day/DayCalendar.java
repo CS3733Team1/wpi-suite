@@ -25,6 +25,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.QuickListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
@@ -47,6 +48,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	private boolean scrollchange;
 	private int scrollSpeed = 15;
 
+	private Date current;
 
 	public DayCalendar(){
 		scrollchange = false;
@@ -107,7 +109,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		dayscroll.getVerticalScrollBar().addAdjustmentListener(this);
 		
 		//this.repaint();
-
+		current = getDate();
 	}
 
 	/**
@@ -133,7 +135,16 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	}
 	
 	public Date getDate(){
-		return daylayer.getDayViewDate();
+		JScrollBar scroller = dayscroll.getVerticalScrollBar();
+		if (scroller.getValue() < (1*scroller.getMaximum()/3)){
+			return daylayer.getPreviousDayViewDate();
+		}
+		else if (scroller.getValue() > (2*scroller.getMaximum()/3)){
+			return daylayer.getNextDayViewDate();
+		}
+		else{
+			return daylayer.getDayViewDate();
+		}
 	}
 
 	public void repaint(){
@@ -149,7 +160,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	}
 	
 	public void updateMultiDay(){
-		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
+		multiview.updateMultiDay(daylayer.getMultiDayEvents(getDate()), getDate());
 		if (multiview.getNumberofEvents() == 0){
 			this.removeAll();
 			this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
@@ -240,6 +251,8 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 			scroller.repaint();
 			scroller.updateUI();
 			repaint();
+			this.updateUI();
+			current = getDate();
 		}
 		
 		if (scroller.getValue() == scroller.getMaximum()-scroller.getHeight()){
@@ -256,6 +269,19 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 			scroller.repaint();
 			scroller.updateUI();
 			repaint();
+			this.updateUI();
+			current = getDate();
+		}
+		
+		
+		dayscroll.getViewport().repaint();
+		dayscroll.getViewport().updateUI();
+		
+		if (!current.equals(getDate())){
+			repaint();
+			QuickListModel.getQuickListModel().updateList();
+			current = getDate();
+			this.updateUI();
 		}
 	}
 

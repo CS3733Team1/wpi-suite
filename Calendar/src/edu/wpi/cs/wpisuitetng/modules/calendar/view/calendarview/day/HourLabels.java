@@ -38,12 +38,12 @@ public class HourLabels extends JPanel{
 	public HourLabels(boolean midnight){
 		hourlist = new ArrayList<JPanel>();
 		
-		int height = 1440;
+		int height = 3*1440;
 		int width = 100;
 		
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
-		this.setMinimumSize(new Dimension(0,1440));
+		this.setMinimumSize(new Dimension(0,height));
 		
 		includemidnight = midnight;
 	}
@@ -80,9 +80,10 @@ public class HourLabels extends JPanel{
 	 * @param g Graphics which will draw lines representing hours
 	 */
 	public void drawHours(Graphics g){
-		for (int x =0; x <= 23; x++){
+		int start = 1;
+		for (int x = start; x <= 24; x++){
 			g.setColor(Color.LIGHT_GRAY);
-			g.drawString(DateUtils.hourString(x),0,60*x);
+			g.drawString(DateUtils.hourString(x),0,60*x-5);
 		}
 	}
 }
