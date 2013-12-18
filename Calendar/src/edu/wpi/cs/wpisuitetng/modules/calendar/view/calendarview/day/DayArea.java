@@ -124,6 +124,7 @@ public class DayArea extends JPanel implements ListDataListener{
 		this.setMinimumSize(new Dimension(0,1440));
 
 		this.repaint();
+		this.updateUI();
 	}
 
 	/**
