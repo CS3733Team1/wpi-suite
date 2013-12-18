@@ -100,7 +100,6 @@ public class ScheduleItem extends JPanel{
 		//Sets new bounds
 		this.setBounds(StartX, StartY, width, Math.min(Math.abs(height), (1440 - StartY)));
 		
-		System.err.println(this.getBounds());
 		super.repaint();
 	}
 	
