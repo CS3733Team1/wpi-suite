@@ -131,10 +131,10 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 	public void repaint(){
 		if (daylayer != null){
-			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+			daylayer.reSize(this.getWidth() - 20);
 		}
 		if (multiview != null){
-			multiview.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+			multiview.reSize(this.getWidth() - 20);
 			updateMultiDay();
 		}
 

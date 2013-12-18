@@ -174,10 +174,10 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	 */
 	public void repaint(){
 		if (weeklayer != null){
-			weeklayer.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*3));
+			weeklayer.reSize(this.getWidth() - 20);
 		}
 		if (multiview != null){
-			multiview.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*2));
+			multiview.reSize(this.getWidth() - 20);
 			updateMultiDay();
 		}
 		super.repaint();
