@@ -41,6 +41,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYe
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.QuickListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGroup;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
@@ -354,5 +355,10 @@ public class CalendarTabPanel extends JPanel {
 			else return 1;
 		} else if(personalCalCheckBox != null && personalCalCheckBox.isSelected()) return 2;
 		else return 0;
+	}
+
+	public List<ScheduledEvent> getSelectedScheduledEvents() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

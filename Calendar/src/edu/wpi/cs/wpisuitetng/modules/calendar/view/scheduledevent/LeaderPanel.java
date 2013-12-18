@@ -21,6 +21,7 @@ public class LeaderPanel extends JPanel {
 	public LeaderPanel()
 	{
 		hourList = new ArrayList<List<HourPanel>>();
+		lead = new Leader();
 		this.setLayout(new MigLayout("fill,insets 0", "0[10%]0[90%]0","0[]0"));
 		this.setSize(this.getWidth(), this.getHeight());
 		this.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
@@ -28,8 +29,21 @@ public class LeaderPanel extends JPanel {
 		this.setBorder(new MatteBorder(0, 0, 1, 1, CalendarUtils.lineColor));
 	}
 
+	public void updateFollower(List<List<Hour>> list, String user) {
+		int start = list.get(0).get(0).getHour();
+		int end = list.get(0).get(list.get(0).size()).getHour();
+		int days = list.size();
+		
+		lead.setColor(CalendarUtils.thatBlue);
+		lead.updateTimeFrame(days,start,end,list,user);
+		tp =new TimePanel(start, end);
+		
+		this.add(tp, "cell 0 0 ,grow, push, wmin 0");
+		this.add(lead, "cell 1 0 ,grow, push, wmin 0");
+	}
+	
+	
 	public void setTimeFrame(int day, int start, int end) {
-		lead = new Leader();
 		lead.setColor(col);
 		lead.setTimeFrame(day,start,end);
 		tp = new TimePanel(start,end);
@@ -69,6 +83,7 @@ public class LeaderPanel extends JPanel {
 		
 		this.repaint();
 	}
+
 	
 
 	
