@@ -9,6 +9,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.IconMaker;
 
 public class EventPanel extends EvComPanel {
 
@@ -26,7 +27,7 @@ public class EventPanel extends EvComPanel {
 		this.textColor = CalendarUtils.titleNameColor;
 		this.selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
 
-		this.setLayout(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
+		this.setLayout(new MigLayout("insets 0, gap 0", "5[]2[]push[]5", "0[]0"));
 
 		eventNameLabel = new JLabel(event.getName());
 
@@ -35,8 +36,9 @@ public class EventPanel extends EvComPanel {
 		
 		this.setSelected(false);
 
-		this.add(eventNameLabel, "gap left 5, wmin 0");
-		this.add(eventTimeLabel, "gap right 5");
+		this.add(IconMaker.makeEventIcon(event.getCategory().getColor()));
+		this.add(eventNameLabel, "wmin 0");
+		this.add(eventTimeLabel);
 	}
 
 	private void update() {
