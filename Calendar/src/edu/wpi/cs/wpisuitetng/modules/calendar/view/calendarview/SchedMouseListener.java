@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -191,13 +192,15 @@ public class SchedMouseListener implements MouseListener{
 		selectedPanels.clear();
 	}
 
-	private void selectPanel(JPanel panel){
+	private void selectPanel(JPanel panel) {
 		panel.setBackground(CalendarUtils.darken(panel.getBackground()));
+		panel.setBorder(BorderFactory.createLineBorder(CalendarUtils.darken(panel.getBackground()), 2, false));
 		JLabel j = (JLabel)panel.getComponent(0);
 		j.setForeground(CalendarUtils.textColor(panel.getBackground()));
 	}
 
 	private static void deselectPanel(JPanel panel){
+		panel.setBorder(BorderFactory.createLineBorder(panel.getBackground(), 2, false));
 		panel.setBackground(panel.getForeground());
 		JLabel j = (JLabel)panel.getComponent(0);
 		j.setForeground(CalendarUtils.textColor(panel.getBackground()));

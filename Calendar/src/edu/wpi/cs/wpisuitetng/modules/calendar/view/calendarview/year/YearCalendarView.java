@@ -26,7 +26,7 @@ public class YearCalendarView extends JPanel implements ICalendarView, AncestorL
 
 	// Defines the minimum width of a month to be displayed in the year calendar view
 	// Used to know when to change the number of month columns displayed
-	public static final int MIN_MONTH_WIDTH = 350;
+	public static final int MIN_MONTH_WIDTH = 320;
 
 	// Parent Panel containing all of the months [implements Scrollable to disable horizontal scrolling]
 	private MonthsContainerPanel monthsContainerPanel;
