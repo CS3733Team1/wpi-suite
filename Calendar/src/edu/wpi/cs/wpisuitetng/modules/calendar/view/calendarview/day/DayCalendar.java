@@ -60,7 +60,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 		dayLabel = new JLabel(WEEK_NAMES[(daylayer.getDayViewDate().getDay())], JLabel.CENTER);
 		dayLabel.setFont(new Font(dayLabel.getName(), Font.BOLD, 14));
-		dayname = new JPanel(new MigLayout("fill"));
+		dayname = new JPanel(new MigLayout("fill, insets 0"));
 		Calendar cal = Calendar.getInstance();
 
 		Date today = daylayer.getDayViewDate();
