@@ -55,7 +55,7 @@ public class ScheduledEventEntityManager implements EntityManager<ScheduledEvent
 		// Parse the message from JSON
 		final ScheduledEvent newMessage = ScheduledEvent.fromJSON(content);
 
-		newMessage.setOwnerName(s.getUsername());
+		newMessage.setOwnerName(s.getUser().getName());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 
 		// Until we find a id that is unique assume another ScheduledEvent might already have it

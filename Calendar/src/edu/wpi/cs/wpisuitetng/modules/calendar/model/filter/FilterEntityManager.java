@@ -56,7 +56,7 @@ public class FilterEntityManager implements EntityManager<Filter> {
 		// Parse the message from JSON
 		final Filter newMessage = Filter.fromJSON(content);
 
-		newMessage.setOwnerName(s.getUsername());
+		newMessage.setOwnerName(s.getUser().getName());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 
 		// Until we find a id that is unique assume another filter might already have it

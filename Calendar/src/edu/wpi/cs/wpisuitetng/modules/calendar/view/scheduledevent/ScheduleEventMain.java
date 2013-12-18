@@ -58,7 +58,7 @@ public class ScheduleEventMain extends JPanel{
 	
 	
 	
-	public void setTime(String user,int day, int start, int end, Color col)
+	public void setTime(String user, int day, int start, int end, Color col)
 	{
 		leaderPanel.setTimeFrame(day, start, end);
 		leaderPanel.setColor(col);

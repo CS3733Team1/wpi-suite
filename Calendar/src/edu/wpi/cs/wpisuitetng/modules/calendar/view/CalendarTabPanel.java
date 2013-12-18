@@ -265,8 +265,7 @@ public class CalendarTabPanel extends JPanel {
 	}
 	
 	public List<ScheduledEvent> getSelectedScheduledEvents() {
-		
-		return null;
+		return scheduledEventSubTabPanel.getSelectedScheduledEvents();
 	}
 
 	public void setCalendarViewTitle(String title) {
