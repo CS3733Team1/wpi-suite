@@ -12,24 +12,29 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
  * Holds all the GUI elements for the day view
  */
-public class DayCalendar extends JPanel implements ICalendarView, ListDataListener{
+public class DayCalendar extends JPanel implements ICalendarView, ListDataListener, AdjustmentListener{
 
 	private DayCalendarScrollPane dayscroll;
 	private DayHolderPanel daylayer;
@@ -39,11 +44,12 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	private JLabel dayLabel;
 	private JPanel daytitle;
 	private JPanel dayname;
+	private boolean scrollchange;
 	private int scrollSpeed = 15;
 
 
 	public DayCalendar(){
-
+		scrollchange = false;
 		this.setLayout(new MigLayout("fill, insets 0"));
 
 		daylayer = new DayHolderPanel();
@@ -97,7 +103,8 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		FilteredEventsListModel.getFilteredEventsListModel().addListDataListener(this);
 		
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
-		dayscroll.getVerticalScrollBar().setValue(3*end/8);
+		dayscroll.getVerticalScrollBar().setValue(4*end/9);
+		dayscroll.getVerticalScrollBar().addAdjustmentListener(this);
 		
 		//this.repaint();
 
@@ -160,7 +167,9 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	public String getTitle() {
 		// TODO Auto-generated method stub
 		int end = dayscroll.getVerticalScrollBar().getMaximum();
-		dayscroll.getVerticalScrollBar().setValue(3*end/8);
+		if (!scrollchange){
+			dayscroll.getVerticalScrollBar().setValue(4*end/9);
+		}
 		return daylayer.getTitle();
 	}
 
@@ -212,6 +221,42 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	public void contentsChanged(ListDataEvent e) {
 		repaint();
 		this.updateUI();
+	}
+	
+	@Override
+	public void adjustmentValueChanged(AdjustmentEvent e) {
+		JScrollBar scroller = (JScrollBar) e.getSource();
+		
+		if (scroller.getValue() == scroller.getMinimum()){
+			scroller.setValue(scroller.getMaximum()/3);
+			scrollchange = true;
+			if (MainView.getCurrentCalendarPanel() != null && MainView.getCurrentCalendarPanel().getCalendarTabPanel() != null){
+				MainView.getCurrentCalendarPanel().getCalendarTabPanel().setCalendarViewPrevious();
+			}
+			else{
+				previous();
+			}
+			scrollchange = false;
+			scroller.repaint();
+			scroller.updateUI();
+			repaint();
+		}
+		
+		if (scroller.getValue() == scroller.getMaximum()-scroller.getHeight()){
+			scroller.setValue(2*scroller.getMaximum()/3-scroller.getHeight());
+			scrollchange = true;
+			if (MainView.getCurrentCalendarPanel() != null && MainView.getCurrentCalendarPanel().getCalendarTabPanel() != null){
+				MainView.getCurrentCalendarPanel().getCalendarTabPanel().setCalendarViewNext();
+			}
+			else{
+				next();
+			}
+			scrollchange = false;
+			updateDay();
+			scroller.repaint();
+			scroller.updateUI();
+			repaint();
+		}
 	}
 
 }

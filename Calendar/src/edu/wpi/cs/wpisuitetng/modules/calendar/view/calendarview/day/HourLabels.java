@@ -17,6 +17,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
  */
 public class HourLabels extends JPanel{
 	private ArrayList<JPanel> hourlist;
+	private boolean includemidnight;
 	
 	/**
 	 * draws a list of hours pertaining to day and week view
@@ -30,6 +31,21 @@ public class HourLabels extends JPanel{
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
 		this.setMinimumSize(new Dimension(0,1440));
+		
+		includemidnight = false;
+	}
+	
+	public HourLabels(boolean midnight){
+		hourlist = new ArrayList<JPanel>();
+		
+		int height = 1440;
+		int width = 100;
+		
+		this.setSize(width, height);
+		this.setPreferredSize(new Dimension(width, height));
+		this.setMinimumSize(new Dimension(0,1440));
+		
+		includemidnight = midnight;
 	}
 	
 	/**

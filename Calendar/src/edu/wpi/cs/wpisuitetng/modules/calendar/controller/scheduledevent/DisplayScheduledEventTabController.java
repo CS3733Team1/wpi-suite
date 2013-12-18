@@ -36,9 +36,9 @@ public class DisplayScheduledEventTabController implements ActionListener {
 			ScheduledEventTabPanel scheduledEventPanel = new ScheduledEventTabPanel();
 			ImageIcon miniScheduledEventIcon = new ImageIcon();
 			try {
-				miniScheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/mini_schedule_icon.png")));
+				miniScheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/scheduler_tabSize.png")));
 			} catch (IOException exception) {
-				LOGGER.log(Level.WARNING, "/images/mini_schedule_icon.png not found.", exception);
+				LOGGER.log(Level.WARNING, "/images/scheduler_tabSize.png not found.", exception);
 			}
 			calendarPanel.addTab("Create Scheduled Event", miniScheduledEventIcon , scheduledEventPanel);
 			calendarPanel.setSelectedComponent(scheduledEventPanel);

@@ -65,7 +65,7 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 			addCommitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/add_commitment.png")));
 			deleteIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/delete_icon.png")));
 			addEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/add_event.png")));
-			scheduleEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/schedule_icon.png")));
+			scheduleEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/scheduler.png")));
 
 			//easterEggIcons = new ImageIcon[4];
 			//easterEggIcons[0] = new ImageIcon(ImageIO.read(getClass().getResource("/images/color_meter.png")));
