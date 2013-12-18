@@ -40,7 +40,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWe
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.QuickListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGroup;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
@@ -299,6 +301,8 @@ public class CalendarTabPanel extends JPanel {
 			calendarView = dayView;
 			calendarViewPanel.add(dayView, "w 5000, h 5000");
 
+			EventListModel.getEventListModel().update();
+			CommitmentListModel.getCommitmentListModel().update();
 			QuickListModel.getQuickListModel().updateList();
 			this.setCalendarViewTitle(dayView.getTitle());
 			this.refreshCalendarView();
@@ -311,6 +315,8 @@ public class CalendarTabPanel extends JPanel {
 			calendarView = weekView;
 			calendarViewPanel.add(weekView, "w 5000, h 5000");
 
+			EventListModel.getEventListModel().update();
+			CommitmentListModel.getCommitmentListModel().update();
 			QuickListModel.getQuickListModel().updateList();
 			this.setCalendarViewTitle(weekView.getTitle());
 			this.refreshCalendarView();
@@ -324,6 +330,8 @@ public class CalendarTabPanel extends JPanel {
 			calendarView = monthView;
 			calendarViewPanel.add(monthView, "w 5000, h 5000");
 
+			EventListModel.getEventListModel().update();
+			CommitmentListModel.getCommitmentListModel().update();
 			QuickListModel.getQuickListModel().updateList();
 			this.setCalendarViewTitle(monthView.getTitle());
 			this.refreshCalendarView();
@@ -337,6 +345,8 @@ public class CalendarTabPanel extends JPanel {
 			calendarView = yearView;
 			calendarViewPanel.add(yearView, "w 5000, h 5000");
 
+			EventListModel.getEventListModel().update();
+			CommitmentListModel.getCommitmentListModel().update();
 			QuickListModel.getQuickListModel().updateList();
 			this.setCalendarViewTitle(yearView.getTitle());
 			this.refreshCalendarView();
