@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
 public class MonthsContainerPanel extends JPanel implements Scrollable {
+	public MonthsContainerPanel() {
+	}
 	@Override
 	public boolean getScrollableTracksViewportHeight() {
 		return false;

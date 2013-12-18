@@ -10,6 +10,7 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.IconMaker;
 
 public class CommitmentPanel extends EvComPanel {
 	
@@ -28,7 +29,7 @@ public class CommitmentPanel extends EvComPanel {
 		this.textColor = CalendarUtils.titleNameColor;
 		this.selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
 			
-		this.setLayout(new MigLayout("insets 0, gap 0", "0[]push[]0", "0[]0"));
+		this.setLayout(new MigLayout("insets 0, gap 0", "5[]2[]push[]5", "0[]0"));
 		
 		commitmentNameLabel = new JLabel(commitment.getName());
 
@@ -37,8 +38,9 @@ public class CommitmentPanel extends EvComPanel {
 		
 		this.setSelected(false);
 		
-		this.add(commitmentNameLabel, "gap left 5, wmin 0");
-		this.add(commitmentTimeLabel, "gap right 5");
+		this.add(IconMaker.makeCommitmentIcon(commitment.getCategory().getColor()));
+		this.add(commitmentNameLabel, "wmin 0");
+		this.add(commitmentTimeLabel);
 	}
 
 	private void update() {

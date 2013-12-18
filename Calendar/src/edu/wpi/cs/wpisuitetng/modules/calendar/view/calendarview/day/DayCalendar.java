@@ -131,10 +131,10 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 	public void repaint(){
 		if (daylayer != null){
-			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+			daylayer.reSize(this.getWidth() - 20);
 		}
 		if (multiview != null){
-			multiview.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+			multiview.reSize(this.getWidth() - 20);
 			updateMultiDay();
 		}
 
@@ -143,6 +143,17 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	
 	public void updateMultiDay(){
 		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
+		if (multiview.getNumberofEvents() == 0){
+			this.removeAll();
+			this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
+			this.add(dayscroll, "grow, push");
+		}
+		else{
+			this.removeAll();
+			this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
+			this.add(mscroll, "grow, wrap, hmin 80, hmax 80");
+			this.add(dayscroll, "grow, push");
+		}
 	}
 
 	@Override
@@ -188,16 +199,19 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 		repaint();
+		this.updateUI();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
 		repaint();
+		this.updateUI();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
 		repaint();
+		this.updateUI();
 	}
 
 }

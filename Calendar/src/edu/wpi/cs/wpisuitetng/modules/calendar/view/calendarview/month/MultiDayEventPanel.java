@@ -1,6 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.month;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
@@ -23,7 +22,7 @@ public class MultiDayEventPanel extends EvComPanel {
 		super(true, false);
 		this.event = event;
 		this.backgroundColor = event.getCategory().getColor();
-		this.selectedBackgroundColor = CalendarUtils.blend(backgroundColor, Color.BLACK, (float) 0.4);
+		this.selectedBackgroundColor = CalendarUtils.darken(backgroundColor);
 		this.textColor = CalendarUtils.titleNameColor;
 		this.selectedTextColor = CalendarUtils.textColor(selectedBackgroundColor);
 

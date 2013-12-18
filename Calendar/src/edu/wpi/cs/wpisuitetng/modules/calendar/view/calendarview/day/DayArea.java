@@ -432,10 +432,7 @@ public class DayArea extends JPanel implements ListDataListener{
 			Date cdate = c.getStartDate();
 			key = new Date(cdate.getYear(),cdate.getMonth(),cdate.getDate());
 			if (currentDay.compareTo(key) == 0){
-				if(c.getStartDate().getDate() == c.getEndDate().getDate()
-						&& c.getStartDate().getMonth() == c.getEndDate().getMonth()
-						&& c.getStartDate().getYear() == c.getEndDate().getYear())
-					events.add(c);	
+				events.add(c);	
 			}
 		}
 	}
