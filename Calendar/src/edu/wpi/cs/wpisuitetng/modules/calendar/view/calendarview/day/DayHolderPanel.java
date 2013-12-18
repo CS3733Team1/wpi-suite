@@ -58,7 +58,11 @@ public class DayHolderPanel extends JPanel{
 	public Date getDayViewDate(){
 		return day.getDayViewDate();
 	}
-     
+    
+	/**
+	 * 
+	 * @return
+	 */
 	public String getTitle() {
 		return day.getTitle();
 	}
