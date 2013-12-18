@@ -58,6 +58,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabP
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist.QuickListTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledEventSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 
@@ -86,6 +87,7 @@ public class CalendarTabPanel extends JPanel {
 	private EventSubTabPanel eventSubTabPanel;
 	private CommitmentSubTabPanel commitmentSubTabPanel;
 	private QuickListTabPanel quickListTabPanel;
+	private ScheduledEventSubTabPanel scheduledEventSubTabPanel;
 
 	public CalendarTabPanel(CalendarPanel calendarPanel) {
 		this.setLayout(new MigLayout("fill"));
@@ -123,6 +125,7 @@ public class CalendarTabPanel extends JPanel {
 		ImageIcon commitmentIcon = new ImageIcon();
 		ImageIcon categoryIcon = new ImageIcon();
 		ImageIcon filterIcon = new ImageIcon();
+		ImageIcon scheduledEventIcon = new ImageIcon();
 
 		try {
 			prevIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png")));
@@ -133,6 +136,7 @@ public class CalendarTabPanel extends JPanel {
 			yearIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png")));
 			quickListIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/quicklist.png")));
 			eventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
+			scheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
 			commitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
 			categoryIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png")));
 			filterIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png")));
@@ -155,6 +159,7 @@ public class CalendarTabPanel extends JPanel {
 		yearViewButton = new TransparentToggleButton("Year", yearIcon);
 		yearViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+		subTabPane.add("Scheduled Events", scheduledEventSubTabPanel);
 		subTabPane.addTab("Quick List", quickListIcon, quickListTabPanel);
 		subTabPane.addTab("Events", eventIcon, eventSubTabPanel);
 		subTabPane.addTab("Commitments", commitmentIcon, commitmentSubTabPanel);
