@@ -139,7 +139,6 @@ public class Follower extends JPanel{
 	}
 	public void updatePanel(List<List<Hour>> list, String user)
 	{
-		System.out.println("user"+user);
 		for(int i = 0; i < day; i++){
 			for(int j = 0; j < end-start; j++)
 			{	StringBuilder sb = new StringBuilder();

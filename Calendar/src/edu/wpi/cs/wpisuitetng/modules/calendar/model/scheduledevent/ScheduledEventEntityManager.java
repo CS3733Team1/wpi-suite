@@ -8,7 +8,7 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,10 +22,10 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
-public class WhenToMeetEntityManager implements EntityManager<WhenToMeet> {
+public class ScheduledEventEntityManager implements EntityManager<ScheduledEvent> {
 	/** The database */
 	final Data db;
-	public static WhenToMeetEntityManager EManager;
+	public static ScheduledEventEntityManager EManager;
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -35,40 +35,40 @@ public class WhenToMeetEntityManager implements EntityManager<WhenToMeet> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public static WhenToMeetEntityManager getWhenToMeetEntityManager(Data db) {
-		EManager = (EManager == null) ? new WhenToMeetEntityManager(db) : EManager;
+	public static ScheduledEventEntityManager getScheduledEventEntityManager(Data db) {
+		EManager = (EManager == null) ? new ScheduledEventEntityManager(db) : EManager;
 		return EManager;
 	}
 
-	private WhenToMeetEntityManager(Data db) {
+	private ScheduledEventEntityManager(Data db) {
 		this.db = db;
 	}
 
 	/*
-	 * Saves a WhenToMeet when it is received from a client
+	 * Saves a ScheduledEvent when it is received from a client
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public WhenToMeet makeEntity(Session s, String content)
+	public ScheduledEvent makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 		// Parse the message from JSON
-		final WhenToMeet newMessage = WhenToMeet.fromJSON(content);
+		final ScheduledEvent newMessage = ScheduledEvent.fromJSON(content);
 
 		newMessage.setOwnerName(s.getUsername());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 
-		// Until we find a id that is unique assume another WhenToMeet might already have it
+		// Until we find a id that is unique assume another ScheduledEvent might already have it
 		boolean unique;
 		long id = 0;
 		do {
 			unique = true;
 			id = UUID.randomUUID().getMostSignificantBits();
-			for(WhenToMeet e : this.getAll(s)) if (e.getUniqueID() == id) unique = false;
+			for(ScheduledEvent e : this.getAll(s)) if (e.getUniqueID() == id) unique = false;
 		} while(!unique);
 
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new WhenToMeet with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+		System.out.printf("Server: Creating new ScheduledEvent with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
 
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -81,19 +81,19 @@ public class WhenToMeetEntityManager implements EntityManager<WhenToMeet> {
 	}
 
 	/*
-	 * WhenToMeets can be retrieved
+	 * ScheduledEvents can be retrieved
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public WhenToMeet[] getEntity(Session s, String id)
+	public ScheduledEvent[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
 		// Throw an exception if an ID was specified, as this module does not support
-		// retrieving specific WhenToMeets.
-		System.out.printf("Server: Retrieving WhenToMeet with id = %s\n", id);
-		List<Model> list = db.retrieve(WhenToMeet.class,"UniqueID", Long.parseLong(id), s.getProject());
+		// retrieving specific ScheduledEvents.
+		System.out.printf("Server: Retrieving ScheduledEvent with id = %s\n", id);
+		List<Model> list = db.retrieve(ScheduledEvent.class,"UniqueID", Long.parseLong(id), s.getProject());
 		System.out.println("List size = " + list.size());
-		return list.toArray(new WhenToMeet[list.size()]);
+		return list.toArray(new ScheduledEvent[list.size()]);
 	}
 
 	/* 
@@ -102,16 +102,16 @@ public class WhenToMeetEntityManager implements EntityManager<WhenToMeet> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public WhenToMeet[] getAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type WhenToMeet.
-		// Passing a dummy WhenToMeet lets the db know what type of object to retrieve
+	public ScheduledEvent[] getAll(Session s) throws WPISuiteException {
+		// Ask the database to retrieve all objects of the type ScheduledEvent.
+		// Passing a dummy ScheduledEvent lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		System.out.println("Server: Retrieving all WhenToMeets");
+		System.out.println("Server: Retrieving all ScheduledEvents");
 		
-		List<Model> messages = db.retrieveAll(new WhenToMeet(), s.getProject());
+		List<Model> messages = db.retrieveAll(new ScheduledEvent(), s.getProject());
 
 		// Return the list of messages as an array
-		return messages.toArray(new WhenToMeet[0]);
+		return messages.toArray(new ScheduledEvent[0]);
 	}
 
 	/*
@@ -120,59 +120,59 @@ public class WhenToMeetEntityManager implements EntityManager<WhenToMeet> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public WhenToMeet update(Session s, String content)
+	public ScheduledEvent update(Session s, String content)
 			throws WPISuiteException {
 
-		WhenToMeet updatedWhenToMeet = WhenToMeet.fromJSON(content);
+		ScheduledEvent updatedScheduledEvent = ScheduledEvent.fromJSON(content);
 		/*
 		 * Because of the disconnected objects problem in db4o, we can't just save Commitments.
 		 * We have to get the original defect from db4o, copy properties from updatedCommitment,
 		 * then save the original Commitment again.
 		 */
-		List<Model> oldWhenToMeets = db.retrieve(WhenToMeet.class, "UniqueID", updatedWhenToMeet.getUniqueID(), s.getProject());
+		List<Model> oldScheduledEvents = db.retrieve(ScheduledEvent.class, "UniqueID", updatedScheduledEvent.getUniqueID(), s.getProject());
 		//System.out.println(oldCommitments.toString());
-		if(oldWhenToMeets.size() < 1 || oldWhenToMeets.get(0) == null) {
-			throw new BadRequestException("WhenToMeet with ID does not exist.");
+		if(oldScheduledEvents.size() < 1 || oldScheduledEvents.get(0) == null) {
+			throw new BadRequestException("ScheduledEvent with ID does not exist.");
 		}
 
-		WhenToMeet existingWhenToMeet = (WhenToMeet)oldWhenToMeets.get(0);		
+		ScheduledEvent existingScheduledEvent = (ScheduledEvent)oldScheduledEvents.get(0);		
 
 		// copy values to old commitment and fill in our changeset appropriately
-		existingWhenToMeet = new WhenToMeet(updatedWhenToMeet);
+		existingScheduledEvent.copyFrom(updatedScheduledEvent);
 
-		if(!db.save(existingWhenToMeet, s.getProject())) {
+		if(!db.save(existingScheduledEvent, s.getProject())) {
 			throw new WPISuiteException();
 		}
 
-		return existingWhenToMeet;
+		return existingScheduledEvent;
 	}
 
 	/*
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, WhenToMeet model)
+	public void save(Session s, ScheduledEvent model)
 			throws WPISuiteException {
 
 		// Save the given defect in the database
 		db.save(model);
 	}
 
-	public void deleteWhenToMeet(WhenToMeet model){
+	public void deleteScheduledEvent(ScheduledEvent model){
 		db.delete(model);
 	}
 
 	/*
-	 * WhenToMeets totally can be deleted
+	 * ScheduledEvents totally can be deleted
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.printf("Server: Deleting WhenToMeet with id = %s\n", id);
+		System.out.printf("Server: Deleting ScheduledEvent with id = %s\n", id);
 		try {
-			WhenToMeet todelete = (WhenToMeet) db.retrieve(WhenToMeet.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
-			this.deleteWhenToMeet(todelete);
+			ScheduledEvent todelete = (ScheduledEvent) db.retrieve(ScheduledEvent.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
+			this.deleteScheduledEvent(todelete);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -189,8 +189,8 @@ public class WhenToMeetEntityManager implements EntityManager<WhenToMeet> {
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
 
-		// This module does not allow WhenToMeets to be deleted, so throw an exception
-		db.deleteAll(new WhenToMeet());
+		// This module does not allow ScheduledEvents to be deleted, so throw an exception
+		db.deleteAll(new ScheduledEvent());
 	}
 
 	/*
@@ -198,8 +198,8 @@ public class WhenToMeetEntityManager implements EntityManager<WhenToMeet> {
 	 */
 	@Override
 	public int count() throws WPISuiteException {
-		// Return the number of WhenToMeets currently in the database
-		return db.retrieveAll(new WhenToMeet()).size();
+		// Return the number of ScheduledEvents currently in the database
+		return db.retrieveAll(new ScheduledEvent()).size();
 	}
 
 	@Override

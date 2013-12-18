@@ -57,8 +57,8 @@ public class DateUtils {
 
 	public static String hourString(int hour) {
 		String output = "";
-		if(hour == 0) {
-			output = "";
+		if(hour == 0 || hour == 24) {
+			output = "Midnight";
 		} else if(hour < 12){
 			output = "" + hour + " AM";
 		} else if (hour == 12){

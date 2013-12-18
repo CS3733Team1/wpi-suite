@@ -30,7 +30,6 @@ public class FollowerPanel extends JPanel{
 	}
 
 	public void updateFollower(List<List<Hour>> list, String user) {
-		System.out.println("user"+user);
 		fp.updatePanel(list,user);
 	}
 

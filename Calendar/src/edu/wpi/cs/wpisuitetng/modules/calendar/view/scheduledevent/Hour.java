@@ -35,6 +35,19 @@ public class Hour {
 		this.count = count;
 	}
 	
+	public boolean containsName(String user)
+	{
+		boolean hasName = false;
+		for(int i=0; i < users.size(); i++)
+		{
+			if(users.get(i).equals(user)){
+				hasName= true;
+			}
+		}
+		return hasName;
+	}
+	
+	
 	public ArrayList<String> userList()
 	{
 		return users;
@@ -124,7 +137,12 @@ public class Hour {
 		else setColor(Color.white);
 		return !state;
 	}
-
+	public int getCount()
+	{
+		return count;
+	}
+	
+	
 	public boolean isSelected()
 	{
 		return state;
