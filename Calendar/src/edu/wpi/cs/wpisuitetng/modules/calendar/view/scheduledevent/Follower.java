@@ -84,8 +84,10 @@ public class Follower extends JPanel{
 				hList.get(i).add(hr);
 			}
 		}
+		System.err.println("Checking"+hList);
 		return hList;
 	}
+	
 
 
 	public void setTimeFrame(int day, int start, int end) {
@@ -134,7 +136,9 @@ public class Follower extends JPanel{
 	{
 		for(int i = 0; i < day; i++){
 			for(int j = 0; j < end-start; j++)
-			{	StringBuilder sb = new StringBuilder();
+			{	
+				hourList.get(i).get(j).setHour(j+start);
+				StringBuilder sb = new StringBuilder();
 				if(list.get(i).get(j).getState() == true)
 					hourList.get(i).get(j).updateCount(user);
 				if(list.get(i).get(j).getState() == false)

@@ -41,6 +41,7 @@ public class ScheduledEventSubTabPanel extends JPanel implements ListItemListene
 
 	@Override
 	public void itemDoubleClicked(ScheduledEvent listObject) {
+		System.out.println("In Double Click" +listObject.getHourList());
 		ScheduledEventTabPanel scheduledEventPanel = new ScheduledEventTabPanel(listObject);
 		ImageIcon miniScheduledEventIcon = new ImageIcon();
 		try {

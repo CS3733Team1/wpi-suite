@@ -31,8 +31,10 @@ public class LeaderPanel extends JPanel {
 
 	public void updateFollower(List<List<Hour>> list, String user) {
 		int start = list.get(0).get(0).getHour();
-		int end = list.get(0).get(list.get(0).size()).getHour();
+		int end = list.get(0).get(list.get(0).size()-1).getHour();
 		int days = list.size();
+		
+		System.err.println("start "+start+" end"+end+" days"+days);
 		
 		lead.setColor(CalendarUtils.thatBlue);
 		lead.updateTimeFrame(days,start,end,list,user);
@@ -56,6 +58,7 @@ public class LeaderPanel extends JPanel {
 		lead.getList();
 		ScheduleEventMain wtm = (ScheduleEventMain) this.getParent();
 		wtm.updatePanel(lead.getList(), getUser());
+		System.err.println("Lead transfer to follower" + lead.getList());
 	}
 
 	public void addUser(String user) {

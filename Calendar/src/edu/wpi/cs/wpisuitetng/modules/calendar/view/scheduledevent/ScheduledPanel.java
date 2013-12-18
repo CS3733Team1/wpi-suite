@@ -34,6 +34,7 @@ public class ScheduledPanel extends JPanel {
 	
 	public void update(List<List<Hour>> hourList,String title, String user,ScheduleEventMain scheduleEvent, ArrayList<String> days)
 	{
+		
 		this.title = title;
 		this.scheduleEvent =  scheduleEvent;
 		scheduleEvent.addUser(user);
@@ -53,7 +54,8 @@ public class ScheduledPanel extends JPanel {
 
 		this.add(eventTitle, "grow, push, alignx center,wrap");
 		this.add(weekNames, "grow, push,wrap");
-		this.add(scroll,"grow, push" );
+		this.add(scheduleEvent, "grow, push");
+//		this.add(scroll,"grow, push" );
 		this.add(addEventButton, "cell 0 3,alignx left");
 	}
 	
