@@ -44,7 +44,7 @@ public class DeleteEventController implements ActionListener {
 			System.out.println("Deleting event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 
 			// Create a Delete Request
-			final Request request = Network.getInstance().makeRequest("calendar/commitment/" + event.getUniqueID(), HttpMethod.DELETE);
+			final Request request = Network.getInstance().makeRequest("calendar/event/" + event.getUniqueID(), HttpMethod.DELETE);
 
 			// Add an observer to process the response
 			request.addObserver(new DeleteEventObserver());
