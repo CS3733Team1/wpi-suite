@@ -6,10 +6,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 
 public class HelpWindowTest {
 
