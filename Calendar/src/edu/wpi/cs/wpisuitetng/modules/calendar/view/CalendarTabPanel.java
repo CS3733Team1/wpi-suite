@@ -100,6 +100,7 @@ public class CalendarTabPanel extends JPanel {
 		eventSubTabPanel = new EventSubTabPanel(calendarPanel);
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		quickListTabPanel = new QuickListTabPanel(calendarPanel);
+		scheduledEventSubTabPanel = new ScheduledEventSubTabPanel(calendarPanel);
 
 		personalCalCheckBox = new JCheckBox("Personal");
 		teamCalCheckBox = new JCheckBox("Team");
@@ -136,7 +137,7 @@ public class CalendarTabPanel extends JPanel {
 			yearIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png")));
 			quickListIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/quicklist.png")));
 			eventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
-			scheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
+			scheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/scheduler_tabSize.png")));
 			commitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
 			categoryIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png")));
 			filterIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png")));
@@ -159,7 +160,7 @@ public class CalendarTabPanel extends JPanel {
 		yearViewButton = new TransparentToggleButton("Year", yearIcon);
 		yearViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		subTabPane.add("Scheduled Events", scheduledEventSubTabPanel);
+		subTabPane.addTab("Scheduled Events", scheduledEventIcon, scheduledEventSubTabPanel);
 		subTabPane.addTab("Quick List", quickListIcon, quickListTabPanel);
 		subTabPane.addTab("Events", eventIcon, eventSubTabPanel);
 		subTabPane.addTab("Commitments", commitmentIcon, commitmentSubTabPanel);
@@ -189,7 +190,7 @@ public class CalendarTabPanel extends JPanel {
 		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), Font.BOLD, 16));
 		calendarTitleLabel.setForeground(CalendarUtils.titleNameColor);
 
-		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets 0 n 0 n", "[33.3333%][33.3333%][33.3333%]", "[][]"));
+		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets 0 n 0 n", "[20%][60%][20%]", "[][]"));
 		topButtonPanel.setBackground(Color.WHITE);
 
 		topButtonPanel.add(yearViewButton,		"cell 0 0, center, span 3");

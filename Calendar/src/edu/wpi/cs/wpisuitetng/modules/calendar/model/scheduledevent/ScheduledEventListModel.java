@@ -13,7 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -68,7 +67,7 @@ public class ScheduledEventListModel extends AbstractListModel<ScheduledEvent> {
 	 * @param scheduledEventModel
 	 *            the array of scheduledEventModel to add
 	 */
-	public void addScheduledEventModel(ScheduledEvent[] scheduledEventModel) {
+	public void addScheduledEvents(ScheduledEvent[] scheduledEventModel) {
 		for (int i = 0; i < scheduledEventModel.length; i++) {
 			this.scheduledEvents.add(scheduledEventModel[i]);
 		}
@@ -79,6 +78,9 @@ public class ScheduledEventListModel extends AbstractListModel<ScheduledEvent> {
 	public synchronized void setScheduledEvents(ScheduledEvent[] scheduledEvents) {
 		this.scheduledEvents.clear();
 		this.scheduledEvents.addAll(Arrays.asList(scheduledEvents));
+		
+		for(ScheduledEvent scheduledEvent: scheduledEvents) System.out.println("Retrieved: " + scheduledEvent.getTitle());
+		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 

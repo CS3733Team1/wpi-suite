@@ -13,12 +13,9 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduleEventMain;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -54,7 +51,7 @@ public class AddScheduledEventController implements ActionListener{
 	}
 
 	public void addScheduledEventToModel(ScheduledEvent scheduledEvent){
-		System.out.println("	Added commitment: name = " + scheduledEvent.getTitle() + "; uid = " + scheduledEvent.getUniqueID());
+		System.out.println("	Added scheduled Event: name = " + scheduledEvent.getTitle() + "; uid = " + scheduledEvent.getUniqueID());
 		model.addScheduledEvent(scheduledEvent);
 		MainView.getCurrentCalendarPanel().remove(MainView.getCurrentCalendarPanel().getSelectedComponent());
 	}

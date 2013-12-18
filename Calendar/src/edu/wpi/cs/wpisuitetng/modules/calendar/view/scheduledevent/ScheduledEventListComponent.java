@@ -46,7 +46,7 @@ public class ScheduledEventListComponent extends RenderableComponent<ScheduledEv
 		scheduledEventLabel = new JLabel(scheduledEvent.getTitle(), JLabel.CENTER);
 
 		daysOfWeekAndTime = new JLabel("Days~");
-		currentParticipants = new JLabel("Current participants: X");
+		currentParticipants = new JLabel("Current participants: " + scheduledEvent.getNumberOfUsers());
 
 		createdByLabel = new JLabel("Created by: " + scheduledEvent.getOwnerName());
 
@@ -85,7 +85,8 @@ public class ScheduledEventListComponent extends RenderableComponent<ScheduledEv
 			} else {
 				p.add(currentParticipants, "span 2, wrap");
 
-				p.add(new JLabel("List OF NAMES"), "span 2, wrap");
+				for(String s: listItem.getListObject().getUsers())
+					p.add(new JLabel(s), "span 2, wrap");
 
 				p.add(createdByLabel);
 				compressButton.reset();

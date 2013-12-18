@@ -27,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventTabC
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.help.HelpButtonController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.DeleteScheduledEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.DisplayScheduledEventTabController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.RetrieveScheduledEventController;
 
@@ -63,7 +64,9 @@ public class MainView {
 
 		calendarToolBar.addEventButtonListener(new DisplayEventTabController(calendarPanel));
 		calendarToolBar.deleteEventButtonListener(new DeleteEventController(calendarPanel));
-
+		
+		calendarToolBar.deleteScheduledEventListener(new DeleteScheduledEventController(calendarPanel));
+		
 		calendarToolBar.helpButtonListener(new HelpButtonController(calendarPanel));
 
 		calendarToolBar.deleteCommitmentButtonListener(new DeleteCommitmentController(calendarPanel));
