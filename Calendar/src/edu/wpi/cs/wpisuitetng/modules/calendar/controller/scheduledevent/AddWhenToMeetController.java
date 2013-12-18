@@ -24,12 +24,12 @@ public class AddWhenToMeetController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("We Did It Ladies and Gents");
 		
 		ScheduledEventTabPanel test =  (ScheduledEventTabPanel) setup.getParent();
 		ArrayList<String> days = setup.getDayList();
+		System.out.println(setup);
 		int startIndex = setup.getStartIndex();
-		int endIndex = setup.getStartIndex();
+		int endIndex = setup.getEndIndex();
 		String title = setup.getTitle();
 		String user = setup.getUser();
 		System.out.println("user"+user);
@@ -38,7 +38,7 @@ public class AddWhenToMeetController implements ActionListener {
 		ScheduleEventMain schedule = new ScheduleEventMain();
 		ScheduledPanel schedulePanel = new ScheduledPanel();
 		System.out.println("OR HERE");
-		schedule.setTime(user,days.size(), 8, 14, CalendarUtils.thatBlue);
+		schedule.setTime(user,days.size(), startIndex, endIndex, CalendarUtils.thatBlue);
 		schedulePanel.setup(title, user, schedule, days);
 		System.out.println("Maybe HERE");
 		test.removeAll();
