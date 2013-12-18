@@ -73,6 +73,14 @@ public class MultidayEventWeekView extends JPanel {
 	}
 	
 	/**
+	 * Retrieves number of multiday events
+	 * @return number of events
+	 */
+	public int getNumberofEvents(){
+		return this.getComponentCount();
+	}
+	
+	/**
 	 * Sorts the List of Events by StartDate
 	 */
 	public void showEvents(){

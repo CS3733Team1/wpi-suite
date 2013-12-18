@@ -60,7 +60,7 @@ public class ScheduleItem extends JPanel{
 		StartY = y;
 		width = w;
 		height = h;
-		this.setBounds(StartX, StartY, width, height);
+		this.setBounds(StartX, StartY, width, Math.min(Math.abs(height), (1440 - StartY)));
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class ScheduleItem extends JPanel{
 		}
 		StartX = x;
 		StartY = y;
-		this.setBounds(StartX, StartY, width, height);
+		this.setBounds(StartX, StartY, width, Math.min(Math.abs(height), (1440 - StartY)));
 	}
 	
 	/**
@@ -96,10 +96,11 @@ public class ScheduleItem extends JPanel{
 			 StartX = location*(this.getParent().getWidth()/division);
              width = this.getParent().getWidth()/division;
 		}
-		
+	
 		//Sets new bounds
-		this.setBounds(StartX, StartY, width, height);
+		this.setBounds(StartX, StartY, width, Math.min(Math.abs(height), (1440 - StartY)));
 		
+		System.err.println(this.getBounds());
 		super.repaint();
 	}
 	
