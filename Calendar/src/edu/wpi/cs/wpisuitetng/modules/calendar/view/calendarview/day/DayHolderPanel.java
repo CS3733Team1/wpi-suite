@@ -76,6 +76,7 @@ public class DayHolderPanel extends JPanel{
 		nexthour.reSize(new Integer((int) (width * .1)));
 		
 		this.repaint();
+		this.updateUI();
 	}
 	
 	public List<Event> getMultiDayEvents(){
@@ -107,11 +108,23 @@ public class DayHolderPanel extends JPanel{
 	}
     
 	/**
-	 * 
-	 * @return
+	 * Grabs Title of Current Day
+	 * @return title in text
 	 */
 	public String getTitle() {
 		return day.getTitle();
+	}
+	
+	public String getTitle(Date pick){
+		if (pick.equals(next.getDayViewDate())){
+			return next.getTitle();
+		}
+		else if (pick.equals(previous.getDayViewDate())){
+			return previous.getTitle();
+		}
+		else{
+			return day.getTitle();
+		}
 	}
 
 	/**
@@ -136,11 +149,16 @@ public class DayHolderPanel extends JPanel{
 	 * request that day displays today
 	 */
 	public void today() {
-		day.today();
-		previous.today();
-		next.today();
-		next.next();
-		previous.previous();
+		Date check = new Date();
+		check = new Date(check.getYear(), check.getMonth(), check.getDate());
+		
+		if (!check.equals(day.getDayViewDate())){
+			day.today();
+			previous.today();
+			next.today();
+			next.next();
+			previous.previous();
+		}
 	}
 
 	/**
@@ -150,6 +168,17 @@ public class DayHolderPanel extends JPanel{
 	public void viewDate(Calendar date) {
 		day.viewDate(date);
 		Date current = date.getTime();
+		next.viewDate(new Date(current.getYear(), current.getMonth(), current.getDate()+1));
+		previous.viewDate(new Date(current.getYear(), current.getMonth(), current.getDate()-1));
+	}
+	
+	/**
+	 * Passes request to view a specific date down to the day
+	 * @param date the date being requested
+	 */
+	public void viewDate(Date date){
+		Date current = new Date(date.getYear(), date.getMonth(), date.getDate());
+		day.viewDate(current);
 		next.viewDate(new Date(current.getYear(), current.getMonth(), current.getDate()+1));
 		previous.viewDate(new Date(current.getYear(), current.getMonth(), current.getDate()-1));
 	}

@@ -86,6 +86,7 @@ public class MultidayEventView extends JPanel{
 		this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
 
 		this.repaint();
+		this.updateUI();
 	}
 
 	/**
