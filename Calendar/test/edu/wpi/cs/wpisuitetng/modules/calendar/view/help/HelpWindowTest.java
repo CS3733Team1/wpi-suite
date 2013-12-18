@@ -1,6 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.help;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.Before;
