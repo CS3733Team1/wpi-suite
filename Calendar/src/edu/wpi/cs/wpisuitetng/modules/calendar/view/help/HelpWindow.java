@@ -83,7 +83,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		display.setParagraphAttributes(paraSet, false);
 		
 		displayScroll = new JScrollPane(display);
-		displayScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//displayScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		displayScroll.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		displayScroll.setVisible(true);
 		
@@ -454,6 +454,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		textRect.setSize(visibleRect.getSize());
 		
 		display.scrollRectToVisible(textRect);
+		displayScroll.getHorizontalScrollBar().setValue(0);
 	}
 
 	@Override
