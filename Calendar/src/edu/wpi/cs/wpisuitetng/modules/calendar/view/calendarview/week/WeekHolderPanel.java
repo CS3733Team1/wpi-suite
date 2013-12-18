@@ -17,6 +17,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.HourLabels;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 
+/**
+ * Panel that holds the panels responsible for displaying the week's single day events and commitments.
+ * Holds a panel with hour labels, and an ArrayList of DayArea panels for each day of the week.
+ */
 public class WeekHolderPanel extends JPanel{
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};

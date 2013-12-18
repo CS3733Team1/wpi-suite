@@ -26,6 +26,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListMo
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
+/**
+ * Holds all the GUI elements for the day view
+ */
 public class DayCalendar extends JPanel implements ICalendarView, ListDataListener{
 
 	private DayCalendarScrollPane dayscroll;
@@ -38,9 +41,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	private JPanel dayname;
 	private int scrollSpeed = 15;
 
-	/**
-	 * Displays a view, which contains all the elements of a day calendar
-	 */
+
 	public DayCalendar(){
 
 		this.setLayout(new MigLayout("fill, insets 0"));
@@ -103,7 +104,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	}
 
 	/**
-	 * Updates the day to reflect the new current day
+	 * Refresh the display of the day being shown
 	 */
 	public void updateDay(){
 		Calendar cal = Calendar.getInstance();
@@ -128,9 +129,6 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		return daylayer.getDayViewDate();
 	}
 
-	/**
-	 * Overwrites the repaint to ensure that the children assume correct sizes
-	 */
 	public void repaint(){
 		if (daylayer != null){
 			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
@@ -143,9 +141,6 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		super.repaint();
 	}
 	
-	/**
-	 * updates the multiday view to contain the new multiday elements
-	 */
 	public void updateMultiDay(){
 		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
 	}

@@ -125,6 +125,9 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		repaint();
 	}
 	
+	/**
+	 * Refresh the titles of the days on week view
+	 */
 	public void rebuildDays(){
 		weekdays.clear();
 		weektitle.removeAll();

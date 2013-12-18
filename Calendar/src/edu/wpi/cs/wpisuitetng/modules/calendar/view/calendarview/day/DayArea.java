@@ -27,7 +27,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListMo
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
 //import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.EventMouseListener;
 
-//Height of This Panel is 1440 Calculation Dependent
+/**
+ * displays the events and commitments for a given day
+ */
 public class DayArea extends JPanel implements ListDataListener{
 	private static final int pixPerMin = 1;
 	private static final int timePix = 0; //width reserved for times on lefthand side
@@ -225,7 +227,7 @@ public class DayArea extends JPanel implements ListDataListener{
 	}
 
 	/**
-	 * Sorts the List of Events by StartDate
+	 * Sorts the List of Events by StartDate and then by length
 	 */
 	 public void sortEvents(){
 		Collections.sort(events, new Comparator<ISchedulable>(){
@@ -396,6 +398,9 @@ public class DayArea extends JPanel implements ListDataListener{
 		}
 	}
 
+	/**
+	 * Creates list of schedulable items (events and commitments), and list of multi-day events
+	 */
 	public void findSchedulableItems(){
 		Date key;
 		events = new LinkedList<ISchedulable>();
