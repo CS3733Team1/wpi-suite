@@ -249,6 +249,8 @@ public class CalendarTabPanel extends JPanel {
 		
 		if(subTabPane.getSelectedComponent() instanceof QuickListTabPanel)
 			selectedEvents.addAll(quickListTabPanel.getSelectedEvents());
+		else if(subTabPane.getSelectedComponent() instanceof EventSubTabPanel)
+			selectedEvents.addAll(eventSubTabPanel.getSelectedEvents());
 		
 		return selectedEvents;
 	}

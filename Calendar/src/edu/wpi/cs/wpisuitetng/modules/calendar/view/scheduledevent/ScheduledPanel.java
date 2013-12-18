@@ -1,8 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.AddWhenToMeetController;
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.UpdateWhenToMeetController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
-import net.miginfocom.swing.MigLayout;
 
 public class ScheduledPanel extends JPanel {
 
@@ -27,7 +24,6 @@ public class ScheduledPanel extends JPanel {
 	public ScheduledPanel()
 	{
 		this.setLayout(new MigLayout("fill, insets 0 10 0 10", "10[100%]10", "0[30]0[30]0[80%]0[10%]0"));
-		
 	}
 	
 
@@ -55,7 +51,6 @@ public class ScheduledPanel extends JPanel {
 	public List<List<Hour>> updateSchedule()
 	{
 		return scheduleEvent.updateHourList();
-
 	}
 	
 	

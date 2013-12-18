@@ -188,6 +188,17 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	 */
 	public void updateMultiDay(){
 		multiview.updateMultiDay(weeklayer.getMultiDayEvents(), weeklayer.getDayViewDate());
+		if (multiview.getNumberofEvents() == 0){
+			this.removeAll();
+			this.add(weektitle, "grow, wrap, hmin 50, hmax 50");
+			this.add(weekscroll, "grow, push");
+		}
+		else{
+			this.removeAll();
+			this.add(weektitle, "grow, wrap, hmin 50, hmax 50");
+			this.add(mscroll, "grow, wrap, hmin 80, hmax 80");
+			this.add(weekscroll, "grow, push");
+		}
 		this.revalidate();
 	}
 	
@@ -255,16 +266,19 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 		repaint();
+		this.updateUI();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
 		repaint();
+		this.updateUI();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
 		repaint();
+		this.updateUI();
 	}
 
 	@Override
