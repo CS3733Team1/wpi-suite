@@ -81,21 +81,13 @@ public class ScheduledEvent extends DeletableAbstractModel {
 		}
 		return numUsers;
 	}
-	public void addUser()
-	{
-		
-	}
 	public ArrayList<String> getUsers()
 	{
 		userList = new ArrayList<String>();
-		for(int i = 0; i < hours.size(); i++)
-		{
-			for(int j = 0; j < hours.get(i).size(); j++)
-			{
-				for(int k = 0; k < hours.get(i).get(j).userList().size(); k++)
-				{
-					if(!(userList.contains(hours.get(i).get(j).userList().get(k))))
-					{
+		for(int i = 0; i < hours.size(); i++){
+			for(int j = 0; j < hours.get(i).size(); j++){
+				for(int k = 0; k < hours.get(i).get(j).userList().size(); k++){
+					if(!(userList.contains(hours.get(i).get(j).userList().get(k)))){
 						userList.add(hours.get(i).get(j).userList().get(k));
 					}
 				}
