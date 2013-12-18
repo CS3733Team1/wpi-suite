@@ -33,10 +33,10 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
@@ -476,12 +476,14 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 		return calendar;
 	}
 
-	public int getMonth() {
-		return currentMonth.get(Calendar.MONTH);
+	public List<Event> getEvents() {
+		List<Event> rtnEventsList = new ArrayList<Event>(events);
+		rtnEventsList.addAll(multiDayEvents);
+		return rtnEventsList;
 	}
 	
-	public int getYear() {
-		return currentMonth.get(Calendar.YEAR);
+	public List<Commitment> getCommitments() {
+		return commitments;
 	}
 
 	public List<Event> getSelectedEvents() {

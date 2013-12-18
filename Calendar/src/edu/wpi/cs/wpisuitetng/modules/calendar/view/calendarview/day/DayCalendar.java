@@ -22,10 +22,13 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
+/**
+ * Holds all the GUI elements for the day view
+ */
 public class DayCalendar extends JPanel implements ICalendarView, ListDataListener{
 
 	private DayCalendarScrollPane dayscroll;
@@ -100,6 +103,9 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 	}
 
+	/**
+	 * Refresh the display of the day being shown
+	 */
 	public void updateDay(){
 		Calendar cal = Calendar.getInstance();
 
@@ -125,10 +131,10 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 	public void repaint(){
 		if (daylayer != null){
-			daylayer.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+			daylayer.reSize(this.getWidth() - 20);
 		}
 		if (multiview != null){
-			multiview.reSize(this.getWidth() - (dayscroll.getVerticalScrollBar().getWidth()*2));
+			multiview.reSize(this.getWidth() - 20);
 			updateMultiDay();
 		}
 
@@ -181,20 +187,17 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		updateDay();
-		updateMultiDay();
+		repaint();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		updateDay();
-		updateMultiDay();
+		repaint();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		updateDay();
-		updateMultiDay();
+		repaint();
 	}
 
 }

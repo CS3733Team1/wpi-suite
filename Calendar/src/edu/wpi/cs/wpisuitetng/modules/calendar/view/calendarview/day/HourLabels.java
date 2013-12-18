@@ -12,9 +12,15 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
+/**
+ * Panel to hold the hour labels for day view
+ */
 public class HourLabels extends JPanel{
 	private ArrayList<JPanel> hourlist;
-
+	
+	/**
+	 * draws a list of hours pertaining to day and week view
+	 */
 	public HourLabels(){
 		hourlist = new ArrayList<JPanel>();
 		
@@ -26,7 +32,10 @@ public class HourLabels extends JPanel{
 		this.setMinimumSize(new Dimension(0,1440));
 	}
 	
-	
+	/**
+	 * Allows the parent to resize this view to a specific width
+	 * @param width size the parent wants this view to assume
+	 */
 	public void reSize(int width){
 		this.setSize(width, 1440);
 		this.setPreferredSize(new Dimension(width, 1440));
@@ -37,6 +46,10 @@ public class HourLabels extends JPanel{
 		this.repaint();
 	}
 	
+	/**
+	 * Overrides the paint borders, so that it can paint in the hour labels
+	 * This method is called before other components are added, so they will not interfere with other items added to view
+	 */
 	public void paintBorder(Graphics g){
 
 		super.paintBorder(g);

@@ -12,7 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
 
 /**
  * This class shows multi-day events in week view. It is a component of the WeekCalendarLayerPane, along
@@ -25,6 +26,11 @@ public class MultidayEventWeekView extends JPanel {
 	private Date cdate;
 	private static boolean isEventShowing = true;
 	
+	/**
+	 * Creates a panel that holds the multiday events
+	 * @param multiday the list of multiday events contained in the week
+	 * @param current the start of the week
+	 */
 	public MultidayEventWeekView(List<List<Event>> multiday, Date current){
 		multidaye = multiday;
 		displayEvents = new LinkedList<JPanel>();
@@ -37,7 +43,11 @@ public class MultidayEventWeekView extends JPanel {
 		this.setVisible(true);
 	}
 	
-	
+	/**
+	 * Updates the week's multiday events it is holding
+	 * @param multiday new multiday events that the view contains
+	 * @param current the start date of the week
+	 */
 	public void updateMultiDay(List<List<Event>> multiday, Date current){
 		
 		multidaye = multiday;
@@ -51,6 +61,10 @@ public class MultidayEventWeekView extends JPanel {
 		
 	}
 	
+	/**
+	 * Used to resize the view, ScrollPanes don't auto resize their width
+	 * @param width the width that the parent wants this view to assume
+	 */
 	public void reSize(int width){
 		this.setSize(width, this.getPreferredSize().height);
 		this.setPreferredSize(new Dimension(width, this.getPreferredSize().height));
@@ -156,6 +170,7 @@ public class MultidayEventWeekView extends JPanel {
 
 				multipane.add(eventinfo, "cell 1 0, grow, push, wmin 0");
 				multipane.setToolTipText(bob.toString());
+				multipane.addMouseListener(new SchedMouseListener(eve,multipane));
 				
 				Date eveend = eve.getEndDate();
 				if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).after(new Date(cdate.getYear(), cdate.getMonth(), cdate.getDate()+6))){

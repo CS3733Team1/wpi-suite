@@ -33,6 +33,7 @@ public class NetworkConfiguration {
 	 * @param apiUrl	The url to the core server API.
 	 */
 	public NetworkConfiguration(String apiUrl) {
+		System.out.println("Network config constructor");
 		this.apiUrl = apiUrl;
 		this.defaultRequestHeaders = new HashMap<String, List<String>>();
 		this.observers = new ArrayList<RequestObserver>();

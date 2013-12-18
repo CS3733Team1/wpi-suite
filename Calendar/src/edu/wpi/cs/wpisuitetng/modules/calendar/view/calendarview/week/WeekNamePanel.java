@@ -7,6 +7,9 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+/**
+ * Panel to hold the label for a day of the week in week view
+ */
 public class WeekNamePanel extends JPanel{
 	
 	private JLabel dayLabel;

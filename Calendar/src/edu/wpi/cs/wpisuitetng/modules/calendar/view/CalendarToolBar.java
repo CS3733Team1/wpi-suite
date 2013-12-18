@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
+import javax.swing.DebugGraphics;
+import java.awt.Cursor;
 
 public class CalendarToolBar extends JPanel implements ActionListener {
 	private final static Logger LOGGER = Logger.getLogger(CalendarToolBar.class.getName());
@@ -75,11 +77,15 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		}
 
 		deleteButton = new TransparentButton("Delete", deleteIcon);
+		deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		refreshButton = new TransparentButton(refreshIcon);
 
 		addCommitmentButton = new TransparentButton("<html>New<br/>Commitment</html>", addCommitmentIcon);
+		addCommitmentButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		addEventButton = new TransparentButton("<html>New<br/>Event</html>", addEventIcon);
+		addEventButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		scheduledEventButton = new TransparentButton("<html>New<br/>Scheduled<br/>Event</html>", scheduleEventIcon);
+		scheduledEventButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		helpButton = new TransparentButton(questionIcon);
 
@@ -146,7 +152,19 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 		this.repaint();
 	}
 
+	public void setToolBarSchedule() {
+		this.removeAll();
+		this.setLayout(new MigLayout("fill", "[50%][50%]"));
+		//this.add(refreshButton);
 
+		this.add(addCommitmentButton, "align left, split 3");
+		this.add(addEventButton);
+		this.add(scheduledEventButton);
+
+		this.add(helpButton, "align right");
+
+		this.repaint();
+	}
 
 	// Functions to set listeners for the buttons
 
@@ -177,6 +195,11 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 	public synchronized void clickRefreshButton() {
 		this.refreshButton.doClick();
 	}
+	
+	public void scheduleButtonListener(ActionListener l){
+		scheduledEventButton.addActionListener(l);
+	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {

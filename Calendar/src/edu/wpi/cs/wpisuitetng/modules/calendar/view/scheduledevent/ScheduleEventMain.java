@@ -1,10 +1,13 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
-
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -24,10 +27,12 @@ public class ScheduleEventMain extends JPanel{
 		hourList =  new ArrayList<List<Hour>>();
 	}
 	
-	public void setupPanel()
+	public void addUser(String user)
 	{
-		this.setLayout(new MigLayout("fill,insets 0", "0[100%]0","0[]0" ));
+		this.user = user;
+		System.out.println("user"+user);
 	}
+	
 	
 	public void constructHourTest(int day, int start, int end)
 	{
@@ -45,11 +50,13 @@ public class ScheduleEventMain extends JPanel{
 		}
 	}
 	
-	public void setTime(int day, int start, int end, Color col)
+	
+	
+	public void setTime(String user,int day, int start, int end, Color col)
 	{
 		leaderPanel.setTimeFrame(day, start, end);
 		leaderPanel.setColor(col);
-		leaderPanel.addUser("Bob");
+		leaderPanel.addUser(user);
 		followerPanel.setTimeFrame(day, start, end);
 		followerPanel.setColor(col);
 		constructHourTest(day, start, end);
@@ -61,8 +68,25 @@ public class ScheduleEventMain extends JPanel{
 	}
 	
 	public void updatePanel(List<List<Hour>> list, String user) {
+		System.out.println("user"+user);
 		followerPanel.updateFollower(list, user);
 	}
 	
+	public List<List<Hour>> updateHourList()
+	{
+		return followerPanel.updateHourList();
+	}
+	
+	
+	
+	public void reSize(int width){
+		this.setSize(width, this.getHeight());
+		this.setPreferredSize(new Dimension(width, this.getHeight()));
+		this.setMinimumSize(new Dimension(0,this.getHeight()));
+		followerPanel.reSize(new Integer((int) (width * .50)));
+		leaderPanel.reSize(new Integer((int) (width * .50)));
+		
+		this.repaint();
+	}
 	
 }

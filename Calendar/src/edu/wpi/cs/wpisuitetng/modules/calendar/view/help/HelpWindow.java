@@ -41,6 +41,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
+import java.awt.Cursor;
 
 /**
  * This class is the GUI for the ManReader. It handles display of the interface and handles user I/O operations.
@@ -105,6 +106,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		docMenuPane.setVisible(true);
 		
 		bGo = new JButton("Go");
+		bGo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		bGo.setToolTipText("Go");
 		bGo.addMouseListener(this);
 		bBack = new JButton("<");
@@ -114,6 +116,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		bForward.setToolTipText("Forward");
 		bForward.addMouseListener(this);
 		bHome = new JButton("Home");
+		bHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		bHome.setToolTipText("Home");
 		bHome.addMouseListener(this);
 		
@@ -142,6 +145,7 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 		filter.addKeyListener(this);
 		
 		bClear = new JButton("Clear");
+		bClear.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		bClear.setMinimumSize(new Dimension(75,25));
 		bClear.setToolTipText("Cancel filtering and clear fields");
 		bClear.addMouseListener(this);

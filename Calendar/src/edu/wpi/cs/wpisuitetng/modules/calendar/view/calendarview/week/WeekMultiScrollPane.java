@@ -6,6 +6,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 
+/**
+ * Scroll pane that holds the week's multiday events
+ */
 public class WeekMultiScrollPane extends JScrollPane{
 
 private MultidayEventWeekView mday;

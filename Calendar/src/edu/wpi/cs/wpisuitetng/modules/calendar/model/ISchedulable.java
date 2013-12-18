@@ -12,8 +12,9 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model;
 
 import java.util.Date;
 
-public interface ISchedulable
-{
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+
+public interface ISchedulable extends Comparable<ISchedulable> {
 	public String getName();
 	public String getDescription();
 	public Category getCategory();

@@ -1,7 +1,12 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -9,8 +14,8 @@ import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.plaf.ColorUIResource;
 
-import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import net.miginfocom.swing.MigLayout;
 
 public class HourPanel extends JPanel {
 
@@ -37,7 +42,7 @@ public class HourPanel extends JPanel {
 		this.setLayout(new MigLayout("fill"));
 		state = false;
 		this.setBackground(Color.white);
-		this.setBorder(new MatteBorder(1, 0, 0, 1, Color.gray));
+		this.setBorder(new MatteBorder(1, 1, 0, 0, CalendarUtils.lineColor));
 	}
 	public void setHour(int hour)
 	{
@@ -66,8 +71,14 @@ public class HourPanel extends JPanel {
 	public void setState(boolean set)
 	{
 		state = set;
-		if(set) setColor(configColor);
-		else setColor(Color.white);
+		if(set) {
+			setColor(configColor);
+			this.setBorder(new MatteBorder(1, 1, 0, 0, Color.white));
+		}
+		else{
+			setColor(Color.white);
+			this.setBorder(new MatteBorder(1, 1, 0, 0, CalendarUtils.lineColor));
+		}
 
 	}
 	public boolean getState()
@@ -78,7 +89,7 @@ public class HourPanel extends JPanel {
 
 	public void updateCount(String user)
 	{
-
+		System.out.println("user"+user);
 		boolean update = false;
 		if(users.size() == 0)
 		{
@@ -91,16 +102,13 @@ public class HourPanel extends JPanel {
 					update = true;
 				}
 			}
-			if(!update){
+			if(update == false){
 				count++;
 				users.add(user);
 			}
 		}
 
 		configColorCount(count);
-
-		System.out.println("Count:"+count);
-
 	}
 
 
@@ -116,24 +124,31 @@ public class HourPanel extends JPanel {
 		switch(count){
 			case 0:
 				setColor(Color.white);
+				this.setBorder(new MatteBorder(1, 1, 0, 0, CalendarUtils.lineColor));
 				break;
 			case 1:
 				setColor(lowDensity);
+				this.setBorder(new MatteBorder(1, 1, 0, 0, Color.white));
 				break;
 			case 2:
 				setColor(mediumLowDensity);
+				this.setBorder(new MatteBorder(1, 1, 0, 0, Color.white));
 				break;
 			case 3:
 				setColor(mediumDensity);
+				this.setBorder(new MatteBorder(1, 1, 0, 0, Color.white));
 				break;
 			case 4:
 				setColor(mediumHighDensity);
+				this.setBorder(new MatteBorder(1, 1, 0, 0, Color.white));
 				break;
 			case 5:
 				setColor(highDensity);
+				this.setBorder(new MatteBorder(1, 1, 0, 0, Color.white));
 				break;
 			default:
 				setColor(highDensity);
+				this.setBorder(new MatteBorder(1, 1, 0, 0, Color.white));
 				break;
 		}
 	}
@@ -159,7 +174,7 @@ public class HourPanel extends JPanel {
 	}
 	public boolean switchState()
 	{
-		if(state) setColor(new Color(255,20,147));
+		if(state == true) setColor(new Color(255,20,147));
 		else setColor(Color.white);
 		return !state;
 	}
@@ -187,7 +202,16 @@ public class HourPanel extends JPanel {
 		hr.setState(this.getState());
 		hr.setColor(this.getColor());
 		hr.setCount(this.getCount());
+		hr.addUsers(users);
 		return hr;
+	}
+	
+	public void reSize(int width){
+		this.setSize(width, this.getHeight());
+		this.setPreferredSize(new Dimension(width, this.getHeight()));
+		this.setMinimumSize(new Dimension(0,this.getHeight()));
+		
+		this.repaint();
 	}
 
 }

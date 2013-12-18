@@ -10,7 +10,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.calendar.controller.category;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 

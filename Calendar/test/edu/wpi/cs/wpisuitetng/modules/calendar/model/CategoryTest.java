@@ -7,6 +7,8 @@ import java.awt.Color;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+
 public class CategoryTest {
 
 	Category cat1;
@@ -58,6 +60,23 @@ public class CategoryTest {
 		assertEquals(Color.red,cat2.getColor());
 		cat2.setColor(Color.green);
 		assertEquals(Color.green,cat2.getColor());
+	}
+	
+	@Test
+	public void testCategoryIsReal(){
+		assertTrue(cat1.getisReal());
+		assertFalse(cat1.cloneFake().getisReal());
+	}
+	
+	@Test
+	public void testCategoriesAreEqual()
+	{
+		cat1.setUniqueID(1);
+		assertTrue(cat1.equals(cat1));
+		assertFalse(cat1.equals(cat2));
+		assertFalse(cat2.equals(null));
+		assertFalse(cat1.equals(new Object()));
+		
 	}
 
 }

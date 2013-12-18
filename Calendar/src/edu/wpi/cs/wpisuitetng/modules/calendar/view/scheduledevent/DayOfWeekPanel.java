@@ -1,4 +1,5 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
+//package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,8 +9,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
-import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import net.miginfocom.swing.MigLayout;
+//import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class DayOfWeekPanel extends JPanel {
 
@@ -121,6 +123,17 @@ public class DayOfWeekPanel extends JPanel {
 			if(listDay.get(i).getState())
 				tempListStorage.add(listDay.get(i).getDayString());
 		}
+		
+		if(tempListStorage.size() > 0){
+			ScheduleEventSetup swp =(ScheduleEventSetup) this.getParent();
+			swp.isDayOfWeekHaveDays(true);
+			System.out.println("Update True");
+		}else{
+			System.out.println("Update False");
+			ScheduleEventSetup swp =(ScheduleEventSetup) this.getParent();
+			swp.isDayOfWeekHaveDays(false);
+		}
+		
 		System.out.println(tempListStorage);
 		return tempListStorage;
 	}

@@ -13,7 +13,9 @@ public class ScheduledEventTabPanel extends JPanel {
 		ScheduleEventSetup wtm = new ScheduleEventSetup();
 		this.add(wtm, "grow,push");
 		
-//		ScheduleEventMain wtm = new ScheduleEventMain();
-//		wtm.setTime(7,0,48, Color.BLUE);
+	}
+	
+	public void closeEventPanel() {
+		this.getParent().remove(this);
 	}
 }

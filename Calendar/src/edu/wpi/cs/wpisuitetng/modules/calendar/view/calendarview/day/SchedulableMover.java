@@ -2,13 +2,14 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.UpdateCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.UpdateEventController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 
 /**
  *  This class allows you to move a Component by using a mouse. The Component
@@ -389,8 +390,8 @@ public class SchedulableMover extends MouseAdapter
 				((ScheduleItem) source).getStartTime();
 				((ScheduleItem) source).getEndTime();
 				ISchedulable item = ((ScheduleItem) source).getDisplayItem();
-				if (item instanceof edu.wpi.cs.wpisuitetng.modules.calendar.model.Event){
-					UpdateEventController updateevent = new UpdateEventController(((edu.wpi.cs.wpisuitetng.modules.calendar.model.Event) item));
+				if (item instanceof edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event){
+					UpdateEventController updateevent = new UpdateEventController(((edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event) item));
 				}
 				if (item instanceof Commitment){
 					UpdateCommitmentController updatecommitment = new UpdateCommitmentController(((Commitment) item));

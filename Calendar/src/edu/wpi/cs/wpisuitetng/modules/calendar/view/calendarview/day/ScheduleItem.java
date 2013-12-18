@@ -12,6 +12,9 @@ import javax.swing.border.Border;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
+/**
+ * A panel to hold and correctly display events and commitments on week and day view
+ */
 public class ScheduleItem extends JPanel{
 	private ISchedulable display;
 	private int StartX, StartY, width, height, division, location;

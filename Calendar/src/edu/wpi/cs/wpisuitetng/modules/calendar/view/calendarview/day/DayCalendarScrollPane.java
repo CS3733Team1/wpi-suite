@@ -17,6 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 
+/**
+ * Holds a DayHolderPanel in a scrollpane
+ */
 public class DayCalendarScrollPane extends JScrollPane {
 	private DayHolderPanel daylayer;
 	public static final String[] weekNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};

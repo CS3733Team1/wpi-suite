@@ -30,8 +30,8 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredCommitmentsListModel;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredCommitmentsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.ICalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
@@ -53,6 +53,9 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	private int todayIndex;
 	private int currentDay; 
 	
+	/**
+	 * Creates New Week View
+	 */
 	public WeekCalendar(){
 		
 		this.setLayout(new MigLayout("fill, insets 0"));
@@ -122,6 +125,9 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 		repaint();
 	}
 	
+	/**
+	 * Refresh the titles of the days on week view
+	 */
 	public void rebuildDays(){
 		weekdays.clear();
 		weektitle.removeAll();
@@ -168,10 +174,10 @@ public class WeekCalendar extends JPanel implements ICalendarView, ListDataListe
 	 */
 	public void repaint(){
 		if (weeklayer != null){
-			weeklayer.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*3));
+			weeklayer.reSize(this.getWidth() - 20);
 		}
 		if (multiview != null){
-			multiview.reSize(this.getWidth() - (weekscroll.getVerticalScrollBar().getWidth()*2));
+			multiview.reSize(this.getWidth() - 20);
 			updateMultiDay();
 		}
 		super.repaint();

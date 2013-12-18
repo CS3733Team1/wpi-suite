@@ -22,9 +22,9 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Category;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.Filter;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilterListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class FilterListCellRenderer extends JPanel implements ListCellRenderer<Filter> {

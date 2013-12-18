@@ -7,10 +7,13 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import net.miginfocom.swing.MigLayout;
 
+/**
+ * Holds the two panels responsible for displaying the information of the current day.
+ * One panel holds the hour labels, the other holds panels representing events and commitments.
+ */
 public class DayHolderPanel extends JPanel{
 	private DayArea day;
 	private HourLabels hour;
@@ -58,7 +61,11 @@ public class DayHolderPanel extends JPanel{
 	public Date getDayViewDate(){
 		return day.getDayViewDate();
 	}
-     
+    
+	/**
+	 * 
+	 * @return
+	 */
 	public String getTitle() {
 		return day.getTitle();
 	}

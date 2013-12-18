@@ -5,15 +5,18 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
- * Contributors: Team TART
+ * Contributors: Team Rolling Thunder
  ******************************************************************************/
-
 package edu.wpi.cs.wpisuitetng.modules.calendar.mock;
 
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/**
+ * @author justinhess
+ * @version $Revision: 1.0 $
+ */
 public class MockNetwork extends Network {
 	
 	protected MockRequest lastRequestMade = null;

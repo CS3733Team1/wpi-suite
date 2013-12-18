@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -46,6 +47,10 @@ public class Hour {
 	{
 		return hour;
 	}
+	public void  addUsers(ArrayList<String> user)
+	{
+		this.users = users;
+	}
 
 	public void setColor(Color col)
 	{
@@ -79,16 +84,13 @@ public class Hour {
 					update = true;
 				}
 			}
-			if(!update){
+			if(update == false){
 				count++;
 				users.add(user);
 			}
 		}
 
 		configColorCount(count);
-
-		System.out.println("Count:"+count);
-
 	}
 
 	private void configColorCount(int count) {
@@ -118,7 +120,7 @@ public class Hour {
 	}
 	public boolean switchState()
 	{
-		if(state) setColor(new Color(255,20,147));
+		if(state == true) setColor(new Color(255,20,147));
 		else setColor(Color.white);
 		return !state;
 	}
