@@ -61,5 +61,22 @@ public class CategoryTest {
 		cat2.setColor(Color.green);
 		assertEquals(Color.green,cat2.getColor());
 	}
+	
+	@Test
+	public void testCategoryIsReal(){
+		assertTrue(cat1.getisReal());
+		assertFalse(cat1.cloneFake().getisReal());
+	}
+	
+	@Test
+	public void testCategoriesAreEqual()
+	{
+		cat1.setUniqueID(1);
+		assertTrue(cat1.equals(cat1));
+		assertFalse(cat1.equals(cat2));
+		assertFalse(cat2.equals(null));
+		assertFalse(cat1.equals(new Object()));
+		
+	}
 
 }
