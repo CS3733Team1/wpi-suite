@@ -63,6 +63,7 @@ public class ScheduledEvent extends DeletableAbstractModel {
 		this.title = e.title;
 		this.uniqueID = e.uniqueID;
 		this.ownerID = e.ownerID;
+		this.userList = e.userList;
 
 		this.ownerName = e.ownerName;
 	}
