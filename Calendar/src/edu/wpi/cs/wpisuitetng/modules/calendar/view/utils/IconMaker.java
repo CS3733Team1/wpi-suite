@@ -16,6 +16,13 @@ public class IconMaker {
 		g.setColor(c);
 		g.fillRect(0, 0, event.getWidth(), event.getHeight());
 				
+		BufferedImage box = null;
+		try {
+			box = ImageIO.read(IconMaker.class.getResource("/images/overlayBox.png"));
+		} catch (IOException e) {
+		}
+		g.drawImage(box, 0, 0, null);
+		
 		return new JLabel(new ImageIcon(event));
 	}
 
@@ -26,10 +33,13 @@ public class IconMaker {
 		g.fillRect(0, 0, commitment.getWidth(), commitment.getHeight());
 		
 		BufferedImage check = null;
+		BufferedImage box = null;
 		try {
 			check = ImageIO.read(IconMaker.class.getResource("/images/commitCheck.png"));
+			box = ImageIO.read(IconMaker.class.getResource("/images/overlayBox.png"));
 		} catch (IOException e) {
 		}
+		g.drawImage(box, 0, 0, null);
 		g.drawImage(check, 0, 0, null);
 		
 		return new JLabel(new ImageIcon(commitment));

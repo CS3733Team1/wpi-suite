@@ -6,16 +6,17 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.ISchedulable;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.IconMaker;
 
 /**
  * A panel to hold and correctly display events and commitments on week and day view
  */
-public class ScheduleItem extends JPanel{
+public class ScheduleItem extends JPanel {
 	private ISchedulable display;
 	private int StartX, StartY, width, height, division, location;
 	private boolean changed = false;
@@ -31,6 +32,7 @@ public class ScheduleItem extends JPanel{
 	 * @param spot the position in line of this item
 	 */
 	public ScheduleItem(ISchedulable item, int sx, int sy, int w, int h, int div, int spot){
+		super(new MigLayout("center, gap 0"));
 		display = item;
 		StartX = sx;
 		StartY = sy;
@@ -39,8 +41,12 @@ public class ScheduleItem extends JPanel{
 		division = div;
 		location = spot;
 		
-		this.setBorder(BorderFactory.createLineBorder(CalendarUtils.darken(display.getCategory().getColor()),2,true));
+		Color c = display.getCategory().getColor();
+		this.setBorder(BorderFactory.createLineBorder(CalendarUtils.darken(c), 2, false));
 		this.setMinimumSize(new Dimension(0,0));
+		
+		if(display instanceof Commitment) this.add(IconMaker.makeCommitmentIcon(c), "split 2");
+		else this.add(IconMaker.makeEventIcon(c), "split 2");
 	}
 	
 	/**
@@ -133,6 +139,4 @@ public class ScheduleItem extends JPanel{
 		end.setMinutes(StartY+height);
 		return end;
 	}
-    
-   
 }
