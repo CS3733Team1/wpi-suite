@@ -257,6 +257,11 @@ public class CalendarTabPanel extends JPanel {
 		
 		return selectedEvents;
 	}
+	
+	public List<ScheduledEvent> getSelectedScheduledEvents() {
+		
+		return null;
+	}
 
 	public void setCalendarViewTitle(String title) {
 		calendarTitleLabel.setText(title);
@@ -365,10 +370,5 @@ public class CalendarTabPanel extends JPanel {
 			else return 1;
 		} else if(personalCalCheckBox != null && personalCalCheckBox.isSelected()) return 2;
 		else return 0;
-	}
-
-	public List<ScheduledEvent> getSelectedScheduledEvents() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

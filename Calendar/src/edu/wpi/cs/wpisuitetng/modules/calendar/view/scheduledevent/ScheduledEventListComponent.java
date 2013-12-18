@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItem;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemExpandListener;
@@ -44,7 +44,10 @@ public class ScheduledEventListComponent extends RenderableComponent<ScheduledEv
 		p.setBorder(new MatteBorder(0, 0, 1, 0, Color.GRAY));
 
 		scheduledEventLabel = new JLabel(scheduledEvent.getTitle(), JLabel.CENTER);
-		
+
+		daysOfWeekAndTime = new JLabel("Days~");
+		currentParticipants = new JLabel("Current participants: X");
+
 		createdByLabel = new JLabel("Created by: " + scheduledEvent.getOwnerName());
 
 		compressButton = new TransparentButton(compress);
@@ -59,34 +62,35 @@ public class ScheduledEventListComponent extends RenderableComponent<ScheduledEv
 
 		p.add(scheduledEventLabel, "growx, span 2, wrap");
 		p.add(daysOfWeekAndTime, "span 2, wrap");
+		p.add(currentParticipants);
 		p.add(expandButton, "alignx right");
 
 		return p;
 	}
 
 	@Override
-	public void update(ListItem<Commitment> listItem) {
+	public void update(ListItem<ScheduledEvent> listItem) {
 		p.setBackground(listItem.isSelected() ? CalendarUtils.selectionColor : Color.WHITE);
 
 		if(listItem.isDirty()) {
 			p.removeAll();
 
-			p.add(commitmentNameLabel, "growx, span 2, wrap");
+			p.add(scheduledEventLabel, "growx, span 2, wrap");
+			p.add(daysOfWeekAndTime, "span 2, wrap");
 
 			if(!listItem.isExpanded()) {
-				p.add(dueDateLabel);
 				expandButton.reset();
+				p.add(currentParticipants);
 				p.add(expandButton, "alignx right");
 			} else {
-				p.add(dueDateLabel, "span 2, wrap");
-				p.add(progressLabel, "span 2, wrap");
-				p.add(isTeamLabel, "span 2, wrap");
-				if(hasDescription) p.add(descriptionText, "growx, span 2, wrap");
+				p.add(currentParticipants, "span 2, wrap");
+
+				p.add(new JLabel("List OF NAMES"), "span 2, wrap");
+
 				p.add(createdByLabel);
 				compressButton.reset();
 				p.add(compressButton, "alignx right");
 			}
-
 			p.repaint();
 		}
 	}

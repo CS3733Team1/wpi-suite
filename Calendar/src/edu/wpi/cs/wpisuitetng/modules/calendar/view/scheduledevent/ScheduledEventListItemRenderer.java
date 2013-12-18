@@ -8,12 +8,12 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItem;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemRenderer;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;
 
-public class ScheduledEventListItemRenderer implements ListItemRenderer<Commitment> {
+public class ScheduledEventListItemRenderer implements ListItemRenderer<ScheduledEvent> {
 	private final static Logger LOGGER = Logger.getLogger(ScheduledEventListItemRenderer.class.getName());
 
 	private ImageIcon expand, compress;
@@ -32,8 +32,8 @@ public class ScheduledEventListItemRenderer implements ListItemRenderer<Commitme
 	}
 
 	@Override
-	public void createRenderedListComponents(SRList<Commitment> listPanel, List<ListItem<Commitment>> listItems) {
-		for(ListItem<Commitment> listItem: listItems) {
+	public void createRenderedListComponents(SRList<ScheduledEvent> listPanel, List<ListItem<ScheduledEvent>> listItems) {
+		for(ListItem<ScheduledEvent> listItem: listItems) {
 			ScheduledEventListComponent renderableComponent = new ScheduledEventListComponent(expand, compress);
 			listItem.setRenderableComponent(renderableComponent);
 			listItem.setComponent(renderableComponent.create(listItem));
@@ -41,8 +41,8 @@ public class ScheduledEventListItemRenderer implements ListItemRenderer<Commitme
 	}
 
 	@Override
-	public void updateRenderedListComponents(SRList<Commitment> listPanel, List<ListItem<Commitment>> listItems) {
-		for(ListItem<Commitment> listItem: listItems) {
+	public void updateRenderedListComponents(SRList<ScheduledEvent> listPanel, List<ListItem<ScheduledEvent>> listItems) {
+		for(ListItem<ScheduledEvent> listItem: listItems) {
 			listItem.update();
 		}
 	}
