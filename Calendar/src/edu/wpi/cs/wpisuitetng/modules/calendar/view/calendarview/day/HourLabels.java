@@ -12,6 +12,9 @@ import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
+/**
+ * Panel to hold the hour labels for day view
+ */
 public class HourLabels extends JPanel{
 	private ArrayList<JPanel> hourlist;
 	
