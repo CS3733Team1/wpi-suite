@@ -52,6 +52,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week.WeekCalend
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.year.YearCalendarView;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.category.CategoryTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist.QuickListTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
@@ -79,6 +80,7 @@ public class CalendarTabPanel extends JPanel {
 
 	private JTabbedPane subTabPane;
 
+	private EventSubTabPanel eventSubTabPanel;
 	private CommitmentSubTabPanel commitmentSubTabPanel;
 	private QuickListTabPanel quickListTabPanel;
 
@@ -90,6 +92,7 @@ public class CalendarTabPanel extends JPanel {
 		subTabPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 		subTabPane.setMinimumSize(new Dimension(330, 64));
 
+		eventSubTabPanel = new EventSubTabPanel(calendarPanel);
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		quickListTabPanel = new QuickListTabPanel(calendarPanel);
 
@@ -113,6 +116,7 @@ public class CalendarTabPanel extends JPanel {
 		ImageIcon monthIcon = new ImageIcon();
 		ImageIcon yearIcon = new ImageIcon();
 		ImageIcon quickListIcon = new ImageIcon();
+		ImageIcon eventIcon = new ImageIcon();
 		ImageIcon commitmentIcon = new ImageIcon();
 		ImageIcon categoryIcon = new ImageIcon();
 		ImageIcon filterIcon = new ImageIcon();
@@ -125,6 +129,7 @@ public class CalendarTabPanel extends JPanel {
 			monthIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/month_cal.png")));
 			yearIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png")));
 			quickListIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/quicklist.png")));
+			eventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
 			commitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
 			categoryIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png")));
 			filterIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png")));
@@ -148,7 +153,8 @@ public class CalendarTabPanel extends JPanel {
 		yearViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		subTabPane.addTab("Quick List", quickListIcon, quickListTabPanel);
-		subTabPane.addTab("Commitments", commitmentIcon, commitmentSubTabPanel);
+		subTabPane.addTab("All Events", eventIcon, eventSubTabPanel);
+		subTabPane.addTab("All Commitments", commitmentIcon, commitmentSubTabPanel);
 		subTabPane.addTab("Categories", categoryIcon, new CategoryTabPanel());
 		subTabPane.addTab("Filters", filterIcon, new FilterTabPanel());
 
