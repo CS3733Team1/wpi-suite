@@ -14,6 +14,7 @@ public class ScheduledEvent extends DeletableAbstractModel {
 	private List< List<Hour> > hours;// = new ArrayList<ArrayList<Hour>>();
 	private  ArrayList<String> dayOfWeek;
 	private String title;
+	private ArrayList<String> userList;
 	
 	public ScheduledEvent()
 	{
@@ -65,6 +66,47 @@ public class ScheduledEvent extends DeletableAbstractModel {
 
 		this.ownerName = e.ownerName;
 	}
+	public int getNumberOfUsers()
+	{
+		int numUsers = 0;
+		for(int i = 0; i < hours.size(); i++)
+		{
+			for(int j = 0; j < hours.get(i).size(); j++)
+			{
+				if(numUsers < hours.get(i).get(j).userList().size())
+				{
+					numUsers = hours.get(i).get(j).userList().size();
+				}
+			}
+		}
+		return numUsers;
+	}
+	public void addUser()
+	{
+		
+	}
+	public ArrayList<String> getUsers()
+	{
+		userList = new ArrayList<String>();
+		for(int i = 0; i < hours.size(); i++)
+		{
+			for(int j = 0; j < hours.get(i).size(); j++)
+			{
+				for(int k = 0; k < hours.get(i).get(j).userList().size(); k++)
+				{
+					if(!(userList.contains(hours.get(i).get(j).userList().get(k))))
+					{
+						userList.add(hours.get(i).get(j).userList().get(k));
+					}
+				}
+				
+			}
+		}
+		return userList;
+	}
+	
+	
+	
 	public List<List<Hour>> getHourList() {
 		return hours;
 	}
