@@ -88,7 +88,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	
 		if(recurringHuh)
 		{	
-			setLayout(new MigLayout("debug", "[][][][][][][][]", "[][][][]"));
+			setLayout(new MigLayout("", "[][][][][][][][]", "[][][][]"));
 			defaultBorder = this.getBorder();
 			
 			chckbxMakeRecurring = new JCheckBox("Make Recurring");
