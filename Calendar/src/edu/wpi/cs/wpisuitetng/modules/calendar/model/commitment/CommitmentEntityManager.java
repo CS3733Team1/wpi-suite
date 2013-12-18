@@ -13,7 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment;
 import java.util.List;
 import java.util.UUID;
 
-
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
@@ -60,7 +59,7 @@ public class CommitmentEntityManager implements EntityManager<Commitment> {
 
 		//System.out.println("EM: marked for delete:" + newMessage.isMarkedForDeletion());
 
-		newMessage.setOwnerName(s.getUsername());
+		newMessage.setOwnerName(s.getUser().getName());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 
 		// Until we find a id that is unique assume another commitment might already have it
