@@ -16,8 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Filter;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.FilterListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.Filter;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilterListModel;
 
 /**
  * This is the view where the list of categories are displayed.

@@ -8,13 +8,17 @@
  * Contributors: Team TART
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.calendar.model;
+package edu.wpi.cs.wpisuitetng.modules.calendar.model.filter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.DeletableAbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
 
 /**
@@ -143,13 +147,13 @@ public class Filter extends DeletableAbstractModel {
 			return list;
 		case 2: //personal events
 			for (T i : list) {
-				if (i.isTeam)
+				if (i.getisTeam())
 					removeList.add(i);
 			}
 			break;
 		case 1: //Team Events only
 			for (T i : list) {
-				if (!i.isTeam)
+				if (!i.getisTeam())
 					removeList.add(i);
 			}
 			break;

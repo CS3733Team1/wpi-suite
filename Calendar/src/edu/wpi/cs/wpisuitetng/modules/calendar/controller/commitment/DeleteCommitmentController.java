@@ -14,41 +14,31 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.CommitmentListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class DeleteCommitmentController implements ActionListener {
-	private CommitmentListModel model;
 	private CalendarPanel calendarPanel;
 
 	public DeleteCommitmentController(CalendarPanel calendarPanel) {
-		this.model = CommitmentListModel.getCommitmentListModel();
 		this.calendarPanel = calendarPanel;
 	}
 
-	public void deleteSelectedCommitments(ActionEvent e){
-		actionPerformed(e);
-	}
-	
-	public static void deleteCommitments(List<Commitment> c){
-		CommitmentListModel model = CommitmentListModel.getCommitmentListModel();
-		deleteCommitmentList(c, model);
-	}
-	
 	/**
 	 * Handles the pressing of the Remove Commitment button
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		List<Commitment> commitmentList = calendarPanel.getCalendarTabPanel().getSelectedCommitmentList();
-		deleteCommitmentList(commitmentList, this.model);
+		deleteCommitmentList(commitmentList);
 	}
 	
-	private static void deleteCommitmentList(List<Commitment> commitmentList, CommitmentListModel model){
+	public static void deleteCommitmentList(List<Commitment> commitmentList){
+		CommitmentListModel model = CommitmentListModel.getCommitmentListModel();
 		for (Commitment commitment: commitmentList) {
 			System.out.println("Deleting commitment: name = " + commitment.getName() + "; uid = " + commitment.getUniqueID());
 

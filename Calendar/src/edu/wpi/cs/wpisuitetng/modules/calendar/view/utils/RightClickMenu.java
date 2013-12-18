@@ -13,27 +13,33 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.DeleteCommitmentController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DeleteEventController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 
-public class RightClickCommitmentMenu extends JPopupMenu implements MouseListener {
-	private final static Logger LOGGER = Logger.getLogger(RightClickCommitmentMenu.class.getName());
+public class RightClickMenu extends JPopupMenu implements MouseListener {
+	private final static Logger LOGGER = Logger.getLogger(RightClickMenu.class.getName());
 
 	private List<Commitment> commitments;
+	private List<Event> events;
+	
 	private CalendarPanel calendarPanel;
 
 	private JMenuItem deleteButton;
 	private JMenuItem editButton;
-
-
-	public RightClickCommitmentMenu(List<Commitment> c, CalendarPanel calendarPanel) {
+	
+	public RightClickMenu(List<Event> e, List<Commitment> c, CalendarPanel calendarPanel) {
 		this.calendarPanel = calendarPanel;
+		events = e;
 		commitments = c;
-		deleteButton = new JMenuItem ("Delete");
+
 		editButton = new JMenuItem ("Edit");
-		this.add(deleteButton);
+		deleteButton = new JMenuItem ("Delete");
 		this.add(editButton);
+		this.add(deleteButton);
 
 		deleteButton.addMouseListener(this);
 		editButton.addMouseListener(this);
@@ -43,21 +49,34 @@ public class RightClickCommitmentMenu extends JPopupMenu implements MouseListene
 		CommitmentTabPanel commitmentPanel = new CommitmentTabPanel(commitment);
 		ImageIcon miniCommitmentIcon = new ImageIcon();
 		try {
-			miniCommitmentIcon = new ImageIcon(ImageIO.read(RightClickCommitmentMenu.class.getResource("/images/commitment.png")));
+			miniCommitmentIcon = new ImageIcon(ImageIO.read(RightClickMenu.class.getResource("/images/commitment.png")));
 		} catch (IOException exception) {
 			LOGGER.log(Level.WARNING, "/images/commitment.png not found.", exception);
 		}
 		calendarPanel.addTab("Update Commitment", miniCommitmentIcon, commitmentPanel);
 		calendarPanel.setSelectedComponent(commitmentPanel);	
 	}
+	
+	public void openUpdateEventTab(Event event) {
+		EventTabPanel eventPanel = new EventTabPanel(event);
+		ImageIcon miniEventIcon = new ImageIcon();
+		try {
+			miniEventIcon = new ImageIcon(ImageIO.read(RightClickMenu.class.getResource("/images/event.png")));
+		} catch (IOException exception) {
+			LOGGER.log(Level.WARNING, "/images/event.png not found.", exception);
+		}
+		calendarPanel.addTab("Update Event", miniEventIcon, eventPanel);
+		calendarPanel.setSelectedComponent(eventPanel);	
+	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(e.getSource().equals(deleteButton)) {
-			DeleteCommitmentController.deleteCommitments(commitments);
-			System.out.println("mouse released on Delete Butotn");
+			DeleteCommitmentController.deleteCommitmentList(commitments);
+			DeleteEventController.deleteEventList(events);
 		} else if(e.getSource().equals(editButton)) {
-			for(Commitment commitment : commitments) openUpdateCommitmentTab(commitment);
+			for(Event event: events) openUpdateEventTab(event);
+			for(Commitment commitment: commitments) openUpdateCommitmentTab(commitment);
 		}
 	}
 

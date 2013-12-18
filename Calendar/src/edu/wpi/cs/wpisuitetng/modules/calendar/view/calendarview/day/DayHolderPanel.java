@@ -7,8 +7,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import net.miginfocom.swing.MigLayout;
 
 public class DayHolderPanel extends JPanel{

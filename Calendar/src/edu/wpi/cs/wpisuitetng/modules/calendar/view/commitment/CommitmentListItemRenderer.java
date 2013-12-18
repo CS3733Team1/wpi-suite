@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItem;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.ListItemRenderer;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.list.SRList;

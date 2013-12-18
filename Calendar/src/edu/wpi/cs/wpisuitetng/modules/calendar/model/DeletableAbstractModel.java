@@ -22,6 +22,17 @@ public abstract class DeletableAbstractModel extends AbstractModel {
 	protected String ownerName;
 	protected boolean isTeam = true;
 	
+	public DeletableAbstractModel()
+	{
+		
+	}
+	public DeletableAbstractModel(DeletableAbstractModel other)
+	{
+		this.uniqueID=other.uniqueID;
+		this.ownerID = other.ownerID;
+		this.isTeam = other.isTeam;
+		this.ownerName=other.ownerName;
+	}
 	public long getUniqueID() {
 		return uniqueID;
 	}

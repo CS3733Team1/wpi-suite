@@ -22,14 +22,10 @@ import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 
-
-/**
- * This class handles database entries for Categories. It runs server-side. It is a singleton.
- */
-public class CategoryEntityManager implements EntityManager<Category> {
+public class WhenToMeetEntityManager implements EntityManager<WhenToMeet> {
 	/** The database */
-	private final Data db;
-	private static CategoryEntityManager CManager;
+	final Data db;
+	public static WhenToMeetEntityManager EManager;
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -39,40 +35,40 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 * 
 	 * @param db a reference to the persistent database
 	 */
-	public static CategoryEntityManager getCategoryEntityManager(Data db) {
-		CManager = (CManager == null) ? new CategoryEntityManager(db) : CManager;
-		return CManager;
+	public static WhenToMeetEntityManager getWhenToMeetEntityManager(Data db) {
+		EManager = (EManager == null) ? new WhenToMeetEntityManager(db) : EManager;
+		return EManager;
 	}
 
-	private CategoryEntityManager(Data db) {
+	private WhenToMeetEntityManager(Data db) {
 		this.db = db;
 	}
 
-	/**
-	 * Saves a Category when it is received from a client
+	/*
+	 * Saves a WhenToMeet when it is received from a client
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category makeEntity(Session s, String content)
+	public WhenToMeet makeEntity(Session s, String content)
 			throws BadRequestException, ConflictException, WPISuiteException {
 		// Parse the message from JSON
-		final Category newMessage = Category.fromJSON(content);
+		final WhenToMeet newMessage = WhenToMeet.fromJSON(content);
 
 		newMessage.setOwnerName(s.getUsername());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 
-		// Until we find a id that is unique assume another category might already have it
+		// Until we find a id that is unique assume another WhenToMeet might already have it
 		boolean unique;
 		long id = 0;
 		do {
 			unique = true;
 			id = UUID.randomUUID().getMostSignificantBits();
-			for(Category c : this.getAll(s)) if (c.getUniqueID() == id) unique = false;
+			for(WhenToMeet e : this.getAll(s)) if (e.getUniqueID() == id) unique = false;
 		} while(!unique);
 
 		newMessage.setUniqueID(id);
-		System.out.printf("Server: Creating new category with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
+		System.out.printf("Server: Creating new WhenToMeet with id = %s and owner = %s\n", newMessage.getUniqueID(), newMessage.getOwnerName());
 
 		// Save the message in the database if possible, otherwise throw an exception
 		// We want the message to be associated with the project the user logged in to
@@ -84,80 +80,105 @@ public class CategoryEntityManager implements EntityManager<Category> {
 		return newMessage;
 	}
 
-	/**
-	 * Individual messages cannot be retrieved. This message always throws an exception.
+	/*
+	 * WhenToMeets can be retrieved
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category[] getEntity(Session s, String id)
+	public WhenToMeet[] getEntity(Session s, String id)
 			throws NotFoundException, WPISuiteException {
-		System.out.printf("Server: Retrieving category with id = %s\n", id);
-		List<Model> list = db.retrieve(Category.class,"UniqueID", Long.parseLong(id), s.getProject());
+		// Throw an exception if an ID was specified, as this module does not support
+		// retrieving specific WhenToMeets.
+		System.out.printf("Server: Retrieving WhenToMeet with id = %s\n", id);
+		List<Model> list = db.retrieve(WhenToMeet.class,"UniqueID", Long.parseLong(id), s.getProject());
 		System.out.println("List size = " + list.size());
-		return list.toArray(new Category[list.size()]);
+		return list.toArray(new WhenToMeet[list.size()]);
 	}
 
-	/**
+	/* 
 	 * Returns all of the messages that have been stored.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public Category[] getAll(Session s) throws WPISuiteException {
-		// Ask the database to retrieve all objects of the type Category.
-		// Passing a dummy Category lets the db know what type of object to retrieve
+	public WhenToMeet[] getAll(Session s) throws WPISuiteException {
+		// Ask the database to retrieve all objects of the type WhenToMeet.
+		// Passing a dummy WhenToMeet lets the db know what type of object to retrieve
 		// Passing the project makes it only get messages from that project
-		System.out.println("Server: Retrieving all categories");
+		System.out.println("Server: Retrieving all WhenToMeets");
 		
-		List<Model> messages = db.retrieveAll(new Category(), s.getProject());
+		List<Model> messages = db.retrieveAll(new WhenToMeet(), s.getProject());
 
 		// Return the list of messages as an array
-		return messages.toArray(new Category[0]);
+		return messages.toArray(new WhenToMeet[0]);
 	}
 
-	/**
+	/*
 	 * Message cannot be updated. This method always throws an exception.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
-	public Category update(Session s, String content)
+	public WhenToMeet update(Session s, String content)
 			throws WPISuiteException {
-		// This module does not allow Categories to be modified, so throw an exception
-		throw new WPISuiteException();
+
+		WhenToMeet updatedWhenToMeet = WhenToMeet.fromJSON(content);
+		/*
+		 * Because of the disconnected objects problem in db4o, we can't just save Commitments.
+		 * We have to get the original defect from db4o, copy properties from updatedCommitment,
+		 * then save the original Commitment again.
+		 */
+		List<Model> oldWhenToMeets = db.retrieve(WhenToMeet.class, "UniqueID", updatedWhenToMeet.getUniqueID(), s.getProject());
+		//System.out.println(oldCommitments.toString());
+		if(oldWhenToMeets.size() < 1 || oldWhenToMeets.get(0) == null) {
+			throw new BadRequestException("WhenToMeet with ID does not exist.");
+		}
+
+		WhenToMeet existingWhenToMeet = (WhenToMeet)oldWhenToMeets.get(0);		
+
+		// copy values to old commitment and fill in our changeset appropriately
+		existingWhenToMeet = new WhenToMeet(updatedWhenToMeet);
+
+		if(!db.save(existingWhenToMeet, s.getProject())) {
+			throw new WPISuiteException();
+		}
+
+		return existingWhenToMeet;
 	}
 
-	/**
+	/*
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Category model)
+	public void save(Session s, WhenToMeet model)
 			throws WPISuiteException {
+
 		// Save the given defect in the database
 		db.save(model);
 	}
 
-	public void deleteCategory(Category model){
+	public void deleteWhenToMeet(WhenToMeet model){
 		db.delete(model);
 	}
 
 	/*
-	 * Messages cannot be deleted
+	 * WhenToMeets totally can be deleted
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#deleteEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		System.out.printf("Server: Deleting category with id = %s\n", id);
+		System.out.printf("Server: Deleting WhenToMeet with id = %s\n", id);
 		try {
-			Category todelete= (Category) db.retrieve(Category.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
-			deleteCategory(todelete);
-			return true;
-		} catch (Exception e) {
+			WhenToMeet todelete = (WhenToMeet) db.retrieve(WhenToMeet.class, "UniqueID", Long.parseLong(id), s.getProject()).get(0);
+			this.deleteWhenToMeet(todelete);
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+		return true;
 	}
 
 	/*
@@ -167,8 +188,9 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-		// This module does not allow Categories to be deleted, so throw an exception
-		db.deleteAll(new Category());
+
+		// This module does not allow WhenToMeets to be deleted, so throw an exception
+		db.deleteAll(new WhenToMeet());
 	}
 
 	/*
@@ -176,8 +198,8 @@ public class CategoryEntityManager implements EntityManager<Category> {
 	 */
 	@Override
 	public int count() throws WPISuiteException {
-		// Return the number of Categories currently in the database
-		return db.retrieveAll(new Category()).size();
+		// Return the number of WhenToMeets currently in the database
+		return db.retrieveAll(new WhenToMeet()).size();
 	}
 
 	@Override

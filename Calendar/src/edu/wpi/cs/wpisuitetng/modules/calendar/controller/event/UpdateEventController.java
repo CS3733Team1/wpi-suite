@@ -3,8 +3,8 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.controller.event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventTabPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -23,7 +23,6 @@ public class UpdateEventController implements ActionListener {
 	}
 	
 	public UpdateEventController(Event updatedEvent) {
-		System.out.println(updatedEvent);
 		this.model = EventListModel.getEventListModel();
 		this.eventToUpdate = updatedEvent;
 		updateEventInServer();
@@ -57,7 +56,6 @@ public class UpdateEventController implements ActionListener {
 
 	public void updateEventInModel(Event event) {
 		if (oldEvent != null) {
-			System.out.println("	Update event: name = " + event.getName() + "; uid = " + event.getUniqueID());
 			model.updateEvent(oldEvent, event);
 			
 			if (view != null) {

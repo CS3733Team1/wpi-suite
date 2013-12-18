@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.RecurringChangedEventListener;
 
@@ -88,7 +88,7 @@ public class EventRecurringPanel extends JPanel implements KeyListener, ActionLi
 	
 		if(recurringHuh)
 		{	
-			setLayout(new MigLayout("debug", "[][][][][][][][]", "[][][][]"));
+			setLayout(new MigLayout("", "[][][][][][][][]", "[][][][]"));
 			defaultBorder = this.getBorder();
 			
 			chckbxMakeRecurring = new JCheckBox("Make Recurring");

@@ -7,6 +7,8 @@ import java.awt.Color;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.Category;
+
 public class CategoryTest {
 
 	Category cat1;
