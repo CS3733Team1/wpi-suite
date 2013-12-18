@@ -55,7 +55,7 @@ public class EventEntityManager implements EntityManager<Event> {
 		// Parse the message from JSON
 		final Event newMessage = Event.fromJSON(content);
 
-		newMessage.setOwnerName(s.getUsername());
+		newMessage.setOwnerName(s.getUser().getName());
 		newMessage.setOwnerID(s.getUser().getIdNum());
 
 		// Until we find a id that is unique assume another event might already have it

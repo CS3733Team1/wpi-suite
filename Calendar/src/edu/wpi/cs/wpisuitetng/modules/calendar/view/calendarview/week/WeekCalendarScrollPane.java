@@ -42,8 +42,7 @@ public class WeekCalendarScrollPane extends JScrollPane {
 		
 		this.setWheelScrollingEnabled(true);
 		this.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
-		
-		this.setBorder(new MatteBorder(2, 0, 0, 0, Color.BLACK));
+		this.setBorder(new MatteBorder(1, 0, 0, 0, Color.GRAY));
 		for(int days = 1; days < 8; days++){
 			JPanel weekName = new JPanel(new MigLayout());
 			

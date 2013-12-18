@@ -40,7 +40,7 @@ public class DisplayScheduledEventTabController implements ActionListener {
 			} catch (IOException exception) {
 				LOGGER.log(Level.WARNING, "/images/scheduler_tabSize.png not found.", exception);
 			}
-			calendarPanel.addTab("Create Scheduled Event", miniScheduledEventIcon , scheduledEventPanel);
+			calendarPanel.addTab("Add Scheduled Event", miniScheduledEventIcon , scheduledEventPanel);
 			calendarPanel.setSelectedComponent(scheduledEventPanel);
 		}
 	}

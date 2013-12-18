@@ -136,7 +136,7 @@ public class EventListModel extends AbstractListModel<Event> {
 
 	//** Note: avoid coping the events in the list here.
 	// use the copy constructor provided in Event() to avoid creating copies with dissimilar UniuqeID's
-	public synchronized List<Event> getList(){
+	public List<Event> getList(){
 		return new ArrayList<Event>(events);
 	}
 	

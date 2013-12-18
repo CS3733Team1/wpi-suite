@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JPanel;
 
-import java.util.List;
-
 import net.miginfocom.swing.MigLayout;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayArea;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.HourLabels;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.DayArea;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day.HourLabels;
 
 /**
  * Panel that holds the panels responsible for displaying the week's single day events and commitments.
@@ -33,7 +32,7 @@ public class WeekHolderPanel extends JPanel{
 	 * Creates a panel which holds the hours and the 7 days of a week
 	 */
 	public WeekHolderPanel(){
-		this.setLayout(new MigLayout("inset 0, fill", 
+		this.setLayout(new MigLayout("insets 0, fill", 
 				"[9%][13%][13%][13%][13%][13%][13%][13%]"));
 
 		hour = new HourLabels();
@@ -137,12 +136,10 @@ public class WeekHolderPanel extends JPanel{
 			eveenddate.setDate(e.getEndDate().getDate() + 1);
 			while(!(iter.getDate() == eveenddate.getDate() || iter.getDate() == enddate.getDate()))
 			{
-				//System.out.println("Iter " + iter.getDate());
 				if(weekdays.contains(iter.getDate()))
 				{
 					multilistlist.get(weekdays.indexOf(iter.getDate())).add(e);
 					break;
-					//System.out.println("Event " + e.getName() + " added to index " + weekdays.indexOf(iter.getDate()));
 				}
 				iter.setDate(iter.getDate() + 1); //setDate knows where month boundaries are
 			}

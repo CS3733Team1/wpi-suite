@@ -40,7 +40,10 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayWe
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.calendarview.DisplayYearViewController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.QuickListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.Commitment;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventListModel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButton;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentButtonGroup;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.buttons.TransparentToggleButton;
@@ -55,6 +58,7 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.view.commitment.CommitmentSubTabP
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.event.EventSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.filter.FilterTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.quicklist.QuickListTabPanel;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent.ScheduledEventSubTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 
@@ -83,6 +87,7 @@ public class CalendarTabPanel extends JPanel {
 	private EventSubTabPanel eventSubTabPanel;
 	private CommitmentSubTabPanel commitmentSubTabPanel;
 	private QuickListTabPanel quickListTabPanel;
+	private ScheduledEventSubTabPanel scheduledEventSubTabPanel;
 
 	public CalendarTabPanel(CalendarPanel calendarPanel) {
 		this.setLayout(new MigLayout("fill"));
@@ -95,6 +100,7 @@ public class CalendarTabPanel extends JPanel {
 		eventSubTabPanel = new EventSubTabPanel(calendarPanel);
 		commitmentSubTabPanel = new CommitmentSubTabPanel(calendarPanel);
 		quickListTabPanel = new QuickListTabPanel(calendarPanel);
+		scheduledEventSubTabPanel = new ScheduledEventSubTabPanel(calendarPanel);
 
 		personalCalCheckBox = new JCheckBox("Personal");
 		teamCalCheckBox = new JCheckBox("Team");
@@ -120,6 +126,7 @@ public class CalendarTabPanel extends JPanel {
 		ImageIcon commitmentIcon = new ImageIcon();
 		ImageIcon categoryIcon = new ImageIcon();
 		ImageIcon filterIcon = new ImageIcon();
+		ImageIcon scheduledEventIcon = new ImageIcon();
 
 		try {
 			prevIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/previous.png")));
@@ -130,6 +137,7 @@ public class CalendarTabPanel extends JPanel {
 			yearIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/year_cal.png")));
 			quickListIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/quicklist.png")));
 			eventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/event.png")));
+			scheduledEventIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/scheduler_tabSize.png")));
 			commitmentIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/commitment.png")));
 			categoryIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/categories.png")));
 			filterIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/filters.png")));
@@ -152,6 +160,7 @@ public class CalendarTabPanel extends JPanel {
 		yearViewButton = new TransparentToggleButton("Year", yearIcon);
 		yearViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+		subTabPane.addTab("Scheduled Events", scheduledEventIcon, scheduledEventSubTabPanel);
 		subTabPane.addTab("Quick List", quickListIcon, quickListTabPanel);
 		subTabPane.addTab("Events", eventIcon, eventSubTabPanel);
 		subTabPane.addTab("Commitments", commitmentIcon, commitmentSubTabPanel);
@@ -181,7 +190,7 @@ public class CalendarTabPanel extends JPanel {
 		calendarTitleLabel.setFont(new Font(calendarTitleLabel.getFont().getName(), Font.BOLD, 16));
 		calendarTitleLabel.setForeground(CalendarUtils.titleNameColor);
 
-		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets 0 n 0 n", "[33.3333%][33.3333%][33.3333%]", "[][]"));
+		JPanel topButtonPanel = new JPanel(new MigLayout("fill, insets 0 n 0 n", "[20%][60%][20%]", "[][]"));
 		topButtonPanel.setBackground(Color.WHITE);
 
 		topButtonPanel.add(yearViewButton,		"cell 0 0, center, span 3");
@@ -254,6 +263,10 @@ public class CalendarTabPanel extends JPanel {
 		
 		return selectedEvents;
 	}
+	
+	public List<ScheduledEvent> getSelectedScheduledEvents() {
+		return scheduledEventSubTabPanel.getSelectedScheduledEvents();
+	}
 
 	public void setCalendarViewTitle(String title) {
 		calendarTitleLabel.setText(title);
@@ -299,6 +312,8 @@ public class CalendarTabPanel extends JPanel {
 			calendarView = dayView;
 			calendarViewPanel.add(dayView, "w 5000, h 5000");
 
+			EventListModel.getEventListModel().update();
+			CommitmentListModel.getCommitmentListModel().update();
 			QuickListModel.getQuickListModel().updateList();
 			this.setCalendarViewTitle(dayView.getTitle());
 			this.refreshCalendarView();
@@ -311,6 +326,8 @@ public class CalendarTabPanel extends JPanel {
 			calendarView = weekView;
 			calendarViewPanel.add(weekView, "w 5000, h 5000");
 
+			EventListModel.getEventListModel().update();
+			CommitmentListModel.getCommitmentListModel().update();
 			QuickListModel.getQuickListModel().updateList();
 			this.setCalendarViewTitle(weekView.getTitle());
 			this.refreshCalendarView();
@@ -324,6 +341,8 @@ public class CalendarTabPanel extends JPanel {
 			calendarView = monthView;
 			calendarViewPanel.add(monthView, "w 5000, h 5000");
 
+			EventListModel.getEventListModel().update();
+			CommitmentListModel.getCommitmentListModel().update();
 			QuickListModel.getQuickListModel().updateList();
 			this.setCalendarViewTitle(monthView.getTitle());
 			this.refreshCalendarView();
@@ -337,6 +356,8 @@ public class CalendarTabPanel extends JPanel {
 			calendarView = yearView;
 			calendarViewPanel.add(yearView, "w 5000, h 5000");
 
+			EventListModel.getEventListModel().update();
+			CommitmentListModel.getCommitmentListModel().update();
 			QuickListModel.getQuickListModel().updateList();
 			this.setCalendarViewTitle(yearView.getTitle());
 			this.refreshCalendarView();

@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.ChangeToolBarController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.RetrieveUserController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.category.RetrieveCategoryController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.DeleteCommitmentController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.commitment.DisplayCommitmentTabController;
@@ -26,7 +27,9 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.DisplayEventTabC
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.RetrieveEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.filter.RetrieveFilterController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.help.HelpButtonController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.DeleteScheduledEventController;
 import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.DisplayScheduledEventTabController;
+import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.RetrieveScheduledEventController;
 
 public class MainView {
 	private List<JanewayTabModel> tabs;
@@ -37,27 +40,33 @@ public class MainView {
 	RetrieveEventController			revec = new RetrieveEventController();
 	RetrieveCategoryController		rcatc = new RetrieveCategoryController();
 	RetrieveFilterController		rfilc = new RetrieveFilterController();
+	RetrieveUserController 			ruser = new RetrieveUserController();
+	RetrieveScheduledEventController rsec = new RetrieveScheduledEventController();
+	
 	public MainView() {
 		calendarPanel = new CalendarPanel();
 		calendarToolBar = new CalendarToolBar();
 
 		calendarPanel.addChangeListener(new ChangeToolBarController(calendarToolBar, calendarPanel));
 
-
-
 		calendarPanel.addAncestorListener(rcomc);
 		calendarPanel.addAncestorListener(revec);
 		calendarPanel.addAncestorListener(rcatc);
 		calendarPanel.addAncestorListener(rfilc);
+		calendarPanel.addAncestorListener(ruser);
+		calendarPanel.addAncestorListener(rsec);
 
 		calendarToolBar.refreshButtonListener(rcomc);
 		calendarToolBar.refreshButtonListener(revec);
 		calendarToolBar.refreshButtonListener(rcatc);
 		calendarToolBar.refreshButtonListener(rfilc);
+		calendarToolBar.refreshButtonListener(rsec);
 
 		calendarToolBar.addEventButtonListener(new DisplayEventTabController(calendarPanel));
 		calendarToolBar.deleteEventButtonListener(new DeleteEventController(calendarPanel));
-
+		
+		calendarToolBar.deleteScheduledEventListener(new DeleteScheduledEventController(calendarPanel));
+		
 		calendarToolBar.helpButtonListener(new HelpButtonController(calendarPanel));
 
 		calendarToolBar.deleteCommitmentButtonListener(new DeleteCommitmentController(calendarPanel));

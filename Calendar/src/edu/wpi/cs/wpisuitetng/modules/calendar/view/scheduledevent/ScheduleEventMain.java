@@ -1,15 +1,13 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 
 public class ScheduleEventMain extends JPanel{
 
@@ -18,6 +16,8 @@ public class ScheduleEventMain extends JPanel{
 	private FollowerPanel followerPanel;
 	private String user;
 	private List<List<Hour>> hourList;
+	private ArrayList<String> dayOfWeek;
+	private String title;
 	
 	public ScheduleEventMain()
 	{
@@ -27,10 +27,15 @@ public class ScheduleEventMain extends JPanel{
 		hourList =  new ArrayList<List<Hour>>();
 	}
 	
+	
+	public void update(List<List<Hour>> hourList, String user)
+	{
+		leaderPanel.updateFollower(hourList, user);
+	}
+	
 	public void addUser(String user)
 	{
 		this.user = user;
-		System.out.println("user"+user);
 	}
 	
 	
@@ -52,7 +57,7 @@ public class ScheduleEventMain extends JPanel{
 	
 	
 	
-	public void setTime(String user,int day, int start, int end, Color col)
+	public void setTime(String user, int day, int start, int end, Color col)
 	{
 		leaderPanel.setTimeFrame(day, start, end);
 		leaderPanel.setColor(col);
@@ -64,11 +69,9 @@ public class ScheduleEventMain extends JPanel{
 		updatePanel(hourList,"Joe");
 		this.add(leaderPanel,"grow, push");
 		this.add(followerPanel,"grow, push");
-		
 	}
 	
 	public void updatePanel(List<List<Hour>> list, String user) {
-		System.out.println("user"+user);
 		followerPanel.updateFollower(list, user);
 	}
 	
@@ -77,6 +80,13 @@ public class ScheduleEventMain extends JPanel{
 		return followerPanel.updateHourList();
 	}
 	
+	
+	
+	public ScheduledEvent getFilledScheduledEvent()
+	{
+		return new ScheduledEvent(updateHourList(),dayOfWeek,title);
+		
+	}
 	
 	
 	public void reSize(int width){
@@ -88,5 +98,18 @@ public class ScheduleEventMain extends JPanel{
 		
 		this.repaint();
 	}
+
+
+	public void addWeekList(ArrayList<String> days) {
+		this.dayOfWeek = days;
+		
+	}
+	
+	public void addTitle(String title)
+	{
+		this.title = title;
+	}
+	
+	public String getTitle() {return this.title;}
 	
 }

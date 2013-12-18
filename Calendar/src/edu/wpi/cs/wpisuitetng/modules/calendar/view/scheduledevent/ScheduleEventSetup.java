@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -16,10 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.scheduledevent.AddWhenToMeetController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class ScheduleEventSetup extends JPanel implements KeyListener, ActionListener {
 
@@ -27,11 +23,8 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 	private final String SETTIMEEND = "Please set a time before: ";
 	private final String SETTIMEPREV = "Please set a time after: ";		
 	private JTextField nameTextField;
-	private JTextField enterNameTextField;
-	private JPanel enterNameErrorPanelWrapper;
 	private JPanel nameErrorPanelWrapper;
 	private JLabel nameErrorLabel;
-	private JLabel enterNameErrorLabel;
 	private JLabel dayOfWeekErrorLabel;
 	private JLabel startDateSelection;
 	private JLabel endDateSelection;
@@ -71,18 +64,6 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 		this.add(nameErrorLabel, "cell 0 0, grow");
 		this.add(nameErrorLabel, "wrap");
 
-		this.add(new JLabel("Name:"), "cell 0 1, grow");
-		enterNameErrorPanelWrapper = new JPanel(new MigLayout("fill, insets 0"));
-		enterNameTextField = new JTextField();
-		enterNameTextField.addKeyListener(this);
-		enterNameErrorPanelWrapper.add(enterNameTextField, "alignx left, growx, w 5000");
-		this.add(enterNameErrorPanelWrapper, "cell 0 1 ,growx,width 5000,alignx left");
-		enterNameErrorLabel = new JLabel(EMPTY_NAME_ERROR);
-		enterNameErrorLabel.setForeground(Color.RED);
-		this.add(enterNameErrorLabel, "cell 0 1, grow");
-		this.add(enterNameErrorLabel, "wrap");
-
-
 		this.add(new JLabel("Start Time:"), "cell 0 2");
 
 		startTime = new JComboBox<String>(hour);
@@ -118,7 +99,6 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 		addEventButton = new JButton("Add Event");
 		addEventButton.setEnabled(false);
 		addEventButton.setActionCommand("addevent");
-		addEventButton.addActionListener(new AddWhenToMeetController(this));
 
 
 		this.add(addEventButton, "cell 0 7,alignx left");
@@ -145,11 +125,6 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 		validate();
 	}
 
-	public String getUser(){
-		System.out.println("user"+enterNameTextField.getText());
-		return enterNameTextField.getText();
-	}
-
 	public String getTitle(){
 		return nameTextField.getText();
 	}
@@ -158,17 +133,7 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 	public void validate()
 	{
 		boolean nameFieldValidate = false;
-		boolean enterNameFieldValidate = false;
 		boolean timePicker = false;
-
-		if(enterNameTextField.getText().trim().length() > 0){
-			enterNameFieldValidate = true;
-			enterNameErrorLabel.setVisible(false);
-		}else{
-			enterNameErrorPanelWrapper.setBorder(BorderFactory.createLineBorder(new Color(255, 51, 51)));
-			enterNameErrorLabel.setText(EMPTY_NAME_ERROR);
-			enterNameErrorLabel.setVisible(true);
-		}
 		
 		if(startIndex < endIndex){
 			timePicker = true;
@@ -190,7 +155,7 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 			dayOfWeekErrorLabel.setVisible(false);
 		}
 
-		if(containsDaysOfWeek && nameFieldValidate && enterNameFieldValidate && timePicker)
+		if(containsDaysOfWeek && nameFieldValidate && timePicker)
 			addEventButton.setEnabled(true);
 		else
 			addEventButton.setEnabled(false);
@@ -258,25 +223,9 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 				endDateSelection.setVisible(false);
 			}
 		}
-
-		if(e.getActionCommand().equals("addevent")) {
-			this.createSchedule();
-		} else {
-			validate();
-		}
-
 	}
 
-	private void createSchedule() {
-		System.out.println("We Did It Ladies and Gents");
-
+	public void addEventListener(ActionListener l) {
+		addEventButton.addActionListener(l);
 	}
-
-
-
-
-
-
-
-
 }

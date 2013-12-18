@@ -1,7 +1,15 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.day;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -385,7 +393,6 @@ public class SchedulableMover extends MouseAdapter
 		}
 		
 		if (source instanceof ScheduleItem){
-			System.out.println(((ScheduleItem) source).isChanged());
 			if (((ScheduleItem) source).isChanged()){
 				((ScheduleItem) source).getStartTime();
 				((ScheduleItem) source).getEndTime();

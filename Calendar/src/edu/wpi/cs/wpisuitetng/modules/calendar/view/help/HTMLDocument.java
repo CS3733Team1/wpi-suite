@@ -16,7 +16,6 @@ public class HTMLDocument
 		text.replace("\t", "");
 		this.childNames = new ArrayList<String>();
 		setChildNames();
-		System.out.println(this.text);
 	}
 	
 	HTMLDocument(String text, String title)
@@ -27,7 +26,6 @@ public class HTMLDocument
 		text.replace("\t", "");
 		this.childNames = new ArrayList<String>();
 		setChildNames();
-		System.out.println(this.text);
 	}
 	
 	public String getText()

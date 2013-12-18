@@ -2,7 +2,6 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -11,12 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToolTip;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -42,7 +36,6 @@ public class Follower extends JPanel{
 				Graphics g = getGraphics();
 				g.setColor(Color.BLACK);
 				g.fillRect(p.x, p.y, 100, 100);
-				System.out.println("added");
 			}
 
 			@Override
@@ -139,7 +132,6 @@ public class Follower extends JPanel{
 	}
 	public void updatePanel(List<List<Hour>> list, String user)
 	{
-		System.out.println("user"+user);
 		for(int i = 0; i < day; i++){
 			for(int j = 0; j < end-start; j++)
 			{	StringBuilder sb = new StringBuilder();

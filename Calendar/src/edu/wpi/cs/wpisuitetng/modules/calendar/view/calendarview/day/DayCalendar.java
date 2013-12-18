@@ -25,6 +25,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.QuickListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilteredEventsListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.CalendarTabPanel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.MainView;
@@ -47,6 +48,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	private boolean scrollchange;
 	private int scrollSpeed = 15;
 
+	private Date current;
 
 	public DayCalendar(){
 		scrollchange = false;
@@ -58,7 +60,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 
 		dayLabel = new JLabel(WEEK_NAMES[(daylayer.getDayViewDate().getDay())], JLabel.CENTER);
 		dayLabel.setFont(new Font(dayLabel.getName(), Font.BOLD, 14));
-		dayname = new JPanel(new MigLayout("fill"));
+		dayname = new JPanel(new MigLayout("fill, insets 0"));
 		Calendar cal = Calendar.getInstance();
 
 		Date today = daylayer.getDayViewDate();
@@ -107,7 +109,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		dayscroll.getVerticalScrollBar().addAdjustmentListener(this);
 		
 		//this.repaint();
-
+		current = getDate();
 	}
 
 	/**
@@ -116,7 +118,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	public void updateDay(){
 		Calendar cal = Calendar.getInstance();
 
-		Date today = daylayer.getDayViewDate();
+		Date today = getDate();
 		int currentYear = today.getYear() + 1900;
 		int currentMonth = today.getMonth();
 		int currentDate = today.getDate();
@@ -128,12 +130,21 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		}else{
 			dayname.setBorder(new MatteBorder(0, 0, 5, 0, Color.gray));
 		}
-		dayLabel.setText(WEEK_NAMES[daylayer.getDayViewDate().getDay()]);
+		dayLabel.setText(WEEK_NAMES[getDate().getDay()]);
 		daytitle.resize(size());
 	}
 	
 	public Date getDate(){
-		return daylayer.getDayViewDate();
+		JScrollBar scroller = dayscroll.getVerticalScrollBar();
+		if (scroller.getValue() < (1*scroller.getMaximum()/3)){
+			return daylayer.getPreviousDayViewDate();
+		}
+		else if (scroller.getValue() > (2*scroller.getMaximum()/3)){
+			return daylayer.getNextDayViewDate();
+		}
+		else{
+			return daylayer.getDayViewDate();
+		}
 	}
 
 	public void repaint(){
@@ -149,7 +160,7 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	}
 	
 	public void updateMultiDay(){
-		multiview.updateMultiDay(daylayer.getMultiDayEvents(), daylayer.getDayViewDate());
+		multiview.updateMultiDay(daylayer.getMultiDayEvents(getDate()), getDate());
 		if (multiview.getNumberofEvents() == 0){
 			this.removeAll();
 			this.add(daytitle, "grow, wrap, hmin 50, hmax 50");
@@ -163,6 +174,10 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 		}
 	}
 
+	public String getScrollTitle(){
+		return daylayer.getTitle(getDate());
+	}
+	
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
@@ -176,25 +191,40 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	@Override
 	public void next() {
 		// TODO Auto-generated method stub
-		daylayer.next();
+		daylayer.viewDate(new Date(getDate().getYear(), getDate().getMonth(), getDate().getDate()+1));
 		updateDay();
-		updateMultiDay();
+		JScrollBar scroller = dayscroll.getVerticalScrollBar();
+		scroller.repaint();
+		scroller.updateUI();
+		repaint();
+		this.updateUI();
+		current = getDate();
 	}
 
 	@Override
 	public void previous() {
 		// TODO Auto-generated method stub
-		daylayer.previous();
+		daylayer.viewDate(new Date(getDate().getYear(), getDate().getMonth(), getDate().getDate()-1));
 		updateDay();
-		updateMultiDay();
+		JScrollBar scroller = dayscroll.getVerticalScrollBar();
+		scroller.repaint();
+		scroller.updateUI();
+		repaint();
+		this.updateUI();
+		current = getDate();
 	}
 
 	@Override
 	public void today() {
 		// TODO Auto-generated method stub
-		daylayer.today();
+		daylayer.viewDate(new Date());
 		updateDay();
-		updateMultiDay();
+		JScrollBar scroller = dayscroll.getVerticalScrollBar();
+		scroller.repaint();
+		scroller.updateUI();
+		repaint();
+		this.updateUI();
+		current = getDate();
 	}
 
 
@@ -202,7 +232,12 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 	public void viewDate(Calendar date) {
 		daylayer.viewDate(date);
 		updateDay();
-		updateMultiDay();
+		JScrollBar scroller = dayscroll.getVerticalScrollBar();
+		scroller.repaint();
+		scroller.updateUI();
+		repaint();
+		this.updateUI();
+		current = getDate();
 	}
 
 	@Override
@@ -237,9 +272,12 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 				previous();
 			}
 			scrollchange = false;
+			updateDay();
 			scroller.repaint();
 			scroller.updateUI();
 			repaint();
+			this.updateUI();
+			current = getDate();
 		}
 		
 		if (scroller.getValue() == scroller.getMaximum()-scroller.getHeight()){
@@ -256,6 +294,25 @@ public class DayCalendar extends JPanel implements ICalendarView, ListDataListen
 			scroller.repaint();
 			scroller.updateUI();
 			repaint();
+			this.updateUI();
+			current = getDate();
+		}
+		
+		
+		dayscroll.getViewport().repaint();
+		dayscroll.getViewport().updateUI();
+		
+		if (!current.equals(getDate())){
+			updateDay();
+			repaint();
+			scrollchange = true;
+			if (MainView.getCurrentCalendarPanel() != null && MainView.getCurrentCalendarPanel().getCalendarTabPanel() != null){
+				MainView.getCurrentCalendarPanel().getCalendarTabPanel().setCalendarViewTitle(getScrollTitle());
+			}
+			scrollchange = false;
+			QuickListModel.getQuickListModel().updateList();
+			current = getDate();
+			this.updateUI();
 		}
 	}
 

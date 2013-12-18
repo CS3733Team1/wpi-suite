@@ -37,7 +37,7 @@ public class Leader extends JPanel{
 	private boolean isDragged;
 	private boolean isAdding;
 	private boolean isPressed;
-	
+
 	private float percentage;
 
 
@@ -57,12 +57,12 @@ public class Leader extends JPanel{
 				startLocation= hr.getLocation();
 
 				Point p = hr.getLocation();
-				
+
 				hourList.get(p.x).get(p.y).setState(!(hourList.get(p.x).get(p.y).getState()));
 				hourPanelList.get(p.x).get(p.y).setState(!(hourPanelList.get(p.x).get(p.y).getState()));
-				
+
 				LeaderPanel leadPanel = (LeaderPanel) Leader.this.getParent();
-		        leadPanel.updatePanels();
+				leadPanel.updatePanels();
 			}
 
 			@Override
@@ -107,7 +107,7 @@ public class Leader extends JPanel{
 
 				int dragLocationX = e.getXOnScreen();
 				int dragLocationY = e.getYOnScreen();
-				
+
 				Point p = (Point) Leader.this.getComponentAt(e.getPoint()).getLocation();
 
 
@@ -116,7 +116,7 @@ public class Leader extends JPanel{
 				int minY = Math.min(p.y, startLocation.y);
 				int maxY = Math.max(p.y, startLocation.y);
 
-				
+
 				if(p.x != startLocation.x && p.y != startLocation.y){
 					for(int i = minX; i < maxX; i++){
 						for(int j = minY; j < maxY; j++){
@@ -124,7 +124,7 @@ public class Leader extends JPanel{
 								hourList.get(i).get(j).setState(true);
 								hourPanelList.get(i).get(j).setState(true);
 							}
-								
+
 							else{
 								hourList.get(i).get(j).setState(false);
 								hourPanelList.get(i).get(j).setState(false);
@@ -132,36 +132,36 @@ public class Leader extends JPanel{
 						}
 					}
 				}
-				
+
 				if(p.x != startLocation.x && p.y == startLocation.y){
 					for(int i = minX; i < maxX; i++){
-							if(isAdding){
-								hourList.get(i).get(p.y).setState(true);
-								hourPanelList.get(i).get(p.y).setState(true);
-							}else{
-								hourList.get(i).get(p.y).setState(false);
-								hourPanelList.get(i).get(p.y).setState(false);
-							}
+						if(isAdding){
+							hourList.get(i).get(p.y).setState(true);
+							hourPanelList.get(i).get(p.y).setState(true);
+						}else{
+							hourList.get(i).get(p.y).setState(false);
+							hourPanelList.get(i).get(p.y).setState(false);
+						}
 					}
 				}
-				
+
 				if(p.x == startLocation.x && p.y != startLocation.y){
 					for(int i = minY; i < maxY; i++){
-							if(isAdding){
-								hourList.get(p.x).get(i).setState(true);
-								hourPanelList.get(p.x).get(i).setState(true);
-							}else{
-								hourList.get(p.x).get(i).setState(false);
-								hourPanelList.get(p.x).get(i).setState(false);
-							}
+						if(isAdding){
+							hourList.get(p.x).get(i).setState(true);
+							hourPanelList.get(p.x).get(i).setState(true);
+						}else{
+							hourList.get(p.x).get(i).setState(false);
+							hourPanelList.get(p.x).get(i).setState(false);
+						}
 					}
 				}
-				
+
 				previousSizeX = Math.abs(maxX-minX);
 				previousSizeY = Math.abs(maxY-minY);
-				
+
 				LeaderPanel leadPanel = (LeaderPanel) Leader.this.getParent();
-		        leadPanel.updatePanels();
+				leadPanel.updatePanels();
 
 
 			}
@@ -178,9 +178,9 @@ public class Leader extends JPanel{
 							hourList.get(i).get(j).setState(true);
 						else
 							hourList.get(i).get(j).setState(false);
-						
-						
-						
+
+
+
 					}
 				}
 
@@ -220,6 +220,32 @@ public class Leader extends JPanel{
 				row.toString()));
 		addHours();
 	}
+	public void updateTimeFrame(int day, int start, int end, List<List<Hour>> list, String user) {
+		this.day = day;
+		this.start = start;
+		this.end = end;
+
+		StringBuilder row = new StringBuilder();
+		for(int i = 0; i < end-start; i++)
+		{
+			percentage = (float)((1.0)/(end-start))*100;
+			row.append("0[");
+			row.append(percentage);
+			row.append("%]0");
+		}
+		StringBuilder col = new StringBuilder();
+		for(int i = 0; i < day; i++)
+		{
+			col.append("0[]0");
+		}
+
+		this.setLayout(new MigLayout("fill,insets 0,gapy 0", 
+				col.toString(),
+				row.toString()));
+		updatePanel(list,user);
+	}
+	
+	
 	public List<List<HourPanel>> getListPanel()
 	{
 		return hourPanelList;
@@ -228,7 +254,7 @@ public class Leader extends JPanel{
 	{
 		return hourList;
 	}
-	
+
 	private void addHours() {
 		for(int i = 0; i < day; i++){
 			ArrayList<HourPanel> hourPanel = new ArrayList<HourPanel>();
@@ -243,7 +269,7 @@ public class Leader extends JPanel{
 				testHour.setHour(i);
 				testHour.setIndex(i, j);
 				Hour hr = testHour.config();
-				
+
 				hourList.get(i).add(hr);
 				hourPanelList.get(i).add(testHour);
 				this.add(testHour, "cell"+i+" "+j+", grow, push");
@@ -261,16 +287,35 @@ public class Leader extends JPanel{
 			}
 		}
 	}
-	
+
 	public void reSize(int width){
 		this.setSize(width, this.getHeight());
 		this.setPreferredSize(new Dimension(width, this.getHeight()));
 		this.setMinimumSize(new Dimension(0,this.getHeight()));
-		
+
 		for(int i = 0; i < day; i++){
 			for(int j = 0; j < end-start; j++)
 				hourPanelList.get(i).get(j).reSize(new Integer((int) (width * (percentage/100))));
 		}
 		this.repaint();
+	}
+
+
+
+	public void updatePanel(List<List<Hour>> list, String user) {
+		for(int i = 0; i < day; i++){
+			for(int j = 0; j < end-start; j++)
+			{	StringBuilder sb = new StringBuilder();
+				if(list.get(i).get(j).getCount() > 0 && list.get(i).get(j).containsName(user)){
+					hourPanelList.get(i).get(j).setState(true);	
+					hourList.get(i).get(j).setState(true);;
+				}
+				if(list.get(i).get(j).getCount() == 0 || !(list.get(i).get(j).containsName(user))){
+					hourPanelList.get(i).get(j).setState(false);	
+					hourList.get(i).get(j).setState(false);;
+				}
+			}
+		}
+
 	}
 }

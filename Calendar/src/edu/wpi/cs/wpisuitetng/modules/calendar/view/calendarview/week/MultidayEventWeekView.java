@@ -2,18 +2,24 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.week;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.Event;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.calendarview.SchedMouseListener;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 /**
  * This class shows multi-day events in week view. It is a component of the WeekCalendarLayerPane, along
@@ -26,6 +32,10 @@ public class MultidayEventWeekView extends JPanel {
 	private Date cdate;
 	private static boolean isEventShowing = true;
 	
+	private ImageIcon leftIcon, rightIcon;
+	
+	private JScrollPane scrollPane;
+	
 	/**
 	 * Creates a panel that holds the multiday events
 	 * @param multiday the list of multiday events contained in the week
@@ -36,11 +46,20 @@ public class MultidayEventWeekView extends JPanel {
 		displayEvents = new LinkedList<JPanel>();
 		cdate = current;
 		
+		leftIcon = new ImageIcon();
+		rightIcon = new ImageIcon();
+		
+		try {
+			leftIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/left.png")));
+			rightIcon = new ImageIcon(ImageIO.read(getClass().getResource("/images/right.png")));
+		} catch(IOException e){}
+		
 		showEvents();
 		DisplayEventDropDown();
 		
 		this.setOpaque(false);
 		this.setVisible(true);
+		this.setLayout(new MigLayout("fillx, insets 0","[9%][13%][13%][13%][13%][13%][13%][13%]18"));
 	}
 	
 	/**
@@ -94,12 +113,7 @@ public class MultidayEventWeekView extends JPanel {
 		}
 		if (shouldret){
 			return;
-		}
-		
-		this.setLayout(new MigLayout("fill", 
-				"0[9%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]3[13%]0", 
-				"0[4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%][4%]"));
-		
+		}		
 	}
 	
 	/**
@@ -132,14 +146,27 @@ public class MultidayEventWeekView extends JPanel {
 	 * Displays Panels Of MultiDay Events
 	 */
 	public void DisplayEventDropDown(){
+		
+		
 		displayEvents.clear();
 		int height = 0;
 		int y = 1;
 		int x = 1;
 		Date current = cdate;
+		
+		int maxNum = 0;
+		for (List<Event> elist: multidaye) {
+			if(maxNum < elist.size()) maxNum = elist.size();
+		}
+		
+		if(maxNum > 3) 
+			this.setLayout(new MigLayout("fillx, insets 0","[9%][13%][13%][13%][13%][13%][13%][13%]"));
+		else 
+			this.setLayout(new MigLayout("fillx, insets 0","[9%][13%][13%][13%][13%][13%][13%][13%]18"));
+		
 		for (List<Event> elist: multidaye){
 			for (Event eve: elist){
-				JPanel multipane = new JPanel(new MigLayout("fill", "[][][]", "[]"));
+				JPanel multipane = new JPanel(new MigLayout("fill, insets 0", "[align left][center][align right]"));
 
 				//Bob The Builder builds the string, which contains the event info
 				StringBuilder bob = new StringBuilder();
@@ -160,38 +187,29 @@ public class MultidayEventWeekView extends JPanel {
 				}
 				bob.append("</p></html>");
 
-				StringBuilder eventNameBob = new StringBuilder();
-				eventNameBob.append("<html>");
-				eventNameBob.append("<html><p style='width:175px'><b>Event Name: </b>");
-				eventNameBob.append(eve.getName());
-				eventNameBob.append("</p></html>");
-
-				JLabel eventinfo = new JLabel(eventNameBob.toString());
+				JLabel eventinfo = new JLabel("Event Name: " + eve.getName(), JLabel.CENTER);
 
 				Date evestart = eve.getStartDate();
 				if (new Date(evestart.getYear(), evestart.getMonth(), evestart.getDate()).before(cdate)){
-					StringBuilder previousbuilder = new StringBuilder();
-					previousbuilder.append("<html><p><b><font size=\"4\"> &lt;- </font></b></p></html>");
-					JLabel previous = new JLabel(previousbuilder.toString());
-					multipane.add(previous, "cell 0 0, grow, push, wmin 0");
+					JLabel previous = new JLabel(leftIcon);
+					multipane.add(previous, "cell 0 0");
 				}
 
-				multipane.add(eventinfo, "cell 1 0, grow, push, wmin 0");
+				multipane.add(eventinfo, "cell 1 0, alignx center, wmin 0");
 				multipane.setToolTipText(bob.toString());
 				multipane.addMouseListener(new SchedMouseListener(eve,multipane));
 				
 				Date eveend = eve.getEndDate();
 				if (new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()).after(new Date(cdate.getYear(), cdate.getMonth(), cdate.getDate()+6))){
-					StringBuilder nextbuilder = new StringBuilder();
-					nextbuilder.append("<html><p><b><font size=\"4\"> -&gt; </font></b></p></html>");
-					JLabel next = new JLabel(nextbuilder.toString());
-					multipane.add(next, "cell 2 0, grow, push, wmin 0");
+					JLabel next = new JLabel(rightIcon);
+					multipane.add(next, "cell 2 0");
 				}
 
 
 				//Responsible for Getting Category Color and Setting Background Color
 				if (eve.getCategory() != null){
 					multipane.setBackground(eve.getCategory().getColor());
+					multipane.setBorder(BorderFactory.createLineBorder(CalendarUtils.darken(eve.getCategory().getColor()), 2, false));
 					Color catColor=eve.getCategory().getColor();
 					float[] hsb=new float[3];
 					//Determines whether text needs to be black or white
@@ -210,7 +228,7 @@ public class MultidayEventWeekView extends JPanel {
 				
 				int a = Math.min(8-y, getDateDiff(current, new Date(eveend.getYear(), eveend.getMonth(), eveend.getDate()))) + 1;
 
-				this.add(multipane, "cell " + y + " " + x + " " + a + " 0, grow, push, wmin 0");
+				this.add(multipane, "cell " + y + " " + x + " " + a + " 0, growx, wmin 0");
 				height += multipane.getPreferredSize().height;
 				displayEvents.add(multipane);
 				x++;
@@ -235,7 +253,6 @@ public class MultidayEventWeekView extends JPanel {
 		Date current = d1;
 		int diff = 0;
 		while(diff<=7){
-			//System.out.println(current + " " + d2);
 			if (current.compareTo(d2) == 0){
 				return diff;
 			}

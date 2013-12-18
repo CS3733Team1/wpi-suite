@@ -27,11 +27,12 @@ import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.WhenToMeetEntityManager;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.UserEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.category.CategoryEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.commitment.CommitmentEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.event.EventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.filter.FilterEntityManager;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEventEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.ProjectManager;
 import edu.wpi.cs.wpisuitetng.modules.core.entitymanagers.UserManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -85,7 +86,8 @@ public class ManagerLayer {
 		map.put("calendar"+"event", EventEntityManager.getEventEntityManager(data));
 		map.put("calendar"+"category", CategoryEntityManager.getCategoryEntityManager(data));
 		map.put("calendar"+"filter", FilterEntityManager.getFilterEntityManager(data));
-		map.put("calendar"+"whentomeet",WhenToMeetEntityManager.getWhenToMeetEntityManager(data));
+		map.put("calendar"+"scheduledevent", ScheduledEventEntityManager.getScheduledEventEntityManager(data));
+		map.put("calendar"+"user", UserEntityManager.getUserEntityManager(data));
 		// add just your module to this list
 		String[] fullModuleList = { "core", "defecttracker", "postboard",
 				"requirementmanager", "calendar" };

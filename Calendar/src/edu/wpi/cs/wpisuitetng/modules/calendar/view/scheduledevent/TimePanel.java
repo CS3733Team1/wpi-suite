@@ -7,11 +7,10 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.MatteBorder;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
-import net.miginfocom.swing.MigLayout;
 
 public class TimePanel extends JPanel{
 
@@ -25,7 +24,6 @@ public class TimePanel extends JPanel{
 		this.start = start;
 		listHour = new ArrayList<JPanel>();
 		StringBuilder sb = new StringBuilder();
-		System.out.println("time"+(end-start));
 		for(int i = 0; i < (end-start+1); i++)
 		{
 			float percentage = (float)(1.0/((end-start)+1))*100;
