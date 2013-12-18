@@ -1,12 +1,11 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.help;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -18,9 +17,6 @@ import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -41,7 +37,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
-import java.awt.Cursor;
 
 /**
  * This class is the GUI for the ManReader. It handles display of the interface and handles user I/O operations.
@@ -201,14 +196,11 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	 */
 	void findDocs()
 	{
-		System.out.println("findDocs()");
 		File file = new File(new File("").getAbsoluteFile().getParent() + "/Calendar/help");
 		for(String s: file.list())
 		{
-			System.out.println(s);
 			if(s.length() > 5 && s.endsWith(".html"))
 			{
-				System.out.println("yes");
 				addDoc(new File(s).getPath());
 			}
 		}
@@ -441,7 +433,6 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 			//System.out.println("Text: " + text.substring(Math.max(0, newPos - 4000), Math.min(text.length(), newPos + 5000)) + "\nPos: " + newPos);
 		}
 
-		System.out.println(heading + " at " + newPos);
 		
 		if(newPos != -1)
 		{
@@ -511,18 +502,15 @@ public class HelpWindow extends JPanel implements ActionListener, MouseListener,
 	@Override
 	public void valueChanged(TreeSelectionEvent e)
 	{
-		System.out.println("selection changed");
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 		
 		if(node == null)
 			return;
 		if(node.getUserObject() instanceof String)
 		{
-			System.out.println((String) node.getUserObject());
 			if(findTopLevelHTMLDocument((String) node.getUserObject()) != null)
 			{
 				HTMLDocument doc = findTopLevelHTMLDocument((String) node.getUserObject());
-				System.out.println(doc.getTitle() + " selected");
 				display.setText(doc.getText());
 				display.setCaretPosition(0);
 				updateBacklist(doc);

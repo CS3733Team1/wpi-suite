@@ -8,8 +8,8 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class LeaderPanel extends JPanel {
 	private String user;
@@ -55,7 +55,6 @@ public class LeaderPanel extends JPanel {
 	public void updatePanels() {
 		lead.getList();
 		ScheduleEventMain wtm = (ScheduleEventMain) this.getParent();
-		System.out.println("user"+getUser());
 		wtm.updatePanel(lead.getList(), getUser());
 	}
 

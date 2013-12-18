@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import net.miginfocom.swing.MigLayout;
 //import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class DayOfWeekPanel extends JPanel {
 
@@ -72,9 +72,6 @@ public class DayOfWeekPanel extends JPanel {
 		    	  int deltaX = e.getXOnScreen() - screenX;
 		          int deltaY = e.getYOnScreen() - screenY;
 		    	  if(isDragged){
-		    		  System.out.println("Drag Relased");
-		    		  
-		    		  System.out.println("DeltaX:" + deltaX + "," +"DeltaY:" + deltaY);
 		    	  }
 		    	  isPressed = false;
 		    	  isDragged = false;
@@ -97,7 +94,6 @@ public class DayOfWeekPanel extends JPanel {
 		        int dragLocationY = e.getYOnScreen();
 		        
 		        int index = listDay.indexOf(DayOfWeekPanel.this.getComponentAt(e.getPoint()));
-		        System.out.println("X:" + index);
 		        if(Math.abs(dragLocationY-previoiusLocationY) >= 0){
 		        	if(index > 0)
 		        		if(isAdding)
@@ -127,14 +123,11 @@ public class DayOfWeekPanel extends JPanel {
 		if(tempListStorage.size() > 0){
 			ScheduleEventSetup swp =(ScheduleEventSetup) this.getParent();
 			swp.isDayOfWeekHaveDays(true);
-			System.out.println("Update True");
 		}else{
-			System.out.println("Update False");
 			ScheduleEventSetup swp =(ScheduleEventSetup) this.getParent();
 			swp.isDayOfWeekHaveDays(false);
 		}
 		
-		System.out.println(tempListStorage);
 		return tempListStorage;
 	}
 	public void updatePanels(int index, boolean state)

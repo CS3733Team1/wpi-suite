@@ -1,16 +1,13 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 
 public class ScheduleEventMain extends JPanel{
 
@@ -39,7 +36,6 @@ public class ScheduleEventMain extends JPanel{
 	public void addUser(String user)
 	{
 		this.user = user;
-		System.out.println("user"+user);
 	}
 	
 	
@@ -111,8 +107,6 @@ public class ScheduleEventMain extends JPanel{
 	
 	public void addTitle(String title)
 	{
-		System.out.println("title"+title);
-		System.out.println(this);
 		this.title = title;
 	}
 	

@@ -36,7 +36,6 @@ public class ScheduledPanel extends JPanel {
 	{
 		this.title = title;
 		this.scheduleEvent =  scheduleEvent;
-		System.out.println("user"+user);
 		scheduleEvent.addUser(user);
 		eventTitle = new JLabel(title, JLabel.CENTER);
 		eventTitle.setForeground(CalendarUtils.titleNameColor);
@@ -69,8 +68,6 @@ public class ScheduledPanel extends JPanel {
 		eventTitle.setFont(new Font(eventTitle.getFont().getFontName(), Font.BOLD, 14));
 		weekNames = new ScheduleEventTitlePanel(days);
 		scroll = new ScheduleEventMainScrollPane(scheduleEvent);
-		
-		System.out.println("XXXX:" + scheduleEvent.getTitle());
 		
 		addEventButton = new JButton("Add Event");
 		addEventButton.setActionCommand("addevent");

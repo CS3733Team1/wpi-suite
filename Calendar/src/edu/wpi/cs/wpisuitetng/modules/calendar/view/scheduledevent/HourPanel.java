@@ -1,12 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -14,8 +10,8 @@ import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.plaf.ColorUIResource;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
 
 public class HourPanel extends JPanel {
 
@@ -89,7 +85,6 @@ public class HourPanel extends JPanel {
 
 	public void updateCount(String user)
 	{
-		System.out.println("user"+user);
 		boolean update = false;
 		if(users.size() == 0)
 		{

@@ -3,14 +3,13 @@ package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEvent;
 import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEventListModel;
 import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.CalendarUtils;
-import net.miginfocom.swing.MigLayout;
 
 public class ScheduledEventTabPanel extends JPanel implements ActionListener {
 
@@ -45,7 +44,6 @@ public class ScheduledEventTabPanel extends JPanel implements ActionListener {
 		int startIndex = setup.getStartIndex();
 		int endIndex = setup.getEndIndex();
 		String title = setup.getTitle();
-		System.out.println("title"+title);
 		String name = ScheduledEventListModel.getScheduledEventListModel().getUser().getName();
 		ScheduleEventMain schedule = new ScheduleEventMain();
 		schedule.addTitle(title);

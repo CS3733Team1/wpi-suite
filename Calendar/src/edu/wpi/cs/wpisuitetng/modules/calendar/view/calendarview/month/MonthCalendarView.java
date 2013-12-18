@@ -352,7 +352,6 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 				multiDay.add(multiDayEventPanel);
 
 				if(isFirstPanel) {
-					System.out.println("Adding first panel: " + multiDayEvent.getName());
 					multiDayEventPanels.add(multiDayEventPanel);
 					indexOfMultiday = days.get(index).addEvComPanel(multiDayEventPanel);
 					isFirstPanel = false;

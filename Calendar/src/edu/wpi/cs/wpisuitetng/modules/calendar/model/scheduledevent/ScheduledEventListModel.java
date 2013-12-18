@@ -79,8 +79,6 @@ public class ScheduledEventListModel extends AbstractListModel<ScheduledEvent> {
 		this.scheduledEvents.clear();
 		this.scheduledEvents.addAll(Arrays.asList(scheduledEvents));
 		
-		for(ScheduledEvent scheduledEvent: scheduledEvents) System.out.println("Retrieved: " + scheduledEvent.getTitle());
-		
 		this.fireIntervalAdded(this, 0, Math.max(getSize() - 1, 0));
 	}
 

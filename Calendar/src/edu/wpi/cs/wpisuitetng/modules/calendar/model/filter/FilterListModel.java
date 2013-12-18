@@ -112,7 +112,6 @@ public class FilterListModel extends AbstractListModel<Filter> {
 	}
 
 	public void setActiveFilter(Filter filter) {
-		System.out.println("Called set Active Filter! " + filter.getName());
 		if(!filter.equals(activeFilter)) {
 			for(Filter f: this.filters) {
 				f.setSelected(false);
@@ -120,7 +119,6 @@ public class FilterListModel extends AbstractListModel<Filter> {
 			filter.setSelected(true);
 			this.activeFilter = filter;
 			this.fireFilterChanged();
-			System.out.println("Fire filter changed");
 			this.fireContentsChanged(this, 0, Math.max(0, filters.size()-1));
 		}
 	}

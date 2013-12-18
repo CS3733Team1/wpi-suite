@@ -136,12 +136,10 @@ public class WeekHolderPanel extends JPanel{
 			eveenddate.setDate(e.getEndDate().getDate() + 1);
 			while(!(iter.getDate() == eveenddate.getDate() || iter.getDate() == enddate.getDate()))
 			{
-				//System.out.println("Iter " + iter.getDate());
 				if(weekdays.contains(iter.getDate()))
 				{
 					multilistlist.get(weekdays.indexOf(iter.getDate())).add(e);
 					break;
-					//System.out.println("Event " + e.getName() + " added to index " + weekdays.indexOf(iter.getDate()));
 				}
 				iter.setDate(iter.getDate() + 1); //setDate knows where month boundaries are
 			}

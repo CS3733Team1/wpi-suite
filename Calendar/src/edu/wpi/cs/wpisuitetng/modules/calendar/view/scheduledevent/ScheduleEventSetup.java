@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -16,9 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.calendar.controller.event.AddEventController;
-import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 import net.miginfocom.swing.MigLayout;
+import edu.wpi.cs.wpisuitetng.modules.calendar.view.utils.DateUtils;
 
 public class ScheduleEventSetup extends JPanel implements KeyListener, ActionListener {
 
@@ -226,18 +223,6 @@ public class ScheduleEventSetup extends JPanel implements KeyListener, ActionLis
 				endDateSelection.setVisible(false);
 			}
 		}
-
-		if(e.getActionCommand().equals("addevent")) {
-			this.createSchedule();
-		} else {
-			validate();
-		}
-
-	}
-
-	private void createSchedule() {
-		System.out.println("We Did It Ladies and Gents");
-
 	}
 
 	public void addEventListener(ActionListener l) {

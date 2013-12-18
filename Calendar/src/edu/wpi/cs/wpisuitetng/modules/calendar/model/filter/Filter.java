@@ -130,7 +130,6 @@ public class Filter extends DeletableAbstractModel {
 	public static  <T extends DeletableAbstractModel> List<T> filterTeamPersonal(List<T> list) {
 		List<T> removeList = new ArrayList<T>();
 		if (MainView.getCurrentCalendarPanel() == null) {
-			System.out.println("Current Calendar Panel null, not filtering based on Team/Personal");
 			return list;
 		}
 		int state = -1;

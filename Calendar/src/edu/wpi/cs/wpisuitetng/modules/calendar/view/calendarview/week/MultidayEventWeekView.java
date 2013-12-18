@@ -253,7 +253,6 @@ public class MultidayEventWeekView extends JPanel {
 		Date current = d1;
 		int diff = 0;
 		while(diff<=7){
-			//System.out.println(current + " " + d2);
 			if (current.compareTo(d2) == 0){
 				return diff;
 			}

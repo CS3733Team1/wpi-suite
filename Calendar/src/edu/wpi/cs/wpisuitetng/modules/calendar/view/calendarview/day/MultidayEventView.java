@@ -73,8 +73,6 @@ public class MultidayEventView extends JPanel{
 
 		showEvents();
 		DisplayEventDropDown();
-
-		System.err.println(this.getPreferredSize());
 	}
 
 	/**
