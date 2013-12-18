@@ -55,10 +55,4 @@ public class AddFilterTest {
 			fcmodel.removeListDataListener(fcmodel.getListDataListeners()[x]);
 		}
 	}
-	
-	@Test
-	public void testAddFilterPanelConstructor(){
-		AddFilterPanel fpanel = new AddFilterPanel();
-		assertNotNull(fpanel);
-	}
 }
