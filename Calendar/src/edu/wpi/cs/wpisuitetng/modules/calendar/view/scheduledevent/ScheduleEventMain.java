@@ -12,7 +12,6 @@ import edu.wpi.cs.wpisuitetng.modules.calendar.model.scheduledevent.ScheduledEve
 public class ScheduleEventMain extends JPanel{
 
 	private LeaderPanel leaderPanel;
-	private LeaderPanel leaderPanel2;
 	private FollowerPanel followerPanel;
 	private String user;
 	private List<List<Hour>> hourList;
@@ -30,6 +29,8 @@ public class ScheduleEventMain extends JPanel{
 	
 	public void update(List<List<Hour>> hourList, String user)
 	{
+		System.out.println("Made it here");
+		System.out.println(hourList);
 		leaderPanel.updateFollower(hourList, user);
 	}
 	

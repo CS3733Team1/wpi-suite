@@ -24,10 +24,10 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class DeleteScheduledEventController implements ActionListener {
-	private CalendarPanel calendarPanel;
+//	private CalendarPanel calendarPanel;
 
 	public DeleteScheduledEventController(CalendarPanel calendarPanel) {
-		this.calendarPanel = calendarPanel;
+//		this.calendarPanel = calendarPanel;
 	}
 
 	/**
@@ -35,27 +35,27 @@ public class DeleteScheduledEventController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		List<ScheduledEvent> scheduledEventList = calendarPanel.getCalendarTabPanel().getSelectedScheduledEvents();
-		deleteScheduledEventList(scheduledEventList);
+//		List<ScheduledEvent> scheduledEventList = calendarPanel.getCalendarTabPanel().getSelectedScheduledEvents();
+//		deleteScheduledEventList(scheduledEventList);
 	}
 	
 	public static void deleteScheduledEventList(List<ScheduledEvent> scheduledEventList){
-		ScheduledEventListModel model = ScheduledEventListModel.getScheduledEventListModel();
-		for (ScheduledEvent scheduledEvent: scheduledEventList) {
-			System.out.println("Deleting scheduled event: name = " + scheduledEvent.getTitle() + "; uid = " + scheduledEvent.getUniqueID());
-
-			// Create a Delete Request
-			final Request request = Network.getInstance().makeRequest("calendar/scheduledevent/" + scheduledEvent.getUniqueID(), HttpMethod.DELETE);
-
-			// Add an observer to process the response
-			request.addObserver(new DeleteScheduledEventObserver());
-
-			// Send the request
-			request.send();
-
-			// We must remove the commitment without knowing the result of the server's response because
-			// of a bug in Java in which you cannot set the body of a HTTP.DELETE request.
-			model.removeScheduledEvent(scheduledEvent);
-		}
+//		ScheduledEventListModel model = ScheduledEventListModel.getScheduledEventListModel();
+//		for (ScheduledEvent scheduledEvent: scheduledEventList) {
+//			System.out.println("Deleting scheduled event: name = " + scheduledEvent.getTitle() + "; uid = " + scheduledEvent.getUniqueID());
+//
+//			// Create a Delete Request
+//			final Request request = Network.getInstance().makeRequest("calendar/scheduledevent/" + scheduledEvent.getUniqueID(), HttpMethod.DELETE);
+//
+//			// Add an observer to process the response
+//			request.addObserver(new DeleteScheduledEventObserver());
+//
+//			// Send the request
+//			request.send();
+//
+//			// We must remove the commitment without knowing the result of the server's response because
+//			// of a bug in Java in which you cannot set the body of a HTTP.DELETE request.
+//			model.removeScheduledEvent(scheduledEvent);
+//		}
 	}
 }

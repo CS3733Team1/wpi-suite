@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.calendar.view.scheduledevent;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class ScheduledEventTabPanel extends JPanel implements ActionListener {
 	private ScheduleEventSetup setup;
 	
 	public ScheduledEventTabPanel() {
+		System.out.println("PLEASE WORK");
 		this.setLayout(new MigLayout("fill,insets 0"));
 		setup = new ScheduleEventSetup();
 		setup.addEventListener(this);
@@ -25,13 +27,15 @@ public class ScheduledEventTabPanel extends JPanel implements ActionListener {
 	
 	public ScheduledEventTabPanel(ScheduledEvent schedule)
 	{
+		
 		this.setLayout(new MigLayout("fill,insets 0"));
 		ScheduledPanel panel = new ScheduledPanel();
 		
-		
 		ScheduleEventMain event = new ScheduleEventMain();
+		event.setTime(ScheduledEventListModel.getScheduledEventListModel().getUser().getName(), schedule.getHourList().size(), schedule.getHourList().get(0).get(0).getHour(),  schedule.getHourList().get(schedule.getHourList().size()-1).get(0).getHour(), CalendarUtils.thatBlue);
 		event.updatePanel(schedule.getHourList(), ScheduledEventListModel.getScheduledEventListModel().getUser().getName());
 		panel.update(schedule.getHourList(),schedule.getTitle(), ScheduledEventListModel.getScheduledEventListModel().getUser().getName(), event, schedule.getDays());
+		this.add(panel, "grow, push");
 	}
 
 	public void closeEventPanel() {

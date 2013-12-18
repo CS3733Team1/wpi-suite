@@ -197,6 +197,7 @@ public class HourPanel extends JPanel {
 		hr.setState(this.getState());
 		hr.setColor(this.getColor());
 		hr.setCount(this.getCount());
+		hr.setHour(setHour);
 		hr.addUsers(users);
 		return hr;
 	}

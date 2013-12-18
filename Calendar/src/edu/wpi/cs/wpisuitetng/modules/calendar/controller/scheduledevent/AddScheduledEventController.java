@@ -52,6 +52,7 @@ public class AddScheduledEventController implements ActionListener{
 
 	public void addScheduledEventToModel(ScheduledEvent scheduledEvent){
 		System.out.println("	Added scheduled Event: name = " + scheduledEvent.getTitle() + "; uid = " + scheduledEvent.getUniqueID());
+		System.err.println("In Observer"+scheduledEvent.getHourList());
 		model.addScheduledEvent(scheduledEvent);
 		MainView.getCurrentCalendarPanel().remove(MainView.getCurrentCalendarPanel().getSelectedComponent());
 	}

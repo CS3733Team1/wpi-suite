@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -178,9 +179,6 @@ public class Leader extends JPanel{
 							hourList.get(i).get(j).setState(true);
 						else
 							hourList.get(i).get(j).setState(false);
-
-
-
 					}
 				}
 
@@ -243,6 +241,8 @@ public class Leader extends JPanel{
 				col.toString(),
 				row.toString()));
 		updatePanel(list,user);
+		
+		
 	}
 	
 	
@@ -266,7 +266,7 @@ public class Leader extends JPanel{
 				HourPanel testHour = new HourPanel();
 				testHour.setState(false);
 				testHour.configCol(col);
-				testHour.setHour(i);
+				testHour.setHour(j+start);
 				testHour.setIndex(i, j);
 				Hour hr = testHour.config();
 
@@ -275,7 +275,8 @@ public class Leader extends JPanel{
 				this.add(testHour, "cell"+i+" "+j+", grow, push");
 			}
 		}
-
+		
+		System.err.println("Hello" +hourList);
 	}
 
 	public void setColor(Color col) {
@@ -303,9 +304,12 @@ public class Leader extends JPanel{
 
 
 	public void updatePanel(List<List<Hour>> list, String user) {
+		addHours();
+		
 		for(int i = 0; i < day; i++){
 			for(int j = 0; j < end-start; j++)
-			{	StringBuilder sb = new StringBuilder();
+			{	
+				StringBuilder sb = new StringBuilder();
 				if(list.get(i).get(j).getCount() > 0 && list.get(i).get(j).containsName(user)){
 					hourPanelList.get(i).get(j).setState(true);	
 					hourList.get(i).get(j).setState(true);;

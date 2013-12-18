@@ -160,7 +160,7 @@ public class CalendarTabPanel extends JPanel {
 		yearViewButton = new TransparentToggleButton("Year", yearIcon);
 		yearViewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		subTabPane.addTab("Scheduled Events", scheduledEventIcon, scheduledEventSubTabPanel);
+//		subTabPane.addTab("Scheduled Events", scheduledEventIcon, scheduledEventSubTabPanel);
 		subTabPane.addTab("Quick List", quickListIcon, quickListTabPanel);
 		subTabPane.addTab("Events", eventIcon, eventSubTabPanel);
 		subTabPane.addTab("Commitments", commitmentIcon, commitmentSubTabPanel);

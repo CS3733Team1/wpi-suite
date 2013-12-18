@@ -107,7 +107,7 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
-		this.add(scheduledEventButton);
+//		this.add(scheduledEventButton);
 
 		this.add(deleteButton);
 
@@ -130,7 +130,7 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
-		this.add(scheduledEventButton);
+//		this.add(scheduledEventButton);
 
 		this.add(helpButton, "align right");
 
@@ -144,7 +144,7 @@ public class CalendarToolBar extends JPanel implements ActionListener {
 
 		this.add(addCommitmentButton, "align left, split 3");
 		this.add(addEventButton);
-		this.add(scheduledEventButton);
+//		this.add(scheduledEventButton);
 
 		this.add(helpButton, "align right");
 

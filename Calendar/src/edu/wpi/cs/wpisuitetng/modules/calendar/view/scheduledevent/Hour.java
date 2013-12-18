@@ -131,6 +131,11 @@ public class Hour {
 	{
 		state = false;
 	}
+	public String toString()
+	{
+		return " "+hour;
+	}
+	
 	public boolean switchState()
 	{
 		if(state == true) setColor(new Color(255,20,147));
