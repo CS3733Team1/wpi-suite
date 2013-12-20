@@ -488,7 +488,7 @@ public class MonthCalendarView extends JPanel implements ICalendarView, Ancestor
 	public List<Event> getSelectedEvents() {
 		List<Event> selectedEvents = new ArrayList<Event>();
 
-		for(EventPanel eventPanel: eventPanels) selectedEvents.add(eventPanel.getEvent());
+		for(EventPanel eventPanel: this.selectedEvents) selectedEvents.add(eventPanel.getEvent());
 
 		for(List<MultiDayEventPanel> multiDayEventPanels: this.selectedMultiDayEvents) {
 			selectedEvents.add(multiDayEventPanels.get(0).getEvent());
